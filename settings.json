@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "^(edit|write_file)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.qwen/hooks/run-tests.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "name": "save-decisions",
+            "description": "Extract and persist any decisions made during this response",
+            "command": "~/.qwen/hooks/save-decisions.sh",
+            "timeout": 30000
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume)$",
+        "hooks": [
+          {
+            "type": "command",
+            "name": "load-memory",
+            "description": "Inject previously saved decisions into the new session",
+            "command": "~/.qwen/hooks/load-memory.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  },
+  "$version": 3
+}
