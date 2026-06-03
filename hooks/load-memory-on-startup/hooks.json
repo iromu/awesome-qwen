@@ -1,0 +1,9 @@
+{
+  "name": "Load Memory on Startup",
+  "description": "Inject previously saved decisions into the new session",
+  "event": "SessionStart",
+  "matcher": "^(startup|resume)$",
+  "command": "~/.qwen/hooks/load-memory.sh",
+  "timeout": 5000,
+  "tags": ["memory", "automation", "continuity"]
+}

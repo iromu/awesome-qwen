@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Qwen Hook",
+  "description": "Schema for Qwen Code hook definition files",
+  "type": "object",
+  "required": ["name", "description", "event", "command"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the hook",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "description": "What this hook does",
+      "minLength": 10,
+      "maxLength": 512
+    },
+    "event": {
+      "type": "string",
+      "description": "When this hook runs",
+      "enum": ["SessionStart", "SessionEnd", "PreToolUse", "PostToolUse", "Stop", "PreCommand", "PostCommand"]
+    },
+    "matcher": {
+      "type": "string",
+      "description": "Regex to filter which commands trigger this hook"
+    },
+    "command": {
+      "type": "string",
+      "description": "Command to execute"
+    },
+    "timeout": {
+      "type": "integer",
+      "description": "Timeout in milliseconds",
+      "minimum": 1000,
+      "maximum": 300000
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

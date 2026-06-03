@@ -6,7 +6,20 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.qwen/hooks/run-tests.sh"
+            "command": "~/.agents/hooks/run-tests.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "^(write_file|edit|run_shell_command)$",
+        "sequential": false,
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'SELF-IMPROVEMENT CHECK: Complex operation completed. Ask yourself: (1) Should I create a skill? (2) Update memory files? (3) What pitfalls to document?'",
+            "name": "self-improvement-check",
+            "description": "Remind agent to capture learning after complex operations",
+            "timeout": 5000
           }
         ]
       }
@@ -18,8 +31,15 @@
             "type": "command",
             "name": "save-decisions",
             "description": "Extract and persist any decisions made during this response",
-            "command": "~/.qwen/hooks/save-decisions.sh",
+            "command": "~/.agents/hooks/save-decisions.sh",
             "timeout": 30000
+          },
+          {
+            "type": "command",
+            "command": "echo 'SESSION CHECKPOINT: Before concluding, review what you learned. Update ~/.qwen/memories/USER.md or MEMORY.md if you learned about user preferences or technical facts. Create skills in ~/.qwen/skills/ for reusable patterns.'",
+            "name": "session-learning-capture",
+            "description": "Prompt self-reflection and knowledge capture before response ends",
+            "timeout": 5000
           }
         ]
       }
@@ -32,7 +52,7 @@
             "type": "command",
             "name": "load-memory",
             "description": "Inject previously saved decisions into the new session",
-            "command": "~/.qwen/hooks/load-memory.sh",
+            "command": "~/.agents/hooks/load-memory.sh",
             "timeout": 5000
           }
         ]

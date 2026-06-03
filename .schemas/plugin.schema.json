@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Qwen Plugin",
+  "description": "Schema for Qwen Code plugin definition",
+  "type": "object",
+  "required": ["name", "description", "version"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Plugin identifier",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+      "maxLength": 64
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the plugin",
+      "minLength": 10,
+      "maxLength": 512
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "url": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "keywords": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier"
+    },
+    "agents": {
+      "type": "array",
+      "description": "Relative paths to agent directories",
+      "items": { "type": "string" }
+    },
+    "skills": {
+      "type": "array",
+      "description": "Relative paths to skills",
+      "items": { "type": "string" }
+    },
+    "instructions": {
+      "type": "array",
+      "description": "Relative paths to instruction files",
+      "items": { "type": "string" }
+    },
+    "hooks": {
+      "type": "array",
+      "description": "Relative paths to hook directories",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

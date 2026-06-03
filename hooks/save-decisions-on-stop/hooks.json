@@ -1,0 +1,8 @@
+{
+  "name": "Save Decisions on Stop",
+  "description": "Extract and persist decisions made during the session into memory",
+  "event": "Stop",
+  "command": "~/.qwen/hooks/save-decisions.sh",
+  "timeout": 30000,
+  "tags": ["memory", "automation", "persistence"]
+}

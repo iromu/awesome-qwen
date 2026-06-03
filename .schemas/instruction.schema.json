@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Qwen Instruction",
+  "description": "Schema for Qwen Code instruction definition files",
+  "type": "object",
+  "required": ["description", "applyTo"],
+  "properties": {
+    "description": {
+      "type": "string",
+      "description": "Description of what this instruction enforces",
+      "minLength": 10,
+      "maxLength": 512
+    },
+    "applyTo": {
+      "type": "string",
+      "description": "Glob pattern for files this instruction applies to",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "priority": {
+      "type": "integer",
+      "description": "Priority order (lower number = higher priority)",
+      "minimum": 0,
+      "maximum": 100
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Qwen Skill",
+  "description": "Schema for Qwen Code skill definition files",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Skill identifier (must match folder name, lowercase with hyphens)",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+      "maxLength": 64
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of what this skill does",
+      "minLength": 10,
+      "maxLength": 1024
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "url": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "category": {
+      "type": "string",
+      "enum": ["development", "debugging", "testing", "devops", "security", "documentation", "data", "frontend", "backend", "mobile", "ai-ml"]
+    },
+    "requires_tools": {
+      "type": "array",
+      "description": "Tools that must be available for this skill",
+      "items": { "type": "string" }
+    },
+    "compatible_with": {
+      "type": "array",
+      "description": "Compatible Qwen versions/variants",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

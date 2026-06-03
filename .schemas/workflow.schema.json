@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Qwen Workflow",
+  "description": "Schema for Qwen Code agentic workflow definitions",
+  "type": "object",
+  "required": ["name", "description", "on"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Human-readable workflow name",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "description": {
+      "type": "string",
+      "description": "What this workflow does",
+      "minLength": 10,
+      "maxLength": 512
+    },
+    "on": {
+      "type": "object",
+      "description": "Trigger conditions",
+      "properties": {
+        "schedule": {
+          "type": "string",
+          "description": "Cron-like schedule"
+        },
+        "event": {
+          "type": "string",
+          "enum": ["push", "pull_request", "issue", "release", "manual"]
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "description": "Required permissions",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["read", "write", "none"]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "category": {
+      "type": "string",
+      "enum": ["ci-cd", "code-quality", "security", "documentation", "release", "monitoring"]
+    }
+  },
+  "additionalProperties": true
+}

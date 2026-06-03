@@ -1,0 +1,36 @@
+{
+  "name": "awesome-qwen",
+  "version": "1.0.0",
+  "description": "A curated collection of awesome Qwen Code extensions, skills, agents, and workflows",
+  "scripts": {
+    "build": "node eng/update-readme.mjs",
+    "validate": "node eng/validate.mjs",
+    "validate:skills": "node eng/validate-skills.mjs",
+    "validate:agents": "node eng/validate-agents.mjs",
+    "validate:plugins": "node eng/validate-plugins.mjs",
+    "create:skill": "node eng/create-skill.mjs",
+    "create:agent": "node eng/create-agent.mjs",
+    "create:plugin": "node eng/create-plugin.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iromu/awesome-qwen.git"
+  },
+  "keywords": [
+    "qwen",
+    "qwen-code",
+    "ai",
+    "skills",
+    "agents",
+    "workflows",
+    "awesome"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "glob": "^10.3.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.12.0"
+  }
+}

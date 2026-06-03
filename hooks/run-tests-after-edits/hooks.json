@@ -1,0 +1,9 @@
+{
+  "name": "Run Tests After Edits",
+  "description": "Automatically run tests after any file is edited",
+  "event": "PostToolUse",
+  "matcher": "^(edit|write_file)$",
+  "command": "~/.qwen/hooks/run-tests.sh",
+  "timeout": 120000,
+  "tags": ["testing", "automation", "quality"]
+}
