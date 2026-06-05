@@ -1,6 +1,6 @@
 ---
 name: embabel-agent
-description: Author, configure, test, and debug agentic AI applications on the JVM using the Embabel framework. Use this skill whenever the user wants to build agents, plan workflows, integrate LLMs with domain models, set up GOAP or Utility AI planning, configure execution modes (Focused/Closed/Open), write agent tests, or work with Embabel tools, skills, or planners. Trigger on mentions of Embabel, @Agent, @Action, @Goal, @Agentic, @Condition, @EmbabelComponent, @LlmTool, GOAP, Utility AI, embabel-agent, JVM agents, agentic flows on the JVM, or when building Spring Boot applications with AI agent capabilities.
+description: Build agentic AI applications on the JVM with Embabel — a Spring-based framework for creating agents that mix LLM interactions with code and planning. Use this skill when building agents with @Agent or @Agentic annotations, configuring GOAP or Utility AI planning, writing tests with FakePromptRunner, setting up @LlmTool or @Condition, mixing LLM models, or configuring Embabel's execution modes (FOCUSED, CLOSED, OPEN). Also trigger for Embabel application.yml configuration, Spring Boot integration with AI agents, or when the user mentions Embabel, Rod Johnson's agent framework, or JVM-based agentic flows.
 ---
 
 # Embabel Agent Framework
