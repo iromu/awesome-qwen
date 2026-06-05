@@ -124,6 +124,29 @@ void shouldSetInteractionIdCorrectly() {
 }
 ```
 
+### Using withId() for Interaction Tracking
+
+```java
+@Test
+void shouldSetInteractionIdCorrectly() {
+    var context = FakeOperationContext.create();
+    var expectedIntent = new UserIntent("command", "Change channel names");
+    context.expectResponse(expectedIntent);
+
+    var result = context.ai()
+            .withId("classify-intent")  // <-- Always set interaction IDs!
+            .creating(UserIntent.class)
+            .fromPrompt("Classify the user's intent");
+
+    assertEquals(expectedIntent, result);
+
+    var interaction = context.getLlmInvocations().getFirst().getInteraction();
+    assertEquals("classify-intent", interaction.getId().getValue());
+}
+```
+
+**Why:** Interaction IDs let you identify specific LLM calls in tests, making assertions more precise and readable.
+
 ## Integration Testing
 
 Use `EmbabelMockitoIntegrationTest` for full workflow testing under Spring Boot.
@@ -162,14 +185,15 @@ class StoryWriterIntegrationTest extends EmbabelMockitoIntegrationTest {
 
 1. **FakeOperationContext.create()** — Creates a test context with a FakePromptRunner
 2. **context.expectResponse(T)** — Pre-loads a response for the next LLM call
-3. **context.getLlmInvocations()** — Access all LLM calls for verification
+3. **context.ai().withId("interaction-id")** — Tags interactions for easy identification (ALWAYS use this!)
 4. **whenCreateObject() / whenGenerateText()** — Stub responses in integration tests
 5. **verifyCreateObjectMatching()** — Verify specific LLM interactions
+6. **context.getLlmInvocations()** — Access all LLM calls for verification
 
 ## Testing Tips
 
 - Always verify both **prompt content** and **LLM hyperparameters** (temperature, model)
-- Use `withId()` to tag interactions for easier identification in tests
+- Use `.withId("interaction-id")` to tag interactions for easier identification in tests
 - Use `withExample()` to test few-shot prompting behavior
 - For multi-step agents, call `expectResponse()` for each expected LLM call in order
 - Integration tests let you test the full agent lifecycle with minimal mocking

@@ -7,6 +7,17 @@ description: Author, configure, test, and debug agentic AI applications on the J
 
 This skill helps you build agentic AI applications on the JVM using the **Embabel framework** — a framework for authoring agentic flows that seamlessly mix LLM-prompted interactions with code and domain models. Created by Rod Johnson (creator of Spring), it supports intelligent path-finding towards goals using non-LLM AI planning algorithms.
 
+## Output Quality
+
+When producing code or documentation:
+
+- **Be comprehensive** — Provide complete, multi-section outputs with thorough explanations, not minimal snippets
+- **Include complete code** — Full classes with imports, domain models, and all annotations, not partial examples
+- **Show the "why"** — Explain design decisions (why this planner, why this temperature, why this execution mode)
+- **Include configuration** — Always show the full `application.yml` block with all relevant settings
+- **Provide testing** — Include unit tests with FakePromptRunner AND integration tests with EmbabelMockitoIntegrationTest
+- **Use latest API patterns** — `LlmOptions.withModel()`, `context.ai().withLlm().creating().fromPrompt()`, `.withId()`
+
 ## Core Concepts
 
 Every Embabel agent is built from these building blocks:
@@ -271,9 +282,30 @@ embabel:
       toolloop:
         max-iterations: 20
         type: default  # or "parallel" for experimental parallel tool execution
+      planner:
+        type: GOAP
+        aStar:
+          max-open-list-size: 1000
+          max-closed-list-size: 5000
+      execution:
+        mode: FOCUSED  # FOCUSED, CLOSED, or OPEN
+      autonomy:
+        agent-confidence-cut-off: 0.6
+        goal-confidence-cut-off: 0.6
+      logging:
+        personality: starwars  # starwars, severance, colossus, hitchhiker, montypython
+        include-plan: true
+        include-actions: true
+        level: DEBUG  # for development
+      process-repository:
+        enabled: true  # persist process state
+      rest:
+        enabled: true  # expose REST endpoints
 ```
 
 See `reference/configuration.md` for the full configuration reference.
+
+> **Important:** When producing configuration examples, always include the complete `embabel:` block with models, planner settings, execution mode, logging, and tool configuration — not just a snippet.
 
 ## Invocation and Runtime
 
@@ -333,14 +365,110 @@ Add repositories:
 
 ## Testing
 
-Embabel provides first-class testing support:
+Embabel provides first-class testing support. Always provide **complete, runnable test classes** — not just snippets.
 
-- **`FakePromptRunner` / `FakeOperationContext`** — Mock LLM calls, verify prompts and hyperparameters
-- **`EmbabelMockitoIntegrationTest`** — Spring Boot integration testing
-- **`whenCreateObject()` / `whenGenerateText()`** — Stub LLM responses
-- **`verifyCreateObjectMatching()`** — Verify specific interactions
+### Unit Testing with FakePromptRunner
 
-See `reference/testing.md` for detailed testing patterns and examples.
+```java
+class StoryWriterTest {
+
+    record ContextAndRunner(FakeOperationContext context, FakePromptRunner promptRunner) {
+        static ContextAndRunner create() {
+            var ctx = FakeOperationContext.create();
+            return new ContextAndRunner(ctx, (FakePromptRunner) ctx.promptRunner());
+        }
+    }
+
+    @Test
+    void writeStory_promptContainsTopic() {
+        var (context, promptRunner) = ContextAndRunner.create();
+        var expectedStory = new Story("Once upon a time...");
+        context.expectResponse(expectedStory);
+
+        var agent = new WriteAndReviewAgent();
+        var story = agent.writeStory(new UserInput("space exploration"), context);
+
+        assertEquals(expectedStory, story);
+        var prompt = promptRunner.getLlmInvocations().getFirst().getPrompt();
+        assertTrue(prompt.contains("space exploration"));
+    }
+
+    @Test
+    void writeStory_temperatureIs0_8() {
+        var (context, promptRunner) = ContextAndRunner.create();
+        context.expectResponse(new Story("..."));
+
+        var agent = new WriteAndReviewAgent();
+        agent.writeStory(new UserInput("test"), context);
+
+        var temperature = promptRunner.getLlmInvocations().getFirst()
+            .getInteraction().getLlm().getTemperature();
+        assertEquals(0.8, temperature, 0.01);
+    }
+
+    @Test
+    void writeStory_interactionIdIsSet() {
+        var (context, promptRunner) = ContextAndRunner.create();
+        context.expectResponse(new Story("..."));
+
+        var agent = new WriteAndReviewAgent();
+        agent.writeStory(new UserInput("test"), context);
+
+        var id = promptRunner.getLlmInvocations().getFirst()
+            .getInteraction().getId().getValue();
+        assertEquals("write-story", id);
+    }
+}
+```
+
+### Key Testing Patterns
+
+1. **`FakeOperationContext.create()`** — Creates a test context with a FakePromptRunner
+2. **`context.expectResponse(T)`** — Pre-loads a response for the next LLM call (call in order for multi-step agents)
+3. **`context.ai().withId("interaction-id")`** — Set interaction IDs for verification (always use this!)
+4. **`promptRunner.getLlmInvocations()`** — Access all LLM calls for verification
+5. **`withExample(...)`** — Add few-shot examples to prompts
+6. **`fromTemplate("template-name", Map.of(...))`** — Use Jinja templates
+
+### Integration Testing
+
+```java
+class StoryWriterIntegrationTest extends EmbabelMockitoIntegrationTest {
+
+    @Test
+    void shouldExecuteCompleteWorkflow() {
+        var input = new UserInput("Write about AI");
+        var story = new Story("AI will transform...");
+        var reviewed = new ReviewedStory(story, "Excellent.", Personas.REVIEWER);
+
+        whenCreateObject(contains("Craft a short story"), Story.class).thenReturn(story);
+        whenGenerateText(contains("Review this story")).thenReturn(reviewed.review());
+
+        var invocation = AgentInvocation.create(agentPlatform, ReviewedStory.class);
+        var result = invocation.invoke(input);
+
+        assertNotNull(result);
+        verifyCreateObjectMatching(
+            prompt -> prompt.contains("Craft a short story"),
+            Story.class,
+            llm -> llm.getLlm().getTemperature() == 0.9
+        );
+        verifyNoMoreInteractions();
+    }
+}
+```
+
+### Testing Checklist
+
+- [ ] Verify prompt content contains expected keywords/variables
+- [ ] Verify LLM hyperparameters (temperature, model)
+- [ ] Set and verify interaction IDs using `.withId("...")`
+- [ ] For multi-step agents: call `expectResponse()` for each expected LLM call in order
+- [ ] Verify the number of LLM invocations
+- [ ] Include integration tests with `EmbabelMockitoIntegrationTest` for full workflow
+- [ ] Test plan variations (GOAP selects different actions based on input state)
+
+See `reference/testing.md` for more detailed patterns.
 
 ## Reference Files
 
