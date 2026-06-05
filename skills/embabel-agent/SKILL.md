@@ -1,6 +1,6 @@
 ---
 name: embabel-agent
-description: Author, configure, test, and debug agentic AI applications on the JVM using the Embabel framework. Use this skill whenever the user wants to build agents, plan workflows, integrate LLMs with domain models, set up GOAP or Utility AI planning, configure execution modes (Focused/Closed/Open), write agent tests, or work with Embabel tools, skills, or planners. Trigger on mentions of Embabel, @Agent, @Action, @Goal, GOAP, Utility AI, embabel-agent, JVM agents, agentic flows on the JVM, or when building Spring Boot applications with AI agent capabilities.
+description: Author, configure, test, and debug agentic AI applications on the JVM using the Embabel framework. Use this skill whenever the user wants to build agents, plan workflows, integrate LLMs with domain models, set up GOAP or Utility AI planning, configure execution modes (Focused/Closed/Open), write agent tests, or work with Embabel tools, skills, or planners. Trigger on mentions of Embabel, @Agent, @Action, @Goal, @Agentic, @Condition, @EmbabelComponent, @LlmTool, GOAP, Utility AI, embabel-agent, JVM agents, agentic flows on the JVM, or when building Spring Boot applications with AI agent capabilities.
 ---
 
 # Embabel Agent Framework
@@ -16,7 +16,7 @@ When producing code or documentation:
 - **Show the "why"** — Explain design decisions (why this planner, why this temperature, why this execution mode)
 - **Include configuration** — Always show the full `application.yml` block with all relevant settings
 - **Provide testing** — Include unit tests with FakePromptRunner AND integration tests with EmbabelMockitoIntegrationTest
-- **Use latest API patterns** — `LlmOptions.withModel()`, `context.ai().withLlm().creating().fromPrompt()`, `.withId()`
+- **Use latest API patterns** — `LlmOptions.withModel()`, `context.ai().withLlm().creating().fromPrompt()`, `.withId()`, `CreationExample`
 
 ## Core Concepts
 
@@ -34,6 +34,8 @@ Every Embabel agent is built from these building blocks:
 
 ### Annotation-Based Model (Java/Kotlin)
 
+Use `@Agent` for agents you call directly, or `@Agentic` for agents the platform auto-discovers and selects.
+
 ```java
 @Agent(description = "Writes and reviews stories")
 public class WriteAndReviewAgent {
@@ -45,7 +47,9 @@ public class WriteAndReviewAgent {
             .withPersona("You are a creative storyteller");
         return context.ai()
             .withLlm(writer)
-            .createObject("Write a story about: " + input.getContent(), Story.class);
+            .withId("write-story")
+            .creating(Story.class)
+            .fromPrompt("Write a story about: " + input.getContent());
     }
 
     @AchievesGoal(description = "Review and improve the story")
@@ -56,8 +60,9 @@ public class WriteAndReviewAgent {
             .withPersona("You are a careful editor");
         return context.ai()
             .withLlm(reviewer)
-            .createObject("Review this story and suggest improvements: " + story.text(),
-                ReviewedStory.class);
+            .withId("review-story")
+            .creating(ReviewedStory.class)
+            .fromPrompt("Review this story and suggest improvements: " + story.text());
     }
 }
 ```
@@ -77,6 +82,15 @@ val agent = Agent(
 }
 ```
 
+### `@Agent` vs `@Agentic`
+
+| Annotation | When to use | Discovery |
+|------------|-------------|-----------|
+| `@Agent` | You call the agent directly from code (Focused mode) | Explicit by name |
+| `@Agentic` | The platform should auto-discover and optionally select this agent | Auto-registered as a Spring bean |
+
+Both are Spring beans. `@Agentic` agents are picked up by agent scanning automatically (enabled by default via `embabel.agent.platform.scanning.annotation`).
+
 ## Planning Algorithms
 
 Choose a planner based on your use case:
@@ -91,6 +105,8 @@ Choose a planner based on your use case:
 Set via `@Agent(planner = PlannerType.XXX)` or `ProcessOptions(plannerType = PlannerType.XXX)`.
 
 ### Utility AI: Cost, Value, and States
+
+Utility agents use `@EmbabelComponent` for action classes (not `@Agent`). Each action declares its `cost` and `value`. The planner picks the action with the highest net value.
 
 ```java
 @EmbabelComponent
@@ -252,8 +268,9 @@ public record InjectedComponent(Ai ai) {
 
     public Joke createJoke(String topic1, String topic2, String voice) {
         return ai.withLlm(LlmOptions.withDefaultLlm().withTemperature(.8))
-            .createObject("Tell me a joke about %s and %s. Voice: %s".formatted(topic1, topic2, voice),
-                Joke.class);
+            .withId("tell-joke")
+            .creating(Joke.class)
+            .fromPrompt("Tell me a joke about %s and %s. Voice: %s".formatted(topic1, topic2, voice));
     }
 }
 ```
@@ -271,7 +288,7 @@ Key properties in `application.yml`:
 ```yaml
 embabel:
   models:
-    default-llm: gpt-4o-mini
+    default-llm: gpt-4.1-mini
     llms:
       cheapest: gpt-4o-mini
       best: gpt-4o
@@ -282,6 +299,8 @@ embabel:
       toolloop:
         max-iterations: 20
         type: default  # or "parallel" for experimental parallel tool execution
+        empty-response:
+          max-retries: 1  # for weak open-weights chat models
       planner:
         type: GOAP
         aStar:
@@ -302,8 +321,6 @@ embabel:
       rest:
         enabled: true  # expose REST endpoints
 ```
-
-See `reference/configuration.md` for the full configuration reference.
 
 > **Important:** When producing configuration examples, always include the complete `embabel:` block with models, planner settings, execution mode, logging, and tool configuration — not just a snippet.
 
@@ -429,6 +446,7 @@ class StoryWriterTest {
 4. **`promptRunner.getLlmInvocations()`** — Access all LLM calls for verification
 5. **`withExample(...)`** — Add few-shot examples to prompts
 6. **`fromTemplate("template-name", Map.of(...))`** — Use Jinja templates
+7. **`CreationExample`** — Create reusable example definitions for prompts
 
 ### Integration Testing
 
@@ -474,27 +492,14 @@ See `reference/testing.md` for more detailed patterns.
 
 - `reference/planners.md` — Detailed planner guide (GOAP, Utility AI, Hybrid, Supervisor)
 - `reference/testing.md` — Testing patterns and examples
+- `reference/configuration.md` — Full configuration property reference
 
 ## Common Pitfalls
 
-1. **Forgetting `@Agent` on the class** — The agent won't be discovered by the platform
+1. **Forgetting `@Agent` or `@Agentic` on the class** — The agent won't be discovered by the platform
 2. **Not providing `OperationContext`** — Actions need it to access the AI and blackboard
 3. **Confusing execution modes** — Focused calls a specific agent; Open assembles one dynamically
 4. **Not using `@AchievesGoal`** — Without it, the planner can't determine goal satisfaction
 5. **Ignoring tool loop iterations** — Default is 20; increase for complex multi-step agents
 6. **Not setting model per-action** — Using the default model for everything wastes money or sacrifices quality
-
-## When to Use This Skill
-
-Use this skill whenever you need to:
-
-- Create a new Embabel agent with `@Agent`, `@Action`, `@Goal`, `@Condition`
-- Choose between planning algorithms (GOAP, Utility, Hybrid, Supervisor)
-- Configure execution modes (Focused, Closed, Open)
-- Set up tools with `@LlmTool` or tool groups
-- Write tests for agents using FakePromptRunner or integration testing
-- Debug agent behavior (check prompts, tool calls, planning decisions)
-- Configure Embabel via `application.yml`
-- Integrate Embabel with Spring Boot
-- Set up MCP tool integration
-- Work with the skills system (loading skills from GitHub/local)
+7. **Forgetting `.withId()` on LLM calls** — Makes test verification harder and debugging opaque

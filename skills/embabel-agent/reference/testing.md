@@ -113,27 +113,6 @@ void shouldSetInteractionIdCorrectly() {
     context.expectResponse(expectedIntent);
 
     var result = context.ai()
-            .withId("classify-intent")
-            .creating(UserIntent.class)
-            .fromPrompt("Classify the user's intent");
-
-    assertEquals(expectedIntent, result);
-
-    var interaction = context.getLlmInvocations().getFirst().getInteraction();
-    assertEquals("classify-intent", interaction.getId().getValue());
-}
-```
-
-### Using withId() for Interaction Tracking
-
-```java
-@Test
-void shouldSetInteractionIdCorrectly() {
-    var context = FakeOperationContext.create();
-    var expectedIntent = new UserIntent("command", "Change channel names");
-    context.expectResponse(expectedIntent);
-
-    var result = context.ai()
             .withId("classify-intent")  // <-- Always set interaction IDs!
             .creating(UserIntent.class)
             .fromPrompt("Classify the user's intent");
