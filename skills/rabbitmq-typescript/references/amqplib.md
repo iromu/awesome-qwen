@@ -1,22 +1,49 @@
-# amqplib — AMQP 0.9.1 Client for Node.js
+# amqplib — AMQP 0.9.1 Client for Node.js (TypeScript)
 
 ## Overview
 
 - **Installation:** `npm install amqplib`
 - **Node.js:** v18+ required
 - **RabbitMQ:** 4.1.0+ required (for amqplib 0.10.7+)
-- **Language:** JavaScript (95.8%), TypeScript (3.9%)
+- **Language:** JavaScript / TypeScript (built-in TypeScript types)
 - **License:** MIT
 - **GitHub:** https://github.com/amqp-node/amqplib
 - **API Reference:** https://amqp-node.github.io/amqplib/
+- **Changelog:** https://github.com/amqp-node/amqplib/blob/main/CHANGELOG.md
 
 Does not implement AMQP 1.0 or AMQP 0-10. Production-ready, stable APIs.
 
 ---
 
+## TypeScript Setup
+
+amqplib ships with built-in TypeScript definitions — no separate `@types/amqplib` package needed.
+
+```typescript
+import amqplib, { Connection, Channel, Message } from 'amqplib';
+```
+
+For strict TypeScript projects, ensure `tsconfig.json` has:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  }
+}
+```
+
+---
+
 ## API Styles
 
-### Promise/Async API (Recommended)
+### Promise/Async API (Recommended for TypeScript)
 
 ```typescript
 import amqplib, { Connection, Channel } from 'amqplib';
@@ -30,15 +57,18 @@ const channel: Channel = await connection.createChannel();
 ```typescript
 import amqplib from 'amqplib/callback_api';
 
-amqplib.connect('amqp://localhost', (err, connection) => {
+amqplib.connect('amqp://localhost', (err: Error | null, connection: Connection | null) => {
   if (err) throw err;
-  connection.createChannel((err, channel) => {
+  if (!connection) throw new Error('Connection failed');
+  connection.createChannel((err: Error | null, channel: Channel | null) => {
+    if (err) throw err;
+    if (!channel) throw new Error('Channel creation failed');
     // ...
   });
 });
 ```
 
-Both APIs provide identical functionality. The async version is recommended for modern Node.js.
+Both APIs provide identical functionality. The async version is recommended for modern Node.js and TypeScript.
 
 ---
 
@@ -47,25 +77,33 @@ Both APIs provide identical functionality. The async version is recommended for 
 ### Connecting
 
 ```typescript
-const connection = await amqplib.connect(url: string, options?: ConnectionOptions);
+import amqplib, { ConnectionOptions } from 'amqplib';
+
+const connection: Connection = await amqplib.connect(url: string, options?: ConnectionOptions);
 ```
 
-**Connection Options:**
-- `protocol`: Override the protocol in the URL (e.g., `'amqp'` or `'amqps'`)
-- `hostname`: Override the hostname
-- `port`: Override the port
-- `username`: Override the username
-- `password`: Override the password
-- `locale`: Override the locale (for error messages)
-- `socketOptions`: Options for the underlying socket
-- `recovery`: Configuration for automatic reconnection (see below)
+**ConnectionOptions interface:**
+
+```typescript
+interface ConnectionOptions {
+  protocol?: string;       // Override protocol (e.g., 'amqp' or 'amqps')
+  hostname?: string;       // Override hostname
+  port?: number;           // Override port
+  username?: string;       // Override username
+  password?: string;       // Override password
+  locale?: string;         // Override locale for error messages
+  socketOptions?: SocketOptions;
+  recovery?: RecoveryOptions;
+  clientProperties?: Record<string, string>;
+}
+```
 
 ### Connection Events
 
 ```typescript
 connection.on('error', (err: Error) => { /* protocol errors */ });
 connection.on('connect', () => { /* connected */ });
-connection.on('disconnect', (err?: Error) => { /* disconnected */ });
+connection.on('disconnect', (info?: { error?: Error }) => { /* disconnected */ });
 connection.on('handler-error', (err: Error, event: string) => {
   console.error(`Uncaught exception in connection ${event} listener:`, err);
 });
@@ -74,24 +112,53 @@ connection.on('handler-error', (err: Error, event: string) => {
 ### Opt-in Recovery (Automatic Reconnection)
 
 ```typescript
-const connection = await amqplib.connect(url, {
+import amqplib, { Connection } from 'amqplib';
+
+interface RecoveryOptions {
+  initialDelay: number;       // ms before first retry
+  maxDelay: number;           // ms between retries (max)
+  factor: number;             // backoff multiplier
+  jitter: number;             // randomization factor
+  maxRetries: number;         // max retries (Infinity = unlimited)
+  async setup(model: Connection): Promise<void>;  // recreate topology after reconnect
+}
+
+const connection: Connection = await amqplib.connect(url, {
   recovery: {
-    initialDelay: 200,    // ms before first retry
-    maxDelay: 5000,       // ms between retries (max)
-    factor: 2,            // backoff multiplier
-    jitter: 0.2,          // randomization factor
-    maxRetries: Infinity, // max retries (Infinity = unlimited)
-    async setup(model) {  // called after each successful (re)connect
-      // Recreate channels, queues, exchanges, consumers here
-      const ch = await model.createChannel();
-      await ch.assertQueue('my-queue', { durable: true });
-      await ch.consume('my-queue', (msg) => {
+    initialDelay: 200,
+    maxDelay: 5000,
+    factor: 2,
+    jitter: 0.2,
+    maxRetries: Infinity,
+    async setup(model) {
+      const channel: Channel = await model.createChannel();
+      await channel.assertQueue('tasks', { durable: true });
+      await channel.prefetch(10);
+      await channel.consume('tasks', async (msg: Message | null) => {
         if (msg) {
           console.log(msg.content.toString());
-          ch.ack(msg);
+          channel.ack(msg);
         }
       });
     }
+  }
+});
+```
+
+### TLS Connection
+
+```typescript
+import * as fs from 'fs';
+import amqplib, { Connection } from 'amqplib';
+
+const connection: Connection = await amqplib.connect('amqps://localhost', {
+  socketOptions: {
+    tls: () => import('tls').then((tls) => ({
+      ca: [fs.readFileSync('/path/to/ca.pem')],
+      cert: fs.readFileSync('/path/to/client-cert.pem'),
+      key: fs.readFileSync('/path/to/client-key.pem'),
+      rejectUnauthorized: true
+    }))
   }
 });
 ```
@@ -103,7 +170,9 @@ const connection = await amqplib.connect(url, {
 ### Creating a Channel
 
 ```typescript
-const channel = await connection.createChannel();
+import { Channel } from 'amqplib';
+
+const channel: Channel = await connection.createChannel();
 ```
 
 ### Error Handling
@@ -124,48 +193,56 @@ Without `handler-error` listeners, throws in user callbacks may silently fail or
 ### Declaring an Exchange
 
 ```typescript
-await channel.assertExchange(
-  exchange: string,       // exchange name
-  type: 'direct' | 'topic' | 'fanout' | 'headers' | 'default' | string,
-  options?: ExchangeOptions
-);
-```
+import { ExchangeType } from 'amqplib';
 
-**Exchange Options:**
-- `durable`: true if declared persistently (default: true)
-- `autoDelete`: true if deleted when last queue unbound (default: false)
-- `internal`: true if exchange is not accepting publisher messages
-- `arguments`: Additional arguments for RabbitMQ extensions
+type ExchangeType = 'direct' | 'topic' | 'fanout' | 'headers' | 'default' | string;
+
+interface AssertExchangeOptions {
+  durable?: boolean;        // Persist across restarts (default: true)
+  autoDelete?: boolean;     // Delete when last queue unbound (default: false)
+  internal?: boolean;       // Not accepting publisher messages
+  arguments?: Record<string, string | number | boolean | null>;
+}
+
+await channel.assertExchange(exchange: string, type: ExchangeType, options?: AssertExchangeOptions);
+```
 
 ### Publishing to an Exchange
 
 ```typescript
+import { PublisherProperties } from 'amqplib';
+
 channel.publish(
   exchange: string,
   routingKey: string,
   content: Buffer | string,
-  options?: PublisherOptions
+  options?: PublisherProperties
 ): boolean;
 ```
 
-**Publisher Options:**
-- `headers`: Message headers
-- `contentType`: MIME content type
-- `contentEncoding`: MIME content encoding
-- `deliveryMode`: 1 (transient) or 2 (persistent)
-- `priority`: Message priority (0-255)
-- `correlationId`: Correlation ID (for RPC)
-- `replyTo`: Queue name for replies (for RPC)
-- `expiration`: Message expiration time
-- `messageId`: Message ID
-- `timestamp`: Message timestamp
-- `type`: Message type
-- `userId`: User ID
-- `appId`: Application ID
-- `mandatory`: Return message if unroutable
-- `immediate`: Request immediate delivery to consumer
+**PublisherProperties interface:**
 
-**Return value:** `true` if the internal buffer is full — signals the client to back off until a `drain` event.
+```typescript
+interface PublisherProperties {
+  headers?: Record<string, any>;
+  contentType?: string;          // MIME content type
+  contentEncoding?: string;      // MIME content encoding
+  deliveryMode?: 1 | 2;          // 1 = transient, 2 = persistent
+  priority?: number;             // 0-255
+  correlationId?: string;        // For RPC
+  replyTo?: string;              // Queue name for RPC replies
+  expiration?: string;           // Message expiration time
+  messageId?: string;            // Message ID
+  timestamp?: number;            // Message timestamp
+  type?: string;                 // Message type
+  userId?: string;               // User ID
+  appId?: string;                // Application ID
+  mandatory?: boolean;           // Return if unroutable
+  immediate?: boolean;           // Request immediate delivery
+}
+```
+
+**Return value:** `true` if the internal buffer is full — signals backpressure. Listen for the `drain` event.
 
 ### Publishing to a Queue (Direct)
 
@@ -173,11 +250,11 @@ channel.publish(
 channel.sendToQueue(
   queue: string,
   content: Buffer | string,
-  options?: PublisherOptions
+  options?: PublisherProperties
 ): boolean;
 ```
 
-This is a shorthand for `publish('', routingKey, content, options)`.
+Shorthand for `publish('', routingKey, content, options)`.
 
 ---
 
@@ -186,45 +263,69 @@ This is a shorthand for `publish('', routingKey, content, options)`.
 ### Declaring a Queue
 
 ```typescript
-const { queue, messageCount, consumerCount } = await channel.assertQueue(
-  queue?: string,         // queue name (empty string = auto-generate)
-  options?: QueueOptions
+import { ConsumeOptions, AssertQueueOptions } from 'amqplib';
+
+interface AssertQueueOptions {
+  durable?: boolean;         // Survive broker restart (default: false)
+  exclusive?: boolean;       // Connection-only (default: false)
+  autoDelete?: boolean;      // Delete when last consumer unsubscribes (default: false)
+  arguments?: Record<string, string | number | boolean | null>;
+  timeout?: number;          // Operation timeout
+}
+
+interface QueueResult {
+  queue: string;             // Queue name (generated if not provided)
+  messageCount: number;      // Messages in queue
+  consumerCount: number;     // Consumers on queue
+}
+
+const result: QueueResult = await channel.assertQueue(
+  queue?: string,            // Empty string = auto-generate
+  options?: AssertQueueOptions
 );
 ```
 
-**Queue Options:**
-- `durable`: true if queue should survive broker restart (default: false)
-- `exclusive`: true if queue is for this connection only (default: false)
-- `autoDelete`: true if deleted when last consumer unsubscribes (default: false)
-- `arguments`: Queue arguments (e.g., `x-dead-letter-exchange`, `x-max-length`, `x-message-ttl`)
+**Common Queue Arguments:**
 
-**Returns:**
-- `queue`: The queue name (generated if not provided)
-- `messageCount`: Number of messages in the queue
-- `consumerCount`: Number of consumers on the queue
+```typescript
+const queueArgs = {
+  'x-dead-letter-exchange': 'dlx',           // Dead letter exchange
+  'x-dead-letter-routing-key': 'dl-key',     // DLX routing key
+  'x-message-ttl': 60000,                     // 60s per-message TTL
+  'x-max-length': 10000,                      // Max 10,000 messages
+  'x-max-length-bytes': 50 * 1024 * 1024,     // 50MB max size
+  'x-queue-type': 'quorum',                   // Queue type
+  'x-delivery-limit': 5,                      // Max delivery attempts (quorum)
+  'x-consumer-timeout': 300000,               // Consumer inactivity timeout (quorum)
+  'x-max-priority': 10,                       // Max priority level
+};
+```
 
 ### Consuming Messages
 
 ```typescript
-const consumerTag = await channel.consume(
+import { ConsumeOptions, Message } from 'amqplib';
+
+interface ConsumeOptions {
+  noAck?: boolean;           // Auto-ack (default: false)
+  exclusive?: boolean;       // Exclusive consumer (default: false)
+  prefetch?: number;         // Per-consumer prefetch count
+  consumerArguments?: Record<string, any>;
+  consumerTag?: string;      // Custom consumer tag
+}
+
+const consumerTag: string = await channel.consume(
   queue: string,
-  onMessage: (msg: Message | null) => void,
+  onMessage: (msg: Message | null) => void | Promise<void>,
   options?: ConsumeOptions
-): string;
+);
 ```
 
-**Consume Options:**
-- `noAck`: true if messages are auto-acknowledged (default: false)
-- `exclusive`: true for exclusive consumer (default: false)
-- `prefetch`: Set prefetch count for this consumer (default: 0, uses channel-level)
-- `consumerArguments`: Additional consumer arguments
-- `consumerTag`: Custom consumer tag
+**Message interface:**
 
-**Message object:**
 ```typescript
 interface Message {
   content: Buffer;
-  properties: MessageProperties;
   fields: {
     deliveryTag: number;
     redelivered: boolean;
@@ -234,8 +335,14 @@ interface Message {
     correlationId?: string;
     replyTo?: string;
     contentType?: string;
+    contentEncoding?: string;
     headers?: Record<string, any>;
+    priority?: number;
+    type?: string;
+    appId?: string;
+    userId?: string;
   };
+  properties: Record<string, any>;
 }
 ```
 
@@ -244,11 +351,11 @@ interface Message {
 ### Acknowledging Messages
 
 ```typescript
-channel.ack(message: Message);                    // single ack
-channel.ackAll();                                 // ack all unacked
-channel.nack(message: Message, requeue?: boolean); // single nack
-channel.nackAll(requeue?: boolean);               // nack all unacked
-channel.reject(message: Message, requeue?: boolean); // reject single message
+channel.ack(message: Message);                    // Single ack
+channel.ackAll();                                 // Ack all unacked
+channel.nack(message: Message, requeue?: boolean); // Single nack
+channel.nackAll(requeue?: boolean);               // Nack all unacked
+channel.reject(message: Message, requeue?: boolean); // Reject single message
 ```
 
 ---
@@ -259,12 +366,12 @@ channel.reject(message: Message, requeue?: boolean); // reject single message
 
 ```typescript
 await channel.prefetch(
-  count: number,      // prefetch count (0 = unlimited)
-  global: boolean     // apply globally (default: false, per-consumer)
+  count: number,      // 0 = unlimited
+  global: boolean     // false = per-consumer, true = global
 );
 ```
 
-### Setting the Consumer Priority
+### Consumer Priority
 
 ```typescript
 await channel.consumePriority(queue, priority, callback, options);
@@ -280,8 +387,8 @@ await channel.cancel(consumerTag: string);
 
 ```typescript
 await channel.assertBinding({
-  source: string,       // source exchange
-  destination: string,  // destination queue/exchange
+  source: string,             // Source exchange
+  destination: string,        // Destination queue/exchange
   routingKey: string,
   arguments?: Record<string, any>
 });
@@ -321,92 +428,134 @@ await channel.deleteExchange(exchange, ifUnused?: boolean);
 
 ## Publisher Confirms
 
-Publisher confirms are enabled on the channel:
+Enable confirms on the channel:
 
 ```typescript
 await channel.confirm();
 ```
 
-After calling `confirm()`, all published messages will be acknowledged or rejected by the broker. The channel emits events:
+After `confirm()`, all published messages are acknowledged or rejected by the broker.
+
+### Handling Confirmations
 
 ```typescript
-channel.on('connect', () => { /* connected */ });
-channel.on('close', () => { /* closed */ });
-```
-
-For handling confirmations, check the return value of `publish()` and `sendToQueue()` — they return `true` if the internal buffer is full.
-
----
-
-## TypeScript Support
-
-amqplib ships with TypeScript definitions. Install as a dependency:
-
-```bash
-npm install amqplib
-```
-
-The types are included in the package — no separate `@types/amqplib` needed.
-
----
-
-## Complete Example
-
-```typescript
-import amqplib from 'amqplib';
-
-async function main() {
-  const connection = await amqplib.connect('amqp://localhost');
-  connection.on('error', (err) => console.error('Connection error:', err));
-  connection.on('close', () => console.log('Connection closed'));
-
-  const channel = await connection.createChannel();
-  channel.on('error', (err) => console.error('Channel error:', err));
-
-  // Declare exchange
-  await channel.assertExchange('logs', 'topic', { durable: true });
-
-  // Declare queue
-  const { queue } = await channel.assertQueue('error_logs', { durable: true });
-
-  // Bind queue to exchange
-  await channel.bindQueue('logs', queue, '*.error');
-
-  // Consume messages
-  await channel.consume(queue, (msg) => {
-    if (msg) {
-      console.log('Received:', msg.content.toString());
-      channel.ack(msg);
-    }
-  }, { noAck: false });
-
-  // Publish a message
-  channel.publish(
-    'logs',
-    'app.error',
-    Buffer.from('Application error occurred'),
-    { deliveryMode: 2 } // persistent
-  );
-
-  // Graceful shutdown
-  process.on('SIGINT', async () => {
-    await channel.close();
-    await connection.close();
+// Check return value for backpressure
+const result: boolean = channel.publish(exchange, routingKey, content, options);
+if (!result) {
+  // Buffer is full — back off
+  channel.once('drain', () => {
+    // Resume publishing
   });
 }
+```
 
-main().catch(console.error);
+The channel emits `connect` and `close` events during confirm mode.
+
+---
+
+## Complete TypeScript Example
+
+```typescript
+import amqplib, { Connection, Channel, Message } from 'amqplib';
+
+interface Order {
+  orderId: number;
+  status: string;
+  timestamp: number;
+}
+
+class RabbitMQService {
+  private connection: Connection | null = null;
+  private channel: Channel | null = null;
+
+  async connect(url: string = 'amqp://localhost'): Promise<void> {
+    this.connection = await amqplib.connect(url, {
+      clientProperties: { connection_name: 'awesome-qwen-app' }
+    });
+
+    this.connection.on('error', (err: Error) => console.error('Connection error:', err));
+    this.connection.on('close', () => console.log('Connection closed'));
+
+    this.channel = await this.connection.createChannel();
+    this.channel.on('error', (err: Error) => console.error('Channel error:', err));
+    await this.channel.confirm();
+  }
+
+  async setupExchangeAndQueue(): Promise<void> {
+    if (!this.channel) throw new Error('Channel not initialized');
+
+    await this.channel.assertExchange('orders', 'direct', { durable: true });
+    await this.channel.assertQueue('order-processing', {
+      durable: true,
+      arguments: {
+        'x-dead-letter-exchange': 'order-dlx',
+        'x-message-ttl': 60000,
+        'x-max-length': 10000
+      }
+    });
+    await this.channel.bindQueue('order-processing', 'orders', 'order.created');
+
+    await this.channel.assertExchange('order-dlx', 'fanout', { durable: true });
+    await this.channel.assertQueue('order-failed', { durable: true });
+    await this.channel.bindQueue('order-failed', 'order-dlx', '');
+  }
+
+  async publishOrder(order: Order): Promise<void> {
+    if (!this.channel) throw new Error('Channel not initialized');
+
+    const result: boolean = this.channel.publish(
+      'orders', 'order.created',
+      Buffer.from(JSON.stringify(order)),
+      { contentType: 'application/json', deliveryMode: 2, messageId: `order-${order.orderId}` }
+    );
+
+    if (!result) {
+      await new Promise<void>((resolve) => { this.channel!.once('drain', () => resolve()); });
+      this.channel.publish(
+        'orders', 'order.created',
+        Buffer.from(JSON.stringify(order)),
+        { contentType: 'application/json', deliveryMode: 2 }
+      );
+    }
+  }
+
+  async consumeOrders(handler: (order: Order) => Promise<void>): Promise<void> {
+    if (!this.channel) throw new Error('Channel not initialized');
+    await this.channel.prefetch(10);
+
+    await this.channel.consume('order-processing', async (msg: Message | null) => {
+      if (!msg) return;
+      try {
+        const order: Order = JSON.parse(msg.content.toString());
+        await handler(order);
+        this.channel!.ack(msg);
+      } catch (error) {
+        console.error('Failed to process order:', error);
+        this.channel!.nack(msg, false);
+      }
+    });
+  }
+
+  async close(): Promise<void> {
+    if (this.channel) await this.channel.close();
+    if (this.connection) await this.connection.close();
+  }
+}
 ```
 
 ---
 
 ## Troubleshooting
 
-- **Connection refused:** Ensure RabbitMQ is running (`rabbitmq-server`)
-- **Channel exceptions:** Check queue/exchange names, permissions, and arguments
-- **Buffer full:** Check the return value of `publish()` and listen for `drain` events
-- **Silent failures:** Always register `handler-error` listeners on connections and channels
-- **Missing confirmations:** Ensure `channel.confirm()` was called before publishing
+| Issue | Solution |
+|-------|----------|
+| Connection refused | Ensure RabbitMQ is running (`rabbitmq-server`) |
+| Channel exceptions | Check queue/exchange names, permissions, and arguments |
+| Buffer full | Check return value of `publish()`/`sendToQueue()`; listen for `drain` events |
+| Silent failures | Always register `handler-error` listeners on connections and channels |
+| Missing confirmations | Ensure `channel.confirm()` was called before publishing |
+| TypeScript type errors | amqplib ships with built-in types; don't install `@types/amqplib` |
+| Consumer not receiving messages | Check binding keys, routing keys, and queue durability |
 
 ---
 
@@ -414,4 +563,5 @@ main().catch(console.error);
 
 - **Full API Reference:** https://amqp-node.github.io/amqplib/channel_api.html
 - **Changelog:** https://github.com/amqp-node/amqplib/blob/main/CHANGELOG.md
-- **Troubleshooting:** https://github.com/amqp-node/amqplib/blob/main/README.md (linked in repo)
+- **Repository:** https://github.com/amqp-node/amqplib
+- **Issues:** https://github.com/amqp-node/amqplib/issues

@@ -1,8 +1,10 @@
-# RabbitMQ Core Concepts
+# RabbitMQ Core Concepts (4.x)
 
 ## Overview
 
 RabbitMQ is an open-source message broker that implements the AMQP 0-9-1 protocol. It supports multiple messaging patterns including pub/sub, work queues, RPC, and request/reply.
+
+**Official Documentation:** https://www.rabbitmq.com/docs
 
 ---
 
@@ -169,23 +171,28 @@ Publisher confirms ensure messages are delivered to the broker. When enabled, th
 ```typescript
 // amqplib
 await channel.confirm();
-
-// node-rabbitmq-client
-const pub = rabbit.createPublisher({ confirm: true });
 ```
 
 ### Handling Confirmations
 
 ```typescript
 // amqplib: Check return value of publish()
-const result = channel.publish(exchange, routingKey, content, options);
+const result: boolean = channel.publish(exchange, routingKey, content, options);
 if (!result) {
   // Buffer is full — back off
   channel.once('drain', () => { /* resume publishing */ });
 }
-
-// node-rabbitmq-client: Handled automatically with maxAttempts
 ```
+
+### When Messages Are Confirmed
+
+- **Unroutable:** Confirmed once the exchange verifies no queues will receive the message. If published as mandatory, a `basic.return` is sent before the `basic.ack`.
+- **Routable:** Confirmed when accepted by all target queues. For persistent/durable queues, this means disk persistence. For quorum queues, it means quorum replicas have accepted the message.
+
+### Latency & Ordering
+
+- `basic.ack` for persistent messages is sent after disk persistence, which is batched to minimize `fsync` calls. Under constant load, latency can reach a few hundred milliseconds.
+- Acknowledgements are emitted asynchronously and may arrive out of order relative to publication order. Applications should not depend on confirmation ordering.
 
 ### When to Use
 
@@ -231,12 +238,6 @@ await channel.consume(queue, (msg) => {
 ```typescript
 // amqplib
 await channel.prefetch(10, false);  // Per-consumer prefetch of 10
-
-// node-rabbitmq-client
-const sub = rabbit.createConsumer({
-  queue: 'tasks',
-  qos: { prefetchCount: 10 }
-}, handler);
 ```
 
 **Tuning Guidelines:**
@@ -276,21 +277,6 @@ const connection = await amqplib.connect('amqps://localhost', {
       key: fs.readFileSync('/path/to/client_key.pem'),
       rejectUnauthorized: true
     }
-  }
-});
-```
-
-### Client Configuration (node-rabbitmq-client)
-
-```typescript
-import * as fs from 'fs';
-
-const rabbit = new Connection({
-  url: 'amqps://localhost',
-  ssl: {
-    ca: fs.readFileSync('/path/to/ca_certificate.pem'),
-    cert: fs.readFileSync('/path/to/client_certificate.pem'),
-    key: fs.readFileSync('/path/to/client_key.pem')
   }
 });
 ```
