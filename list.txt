@@ -1,0 +1,3 @@
+create or update a skill using skill-creator named "agentic-patterns-extra" from the documentation located here https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns
+
+
