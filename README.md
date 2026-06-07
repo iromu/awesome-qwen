@@ -41,6 +41,7 @@ Self-contained capabilities for specific tasks, bundling instructions and assets
 
 | Skill | Description | Version | Tags |
 |-------|-------------|---------|------|
+| [agentic-patterns-extra](skills/agentic-patterns-extra) | Curated catalogue of 140+ agentic AI patterns — real-world tricks, workflows, and mini-architectures for autonomous agents | `1.0.0` | ![agents](https://img.shields.io/badge/agents-blue) ![patterns](https://img.shields.io/badge/patterns-blue) ![architecture](https://img.shields.io/badge/architecture-blue) |
 | [api-design](skills/api-design) | Design RESTful APIs following OpenAPI 3.0 conventions with proper resource naming, versioning, and error handling | `1.0.0` | ![api](https://img.shields.io/badge/api-blue) ![rest](https://img.shields.io/badge/rest-blue) ![openapi](https://img.shields.io/badge/openapi-blue) |
 | [database-migration](skills/database-migration) | Create and manage database migrations with rollback support for SQL databases | `1.0.0` | ![database](https://img.shields.io/badge/database-blue) ![migration](https://img.shields.io/badge/migration-blue) ![sql](https://img.shields.io/badge/sql-blue) |
 | [docker-containerize](skills/docker-containerize) | Dockerize applications with optimized multi-stage builds, security, and best practices | `1.0.0` | ![docker](https://img.shields.io/badge/docker-blue) ![containers](https://img.shields.io/badge/containers-blue) ![multi-stage](https://img.shields.io/badge/multi-stage-blue) |
