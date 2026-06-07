@@ -1,6 +1,6 @@
 ---
 name: embabel-agent
-description: Build agentic AI applications on the JVM with Embabel — a Spring-based framework for creating agents that mix LLM interactions with code and planning. Use this skill when building agents with @Agent or @Agentic annotations, configuring GOAP or Utility AI planning, writing tests with FakePromptRunner, setting up @LlmTool or @Condition, mixing LLM models, or configuring Embabel's execution modes (FOCUSED, CLOSED, OPEN). Also trigger for Embabel application.yml configuration, Spring Boot integration with AI agents, or when the user mentions Embabel, Rod Johnson's agent framework, or JVM-based agentic flows.
+description: Build agentic AI applications on the JVM with Embabel — a Spring-based framework for creating agents that mix LLM interactions with code and planning. Use this skill when building agents with @Agent or @Agentic annotations, configuring GOAP or Utility AI planning, writing tests with FakePromptRunner, setting up @LlmTool or @Condition, mixing LLM models, or configuring Embabel's execution modes (FOCUSED, CLOSED, OPEN). Also trigger for Embabel application.yml configuration, Spring Boot integration with AI agents, setting up the Embabel Guide server (MCP/chat/RAG), configuring MCP client integrations (Claude Desktop, Claude Code, Cursor, Codex), or when the user mentions Embabel, Rod Johnson's agent framework, JVM-based agentic flows, or the Embabel documentation server.
 ---
 
 # Embabel Agent Framework
@@ -220,6 +220,37 @@ public String lookupCustomer(
     return customerService.lookup(customerId, tenantId, authToken);
 }
 ```
+
+### MCP Server (Guide)
+
+The [Embabel Guide](https://github.com/embabel/guide) is a companion server that exposes Embabel documentation and API information as MCP tools. Run it alongside your development workflow to let AI coding assistants query Embabel docs via MCP.
+
+```bash
+# Run the Guide server
+export OPENAI_API_KEY=your_key_here
+./mvnw spring-boot:run
+
+# Exposes MCP tools at http://localhost:1337/sse
+```
+
+Integrate with MCP clients:
+
+```bash
+# Claude Code
+claude mcp add embabel --transport sse http://localhost:1337/sse
+
+# Or add to Claude Desktop config (claude_desktop_config.json):
+# {
+#   "mcpServers": {
+#     "embabel-dev": {
+#       "command": "npx",
+#       "args": ["-y", "mcp-remote", "http://localhost:1337/sse", "--transport", "sse-only"]
+#     }
+#   }
+# }
+```
+
+See `reference/guide-server.md` for full Guide server setup, Docker deployment, and all client integrations (Cursor, Codex, Antigravity, Copilot CLI).
 
 ## Skills System
 
@@ -493,6 +524,7 @@ See `reference/testing.md` for more detailed patterns.
 - `reference/planners.md` — Detailed planner guide (GOAP, Utility AI, Hybrid, Supervisor)
 - `reference/testing.md` — Testing patterns and examples
 - `reference/configuration.md` — Full configuration property reference
+- `reference/guide-server.md` — Guide server setup, MCP client integrations, WebSocket chat API, and Docker deployment
 
 ## Common Pitfalls
 

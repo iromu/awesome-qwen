@@ -1,12 +1,15 @@
 # Embabel Framework Documentation Index (Distilled)
 
 Focused set of documentation resources for building projects with Embabel.
-Sources: https://docs.embabel.com/embabel-agent/guide/0.5.0-SNAPSHOT/
+Sources: https://docs.embabel.com/embabel-agent/guide/0.5.0-SNAPSHOT/, https://github.com/embabel/guide
 
 ## Files
 
 ### 01-embabel-agent-readme.md
 Main README from GitHub — framework overview, key concepts, code examples, differentiators, execution modes, planning algorithms.
+
+### guide-server.md
+Embabel Guide chat/MCP server — how to run the documentation server, MCP client integrations (Claude Desktop, Claude Code, Codex, Cursor, Antigravity, Copilot CLI), WebSocket/STOMP chat API, REST API, Docker deployment, graph database backends (Neo4j, FalkorDB, Memgraph), and testing.
 
 ### core/01-overview-and-core-concepts.md
 Deep dive: GOAP, actions/goals/conditions, differentiators (sophisticated planning, extensibility, strong typing, platform abstraction, LLM mixing, Spring integration, testability).
