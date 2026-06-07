@@ -3,6 +3,8 @@ name: fetch-and-organize-external-docs
 description: Procedure for fetching documentation from external projects and organizing it into a structured local folder
 source: auto-skill
 extracted_at: '2026-06-04T00:21:00.000Z'
+metadata:
+  internal: true
 ---
 
 ## Procedure: Fetch and Organize External Documentation

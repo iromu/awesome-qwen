@@ -3,6 +3,8 @@ name: update-awesome-readme
 description: Procedure for updating an "awesome" list README.md to reflect the current state of its subdirectories (skills, agents, hooks, workflows, instructions, cookbook)
 source: auto-skill
 extracted_at: '2026-06-07T09:14:16.004Z'
+metadata:
+   internal: true
 ---
 
 ## Procedure: Update an "Awesome" List README

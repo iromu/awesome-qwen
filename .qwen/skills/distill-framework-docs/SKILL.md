@@ -3,6 +3,8 @@ name: distill-framework-docs
 description: Procedure for distilling fetched framework documentation into a focused, actionable set of resources for building projects
 source: auto-skill
 extracted_at: '2026-06-04T21:38:40.299Z'
+metadata:
+  internal: true
 ---
 
 ## Procedure: Distill Framework Documentation for Project Building

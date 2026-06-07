@@ -3,6 +3,8 @@ name: collect-spring-ai-mcp-docs
 description: Procedure for fetching and organizing official Spring AI MCP documentation for skill creation
 source: auto-skill
 extracted_at: '2026-06-07T00:51:41.717Z'
+metadata:
+  internal: true
 ---
 
 ## Procedure: Collect Spring AI MCP Documentation

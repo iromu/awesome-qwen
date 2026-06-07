@@ -3,6 +3,8 @@ name: update-docs-from-repo
 description: Procedure for fetching and updating documentation from a specific GitHub repository, creating structured doc files, updating the index, and refreshing memory
 source: auto-skill
 extracted_at: '2026-06-07T08:59:10.064Z'
+metadata:
+   internal: true
 ---
 
 ## Procedure: Update Documentation from a GitHub Repository

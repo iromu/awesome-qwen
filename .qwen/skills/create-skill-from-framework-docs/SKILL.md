@@ -3,6 +3,8 @@ name: create-skill-from-framework-docs
 description: Procedure for gathering extensive framework documentation to prepare for creating one or more skills
 source: auto-skill
 extracted_at: '2026-06-04T00:45:00.000Z'
+metadata:
+  internal: true
 ---
 
 ## Procedure: Gather Framework Documentation for Skill Creation
