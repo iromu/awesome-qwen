@@ -1,7 +1,7 @@
 ---
 name: agentic-patterns-extra
 description: >-
-  Curated catalogue of 140+ agentic AI patterns — real-world tricks, workflows,
+  Curated catalogue of 180+ agentic AI patterns — real-world tricks, workflows,
   and mini-architectures that help autonomous or semi-autonomous AI agents get
   useful work done in production. Use this skill whenever the user asks about
   agent architecture, agent design patterns, how to solve an agent-related
@@ -55,6 +55,7 @@ Patterns for managing agent context, working memory, state persistence, and know
 | [Session-Scoped Context Runtime](reference/context-memory/session-scoped-context-runtime.md) | emerging | Context runtime that caches structured reads and normalizes tool output |
 | [Tool Search Lazy Loading](reference/context-memory/tool-search-lazy-loading.md) | emerging | Dynamically load tools via search instead of preloading all available tools |
 | [Working Memory via TodoWrite](reference/context-memory/working-memory-via-todos.md) | emerging | Externalize working memory with explicit task tracking and dependency management |
+| [Cross-Cycle Consensus Relay](reference/context-memory/cross-cycle-consensus-relay.md) | emerging | Structured context relay for autonomous multi-agent loops across cycles |
 
 ### Feedback Loops
 
@@ -76,6 +77,7 @@ Patterns for self-improvement, evaluation, iterative refinement, and quality ass
 | [Self-Discover: LLM Self-Composed Reasoning](reference/feedback-loops/self-discover-reasoning-structures.md) | emerging | LLM self-composes its own reasoning structures for complex tasks |
 | [Spec-As-Test Feedback Loop](reference/feedback-loops/spec-as-test-feedback-loop.md) | emerging | Generate executable assertions from specs for continuous spec-code synchronization |
 | [Tool Use Incentivization](reference/feedback-loops/tool-use-incentivization.md) | proposed | Shape rewards to incentivize effective tool use patterns |
+| [Self-Rewriting Meta-Prompt Loop](reference/feedback-loops/self-rewriting-meta-prompt-loop.md) | emerging | Agent rewrites its own system prompt after each interaction |
 
 ### Learning & Adaptation
 
@@ -97,14 +99,49 @@ Patterns for task decomposition, multi-agent coordination, workflow management, 
 
 | Pattern | Status | Description |
 |---------|--------|-------------|
+| [Agent-Driven Research](reference/orchestration-control/agent-driven-research.md) | established | Autonomous agent that researches codebases and produces structured reports |
+| [Autonomous Workflow Agent Architecture](reference/orchestration-control/autonomous-workflow-agent-architecture.md) | established | Multi-agent architecture for complex engineering task automation |
+| [Burn the Boats](reference/orchestration-control/burn-the-boats.md) | emerging | Intentionally kill features to force evolution and prevent paradigm lock-in |
 | [Budget-Aware Model Routing](reference/orchestration-control/budget-aware-model-routing.md) | established | Route requests to tiered models with explicit budget contracts and hard caps |
 | [Capability-Escrow-Receipt](reference/orchestration-control/capability-escrow-receipt.md) | experimental-but-awesome | Atomic three-object loop for agent-to-agent commerce (capability, escrow, receipt) |
+| [Continuous Autonomous Task Loop Pattern](reference/orchestration-control/continuous-autonomous-task-loop-pattern.md) | established | Autonomous task loop with rate-limiting, git automation, and self-recovery |
+| [Custom Sandboxed Background Agent](reference/orchestration-control/custom-sandboxed-background-agent.md) | emerging | Custom sandboxed background agent for company-specific dev environments |
+| [Declarative Multi-Agent Topology Definition](reference/orchestration-control/declarative-multi-agent-topology-definition.md) | emerging | Define multi-agent systems declaratively, compile to any framework |
+| [Deterministic Zero-LLM Orchestration](reference/orchestration-control/deterministic-zero-llm-orchestration.md) | validated-in-production | Deterministic Python orchestrator spending zero LLM tokens on coordination |
 | [Discrete Phase Separation](reference/orchestration-control/discrete-phase-separation.md) | emerging | Isolate research, planning, and execution into separate conversations |
+| [Disposable Scaffolding Over Durable Features](reference/orchestration-control/disposable-scaffolding-over-durable-features.md) | best-practice | Treat code around models as disposable scaffolding, not durable features |
+| [Distributed Execution with Cloud Workers](reference/orchestration-control/distributed-execution-cloud-workers.md) | emerging | Distribute agent work across cloud workers for parallel execution |
 | [Dual LLM Pattern](reference/orchestration-control/dual-llm-pattern.md) | emerging | Split privileged and quarantined LLM roles for clear trust boundaries |
+| [Economic Value Signaling in Multi-Agent Networks](reference/orchestration-control/economic-value-signaling-multi-agent.md) | experimental-but-awesome | Economic value signaling for multi-agent task prioritization and coordination |
+| [Explicit Posterior-Sampling Planner](reference/orchestration-control/explicit-posterior-sampling-planner.md) | emerging | RL-based posterior sampling planner for exploration in uncertain environments |
 | [Factory over Assistant](reference/orchestration-control/factory-over-assistant.md) | validated-in-production | Spawn multiple autonomous agents in parallel instead of watching one in a sidebar |
+| [Feature List as Immutable Contract](reference/orchestration-control/feature-list-as-immutable-contract.md) | emerging | Treat feature lists as immutable contracts for deterministic agent behavior |
+| [Hybrid LLM/Code Workflow Coordinator](reference/orchestration-control/hybrid-llm-code-workflow-coordinator.md) | proposed | Hybrid LLM and code workflow coordinator for deterministic execution |
+| [Inference-Time Scaling](reference/orchestration-control/inference-time-scaling.md) | emerging | Allocate additional compute at inference time to improve reasoning quality |
+| [Initializer-Maintainer Dual Agent Architecture](reference/orchestration-control/initializer-maintainer-dual-agent.md) | validated-in-production | Dual-agent architecture separating project initialization from incremental development |
+| [Inversion of Control](reference/orchestration-control/inversion-of-control.md) | validated-in-production | Invert control: let agents drive their own workflows instead of manual step-by-step prompts |
+| [Iterative Multi-Agent Brainstorming](reference/orchestration-control/iterative-multi-agent-brainstorming.md) | experimental-but-awesome | Multi-agent iterative brainstorming for diverse idea generation |
+| [Lane-Based Execution Queueing](reference/orchestration-control/lane-based-execution-queueing.md) | validated-in-production | Lane-based queueing for parallel agent execution with isolation guarantees |
+| [Language Agent Tree Search (LATS)](reference/orchestration-control/language-agent-tree-search-lats.md) | emerging | Combines Monte Carlo Tree Search with LLM reflection for complex reasoning |
+| [LLM Map-Reduce Pattern](reference/orchestration-control/llm-map-reduce-pattern.md) | emerging | Map-reduce workflow isolating untrusted documents across sandboxed LLMs |
+| [Multi-Model Orchestration for Complex Edits](reference/orchestration-control/multi-model-orchestration-for-complex-edits.md) | validated-in-production | Pipeline of specialized models for retrieval, generation, and editing tasks |
+| [Multi-Step Analysis Pipeline Orchestration](reference/orchestration-control/multi-step-analysis-pipeline-orchestration.md) | emerging | LLM-orchestrated artifact-driven pipeline with semantic step integration |
+| [Opponent Processor / Multi-Agent Debate Pattern](reference/orchestration-control/opponent-processor-multi-agent-debate.md) | emerging | Multi-agent debate pattern for bias reduction and validation |
+| [Oracle and Worker Multi-Model Approach](reference/orchestration-control/oracle-and-worker-multi-model.md) | emerging | Two-tier system: cheap worker handles bulk, expensive oracle does reasoning |
+| [Plan-Then-Execute Pattern](reference/orchestration-control/plan-then-execute-pattern.md) | established | LLM generates fixed tool call sequence before seeing untrusted data; controller enforces graph |
+| [Planner-Worker Separation for Long-Running Agents](reference/orchestration-control/planner-worker-separation-for-long-running-agents.md) | emerging | Separate planning from execution for long-running agent sessions |
+| [Progressive Autonomy with Model Evolution](reference/orchestration-control/progressive-autonomy-with-model-evolution.md) | best-practice | Progressively increase agent autonomy as model capabilities improve |
+| [Progressive Complexity Escalation](reference/orchestration-control/progressive-complexity-escalation.md) | emerging | Start agents with simple tasks, progressively unlock complexity |
+| [Recursive Best-of-N Delegation](reference/orchestration-control/recursive-best-of-n-delegation.md) | emerging | Parallel best-of-N at each recursion level, applying parallelism only where uncertain |
+| [Signal-Driven Agent Activation](reference/orchestration-control/signal-driven-agent-activation.md) | emerging | Event-driven agent activation responding to signals instead of user commands |
+| [Specification-Driven Agent Development](reference/orchestration-control/specification-driven-agent-development.md) | proposed | Spec-first workflow where formal specs are the agent's primary input |
+| [Stop Hook Auto-Continue Pattern](reference/orchestration-control/stop-hook-auto-continue-pattern.md) | emerging | Auto-continue agents via stop hooks when success criteria aren't met |
+| [Subject Hygiene for Task Delegation](reference/orchestration-control/subject-hygiene.md) | validated-in-production | Descriptive task subjects for traceable and referencable subagent work |
 | [Sub-Agent Spawning](reference/orchestration-control/sub-agent-spawning.md) | validated-in-production | Spawn focused sub-agents with isolated contexts for parallel execution |
 | [Swarm Migration Pattern](reference/orchestration-control/swarm-migration-pattern.md) | validated-in-production | 10+ parallel sub-agents for large-scale code migrations (10x+ speedup) |
+| [Three-Stage Perception Architecture](reference/orchestration-control/three-stage-perception-architecture.md) | established | Three-stage pipeline: perception, processing, action for modular AI agents |
 | [Tree-of-Thought Reasoning](reference/orchestration-control/tree-of-thought-reasoning.md) | established | Explore a search tree of intermediate thoughts with branching and pruning |
+| [Workspace-Native Multi-Agent Orchestration](reference/orchestration-control/workspace-native-multi-agent-orchestration.md) | emerging | Multi-agent orchestration native to workspace collaboration environments |
 
 ### Reliability & Eval
 
@@ -113,6 +150,7 @@ Patterns for ensuring agent reliability, evaluation, fault tolerance, and observ
 | Pattern | Status | Description |
 |---------|--------|-------------|
 | [Agent Circuit Breaker](reference/reliability-eval/agent-circuit-breaker.md) | emerging | Prevent token waste on repeatedly failing tools using a circuit breaker state machine |
+| [Adaptive Sandbox Fan-Out Controller](reference/reliability-eval/adaptive-sandbox-fan-out-controller.md) | emerging | Adaptive fan-out controller scaling parallel sandboxes based on signal |
 | [Output Verification Loop](reference/reliability-eval/output-verification-loop.md) | emerging | Verify outputs against expected structure before accepting results |
 | [Structured Output Specification](reference/reliability-eval/structured-output-specification.md) | established | Constrain outputs using deterministic schemas for reliable validation |
 
@@ -122,8 +160,10 @@ Patterns for securing agent systems, protecting data, and ensuring safe operatio
 
 | Pattern | Status | Description |
 |---------|--------|-------------|
+| [Action-Selector Pattern](reference/security-safety/action-selector-pattern.md) | emerging | Constrain LLM to action allowlist with schema-validated parameters to prevent prompt injection |
 | [Hook-Based Safety Guard Rails](reference/security-safety/hook-based-safety-guard-rails.md) | emerging | Enforce safety constraints by intercepting agent actions before execution |
 | [PII Tokenization](reference/security-safety/pii-tokenization.md) | established | Tokenize PII before it reaches the model, untokenize for tool calls |
+| [Tool Capability Compartmentalization](reference/security-safety/tool-capability-compartmentalization.md) | emerging | Split tools into reader/processor/writer micro-tools with per-call consent |
 
 ### Tool Use & Environment
 
@@ -132,6 +172,10 @@ Patterns for tool discovery, execution, environment management, and integration.
 | Pattern | Status | Description |
 |---------|--------|-------------|
 | [Code-Then-Execute Pattern](reference/tool-use-environment/code-then-execute.md) | best-practice | Generate code first, then execute — never execute without generating code first |
+| [Code-Then-Execute Pattern (Security)](reference/tool-use-environment/code-then-execute-pattern.md) | emerging | LLM outputs sandboxed DSL script with static taint analysis for security-sensitive workflows |
+| [Parallel Tool Call Learning](reference/tool-use-environment/parallel-tool-call-learning.md) | emerging | Learn optimal parallel tool call strategies from execution data |
+| [Parallel Tool Execution](reference/tool-use-environment/parallel-tool-execution.md) | validated-in-production | Conditional parallel tool execution based on read-only vs stateful classification |
+| [Tool Selection Guide](reference/tool-use-environment/tool-selection-guide.md) | emerging | Guide for optimal tool selection to avoid common anti-patterns |
 | [Tool Use Steering via Prompting](reference/tool-use-environment/tool-use-steering-via-prompting.md) | best-practice | Guide agent tool selection through explicit natural language instructions |
 
 ### UX & Collaboration
@@ -141,6 +185,7 @@ Patterns for human-agent collaboration, handoffs, workflow design, and communica
 | Pattern | Status | Description |
 |---------|--------|-------------|
 | [Agent-Friendly Workflow Design](reference/ux-collaboration/agent-friendly-workflow-design.md) | best-practice | Design workflows that align with agent capabilities and limitations |
+| [Agent Modes by Model Personality](reference/ux-collaboration/agent-modes-by-model-personality.md) | emerging | Agent modes tailored to each model's personality and working style |
 | [Human-in-the-Loop Approval Framework](reference/ux-collaboration/human-in-loop-approval-framework.md) | validated-in-production | Insert human approval gates for high-risk agent actions |
 
 ## How to use this skill
@@ -173,4 +218,4 @@ Each reference file includes:
 
 - **Website**: [https://agentic-patterns.com](https://agentic-patterns.com) — Interactive pattern explorer, compare tool, decision guide, graph visualization
 - **llms.txt**: [https://agentic-patterns.com/llms.txt](https://agentic-patterns.com/llms.txt) — Machine-readable documentation for AI assistants
-- **GitHub**: [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) — Full source with 140+ patterns
+- **GitHub**: [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) — Full source with 180+ patterns
