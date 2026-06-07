@@ -42,6 +42,7 @@ Self-contained capabilities for specific tasks, bundling instructions and assets
 | Skill | Description | Version | Tags |
 |-------|-------------|---------|------|
 | [agentic-patterns-extra](skills/agentic-patterns-extra) | Curated catalogue of 140+ agentic AI patterns — real-world tricks, workflows, and mini-architectures for autonomous agents | `1.0.0` | ![agents](https://img.shields.io/badge/agents-blue) ![patterns](https://img.shields.io/badge/patterns-blue) ![architecture](https://img.shields.io/badge/architecture-blue) |
+| [agentic-patterns-research](skills/agentic-patterns-research) | Research-backed reference for 25 validated agentic AI patterns — context management, planning, safety, CI/CD, cost optimization, and workflow design | `1.0.0` | ![research](https://img.shields.io/badge/research-blue) ![patterns](https://img.shields.io/badge/patterns-blue) ![agents](https://img.shields.io/badge/agents-blue) |
 | [api-design](skills/api-design) | Design RESTful APIs following OpenAPI 3.0 conventions with proper resource naming, versioning, and error handling | `1.0.0` | ![api](https://img.shields.io/badge/api-blue) ![rest](https://img.shields.io/badge/rest-blue) ![openapi](https://img.shields.io/badge/openapi-blue) |
 | [database-migration](skills/database-migration) | Create and manage database migrations with rollback support for SQL databases | `1.0.0` | ![database](https://img.shields.io/badge/database-blue) ![migration](https://img.shields.io/badge/migration-blue) ![sql](https://img.shields.io/badge/sql-blue) |
 | [docker-containerize](skills/docker-containerize) | Dockerize applications with optimized multi-stage builds, security, and best practices | `1.0.0` | ![docker](https://img.shields.io/badge/docker-blue) ![containers](https://img.shields.io/badge/containers-blue) ![multi-stage](https://img.shields.io/badge/multi-stage-blue) |
@@ -62,24 +63,6 @@ Automated actions triggered during Qwen Code sessions.
 | [Run Tests After Edits](hooks/run-tests-after-edits) | Automatically run tests after any file is edited to ensure changes don't break the build | `PostToolUse` |
 | [Save Decisions on Stop](hooks/save-decisions-on-stop) | Extract and persist any decisions made during the session into memory for cross-session continuity | `Stop` |
 
-## Workflows
-
-AI-powered automation sequences for repetitive development tasks.
-
-| Workflow | Description |
-|----------|-------------|
-| [Daily Code Review Summary](workflows/daily-code-review-summary.md) | Generate a daily summary of all PRs opened, updated, and merged with quality metrics |
-| [Automated Release Notes](workflows/automated-release-notes.md) | Generate release notes from PRs, commits, and issues for a given release version |
-
-## Cookbook
-
-Copy-paste-ready recipes and examples for working with Qwen Code APIs.
-
-- [JavaScript/TypeScript](cookbook/javascript/)
-- [Python](cookbook/python/)
-- [Java](cookbook/java/)
-- [Go](cookbook/go/)
-- [Rust](cookbook/rust/)
 
 ## Contributing
 
