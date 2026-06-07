@@ -2,7 +2,7 @@
 title: Reflection Loop
 status: established
 authors:
-  - Nikola Balic - Nikola Balic (@nibzard)
+  - Nikola Balic (@nibzard)
 based_on:
   - Shinn et al. (2023)
 category: Feedback Loops
@@ -15,8 +15,7 @@ slug: reflection
 id: reflection-loop
 summary: >-
   Generative models may produce subpar output if they never review or critique
-  their own work. Run explicit self-evaluation against defined criteria and
-  feed critique into a revision attempt.
+  their own work.
 updated_at: '2026-01-05'
 ---
 
@@ -52,5 +51,3 @@ Use this when quality must meet explicit criteria in writing, reasoning, or code
 
 * [Self-Refine: Improving Reasoning in Language Models via Iterative Feedback](https://arxiv.org/abs/2303.11366)
 * [Reflexion: Language Agents with Verbal Reinforcement Learning](https://neurips.cc/) (NeurIPS 2023) - adds episodic memory for persistent learning across trials
-
----

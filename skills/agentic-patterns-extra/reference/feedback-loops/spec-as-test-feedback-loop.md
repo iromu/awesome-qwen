@@ -1,11 +1,11 @@
 ---
-title: "Spec-As-Test Feedback Loop"
-status: "emerging"
+title: Spec-As-Test Feedback Loop
+status: emerging
 authors: ["Nikola Balic (@nibzard)"]
-based_on: ["Jory Pestorius", "Anthropic Engineering"]
+based_on: ["Jory Pestorious"]
 category: "Feedback Loops"
-source: "https://github.com/nibzard/awesome-agentic-patterns/blob/main/patterns/spec-as-test-feedback-loop.md"
-tags: [spec-as-test, feedback-loop, specification, synchronization, continuous-integration]
+source: "http://jorypestorious.com/blog/ai-engineer-spec/"
+tags: [validation, drift-detection, continuous-testing]
 ---
 
 ## Problem
@@ -15,9 +15,15 @@ Even in spec-first projects, implementations can drift as code evolves and the s
 ## Solution
 
 Generate **executable assertions** directly from the spec (e.g., unit or integration tests) and let the agent:
-- Watch for any spec or code commit
-- Auto-regenerate test suite from latest spec snapshot
-- Run tests; if failures appear, open an *agent-authored* PR that either updates code to match spec or flags unclear spec segments for human review
+
+- Watch for any spec or code commit.  
+- Auto-regenerate test suite from latest spec snapshot.  
+- Run tests; if failures appear, open an *agent-authored* PR that either:
+    
+- updates code to match spec, or
+    - flags unclear spec segments for human review.
+
+This creates a continuous feedback loop ensuring specification and implementation remain synchronized.
 
 **Four-phase architecture:**
 1. Specification Layer: Parse specs (YAML/JSON/BDD) into internal representation
@@ -27,21 +33,30 @@ Generate **executable assertions** directly from the spec (e.g., unit or integra
 
 ## Evidence
 
-- **Evidence Grade:** `emerging`
-- **Key Findings:**
-  - Jory Pestorius: "Spec-As-Test" pattern for continuous spec-code synchronization
-  - Anthropic Engineering: Effective Harnesses for Long-Running Agents
-
-## How to use it
-
-- Use when agent quality improves only after iterative critique or retries
-- Start with one objective metric and one feedback loop trigger
-- Record failure modes so each loop produces reusable learning artifacts
+- **Evidence Grade:** `medium`
+- **Most Valuable Findings:**
+  - Production use at Anthropic (Constitutional AI), OpenAI (Evals), and LangChain
+  - Academic foundations in QuickCheck (property-based testing) and Design by Contract
+  - Effective when combined with Feature List as Immutable Contract
+- **Unverified:** Long-term impact on agent quality scores; most implementations are recent (2022-2024)
 
 ## Trade-offs
 
-- **Pros:** Catches drift early, immune to "pass by deletion", measurable progress metrics, survives session boundaries
-- **Cons:** Heavy CI usage, false positives if spec wording is ambiguous, upfront spec investment required
+- **Pros:**
+  - Catches drift early; prevents silent spec-implementation divergence
+  - Immune to "pass by deletion" when combined with immutable feature lists
+  - Provides measurable progress metrics (X/Y features passing)
+  - Survives session boundaries; test state persists across context loss
+- **Cons:**
+  - Heavy CI usage; false positives if spec wording is ambiguous
+  - Upfront spec investment required; overhead exceeds benefit for small/one-off tasks
+  - Test explosion risk without intelligent selection; spec churn creates test churn
+
+## How to use it
+
+- Use this when agent quality improves only after iterative critique or retries.
+- Start with one objective metric and one feedback loop trigger.
+- Record failure modes so each loop produces reusable learning artifacts.
 
 ## References
 

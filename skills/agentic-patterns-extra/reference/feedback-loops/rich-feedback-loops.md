@@ -6,13 +6,6 @@ based_on: ["Thorsten Ball", "Quinn Slack"]
 category: Feedback Loops
 source: "https://www.nibzard.com/ampcode"
 tags: [feedback, testing, reliability, user-feedback, positive-reinforcement, corrections]
-slug: rich-feedback-loops
-id: rich-feedback-loops
-summary: >-
-  Invest in iterative, machine-readable feedback infrastructure (compiler errors,
-  test failures, linter output) rather than chasing prompt perfection. Agents
-  self-correct when exposed to structured diagnostics after every tool call.
-updated_at: '2026-01-05'
 ---
 
 ## Problem
@@ -54,7 +47,7 @@ Modern models like Claude Sonnet 4.5 are increasingly proactive in creating thei
 sequenceDiagram
   Agent->>CLI: go test ./...
   CLI-->>Agent: FAIL pkg/auth auth_test.go:42 expected 200 got 500
-  Agent->>File: File: open auth.go
+  Agent->>File: open auth.go
   Agent->>File: patch route handler
   Agent->>CLI: go test ./...
   CLI-->>Agent: PASS 87/87 tests
@@ -78,5 +71,3 @@ sequenceDiagram
 * [Cognition AI: Devin & Claude Sonnet 4.5](https://cognition.ai/blog/devin-sonnet-4-5-lessons-and-challenges) - observes proactive testing behavior and custom script creation for feedback loops
 * [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) (Shinn et al., 2023) - agents learn from past failures through self-reflection and memory
 * [Self-Refine: LLMs Can Self-Correct Through Self-Feedback](https://arxiv.org/abs/2303.08972) (Madaan et al., 2023) - iterative refinement with self-generated critique
-
----

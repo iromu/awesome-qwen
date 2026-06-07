@@ -1,48 +1,78 @@
 ---
 title: "Coding Agent CI Feedback Loop"
-status: "best-practice"
+status: best-practice
 authors: ["Nikola Balic (@nibzard)"]
-based_on: ["Quinn Slack", "Will Brown (Prime Intellect Talk)"]
+based_on: ["Quinn Slack (Concept)", "Will Brown (Prime Intellect Talk)"]
 category: "Feedback Loops"
-source: "https://github.com/nibzard/awesome-agentic-patterns/blob/main/patterns/coding-agent-ci-feedback-loop.md"
-tags: [ci, coding-agent, asynchronous, test-driven, feedback-loop]
+source: "https://www.youtube.com/watch?v=Xkwok_XXQgw"
+tags: [CI, coding-agent, asynchronous, test-driven, feedback]
 ---
 
 ## Problem
 
-When a coding agent tackles multi-file refactors or feature additions, running tests and waiting for test feedback **synchronously** ties up compute and prevents the agent from working on parallel tasks.
+When a coding agent tackles multi-file refactors or feature additions, running tests and waiting for test feedback **synchronously** ties up compute and prevents the agent from working on parallel tasks. The agent cannot easily improve code if it must halt until the entire suite finishes.
+
+- Traditional CI loops block further edits; the agent "babysits" the build until tests pass.
+- Long test suites introduce idle periods, leading to underutilized GPUs and inflated RL training times.
 
 ## Solution
 
-Run the coding agent **asynchronously** against CI (local or remote):
+Run the coding agent **asynchronously** against CI (local or remote), allowing it to:
 
-1. **Push a Branch & Trigger Tests** — Agent commits to a branch and triggers the CI pipeline
-2. **Ingest Partial CI Feedback** — Agent periodically polls CI results and receives a small subset of failures
-3. **Iterative Patch Refinement** — Agent autonomously applies fixes to specific files or functions
-4. **Ping on Final Green** — When all tests pass, send a notification that the PR is ready
+**1. Push a Branch & Trigger Tests**
+- When the agent proposes a patch, it commits to a branch and triggers the CI pipeline (e.g., `git push && github_action_run`).
 
-**Key concept:** Overlap code generation and test runs across multiple agents or branches for compute efficiency.
+**2. Ingest Partial CI Feedback**
+- As tests begin, the agent periodically polls CI results.
+- **Failed Tests Partial Report:** Receive a small subset of failures (e.g., 10% of failures flagged first).
 
-## Evidence
+**3. Iterative Patch Refinement**
+- Use CI outputs as **machine-readable feedback**: test failures, compilation errors, linting issues, type errors, and security scan results.
+- Agent autonomously applies fixes to specific files or functions without human intervention.
+- Enforce a **retry budget** (max attempts + runtime limits) to prevent infinite churn.
 
-- **Evidence Grade:** `best-practice`
-- **Key Findings:**
-  - Will Brown's emphasis on asynchronous pipelines to avoid idle compute bubbles
-  - GitHub Agentic Workflows (2026): Markdown-authored agents that auto-triage CI failures
+**4. Ping on Final Green**
+- When all tests pass, send a notification (e.g., chat or pull request comment) that the PR is ready for review.
+
+## Example
+
+```mermaid
+sequenceDiagram
+  Agent->>GitRepo: create branch coding-agent-refactor
+  Agent->>CI: trigger tests remotely
+  loop every 30s
+    CI-->>Agent: partial failures or success chunk
+    Agent->>Files: patch specific failures
+    Agent->>CI: re-run only failing tests
+  end
+  CI-->>Agent: ✅ all tests green
+  Agent-->>User: "PR is ready to merge"
+```
 
 ## How to use it
 
-- **CI Integration:** Provide the agent with a CLI or API key to push branches and trigger tests
-- **Error Parsing Modules:** Implement a parser that translates CI logs into structured diagnostics
-- **Prioritized Test Runs:** When re-running, only run tests in files that were patched
-- **Best Practices:** Use draft PRs by default, enable partial feedback ingestion, add human-in-the-loop for high-risk changes
+- **CI Integration:** Provide the agent with a CLI or API key to push branches and trigger tests (e.g., via GitHub Actions or Jenkins).
+- **Error Parsing Modules:** Implement a small parser that translates CI logs into structured diagnostics (e.g., `{file: "auth.py", line: 42, error: "Expected status 200"}`).
+- **Prioritized Test Runs:** When re-running, only run tests in files that were patched, to reduce CI time.
+- **Best Practices:**
+  - Use **draft PRs** by default for safety.
+  - Enable **partial feedback** ingestion to start fixing before full CI completes.
+  - Add **human-in-the-loop** for high-risk changes.
 
 ## Trade-offs
 
-- **Pros:** Compute efficiency, faster iteration, reduced need for human intervention until final green.
-- **Cons:** CI flakiness can mislead the agent, security considerations with agent permissions.
+- **Pros:**
+  - **Compute Efficiency:** Overlaps code generation and test runs across multiple agents or branches.
+  - **Faster Iteration:** Agent spends less time waiting and more time generating code.
+  - **Autonomy:** Reduces need for human intervention until final green.
+- **Cons/Considerations:**
+  - **CI Flakiness:** Intermittent test failures can mislead the agent into unnecessary patches unless flakiness detection is in place.
+  - **Security:** Agent requires permission to push and read CI logs, which may expose sensitive data if misconfigured.
 
 ## References
 
-- Will Brown's emphasis on **asynchronous pipelines** to avoid idle compute bubbles
-- GitHub Agentic Workflows (Technical Preview 2026): Markdown-authored agents that auto-triage CI failures
+- Inspired by "Background Agent with CI Feedback" pattern, adapted for coding-specific workflows.
+- Will Brown's emphasis on **asynchronous pipelines** to avoid idle compute bubbles.
+- GitHub Agentic Workflows (Technical Preview 2026): Markdown-authored agents that auto-triage CI failures within GitHub Actions.
+
+- Primary source: https://www.youtube.com/watch?v=Xkwok_XXQgw

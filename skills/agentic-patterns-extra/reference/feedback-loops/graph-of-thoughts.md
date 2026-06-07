@@ -1,18 +1,11 @@
 ---
 title: "Graph of Thoughts (GoT)"
-status: "emerging"
+status: emerging
 authors: ["Nikola Balic (@nibzard)"]
 based_on: ["Besta et al.", "ETH Zurich"]
 category: "Feedback Loops"
 source: "https://arxiv.org/abs/2308.09687"
 tags: [reasoning, graph-based, problem-solving, thought-exploration, backtracking, aggregation]
-slug: graph-of-thoughts
-id: graph-of-thoughts
-summary: >-
-  Represent the thought process as a directed graph where nodes are thoughts and
-  edges are transformations. Supports branching, aggregation, refinement, and
-  looping for complex interdependent reasoning.
-updated_at: '2026-01-05'
 ---
 
 ## Problem
@@ -66,8 +59,24 @@ class GraphOfThoughts:
         # Find best solution path through the graph
         return self.extract_best_solution()
     
+    def branch_thought(self, thought, problem):
+        """Generate multiple new thoughts from current thought"""
+        prompt = f"""
+        Problem: {problem}
+        Current thought: {thought.content}
+        
+        Generate 2-3 different ways to continue or branch this reasoning:
+        """
+        branches = self.llm.generate(prompt).split('\n')
+        
+        for branch in branches:
+            new_thought = Thought(branch)
+            self.add_thought(new_thought)
+            self.add_edge(thought, new_thought, operation='branch')
+    
     def aggregate_related_thoughts(self, thought):
         """Combine insights from multiple related thoughts"""
+        # Find thoughts that could be meaningfully combined
         related = self.find_related_thoughts(thought)
         
         if len(related) >= 2:
@@ -81,8 +90,68 @@ class GraphOfThoughts:
             new_thought = Thought(aggregated)
             self.add_thought(new_thought)
             
+            # Add edges from all source thoughts
             for source in related:
                 self.add_edge(source, new_thought, operation='aggregate')
+    
+    def refine_thought(self, thought, problem):
+        """Improve a thought based on graph context"""
+        # Get neighboring thoughts for context
+        context = self.get_thought_context(thought)
+        
+        prompt = f"""
+        Problem: {problem}
+        Current thought: {thought.content}
+        Related context: {context}
+        
+        Refine this thought to be more accurate/useful:
+        """
+        refined = self.llm.generate(prompt)
+        
+        if self.is_improvement(refined, thought.content):
+            new_thought = Thought(refined)
+            self.add_thought(new_thought)
+            self.add_edge(thought, new_thought, operation='refine')
+    
+    def evaluate_thought(self, thought, problem):
+        """Score a thought's quality and relevance"""
+        prompt = f"""
+        Problem: {problem}
+        Thought: {thought.content}
+        
+        Rate this thought on:
+        1. Relevance to problem (0-1)
+        2. Logical correctness (0-1)
+        3. Novelty/insight (0-1)
+        4. Progress toward solution (0-1)
+        
+        Overall score (0-1):
+        """
+        evaluation = self(llm.generate(prompt))
+        return self.parse_score(evaluation)
+    
+    def extract_best_solution(self):
+        """Find the highest-scoring path through the graph"""
+        # Use graph algorithms to find optimal path
+        terminal_thoughts = [n for n in self.thought_graph.nodes() 
+                           if self.thought_graph.out_degree(n) == 0]
+        
+        best_path = None
+        best_score = -1
+        
+        for terminal in terminal_thoughts:
+            paths = nx.all_simple_paths(
+                self.thought_graph, 
+                source=self.get_root(), 
+                target=terminal
+            )
+            for path in paths:
+                score = self.score_path(path)
+                if score > best_score:
+                    best_score = score
+                    best_path = path
+        
+        return self.format_solution(best_path)
 ```
 
 ```mermaid
@@ -146,5 +215,3 @@ Use simpler approaches (CoT, ToT) for:
 - [Graph of Thoughts: Solving Elaborate Problems with Large Language Models (AAAI 2024)](https://arxiv.org/abs/2308.09687) - Besta et al., ETH Zurich
 - [Code Implementation](https://github.com/spcl/graph-of-thoughts)
 - [LangGraph - Graph-based Agent Workflows](https://www.langchain.com/langgraph)
-
----
