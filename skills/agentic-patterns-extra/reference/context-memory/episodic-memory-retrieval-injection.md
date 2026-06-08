@@ -1,11 +1,11 @@
 ---
-title: Episodic Memory Retrieval & Injection
-status: validated-in-production
+title: "Episodic Memory Retrieval & Injection"
+status: "validated-in-production"
 authors: ["Nikola Balic (@nibzard)"]
-based_on: ["Cursor AI (MCP)", "Windsurf Flows"]
-category: Context & Memory
-source: "https://forum.cursor.com/t/agentic-memory-management-for-cursor/78021"
-tags: [episodic-memory, vector-db, retrieval-augmented, context-hint]
+based_on: ["Cursor", "Windsurf", Reflexion (NeurIPS 2023), ParamMem (2026)"]
+category: "Context & Memory"
+source: "https://github.com/nibzard/awesome-agentic-patterns/blob/main/patterns/episodic-memory-retrieval-injection.md"
+tags: [episodic-memory, vector-store, multi-session, state-persistence, retrieval]
 ---
 
 ## Problem
@@ -15,24 +15,33 @@ Stateless request handling causes agents to repeatedly rediscover decisions, con
 ## Solution
 
 Add a **vector-backed episodic memory store**:
-
-1. After every episode, write a short "memory blob" (event, outcome, rationale) to the DB.  
-2. On new tasks, embed the prompt, retrieve top-k similar memories, and inject as *hints* in the context.  
+1. After every episode, write a short "memory blob" (event, outcome, rationale) to the DB.
+2. On new tasks, embed the prompt, retrieve top-k similar memories, and inject as *hints* in the context.
 3. Apply TTL or decay scoring to prune stale memories.
 
-Design memory writes as structured records (decision, evidence, outcome, confidence) rather than raw transcripts. Structured memory reduces repetitive outputs and improves reasoning (ParamMem 2026). At retrieval time, filter by task scope and recency so injected memories improve reasoning quality instead of introducing retrieval noise. Episodic memory with self-reflection achieved 91% pass@1 on HumanEval vs 80% baseline (Reflexion, NeurIPS 2023).
+Design memory writes as structured records (decision, evidence, outcome, confidence) rather than raw transcripts. Structured memory reduces repetitive outputs and improves reasoning (ParamMem 2026).
 
-## Trade-offs
+**Evidence:** Episodic memory with self-reflection achieved 91% pass@1 on HumanEval vs 80% baseline (Reflexion, NeurIPS 2023).
 
-**Pros:** richer continuity, fewer repeated mistakes.  
-**Cons:** retrieval noise if memories aren't curated; storage cost.
+## Evidence
+
+- **Evidence Grade:** `validated-in-production`
+- **Key Findings:**
+  - Cursor "10x-MCP" persistent memory layer
+  - Windsurf Memories docs
+  - Reflexion achieved 91% pass@1 on HumanEval with episodic memory
 
 ## How to use it
 
-- Use this in multi-session coding agents, support copilots, and long-running research workflows.
+- Use in multi-session coding agents, support copilots, and long-running research workflows.
 - Start with a small `top-k` and strict metadata filters (`task`, `repo`, `owner`, `timestamp`).
 - Add memory quality review jobs to remove low-value or contradictory memories.
 - Track whether retrieved memories improved outcomes versus baseline.
+
+## Trade-offs
+
+**Pros:** richer continuity, fewer repeated mistakes.
+**Cons:** retrieval noise if memories aren't curated; storage cost.
 
 ## References
 
@@ -41,5 +50,4 @@ Design memory writes as structured records (decision, evidence, outcome, confide
 - MemGPT (Packer et al., UC Berkeley 2023): https://arxiv.org/abs/2310.08560
 - Cursor "10x-MCP" persistent memory layer
 - Windsurf Memories docs
-
 - Primary source: https://forum.cursor.com/t/agentic-memory-management-for-cursor/78021

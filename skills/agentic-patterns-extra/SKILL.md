@@ -42,17 +42,17 @@ Patterns for managing agent context, working memory, state persistence, and know
 | [Curated Code Context Window](reference/context-memory/curated-code-context-window.md) | best-practice | Maintain minimal, high-signal code context using search subagent for code discovery |
 | [Curated File Context Window](reference/context-memory/curated-file-context-window.md) | best-practice | Sterile curated "main" context window with helper sub-agents for file ranking |
 | [Dynamic Context Injection](reference/context-memory/dynamic-context-injection.md) | established | File/folder at-mentions and custom slash commands for on-demand context loading |
-| [Episodic Memory Retrieval](reference/context-memory/episodic-memory-retrieval.md) | validated-in-production | Vector-backed episodic memory store with structured memory blobs |
+| [Episodic Memory Retrieval & Injection](reference/context-memory/episodic-memory-retrieval-injection.md) | validated-in-production | Vector-backed episodic memory store with structured memory blobs |
 | [Filesystem-Based Agent State](reference/context-memory/filesystem-based-agent-state.md) | validated-in-production | Persist intermediate results to files for durable checkpoints and workflow resumption |
 | [Layered Configuration Context](reference/context-memory/layered-configuration-context.md) | validated-in-production | Hierarchical CLAUDE.md files for enterprise, user, project, and local context layers |
 | [Memory Synthesis from Execution Logs](reference/context-memory/memory-synthesis-from-execution-logs.md) | validated-in-production | Two-tier memory system: task diaries + periodic synthesis agents for pattern extraction |
-| [Proactive Agent State Externalization](reference/context-memory/proactive-agent-state-externalization.md) | emerging | Structured self-documentation framework with hybrid memory architecture |
+| [Prompt Caching via Exact Prefix Preservation](reference/context-memory/prompt-caching-via-exact-prefix-preservation.md) | best-practice | Preserve exact prefixes, append new messages, order static vs variable content |
 | [Progressive Disclosure for Large Files](reference/context-memory/progressive-disclosure-large-files.md) | validated-in-production | Load file metadata first, provide tools to load content on-demand |
-| [Prompt Caching via Prefix Preservation](reference/context-memory/prompt-caching-via-prefix-preservation.md) | best-practice | Preserve exact prefixes, append new messages, order static vs variable content |
+| [Proactive Agent State Externalization](reference/context-memory/proactive-agent-state-externalization.md) | emerging | Structured self-documentation framework with hybrid memory architecture |
 | [Schema-Guided Graph Retrieval](reference/context-memory/schema-guided-graph-retrieval.md) | emerging | Shared domain schema aligns graph construction, query decomposition, and typed retrieval |
 | [Self-Identity Accumulation](reference/context-memory/self-identity-accumulation.md) | emerging | Dual-hook architecture for persistent agent identity/profile across sessions |
 | [Semantic Context Filtering](reference/context-memory/semantic-context-filtering.md) | emerging | Extract semantic elements from raw data, filter out noise before LLM consumption |
-| [Session-Scoped Context Runtime](reference/context-memory/session-scoped-context-runtime.md) | emerging | Context runtime that caches structured reads and normalizes tool output |
+| [Session-Scoped Context Runtime for Agent Tools](reference/context-memory/session-scoped-context-runtime-for-agent-tools.md) | emerging | Context runtime that caches structured reads and normalizes tool output |
 | [Tool Search Lazy Loading](reference/context-memory/tool-search-lazy-loading.md) | emerging | Dynamically load tools via search instead of preloading all available tools |
 | [Working Memory via TodoWrite](reference/context-memory/working-memory-via-todos.md) | emerging | Externalize working memory with explicit task tracking and dependency management |
 | [Cross-Cycle Consensus Relay](reference/context-memory/cross-cycle-consensus-relay.md) | emerging | Structured context relay for autonomous multi-agent loops across cycles |
@@ -63,10 +63,10 @@ Patterns for self-improvement, evaluation, iterative refinement, and quality ass
 
 | Pattern | Status | Description |
 |---------|--------|-------------|
-| [AI-Assisted Code Review](reference/feedback-loops/ai-assisted-code-review.md) | emerging | Multi-agent code review where one agent generates while another critiques |
+| [AI-Assisted Code Review / Verification](reference/feedback-loops/ai-assisted-code-review-verification.md) | emerging | Multi-agent code review where one agent generates while another critiques |
 | [Background Agent CI Feedback](reference/feedback-loops/background-agent-ci.md) | validated-in-production | Run agent asynchronously in background with CI as objective feedback channel |
 | [Coding Agent CI Feedback Loop](reference/feedback-loops/coding-agent-ci-feedback-loop.md) | best-practice | Asynchronous coding agent against CI with partial feedback ingestion |
-| [Dogfooding with Rapid Iteration](reference/feedback-loops/dogfooding-with-rapid-iteration.md) | validated-in-production | Development team uses own agent product for daily tasks, rapid feedback loop |
+| [Dogfooding with Rapid Iteration for Agent Improvement](reference/feedback-loops/dogfooding-with-rapid-iteration-for-agent-improvement.md) | best-practice | Development team uses own agent product for daily tasks, rapid feedback loop |
 | [Graph of Thoughts](reference/feedback-loops/graph-of-thoughts.md) | emerging | Represent reasoning as a graph with branching, aggregation, and refinement |
 | [Incident-to-Eval Synthesis](reference/feedback-loops/incident-to-eval-synthesis.md) | emerging | Convert production incidents into executable eval cases to prevent repeat failures |
 | [Inference-Healed Code Review Reward](reference/feedback-loops/inference-healed-code-review-reward.md) | proposed | Decompose code quality into subcriteria with CoT reasoning for explainable feedback |
@@ -75,9 +75,9 @@ Patterns for self-improvement, evaluation, iterative refinement, and quality ass
 | [Rich Feedback Loops](reference/feedback-loops/rich-feedback-loops.md) | validated-in-production | Invest in iterative machine-readable feedback infrastructure over prompt perfection |
 | [Self-Critique Evaluator Loop](reference/feedback-loops/self-critique-evaluator-loop.md) | emerging | Agent critiques its own output before final delivery |
 | [Self-Discover: LLM Self-Composed Reasoning](reference/feedback-loops/self-discover-reasoning-structures.md) | emerging | LLM self-composes its own reasoning structures for complex tasks |
-| [Spec-As-Test Feedback Loop](reference/feedback-loops/spec-as-test-feedback-loop.md) | emerging | Generate executable assertions from specs for continuous spec-code synchronization |
-| [Tool Use Incentivization](reference/feedback-loops/tool-use-incentivization.md) | proposed | Shape rewards to incentivize effective tool use patterns |
 | [Self-Rewriting Meta-Prompt Loop](reference/feedback-loops/self-rewriting-meta-prompt-loop.md) | emerging | Agent rewrites its own system prompt after each interaction |
+| [Spec-As-Test Feedback Loop](reference/feedback-loops/spec-as-test-feedback-loop.md) | emerging | Generate executable assertions from specs for continuous spec-code synchronization |
+| [Tool Use Incentivization via Reward Shaping](reference/feedback-loops/tool-use-incentivization-via-reward-shaping.md) | emerging | Shape rewards to incentivize effective tool use patterns |
 
 ### Learning & Adaptation
 
@@ -88,7 +88,7 @@ Patterns for long-term agent improvement, fine-tuning, skill evolution, and know
 | [Agent Reinforcement Fine-Tuning (Agent RFT)](reference/learning-adaptation/agent-reinforcement-fine-tuning.md) | validated-in-production | Train model weights end-to-end on agentic tasks with real tool calls and custom rewards |
 | [Compounding Engineering Pattern](reference/learning-adaptation/compounding-engineering-pattern.md) | emerging | Codify all learnings from each feature into reusable prompts, slash commands, hooks |
 | [Frontier-Focused Development](reference/learning-adaptation/frontier-focused-development.md) | emerging | Always target the state-of-the-art models, design products that evolve as frontier moves |
-| [Memory Reinforcement Learning (MemRL)](reference/learning-adaptation/memory-reinforcement-learning.md) | emerging | Transfer RL from parameter space to context space, rank memories by learned utility |
+| [Memory Reinforcement Learning (MemRL)](reference/learning-adaptation/memory-reinforcement-learning-memrl.md) | proposed | Transfer RL from parameter space to context space, rank memories by learned utility |
 | [Shipping as Research](reference/learning-adaptation/shipping-as-research.md) | emerging | Treat shipping as research — release features to learn, not because you're certain |
 | [Skill Library Evolution](reference/learning-adaptation/skill-library-evolution.md) | validated-in-production | Agents persist working code as reusable skills that evolve into documented capabilities |
 | [Variance-Based RL Sample Selection](reference/learning-adaptation/variance-based-rl-sample-selection.md) | validated-in-production | Run multiple baseline evaluations per sample, prioritize high-variance samples for training |
@@ -194,9 +194,34 @@ When the user asks about agentic patterns, agent architecture, or how to solve a
 
 1. **Identify the problem domain** — context management, reliability, security, orchestration, tool use, feedback, learning, or human collaboration.
 2. **Match to relevant patterns** — read the pattern files in `reference/` for detailed guidance.
-3. **Consider trade-offs** — every pattern has pros and cons; present them honestly.
-4. **Suggest combinations** — patterns often work best when combined (e.g., Structured Output + Reflection Loop).
-5. **Check evidence level** — note which patterns are `validated-in-production` vs `emerging` vs `experimental`.
+3. **Present patterns with file paths** — ALWAYS include the reference file path in the format `reference/<category>/<pattern>.md` for each pattern you recommend. This enables the user to read the full details.
+4. **Consider trade-offs** — every pattern has pros and cons; present them honestly. Include a "When NOT to use" note where applicable.
+5. **Suggest combinations** — patterns often work best when combined (e.g., Structured Output + Reflection Loop). See the pattern combinations section below.
+6. **Check evidence level** — note which patterns are `validated-in-production` vs `emerging` vs `experimental`.
+
+## Pattern combinations
+
+Patterns often work best when combined. Here are some proven combinations:
+
+| Combination | Why it works |
+|-------------|--------------|
+| **Circuit Breaker + Failover** | Circuit breaker detects failure, failover routes to backup |
+| **Structured Output + Reflection** | Structured output enables reliable parsing, reflection improves quality |
+| **Discrete Phase Separation + Sub-Agent Spawning** | Phase separation isolates concerns, sub-agents execute in parallel |
+| **Context Minimization + Prompt Caching** | Minimize context to reduce tokens, cache prefixes to save costs |
+| **Tool Use Steering + Code-Then-Execute** | Steering guides tool selection, code-then-execute ensures auditability |
+| **Multi-Agent Brainstorming + Spec-As-Test** | Brainstorming generates ideas, spec-as-test validates them |
+| **Agent Circuit Breaker + Adaptive Sandbox Fan-Out** | Circuit breaker prevents waste, fan-out scales parallel work |
+| **Inversion of Control + Progressive Autonomy** | Let agents drive their workflow, gradually increase autonomy |
+
+## When NOT to use patterns
+
+Not every problem needs a pattern. Avoid over-engineering:
+
+- **Simple, one-off tasks** — Don't apply complex orchestration for a single file edit
+- **Deterministic workflows** — If the solution is purely rule-based, skip the LLM
+- **Tiny codebases** — Context window limits don't matter for <100 file projects
+- **Real-time systems** — Agent loops add latency; not suitable for sub-second responses
 
 ## Pattern metadata
 

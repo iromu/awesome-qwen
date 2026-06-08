@@ -30,19 +30,16 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `context-memory/curated-file-context-window.md` | Curated File Context Window | best-practice |
 | `context-memory/dynamic-context-injection.md` | Dynamic Context Injection | established |
 | `context-memory/episodic-memory-retrieval-injection.md` | Episodic Memory Retrieval & Injection | validated-in-production |
-| `context-memory/episodic-memory-retrieval.md` | Episodic Memory Retrieval & Injection | validated-in-production |
 | `context-memory/filesystem-based-agent-state.md` | Filesystem-Based Agent State | validated-in-production |
 | `context-memory/layered-configuration-context.md` | Layered Configuration Context | validated-in-production |
 | `context-memory/memory-synthesis-from-execution-logs.md` | Memory Synthesis from Execution Logs | validated-in-production |
-| `context-memory/prompt-caching-via-exact-prefix-preservation.md` | Prompt Caching via Exact Prefix Preservation | emerging |
-| `context-memory/prompt-caching-via-prefix-preservation.md` | Prompt Caching via Exact Prefix Preservation | best-practice |
+| `context-memory/prompt-caching-via-exact-prefix-preservation.md` | Prompt Caching via Exact Prefix Preservation | best-practice |
 | `context-memory/progressive-disclosure-large-files.md` | Progressive Disclosure for Large Files | validated-in-production |
 | `context-memory/proactive-agent-state-externalization.md` | Proactive Agent State Externalization | emerging |
-| `context-memory/schema-guided-graph-retrieval.md` | Schema-Guided Graph Retrieval | emerging |
+| `context-memory/schema-guided-graph-retrieval.md` | Schema-Guided Graph Retrieval for Multi-Hop Reasoning | emerging |
 | `context-memory/self-identity-accumulation.md` | Self-Identity Accumulation | emerging |
-| `context-memory/semantic-context-filtering.md` | Semantic Context Filtering | emerging |
+| `context-memory/semantic-context-filtering.md` | Semantic Context Filtering Pattern | emerging |
 | `context-memory/session-scoped-context-runtime-for-agent-tools.md` | Session-Scoped Context Runtime for Agent Tools | emerging |
-| `context-memory/session-scoped-context-runtime.md` | Session-Scoped Context Runtime | emerging |
 | `context-memory/tool-search-lazy-loading.md` | Tool Search Lazy Loading | emerging |
 | `context-memory/working-memory-via-todos.md` | Working Memory via TodoWrite | emerging |
 
@@ -51,35 +48,31 @@ This directory contains detailed reference documentation for agentic AI patterns
 | File | Pattern | Status |
 |------|---------|--------|
 | `feedback-loops/ai-assisted-code-review-verification.md` | AI-Assisted Code Review / Verification | emerging |
-| `feedback-loops/ai-assisted-code-review.md` | AI-Assisted Code Review / Verification | emerging |
 | `feedback-loops/background-agent-ci.md` | Background Agent with CI Feedback | validated-in-production |
 | `feedback-loops/coding-agent-ci-feedback-loop.md` | Coding Agent CI Feedback Loop | best-practice |
-| `feedback-loops/dogfooding-with-rapid-iteration-for-agent-improvement.md` | Dogfooding with Rapid Iteration for Agent Improvement | best-practice |
-| `feedback-loops/dogfooding-with-rapid-iteration.md` | Dogfooding with Rapid Iteration | validated-in-production |
+| `feedback-loops/dogfooding-with-rapid-iteration-for-agent-improvement.md` | Dogfooding with Rapid Iteration for Agent Improvement | validated-in-production |
 | `feedback-loops/graph-of-thoughts.md` | Graph of Thoughts (GoT) | emerging |
 | `feedback-loops/incident-to-eval-synthesis.md` | Incident-to-Eval Synthesis | emerging |
 | `feedback-loops/inference-healed-code-review-reward.md` | Inference-Healed Code Review Reward | proposed |
 | `feedback-loops/iterative-prompt-skill-refinement.md` | Iterative Prompt & Skill Refinement | established |
 | `feedback-loops/rich-feedback-loops.md` | Rich Feedback Loops > Perfect Prompts | validated-in-production |
 | `feedback-loops/reflection.md` | Reflection Loop | established |
-| `feedback-loops/self-critique-evaluator-loop.md` | Self-Critique Evaluator Loop | emerging |
-| `feedback-loops/self-discover-reasoning-structures.md` | Self-Discover: LLM Self-Composed Reasoning | emerging |
+| `feedback-loops/self-critique-evaluator-loop.md` | Self-Critique Evaluator Loop | established |
+| `feedback-loops/self-discover-reasoning-structures.md` | Self-Discover: LLM Self-Composed Reasoning Structures | emerging |
 | `feedback-loops/self-rewriting-meta-prompt-loop.md` | Self-Rewriting Meta-Prompt Loop | emerging |
 | `feedback-loops/spec-as-test-feedback-loop.md` | Spec-As-Test Feedback Loop | emerging |
-| `feedback-loops/tool-use-incentivization-via-reward-shaping.md` | Tool Use Incentivization via Reward Shaping | emerging |
-| `feedback-loops/tool-use-incentivization.md` | Tool Use Incentivization via Reward Shaping | proposed |
+| `feedback-loops/tool-use-incentivization-via-reward-shaping.md` | Tool Use Incentivization via Reward Shaping | proposed |
 
 ### Learning & Adaptation
 
 | File | Pattern | Status |
 |------|---------|--------|
-| `learning-adaptation/agent-reinforcement-fine-tuning.md` | Agent Reinforcement Fine-Tuning (Agent RFT) | validated-in-production |
+| `learning-adaptation/agent-reinforcement-fine-tuning.md` | Agent Reinforcement Fine-Tuning (Agent RFT) | emerging |
 | `learning-adaptation/compounding-engineering-pattern.md` | Compounding Engineering Pattern | emerging |
 | `learning-adaptation/frontier-focused-development.md` | Frontier-Focused Development | emerging |
-| `learning-adaptation/memory-reinforcement-learning-memrl.md` | Memory Reinforcement Learning (MemRL) | proposed |
-| `learning-adaptation/memory-reinforcement-learning.md` | Memory Reinforcement Learning (MemRL) | emerging |
+| `learning-adaptation/memory-reinforcement-learning-memrl.md` | Memory Reinforcement Learning (MemRL) | emerging |
 | `learning-adaptation/shipping-as-research.md` | Shipping as Research | emerging |
-| `learning-adaptation/skill-library-evolution.md` | Skill Library Evolution | emerging |
+| `learning-adaptation/skill-library-evolution.md` | Skill Library Evolution | established |
 | `learning-adaptation/variance-based-rl-sample-selection.md` | Variance-Based RL Sample Selection | validated-in-production |
 
 ### Orchestration & Control
@@ -115,9 +108,8 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `orchestration-control/multi-step-analysis-pipeline-orchestration.md` | Artifact-Driven Analysis Pipeline Orchestration | emerging |
 | `orchestration-control/oracle-and-worker-multi-model.md` | Oracle and Worker Multi-Model Approach | emerging |
 | `orchestration-control/opponent-processor-multi-agent-debate.md` | Opponent Processor / Multi-Agent Debate Pattern | emerging |
-| `orchestration-control/plan-then-execute-pattern.md` | Plan-Then-Execute Pattern | best-practice |
+| `orchestration-control/plan-then-execute-pattern.md` | Plan-Then-Execute Pattern | established |
 | `orchestration-control/planner-worker-separation-for-long-running-agents.md` | Planner-Worker Separation for Long-Running Agents | emerging |
-| `orchestration-control/planner-worker-separation.md` | Planner-Worker Separation | emerging |
 | `orchestration-control/progressive-autonomy-with-model-evolution.md` | Progressive Autonomy with Model Evolution | best-practice |
 | `orchestration-control/progressive-complexity-escalation.md` | Progressive Complexity Escalation | emerging |
 | `orchestration-control/recursive-best-of-n-delegation.md` | Recursive Best-of-N Delegation | emerging |
@@ -129,7 +121,6 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `orchestration-control/swarm-migration-pattern.md` | Swarm Migration Pattern | validated-in-production |
 | `orchestration-control/three-stage-perception-architecture.md` | Three-Stage Perception Architecture | established |
 | `orchestration-control/tree-of-thought-reasoning.md` | Tree-of-Thought Reasoning | established |
-| `orchestration-control/tool-selection-guide.md` | Tool Selection Guide | emerging |
 | `orchestration-control/workspace-native-multi-agent-orchestration.md` | Workspace-Native Multi-Agent Orchestration | emerging |
 
 ### Reliability & Eval
@@ -169,7 +160,7 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `security-safety/deterministic-security-scanning-build-loop.md` | Deterministic Security Scanning Build Loop | proposed |
 | `security-safety/deterministic-threat-rule-scanning.md` | Deterministic Threat Rule Scanning | emerging |
 | `security-safety/external-credential-sync.md` | External Credential Sync | validated-in-production |
-| `security-safety/hook-based-safety-guard-rails.md` | Hook-Based Safety Guard Rails | emerging |
+| `security-safety/hook-based-safety-guard-rails.md` | Hook-Based Safety Guard Rails for Autonomous Code Agents | validated-in-production |
 | `security-safety/isolated-vm-per-rl-rollout.md` | Isolated VM Per RL Rollout | proposed |
 | `security-safety/non-custodial-spending-controls.md` | Non-Custodial Spending Controls | emerging |
 | `security-safety/pii-tokenization.md` | PII Tokenization | established |
@@ -193,8 +184,8 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `tool-use-environment/cli-native-agent-orchestration.md` | CLI-Native Agent Orchestration | proposed |
 | `tool-use-environment/code-first-tool-interface-pattern.md` | Code Mode MCP Tool Interface Improvement Pattern | established |
 | `tool-use-environment/code-over-api-pattern.md` | Code-Over-API Pattern | established |
-| `tool-use-environment/code-then-execute-pattern.md` | Code-Then-Execute Pattern | best-practice |
 | `tool-use-environment/code-then-execute.md` | Code-Then-Execute Pattern | best-practice |
+| `tool-use-environment/code-then-execute-pattern.md` | Code-Then-Execute Pattern | emerging |
 | `tool-use-environment/cross-protocol-agent-discovery.md` | Cross-Protocol Agent Discovery | emerging |
 | `tool-use-environment/dual-use-tool-design.md` | Dual-Use Tool Design | best-practice |
 | `tool-use-environment/dynamic-code-injection-on-demand-file-fetch.md` | Dynamic Code Injection (On-Demand File Fetch) | established |
@@ -202,7 +193,6 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `tool-use-environment/intelligent-bash-tool-execution.md` | Intelligent Bash Tool Execution | validated-in-production |
 | `tool-use-environment/llm-friendly-api-design.md` | LLM-Friendly API Design | emerging |
 | `tool-use-environment/mcp-pattern-injection.md` | MCP Pattern Injection | validated-in-production |
-| `tool-use-environment/multi-platform-communication-aggregation.md` | Multi-Platform Communication Aggregation | emerging |
 | `tool-use-environment/multi-platform-webhook-triggers.md` | Multi-Platform Webhook Triggers | emerging |
 | `tool-use-environment/parallel-tool-call-learning.md` | Parallel Tool Call Learning | emerging |
 | `tool-use-environment/parallel-tool-execution.md` | Conditional Parallel Tool Execution | validated-in-production |
@@ -213,8 +203,8 @@ This directory contains detailed reference documentation for agentic AI patterns
 | `tool-use-environment/tool-selection-guide.md` | Tool Selection Guide | emerging |
 | `tool-use-environment/tool-use-steering-via-prompting.md` | Tool Use Steering via Prompting | best-practice |
 | `tool-use-environment/unified-tool-gateway.md` | Unified Tool Gateway | emerging |
-| `tool-use-environment/visual-ai-multimodal-integration.md` | Visual AI Multimodal Integration | emerging |
 | `tool-use-environment/virtual-machine-operator-agent.md` | Virtual Machine Operator Agent | established |
+| `tool-use-environment/visual-ai-multimodal-integration.md` | Visual AI Multimodal Integration | emerging |
 
 ### UX & Collaboration
 
