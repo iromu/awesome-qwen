@@ -269,96 +269,23 @@ IncrementalAnalyzer<String, PropositionResult> incrementalAnalyzer(
 
 ## Entity Resolution
 
-Entity resolution maps mentions to canonical entities in the knowledge graph.
+Entity resolution maps mentions to canonical entities, preventing duplicates. See `references/entity-resolution.md` for full details on resolver types, candidate searchers, and bakeoff configuration.
 
-### Escalating Entity Resolver
-
-Recommended resolver — uses heuristics first, falls back to LLM bakeoff:
+**Recommended:** `EscalatingEntityResolver` with `LlmCandidateBakeoff` — uses heuristics first, falls back to LLM when uncertain.
 
 ```java
 @Bean
-EntityResolver entityResolver(
-        EntityRepository entityRepository,
-        Ai ai,
-        LlmOptions llmOptions) {
-
-    var candidateBakeoff = LlmCandidateBakeoff.builder()
-        .withAi(ai)
-        .withLlm(llmOptions)
-        .withPromptMode(PromptMode.COMPACT)
-        .build();
-
-    return EscalatingEntityResolver.builder()
-        .withRepository(entityRepository)
-        .withCandidateBakeoff(candidateBakeoff)
-        .build();
+EntityResolver entityResolver(EntityRepository entityRepository, Ai ai, LlmOptions llmOptions) {
+    var bakeoff = LlmCandidateBakeoff.builder().withAi(ai).withLlm(llmOptions).withPromptMode(PromptMode.COMPACT).build();
+    return EscalatingEntityResolver.builder().withRepository(entityRepository).withCandidateBakeoff(bakeoff).build();
 }
 ```
 
-### Resolution Outcomes
+**Resolution outcomes:** `NewEntity` (no match), `ExistingEntity` (match found), `ReferenceOnlyEntity` (known entity), `VetoedEntity` (non-creatable type).
 
-| Outcome | When |
-|---------|------|
-| `NewEntity` | No matching entity found |
-| `ExistingEntity` | Match found in repository |
-| `ReferenceOnlyEntity` | Known entity (e.g., current user) |
-| `VetoedEntity` | Non-creatable type, no match |
-
-### Entity Resolution Service
-
+**Entity extraction** (standalone, without proposition pipeline):
 ```java
-@Bean
-EntityResolutionService entityResolutionService(
-        EntityResolver entityResolver,
-        EntityRepository entityRepository,
-        DataDictionary schema) {
-
-    return new EntityResolutionService(entityResolver, entityRepository, schema);
-}
-
-// Usage
-var result = entityResolutionService.resolve(new EntityAssertionRequest(
-    List.of(new EntityAssertion("Alice Smith", List.of("Person", "Engineer"),
-        "Senior backend engineer", Map.of("department", "Platform"))),
-    List.of(new RelationshipAssertion("Alice Smith", "Acme Corp", "WORKS_AT",
-        "Full-time employee since 2020", Map.of("since", 2020)))
-));
-```
-
-### Candidate Searchers
-
-DICE provides multiple candidate searchers for entity resolution:
-
-| Searcher | Strategy |
-|----------|----------|
-| `ByIdCandidateSearcher` | Exact ID match |
-| `ByExactNameCandidateSearcher` | Exact name match |
-| `NormalizedNameCandidateSearcher` | Normalized name match |
-| `PartialNameCandidateSearcher` | Partial name match |
-| `FuzzyNameCandidateSearcher` | Fuzzy name match (Levenshtein) |
-| `VectorCandidateSearcher` | Vector similarity |
-| `AgenticCandidateSearcher` | LLM-powered candidate selection |
-
-## Entity Extraction Pipeline
-
-For use cases that need entity extraction without full proposition pipelines:
-
-```java
-@Bean
-EntityPipeline entityPipeline(EntityExtractor extractor) {
-    return EntityPipeline.builder()
-        .withExtractor(extractor)
-        .build();
-}
-
-// Usage
-var results = entityPipeline.process(chunks, context);
-
-// Access extracted entities
-results.newEntities();        // New entities created
-results.updatedEntities();    // Existing entities updated
-results.referenceOnlyEntities(); // Known entities referenced
-results.resolvedEntities();   // All resolved entities
+var results = EntityPipeline.builder().withExtractor(extractor).build().process(chunks, context);
 ```
 
 ## Proposition Querying
@@ -401,7 +328,7 @@ var confidentFacts = repository.query(
 
 ## Memory — Agentic Recall
 
-The `Memory` facade provides a clean interface for agents to access DICE knowledge:
+The `Memory` facade provides agents access to DICE knowledge. See `references/memory.md` for eager search patterns, context scoping, and configuration.
 
 ```java
 var memory = Memory.forContext(contextId)
@@ -413,21 +340,10 @@ var memory = Memory.forContext(contextId)
     .withEagerQuery(q -> q.orderedByEffectiveConfidence().withLimit(3))
     .narrowedBy(q -> q.withEntityId("alice-123"));
 
-// Use in LLM calls
 ai.withReferences(memory).respond(prompt);
 ```
 
-### Memory Configuration
-
-| Setting | Description | Default |
-|---------|-------------|---------|
-| `withMinConfidence` | Minimum effective confidence threshold | 0.5 |
-| `withDefaultLimit` | Max results per search | 10 |
-| `withTopic` | Memory topic description | "the user & context" |
-| `withEagerSearchAbout` | Preload relevant context | none |
-| `withEagerTopicSearch` | Preload by topic | none |
-| `withEagerQuery` | Preload with custom query | none |
-| `narrowedBy` | Filter results | none |
+**Key settings:** `withMinConfidence` (default 0.5), `withDefaultLimit` (default 10), `withTopic`, `withEagerSearchAbout`, `narrowedBy`.
 
 ## Memory Maintenance
 
@@ -436,28 +352,19 @@ Automatically maintain the knowledge graph — retire low-confidence proposition
 ```java
 @Bean
 MemoryMaintenanceOrchestrator memoryMaintenanceOrchestrator(
-        PropositionRepository repository,
-        MemoryConsolidator consolidator,
-        PropositionAbstractor abstractor) {
-
+        PropositionRepository repository, MemoryConsolidator consolidator, PropositionAbstractor abstractor) {
     return MemoryMaintenanceOrchestrator.builder()
-        .withRepository(repository)
-        .withConsolidator(consolidator)
-        .withAbstractor(abstractor)
-        .withAbstractionThreshold(5)      // Min propositions per entity for abstraction
-        .withAbstractionTargetCount(3)     // Abstractions generated per group
-        .withRetireBelow(0.1)              // Effective confidence threshold for retirement
-        .withRetireDecayK(2.0)             // Decay rate multiplier
-        .build();
+        .withRepository(repository).withConsolidator(consolidator).withAbstractor(abstractor)
+        .withAbstractionThreshold(5).withAbstractionTargetCount(3)
+        .withRetireBelow(0.1).withRetireDecayK(2.0).build();
 }
-
 // Usage
 memoryMaintenanceOrchestrator.maintain(contextId, sessionProps);
 ```
 
 ## Projections
 
-Projections materialize propositions to typed backends.
+Projections materialize propositions to typed backends. See `references/projections.md` for full setup details on Vector, Neo4j, Prolog, Memory, and Oracle projections.
 
 ### Relation-Based Graph Projection (Neo4j)
 
@@ -530,7 +437,7 @@ public class KnowledgeAgent {
 
 ## Reference Files
 
-- `references/pipeline.md` — Detailed proposition pipeline configuration, extractor/reviser templates
-- `references/projections.md` — Projection backends (Vector, Neo4j, Prolog, Memory, Oracle) setup
-- `references/entity-resolution.md` — Entity resolver types, candidate searchers, bakeoff configuration
-- `references/memory.md` — Memory facade, eager search patterns, context scoping
+- `references/pipeline.md` — Proposition pipeline architecture, extractor/reviser templates, deduplication, incremental analysis
+- `references/projections.md` — Projection backends (Vector, Neo4j, Prolog, Memory, Oracle) setup and configuration
+- `references/entity-resolution.md` — Entity resolver types, candidate searchers, bakeoff configuration, resolution outcomes
+- `references/memory.md` — Memory facade, eager search patterns, context scoping, integration with LLM calls
