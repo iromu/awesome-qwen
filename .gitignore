@@ -6,3 +6,7 @@ raw
 *-evals
 skills/*-eval
 inputs.txt
+.agents/skills
+.qwen/skills
+skills-lock.json
+.playwright-mcp
