@@ -77,14 +77,6 @@ echo "  Name:      $NAME"
 echo "  Package:   $PACKAGE"
 echo ""
 
-# Clone the project-creator repo temporarily and run it
-CREATOR_DIR=$(mktemp -d)
-trap "rm -rf '$CREATOR_DIR'" EXIT
-
-git clone --depth 1 https://github.com/embabel/project-creator.git "$CREATOR_DIR" 2>/dev/null
-
-cd "$CREATOR_DIR"
-
 if [[ "$LANG" == "java" ]]; then
   REPO="https://github.com/embabel/java-agent-template"
 else
@@ -95,7 +87,8 @@ echo "Cloning template: $REPO"
 uvx --from git+https://github.com/embabel/project-creator.git project-creator \
   --repo "$REPO" \
   --project-name "$NAME" \
-  --package "$PACKAGE"
+  --package "$PACKAGE" \
+  2>&1
 
 echo ""
 echo "Project '$NAME' created successfully."
