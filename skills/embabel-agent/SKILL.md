@@ -1,6 +1,6 @@
 ---
 name: embabel-agent
-description: Build agentic AI applications on the JVM with Embabel — a Spring-based framework for creating agents that mix LLM interactions with code, planning, and domain models. Use this skill when building agents with @Agent or @Agentic annotations, authoring @Action/@Condition/@AchievesGoal methods, configuring GOAP or Utility AI planning, writing tests with FakePromptRunner or EmbabelMockitoIntegrationTest, setting up @LlmTool or @Tool on domain objects, using @State for state-based workflows, implementing agentic tools (SimpleAgenticTool, PlaybookTool, StateMachineTool), configuring Subagent handoffs, mixing LLM models, or configuring Embabel's execution modes (SIMPLE/CONCURRENT) and autonomy (CLOSED/OPEN). Also trigger for Embabel application.yml configuration, Spring Boot integration with AI agents, setting up MCP tool groups, configuring ToolCallContext, writing PromptRunner calls, working with structured prompts or Jinja templates, implementing custom LLM providers (LlmMessageSender, EmbeddingService), using WaitFor for human-in-the-loop, or when the user mentions Embabel, Rod Johnson's agent framework, JVM-based agentic flows, DICE, or the Embabel documentation server.
+description: Build agentic AI applications on the JVM with Embabel — a Spring-based framework for creating agents that mix LLM interactions with code, planning, and domain models. Use this skill when building agents with @Agent or @Agentic annotations, authoring @Action/@Condition/@AchievesGoal methods, configuring GOAP or Utility AI planning, writing tests with FakePromptRunner or EmbabelMockitoIntegrationTest, setting up @LlmTool or @Tool on domain objects, using @State for state-based workflows, implementing agentic tools (SimpleAgenticTool, PlaybookTool, StateMachineTool), configuring Subagent handoffs, mixing LLM models, or configuring Embabel's execution modes (SIMPLE/CONCURRENT) and autonomy (CLOSED/OPEN). Also trigger for Embabel application.yml configuration, Spring Boot integration with AI agents, setting up MCP tool groups, configuring ToolCallContext, writing PromptRunner calls, working with structured prompts or Jinja templates, implementing custom LLM providers (LlmMessageSender, EmbeddingService), using WaitFor for human-in-the-loop, scaffolding a new Embabel project with scripts/project-creator.sh, or when the user mentions Embabel, Rod Johnson's agent framework, JVM-based agentic flows, DICE, project-creator, or the Embabel documentation server.
 ---
 
 # Embabel Agent Framework
@@ -58,9 +58,21 @@ Add Embabel repository for snapshots:
 
 ### Quick Start Templates
 
+Use the bundled project-creator script to scaffold a new Embabel project:
+
+```bash
+# Java project
+scripts/project-creator.sh --lang java --name my-agent
+
+# Kotlin project with custom package
+scripts/project-creator.sh --lang kotlin --name research-agent --package com.acme.research
+```
+
+The script clones the appropriate template repo and configures the project. It requires `uvx` (Python package manager) and `git`.
+
+Alternatively, clone templates directly:
 - [Java Template](https://github.com/embabel/java-agent-template) — Clone and customize
 - [Kotlin Template](https://github.com/embabel/kotlin-agent-template) — Clone and customize
-- [Project Creator](https://github.com/embabel/project-creator) — `uvx --from git+https://github.com/embabel/project-creator.git project-creator`
 
 ### Environment Setup
 
@@ -651,6 +663,34 @@ See `reference/testing.md` for more patterns.
 - `reference/tools.md` — Tools, tool groups, ToolCallContext, subagents, agentic tools
 - `reference/invocation.md` — Invocation patterns, Autonomy, REST endpoints, webhooks
 - `reference/guide-server.md` — Guide server setup, MCP client integrations, WebSocket chat API, Docker deployment
+
+## Scaffolding
+
+When the user wants to create a new Embabel project from scratch, use the bundled project-creator script:
+
+```bash
+# Java project (default)
+scripts/project-creator.sh --name my-agent
+
+# Kotlin project
+scripts/project-creator.sh --lang kotlin --name my-agent
+
+# Custom package name
+scripts/project-creator.sh --name my-agent --package com.example.myagent
+```
+
+The script:
+- Clones the Embabel project-creator tool
+- Fetches the Java or Kotlin template repository
+- Generates a complete project with Maven/Gradle, Spring Boot, and Embabel dependencies
+- Sets up the `WriteAndReviewAgent` example
+
+After scaffolding, the user can:
+- Run the shell: `./mvnw spring-boot:run` (or `./gradlew bootRun`)
+- Customize the agent in the generated code
+- Add more agents, tools, and planners as needed
+
+> **When to use:** New projects, quick prototypes, or when the user says "create a new Embabel project", "scaffold an Embabel app", or "generate an Embabel template".
 
 ## Common Pitfalls
 
