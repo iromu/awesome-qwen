@@ -2,11 +2,9 @@
 name: embabel-drivine4j
 description: >-
   Build type-safe graph database clients with Drivine4j for Neo4j, FalkorDB, Amazon Neptune, and Memgraph.
-  Use this skill whenever the user wants to set up a Drivine4j graph database client, create annotated graph
-  models with @GraphView/@NodeFragment, write Cypher queries with PersistenceManager, use the GraphObjectManager
-  API with type-safe DSL, configure multi-database connections, or integrate Drivine4j with DICE knowledge graphs.
-  Also trigger when the user mentions Drivine4j, graph database in Java/Kotlin, Cypher queries, Neo4j client,
-  graph mapping, dirty tracking, or the drivine4j Gradle/Maven dependency.
+  Use when the user wants to set up a Drivine4j client, create annotated graph models, write Cypher queries,
+  configure graph database connections, or integrate Drivine4j with DICE knowledge graphs.
+  Also trigger on mentions of Drivine4j, graph database in Java/Kotlin, or Cypher queries.
 ---
 
 # Drivine4j — Type-Safe Graph Database Client
