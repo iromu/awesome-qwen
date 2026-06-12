@@ -8,7 +8,9 @@ for a set of queries. Outputs results as JSON.
 import argparse
 import json
 import os
+import re
 import select
+import shutil
 import subprocess
 import sys
 import time
@@ -52,10 +54,19 @@ def run_single_query(
     as a hard timeout.
     """
     unique_id = uuid.uuid4().hex[:8]
-    clean_name = f"skill-eval-{skill_name}-{unique_id}"
+    # Sanitize skill_name to prevent path traversal
+    safe_name = re.sub(r'[^a-zA-Z0-9_-]', '-', skill_name)
+    clean_name = f"skill-eval-{safe_name}-{unique_id}"
     skills_dir = Path(project_root) / ".qwen" / "skills"
     skill_dir = skills_dir / clean_name
     skill_md = skill_dir / "SKILL.md"
+
+    # Resolve to absolute path and verify it's under skills_dir
+    skill_dir = skill_dir.resolve()
+    skills_dir_resolved = skills_dir.resolve()
+    if not str(skill_dir).startswith(str(skills_dir_resolved)):
+        print(f"Error: skill path escaped: {skill_dir}", file=sys.stderr)
+        return False
 
     try:
         # Create skill directory with SKILL.md
@@ -159,8 +170,6 @@ def run_single_query(
                             if pending_tool_name:
                                 if clean_name in accumulated_json or skill_name in accumulated_json:
                                     triggered = True
-                            if se_type == "message_stop":
-                                pass  # Keep triggered if already set
 
                     # Fallback: full assistant message
                     elif event.get("type") == "assistant":
@@ -179,17 +188,25 @@ def run_single_query(
                     elif event.get("type") == "result":
                         return triggered
         finally:
-            # Clean up process on any exit path (return, exception, timeout)
+            # Clean up process - handle race condition where process exits between poll() and kill()
             if process.poll() is None:
-                process.kill()
+                try:
+                    process.kill()
+                except ProcessLookupError:
+                    pass  # Process already exited
+            try:
                 process.wait()
+            except Exception:
+                pass  # Ignore wait errors
 
         return triggered
     finally:
-        # Clean up skill directory
-        import shutil
+        # Clean up skill directory with error logging
         if skill_dir.exists():
-            shutil.rmtree(skill_dir, ignore_errors=True)
+            try:
+                shutil.rmtree(skill_dir, ignore_errors=True)
+            except Exception as e:
+                print(f"Warning: failed to clean up {skill_dir}: {e}", file=sys.stderr)
 
 
 def run_eval(
