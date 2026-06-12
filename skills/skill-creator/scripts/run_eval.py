@@ -22,8 +22,8 @@ from scripts.utils import parse_skill_md
 def find_project_root() -> Path:
     """Find the project root by walking up from cwd looking for .qwen/.
 
-    Mimics how Qwen Code discovers its project root, so the command file
-    we create ends up where qwen -p will look for it.
+    Mimics how Qwen Code discovers its project root, so the skill directory
+    we create ends up where qwen -p will discover it.
     """
     current = Path.cwd()
     for parent in [current, *current.parents]:
@@ -42,37 +42,43 @@ def run_single_query(
 ) -> bool:
     """Run a single query and return whether the skill was triggered.
 
-    Creates a command file in .qwen/commands/ so it appears in Qwen's
-    available_skills list, then runs `qwen -p` with the raw query.
-    Uses --include-partial-messages to detect triggering early from
-    stream events (content_block_start) rather than waiting for the
-    full assistant message, which only arrives after tool execution.
+    Creates a temporary skill directory in .qwen/skills/ so it appears in
+    Qwen's available_skills list, then runs `qwen -p` with the raw query.
+    Detects triggering by watching for read_file/Glob tool calls to the
+    skill's SKILL.md path in the stream events.
+
+    Uses --bare to skip auto-discovery, --yolo to auto-approve tools,
+    --max-tool-calls to prevent runaway tool usage, and --max-wall-time
+    as a hard timeout.
     """
     unique_id = uuid.uuid4().hex[:8]
-    clean_name = f"{skill_name}-skill-{unique_id}"
-    project_commands_dir = Path(project_root) / ".qwen" / "commands"
-    command_file = project_commands_dir / f"{clean_name}.md"
+    clean_name = f"skill-eval-{skill_name}-{unique_id}"
+    skills_dir = Path(project_root) / ".qwen" / "skills"
+    skill_dir = skills_dir / clean_name
+    skill_md = skill_dir / "SKILL.md"
 
     try:
-        project_commands_dir.mkdir(parents=True, exist_ok=True)
-        # Use YAML block scalar to avoid breaking on quotes in description
-        indented_desc = "\n  ".join(skill_description.split("\n"))
-        command_content = (
+        # Create skill directory with SKILL.md
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        skill_content = (
             f"---\n"
-            f"description: |\n"
-            f"  {indented_desc}\n"
+            f"name: {skill_name}\n"
+            f"description: {skill_description}\n"
             f"---\n\n"
             f"# {skill_name}\n\n"
-            f"This skill handles: {skill_description}\n"
+            f"{skill_description}\n"
         )
-        command_file.write_text(command_content)
+        skill_md.write_text(skill_content)
 
         cmd = [
             "qwen",
             "-p", query,
             "--output-format", "stream-json",
-            "--verbose",
+            "--bare",
+            "--yolo",
             "--include-partial-messages",
+            "--max-tool-calls", "20",
+            "--max-wall-time", str(timeout),
         ]
         if model:
             cmd.extend(["--model", model])
@@ -134,24 +140,27 @@ def run_single_query(
                             cb = se.get("content_block", {})
                             if cb.get("type") == "tool_use":
                                 tool_name = cb.get("name", "")
-                                if tool_name in ("Skill", "Read"):
+                                if tool_name in ("read_file", "Skill", "Glob"):
                                     pending_tool_name = tool_name
                                     accumulated_json = ""
                                 else:
-                                    return False
+                                    pending_tool_name = None
+                                    accumulated_json = ""
 
                         elif se_type == "content_block_delta" and pending_tool_name:
                             delta = se.get("delta", {})
                             if delta.get("type") == "input_json_delta":
                                 accumulated_json += delta.get("partial_json", "")
-                                if clean_name in accumulated_json:
-                                    return True
+                                # Check if the skill's name/path is in the input
+                                if clean_name in accumulated_json or skill_name in accumulated_json:
+                                    triggered = True
 
                         elif se_type in ("content_block_stop", "message_stop"):
                             if pending_tool_name:
-                                return clean_name in accumulated_json
+                                if clean_name in accumulated_json or skill_name in accumulated_json:
+                                    triggered = True
                             if se_type == "message_stop":
-                                return False
+                                pass  # Keep triggered if already set
 
                     # Fallback: full assistant message
                     elif event.get("type") == "assistant":
@@ -161,9 +170,9 @@ def run_single_query(
                                 continue
                             tool_name = content_item.get("name", "")
                             tool_input = content_item.get("input", {})
-                            if tool_name == "Skill" and clean_name in tool_input.get("skill", ""):
-                                triggered = True
-                            elif tool_name == "Read" and clean_name in tool_input.get("file_path", ""):
+                            if tool_name in ("read_file", "Glob", "Skill") and (
+                                clean_name in str(tool_input) or skill_name in str(tool_input)
+                            ):
                                 triggered = True
                             return triggered
 
@@ -177,8 +186,10 @@ def run_single_query(
 
         return triggered
     finally:
-        if command_file.exists():
-            command_file.unlink()
+        # Clean up skill directory
+        import shutil
+        if skill_dir.exists():
+            shutil.rmtree(skill_dir, ignore_errors=True)
 
 
 def run_eval(
