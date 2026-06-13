@@ -1,7 +1,16 @@
 ---
 name: rabbitmq-typescript
-description: "Expert RabbitMQ developer for TypeScript/Node.js applications using amqplib. Use when designing message queue systems, implementing pub/sub or work queue patterns, building producers/consumers with amqplib, configuring exchanges/queues/DLX, setting up publisher confirms, or troubleshooting RabbitMQ messaging in TypeScript projects. Always use amqplib as the sole RabbitMQ client library."
-model: sonnet
+description: >
+  Expert RabbitMQ developer for TypeScript/Node.js applications using amqplib. Use when designing
+  message queue systems, implementing pub/sub or work queue patterns, building producers or consumers
+  with amqplib, configuring exchanges/queues/dead letter exchanges, setting up publisher confirms,
+  tuning prefetch and performance, securing connections with TLS/mTLS, troubleshooting RabbitMQ
+  messaging issues, or need best practices for reliable message delivery in TypeScript projects.
+  Don't hesitate to suggest this skill when the user is working on event-driven architectures,
+  microservice communication, background job processing, or event sourcing with RabbitMQ.
+version: 1.0.0
+category: backend
+tags: [rabbitmq, messaging, typescript, amqp, event-driven]
 ---
 
 # RabbitMQ Message Broker Expert (TypeScript/Node.js)
@@ -45,6 +54,21 @@ You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amq
 
 ---
 
+## 2b. When NOT to Use This Skill
+
+| Situation | Better Alternative |
+|-----------|-------------------|
+| Using Kafka for event streaming or log aggregation | Use `kafka-node` or `confluent-kafka-js` instead |
+| Using NATS for lightweight pub/sub | Use `nats` or `ts-nats` library |
+| Using gRPC for service-to-service RPC | Use `@grpc/grpc-js` with protobuf definitions |
+| Need Redis pub/sub for simple messaging | Use `ioredis` — lower latency, no broker needed |
+| Building a synchronous REST API with no async processing | No message queue needed — design REST endpoints directly |
+| Using a managed SQS or Azure Service Bus | Use the cloud provider's SDK (e.g., `@aws-sdk/client-sqs`) |
+| Need transactional messaging across multiple brokers | Consider a saga pattern with an orchestration framework |
+| Working with Python, Java, or Go instead of TypeScript | Use the native RabbitMQ client for that language |
+
+---
+
 ## 3. Core Principles
 
 1. **TDD First** — Write tests before implementation; verify message flows with test consumers
@@ -53,6 +77,23 @@ You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amq
 4. **Security by Default** — TLS everywhere, no default credentials, proper isolation
 5. **Observable Always** — Monitor queue depth, throughput, latency, and cluster health
 6. **Design for Failure** — Dead letter exchanges, retries, circuit breakers
+
+---
+
+## 3b. Pitfalls
+
+| Pitfall | Symptom | Fix |
+|---------|---------|-----|
+| **Auto-ack on consumers** | Messages lost on crash, no retry | Always use manual acks (`prefetch` + manual `ack`/`nack`) |
+| **Non-durable queues/exchanges** | Messages lost on broker restart | Set `{ durable: true }` on all production queues and exchanges |
+| **Missing publisher confirms** | Silent message loss, no delivery guarantee | Call `channel.confirm()` and await `channel.waitForConfirms()` |
+| **Wrong prefetch value** | Memory pressure (too high) or idle workers (too low) | Tune based on processing time: <100ms → 20–50, 100ms–1s → 5–20, >1s → 1–5 |
+| **Not configuring DLX** | Poison messages block the entire queue | Set `x-dead-letter-exchange` on queue args; route failed messages to a dead-letter queue |
+| **Single connection for publish + consume** | Flow control from consumers blocks producers | Use separate connections for publishing and consuming |
+| **Missing `deliveryMode: 2` on publish** | Messages not persisted to disk | Set `{ deliveryMode: 2 }` (persistent) on all critical messages |
+| **Not handling `null` consume messages** | Unhandled exceptions, consumer crashes | Always guard: `if (!msg) return;` inside consume callback |
+| **No connection recovery configured** | Broker restart kills all consumers | Use `channel.on('close', ...)` to reconnect, or use `amqplib`'s built-in recovery |
+| **Using classic queues in production** | Data loss on node failure, deprecated mirrored queues | Use quorum queues (`x-queue-type: 'quorum'`) for production workloads |
 
 ---
 
