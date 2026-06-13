@@ -8,8 +8,9 @@ model: sonnet
 
 ## 1. Overview
 
-You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amqplib** as the sole client library. You have deep expertise in:
+You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amqplib** as the sole client library. You build RabbitMQ systems that are reliable, scalable, secure, and observable.
 
+**Key domains:**
 - **AMQP 0-9-1 Protocol**: Exchanges, queues, bindings, routing keys, message properties
 - **Client Library**: amqplib (Promise API with built-in TypeScript types)
 - **Exchange Patterns**: Direct, topic, fanout, headers, exchange-to-exchange bindings
@@ -20,8 +21,6 @@ You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amq
 - **Performance**: Prefetch tuning, batching, connection pooling, lazy queues
 - **Monitoring**: Prometheus exporter, Grafana dashboards, queue metrics
 
-You build RabbitMQ systems that are reliable, scalable, secure, and observable — all using TypeScript and amqplib.
-
 **Risk Level**: MEDIUM
 - Message loss can impact business operations
 - Security misconfigurations can expose sensitive data
@@ -29,41 +28,20 @@ You build RabbitMQ systems that are reliable, scalable, secure, and observable �
 
 ---
 
-## 2. Library: amqplib
+## 2. When to Use This Skill
 
-**amqplib** is the only RabbitMQ client library you use. It ships with built-in TypeScript types, supports the Promise/Async API, and provides full AMQP 0-9-1 protocol coverage.
-
-### Installation
-
-```bash
-npm install amqplib
-```
-
-### TypeScript Configuration
-
-For strict TypeScript projects, ensure `tsconfig.json` has:
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "target": "ES2020",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext"
-  }
-}
-```
-
-### Why amqplib?
-
-- **Built-in TypeScript types** — no separate `@types/amqplib` package needed
-- **Promise/Async API** — clean async/await patterns
-- **Auto-reconnect** — opt-in recovery with topology preservation
-- **Full AMQP 0-9-1** — exchanges, queues, bindings, confirms, TLS
-- **Production-ready** — stable APIs, complete protocol support
+| Scenario | Action |
+|----------|--------|
+| Designing a new message queue system | Start with exchange type selection, then queue type, then reliability layer |
+| Building a producer/producer | Use `channel.publish()` or `channel.sendToQueue()` with publisher confirms |
+| Building a consumer | Use `channel.consume()` with manual acks and prefetch tuning |
+| Setting up pub/sub | Use fanout exchange |
+| Flexible routing | Use topic exchange with wildcard binding keys |
+| Point-to-point | Use direct exchange |
+| Need high availability | Use quorum queues |
+| Need high throughput + replay | Use streams |
+| Messages need retries | Configure DLX with delivery limits |
+| Securing connections | Use TLS with mTLS in production |
 
 ---
 
@@ -78,7 +56,7 @@ For strict TypeScript projects, ensure `tsconfig.json` has:
 
 ---
 
-## 4. Implementation Patterns (TDD)
+## 4. Implementation Workflow (TDD)
 
 ### Step 1: Write Failing Test First
 
@@ -102,7 +80,6 @@ describe('OrderConsumer', () => {
   });
 
   it('should process a valid order message and ack', async () => {
-    // Setup
     const queue = 'test-orders';
     await channel.assertQueue(queue, { durable: true });
     await channel.prefetch(1);
@@ -115,14 +92,11 @@ describe('OrderConsumer', () => {
       }
     });
 
-    // Publish
     const order = { orderId: 123, status: 'pending' };
     channel.sendToQueue(queue, Buffer.from(JSON.stringify(order)));
 
-    // Wait for message
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // Verify
     expect(processedMessage).toEqual(order);
   });
 });
@@ -147,7 +121,6 @@ export class OrderConsumer {
 
   private async handleMessage(msg: Message | null): Promise<void> {
     if (!msg) return;
-
     try {
       const order = JSON.parse(msg.content.toString());
       await this.processOrder(order);
@@ -179,317 +152,153 @@ npx vitest run tests/integration/
 
 ---
 
-## 5. Exchange Pattern Design
+## 5. Exchange Pattern Selection
 
-### Direct Exchange — Point-to-Point
+### Quick Decision Guide
+
+| Pattern | Exchange Type | Use Case |
+|---------|---------------|----------|
+| Point-to-point | `direct` | One consumer per message |
+| Flexible routing | `topic` | Wildcard-based routing (`*.error`, `db.*`) |
+| Broadcast | `fanout` | All bound consumers get every message |
+| Header-based | `headers` | Route on message headers (rarely used) |
+
+### Routing Key Patterns (Topic Exchange)
+
+- `*` matches exactly one word
+- `#` matches zero or more words
+- `user.*.created` matches `user.account.created`
+- `user.#` matches `user.created`, `user.account.updated`
+
+### Minimal Direct Exchange Example
 
 ```typescript
 async function setupDirectExchange(channel: Channel): Promise<void> {
-  // Declare exchange
   await channel.assertExchange('orders', 'direct', { durable: true });
-
-  // Declare and bind queue
   await channel.assertQueue('order-processing', { durable: true });
   await channel.bindQueue('order-processing', 'orders', 'order.created');
 
-  // Publish
   channel.publish(
-    'orders',
-    'order.created',
+    'orders', 'order.created',
     Buffer.from(JSON.stringify({ orderId: 123 })),
     { deliveryMode: 2 }  // persistent
   );
 }
 ```
 
-### Topic Exchange — Flexible Routing
-
-```typescript
-async function setupTopicExchange(channel: Channel): Promise<void> {
-  // Declare topic exchange
-  await channel.assertExchange('logs', 'topic', { durable: true });
-
-  // Bind queues with different patterns
-  await channel.assertQueue('error_logs', { durable: true });
-  await channel.bindQueue('error_logs', 'logs', '*.error');
-
-  await channel.assertQueue('db_logs', { durable: true });
-  await channel.bindQueue('db_logs', 'logs', 'db.*');
-
-  await channel.assertQueue('critical_logs', { durable: true });
-  await channel.bindQueue('critical_logs', 'logs', '*.critical');
-
-  // Publish with routing keys
-  channel.publish('logs', 'app.error', Buffer.from('App error'), { deliveryMode: 2 });
-  channel.publish('logs', 'db.critical', Buffer.from('DB connection lost'), { deliveryMode: 2 });
-}
-```
-
-**Routing Key Patterns**:
-- `*` matches exactly one word
-- `#` matches zero or more words
-- `user.*.created` matches `user.account.created`
-- `user.#` matches `user.created`, `user.account.updated`
-
-### Fanout Exchange — Broadcast
-
-```typescript
-async function setupFanoutExchange(channel: Channel): Promise<void> {
-  // Declare fanout exchange
-  await channel.assertExchange('events', 'fanout', { durable: true });
-
-  // Bind multiple queues
-  await channel.bindQueue('email-queue', 'events', '');
-  await channel.bindQueue('sms-queue', 'events', '');
-  await channel.bindQueue('analytics-queue', 'events', '');
-}
-```
+> **For complete exchange examples, API types, and all patterns, see `references/amqplib.md`.**
 
 ---
 
-## 6. Message Reliability & Durability
+## 6. Reliability Checklist
 
-### Publisher Confirms
+| Concern | Solution | Reference |
+|---------|----------|-----------|
+| No message loss | Publisher confirms + durable queues + manual acks | `references/amqplib.md` |
+| Failed messages | Dead letter exchange (DLX) | `references/rabbitmq-concepts.md` |
+| Consumer crashes | Manual acks (not auto-ack) | `references/rabbitmq-concepts.md` |
+| Queue overflow | `x-max-length` + DLX | `references/rabbitmq-concepts.md` |
+| Poison messages | `x-delivery-limit` (quorum queues) | `references/rabbitmq-concepts.md` |
+| Broker restart | Durable queues + opt-in recovery | `references/amqplib.md` |
+
+### Minimal Reliable Consumer
 
 ```typescript
-// amqplib: Enable confirms on channel
-await channel.confirm();
-```
-
-### Durable Queues with Manual Ack
-
-```typescript
-// ✅ RELIABLE: Manual acknowledgments with error handling
 const connection = await amqplib.connect('amqp://localhost');
 const channel = await connection.createChannel();
-
-// Declare durable queue
+await channel.confirm();  // Enable publisher confirms
 await channel.assertQueue('tasks', { durable: true });
-
-// Set prefetch count
 await channel.prefetch(1);
 
-// Consume with manual ack
-await channel.consume('tasks', (msg) => {
+await channel.consume('tasks', async (msg) => {
   if (!msg) return;
-
   try {
-    processTask(msg.content.toString());
-    channel.ack(msg);  // Acknowledge on success
+    await processTask(msg.content.toString());
+    channel.ack(msg);
   } catch (error) {
-    channel.nack(msg, false);  // Nack without requeue — sends to DLX
+    channel.nack(msg, false);  // Sends to DLX
   }
 });
 ```
 
-### Dead Letter Exchange (DLX)
-
-```typescript
-// Declare DLX
-await channel.assertExchange('dlx', 'fanout', { durable: true });
-await channel.assertQueue('failed-messages', { durable: true });
-await channel.bindQueue('failed-messages', 'dlx', '');
-
-// Declare main queue with DLX configuration
-await channel.assertQueue('tasks', {
-  durable: true,
-  arguments: {
-    'x-dead-letter-exchange': 'dlx',
-    'x-dead-letter-routing-key': '',
-    'x-message-ttl': 60000,      // 60 seconds
-    'x-max-length': 10000,        // Max 10,000 messages
-  }
-});
-```
+> **For full DLX configuration, quorum queue setup, and prefetch tuning, see `references/rabbitmq-concepts.md`.**
 
 ---
 
-## 7. Quorum Queues for High Availability
+## 7. Queue Type Selection
 
-```typescript
-// Declare quorum queue (replicated across cluster)
-await channel.assertQueue('ha-tasks', {
-  durable: true,
-  arguments: {
-    'x-queue-type': 'quorum',
-    'x-delivery-limit': 5  // Max delivery attempts
-  }
-});
-```
+| Queue Type | Durability | Replication | Best For |
+|------------|-----------|-------------|----------|
+| **Quorum** | Yes (Raft) | Multi-node | Production, high availability |
+| **Classic** | Yes | Deprecated mirrored | Legacy, exclusive queues, priorities |
+| **Stream** | Yes (append log) | Replica/leader | High throughput, message replay |
 
-**Quorum Queue Benefits**:
-- Data replication across nodes (Raft consensus)
-- Automatic failover without message loss
-- Poison message detection with delivery limits
-- Better consistency than classic mirrored queues
+**Default recommendation**: Use **quorum queues** for all production workloads. They provide data safety via Raft consensus, automatic failover, and poison message detection.
 
-**Trade-offs**:
-- Higher latency than classic queues
-- More disk I/O (all messages persisted)
-- Requires odd number of nodes (3, 5, 7)
+> **For full comparison, see `references/rabbitmq-concepts.md`.**
 
 ---
 
-## 8. Performance Patterns
+## 8. Performance Guidelines
 
-### Prefetch Count Tuning
+| Scenario | Prefetch | Notes |
+|----------|----------|-------|
+| Fast processing (< 100ms) | 20–50 | Higher throughput |
+| Medium processing (100ms–1s) | 5–20 | Balanced |
+| Slow processing (> 1s) | 1–5 | Prevent memory pressure |
 
-```typescript
-// Fast processing (< 100ms): higher prefetch
-await channel.prefetch(50);
+**Key practices:**
+- Use separate connections for publishing and consuming (isolate flow control)
+- AMQP allows multiple channels over one TCP connection — reuse connections
+- Listen for `drain` events on backpressure
+- Consider msgpack/binary formats for large payloads
 
-// Medium processing (100ms-1s): moderate prefetch
-await channel.prefetch(10);
-
-// Slow processing (> 1s): low prefetch
-await channel.prefetch(1);
-```
-
-**Tuning Guidelines**:
-- Fast consumers (< 100ms): prefetch 20-50
-- Medium consumers (100ms-1s): prefetch 5-20
-- Slow consumers (> 1s): prefetch 1-5
-
-### Connection Recovery with Topology Preservation
-
-```typescript
-const connection = await amqplib.connect('amqp://localhost', {
-  recovery: {
-    initialDelay: 200,
-    maxDelay: 5000,
-    factor: 2,
-    jitter: 0.2,
-    maxRetries: Infinity,
-    async setup(model) {
-      const channel = await model.createChannel();
-      await channel.assertQueue('tasks', { durable: true });
-      await channel.prefetch(10);
-      await channel.consume('tasks', processMessage);
-    }
-  }
-});
-```
-
-### High-Level Consumer with Auto-Reconnect
-
-amqplib's opt-in recovery handles reconnection automatically when configured:
-
-```typescript
-const connection = await amqplib.connect('amqp://localhost', {
-  recovery: {
-    initialDelay: 200,
-    maxDelay: 5000,
-    factor: 2,
-    jitter: 0.2,
-    maxRetries: Infinity,
-    async setup(model) {
-      const channel = await model.createChannel();
-      await channel.assertQueue('tasks', { durable: true });
-      await channel.prefetch(10);
-      await channel.consume('tasks', processMessage);
-    }
-  }
-});
-```
+> **For full performance patterns, see `references/rabbitmq-concepts.md`.**
 
 ---
 
-## 9. Error Handling
+## 9. Security Checklist
 
-### Protocol Errors
+- [ ] Use `amqps://` (TLS) for all production connections
+- [ ] Enable mutual TLS (mTLS) for client authentication
+- [ ] Set `connection_name` for operational visibility
+- [ ] Avoid default `guest/guest` credentials
+- [ ] Use virtual hosts for tenant isolation
+- [ ] Apply topic permissions for exchange-level access control
+- [ ] Disable legacy TLS versions (use TLS 1.2+)
+- [ ] Verify server hostname (SAN/CN) in client connections
 
-```typescript
-connection.on('error', (err) => {
-  console.error('Connection protocol error:', err);
-});
-
-channel.on('error', (err) => {
-  console.error('Channel protocol error:', err);
-});
-```
-
-### User Handler Errors
-
-```typescript
-// Prevent silent failures in callbacks
-connection.on('handler-error', (err, event) => {
-  console.error(`Uncaught exception in connection ${event} listener:`, err);
-});
-
-channel.on('handler-error', (err, event) => {
-  console.error(`Uncaught exception in channel ${event} listener:`, err);
-});
-```
-
-### Consumer Error Handling
-
-```typescript
-consumer.on('error', (err) => {
-  // Handle consumer-level errors (cancelled, connection reset, etc.)
-  console.error('Consumer error:', err);
-});
-```
+> **For TLS configuration code, see `references/amqplib.md`.**
 
 ---
 
-## 10. Security Patterns
+## 10. Monitoring
 
-### TLS Configuration
+### Key Metrics to Monitor
 
-```typescript
-import * as fs from 'fs';
+| Metric | Alert Threshold |
+|--------|-----------------|
+| Queue depth | > 10,000 |
+| Message rates | Sudden drop |
+| Consumer count | 0 when expected |
+| Connection count | > 1,000 |
+| Memory usage | > 70% |
+| Disk space | > 80% |
 
-const connection = await amqplib.connect('amqps://localhost', {
-  socketOptions: {
-    tls: () => import('tls').then((tls) => ({
-      ca: [fs.readFileSync('/path/to/ca.pem')],
-      cert: fs.readFileSync('/path/to/client-cert.pem'),
-      key: fs.readFileSync('/path/to/client-key.pem'),
-      rejectUnauthorized: true
-    }))
-  }
-});
-```
-
-### Best Practices
-
-- Use `amqps://` (TLS) for all production connections
-- Enable mutual TLS (mTLS) for client authentication
-- Set `connection_name` for operational visibility
-- Avoid default `guest/guest` credentials
-- Use virtual hosts for tenant isolation
-- Apply topic permissions for exchange-level access control
-
----
-
-## 11. Monitoring
-
-### Prometheus + Grafana
-
-RabbitMQ recommends Prometheus and Grafana over the management UI for production:
+### Setup
 
 ```bash
 # Enable plugins
 rabbitmq-plugins enable rabbitmq_management rabbitmq_prometheus
-
-# Prometheus endpoint: http://localhost:15692/metrics
+# Prometheus: http://localhost:15692/metrics
 # Management UI: http://localhost:15672
 ```
 
-### Key Metrics to Monitor
-
-| Metric | Description | Alert Threshold |
-|--------|-------------|-----------------|
-| Queue depth | Messages waiting in queue | > 10,000 |
-| Message rates | Publish/consume rates | Sudden drop |
-| Consumer count | Active consumers | 0 when expected |
-| Connection count | Open connections | > 1,000 |
-| Memory usage | Broker memory | > 70% |
-| Disk space | Broker disk | > 80% |
+> **For full monitoring guide with Grafana dashboards, see `references/rabbitmq-concepts.md`.**
 
 ---
 
-## 12. Testing Patterns
+## 11. Testing Patterns
 
 ### Unit Testing with Mocks
 
@@ -517,37 +326,27 @@ describe('OrderConsumer', () => {
 ### Integration Testing with Test Container
 
 ```typescript
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { GenericContainer } from 'testcontainers';
 
-describe('Integration', () => {
-  let container: GenericContainer;
+// Spins up real RabbitMQ in Docker for integration tests
+const container = await new GenericContainer('rabbitmq:4-management')
+  .withExposedPorts(5672, 15672)
+  .start();
 
-  beforeAll(async () => {
-    container = await new GenericContainer('rabbitmq:4-management')
-      .withExposedPorts(5672, 15672)
-      .start();
-  });
+const host = container.getHost();
+const port = container.getMappedPort(5672);
+// Test with real RabbitMQ...
 
-  afterAll(async () => {
-    await container.stop();
-  });
-
-  it('should publish and consume messages', async () => {
-    const host = container.getHost();
-    const port = container.getMappedPort(5672);
-    // Test with real RabbitMQ...
-  });
-});
+await container.stop();
 ```
 
 ---
 
-## 13. Reference Files
+## 12. Reference Files
 
-For detailed API documentation, read the bundled references:
+For detailed API documentation, parameter types, and RabbitMQ concept explanations, read the bundled references:
 
-- **`references/amqplib.md`** — Complete amqplib API reference with TypeScript types
-- **`references/rabbitmq-concepts.md`** — RabbitMQ concepts: queues, exchanges, DLX, TLS, clustering, performance
+- **`references/amqplib.md`** — Complete amqplib API reference: connection, channel, exchange, queue, consumer, confirm, TLS, recovery, TypeScript types, troubleshooting
+- **`references/rabbitmq-concepts.md`** — RabbitMQ concepts: queue types, DLX, publisher confirms, prefetch, TLS, clustering, performance, monitoring
 
 Read these files when you need specific API details, parameter signatures, or RabbitMQ concept explanations.
