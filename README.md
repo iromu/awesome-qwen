@@ -67,7 +67,7 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [api-design](skills/api-design) | Design RESTful APIs following OpenAPI 3.0 conventions with proper resource naming, versioning, and error handling | `api` `rest` `openapi` |
 | [api-testing](skills/api-testing) | Test APIs with automated request generation, response validation, and contract testing | `api` `testing` `validation` |
 | [code-review](skills/code-review) | Automated code review with security, performance, and quality checks | `review` `security` `quality` |
-| [database-migration](skills/database-migration) | Create and manage database migrations with rollback support for SQL databases | `database` `migration` `sql` |
+| [database-migration](skills/database-migration) | Create database migrations, write rollback scripts, and perform zero-downtime schema changes across PostgreSQL, MySQL, and SQLite | `database` `migration` `sql` `schema` |
 | [docker-containerize](skills/docker-containerize) | Dockerize applications with optimized multi-stage builds, security hardening, and best practices | `docker` `containers` `multi-stage` |
 | [embabel-agent](skills/embabel-agent) | Build agentic AI applications on the JVM with Embabel — a Spring-based framework by Rod Johnson for agents mixing LLMs with code and planning algorithms | `jvm` `spring` `agents` |
 | [embabel-chatbot](skills/embabel-chatbot) | Build agentic chatbots with RAG, guardrails, reasoning, and custom chat extensions | `chatbot` `rag` `jvm` |
