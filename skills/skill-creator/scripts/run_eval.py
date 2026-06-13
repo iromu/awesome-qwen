@@ -44,168 +44,155 @@ def run_single_query(
 ) -> bool:
     """Run a single query and return whether the skill was triggered.
 
-    Creates a temporary skill directory in .qwen/skills/ so it appears in
-    Qwen's available_skills list, then runs `qwen -p` with the raw query.
+    Injects the skill content directly into the prompt and uses --bare to
+    skip skill auto-discovery. This avoids recursive invocations when the
+    skill being tested (e.g. skill-creator) would otherwise be discovered
+    by the qwen -p subprocess and try to spawn more eval subprocesses.
+
     Detects triggering by watching for read_file/Glob tool calls to the
     skill's SKILL.md path in the stream events.
-
-    Uses --bare to skip auto-discovery, --yolo to auto-approve tools,
-    --max-tool-calls to prevent runaway tool usage, and --max-wall-time
-    as a hard timeout.
     """
     unique_id = uuid.uuid4().hex[:8]
     # Sanitize skill_name to prevent path traversal
     safe_name = re.sub(r'[^a-zA-Z0-9_-]', '-', skill_name)
     clean_name = f"skill-eval-{safe_name}-{unique_id}"
-    skills_dir = Path(project_root) / ".qwen" / "skills"
-    skill_dir = skills_dir / clean_name
-    skill_md = skill_dir / "SKILL.md"
 
-    # Resolve to absolute path and verify it's under skills_dir
-    skill_dir = skill_dir.resolve()
-    skills_dir_resolved = skills_dir.resolve()
-    if not str(skill_dir).startswith(str(skills_dir_resolved)):
-        print(f"Error: skill path escaped: {skill_dir}", file=sys.stderr)
-        return False
+    # Build the skill content that we inject into the prompt.
+    skill_content = (
+        f"---\n"
+        f"name: {skill_name}\n"
+        f"description: {skill_description}\n"
+        f"---\n\n"
+        f"# {skill_name}\n\n"
+        f"{skill_description}\n"
+    )
+
+    # Prepend the skill content to the query so Qwen has it in context.
+    full_query = f"Use this skill:\n\n{skill_content}\n\n---\n\n{query}"
+
+    cmd = [
+        "qwen",
+        "-p", full_query,
+        "--output-format", "stream-json",
+        "--bare",
+        "--yolo",
+        "--include-partial-messages",
+        "--max-tool-calls", "20",
+        "--max-wall-time", str(timeout),
+    ]
+    if model:
+        cmd.extend(["--model", model])
+
+    # Remove QWENCODE env var to allow nesting qwen -p inside a
+    # Qwen Code session. The guard is for interactive terminal conflicts;
+    # programmatic subprocess usage is safe.
+    env = {k: v for k, v in os.environ.items() if k != "QWENCODE"}
+
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        cwd=project_root,
+        env=env,
+    )
+
+    triggered = False
+    start_time = time.time()
+    buffer = ""
+    # Track state for stream event detection
+    pending_tool_name = None
+    accumulated_json = ""
 
     try:
-        # Create skill directory with SKILL.md
-        skill_dir.mkdir(parents=True, exist_ok=True)
-        skill_content = (
-            f"---\n"
-            f"name: {skill_name}\n"
-            f"description: {skill_description}\n"
-            f"---\n\n"
-            f"# {skill_name}\n\n"
-            f"{skill_description}\n"
-        )
-        skill_md.write_text(skill_content)
+        while time.time() - start_time < timeout:
+            if process.poll() is not None:
+                remaining = process.stdout.read()
+                if remaining:
+                    buffer += remaining.decode("utf-8", errors="replace")
+                break
 
-        cmd = [
-            "qwen",
-            "-p", query,
-            "--output-format", "stream-json",
-            "--yolo",
-            "--include-partial-messages",
-            "--max-tool-calls", "20",
-            "--max-wall-time", str(timeout),
-        ]
-        if model:
-            cmd.extend(["--model", model])
+            ready, _, _ = select.select([process.stdout], [], [], 1.0)
+            if not ready:
+                continue
 
-        # Remove QWENCODE env var to allow nesting qwen -p inside a
-        # Qwen Code session. The guard is for interactive terminal conflicts;
-        # programmatic subprocess usage is safe.
-        env = {k: v for k, v in os.environ.items() if k != "QWENCODE"}
+            chunk = os.read(process.stdout.fileno(), 8192)
+            if not chunk:
+                break
+            buffer += chunk.decode("utf-8", errors="replace")
+    finally:
+        # Kill the process if it's still running (timeout or other abort).
+        # This is critical for eval subprocesses — without it, a hung
+        # qwen -p (e.g., from recursive skill invocation) will block
+        # forever, consuming GPU/LLM resources.
+        if process.poll() is None:
+            try:
+                process.kill()
+            except ProcessLookupError:
+                pass  # Process already exited
+        try:
+            process.wait()
+        except Exception:
+            pass  # Ignore wait errors
 
-        process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            cwd=project_root,
-            env=env,
-        )
-
-        triggered = False
-        start_time = time.time()
-        buffer = ""
-        # Track state for stream event detection
-        pending_tool_name = None
-        accumulated_json = ""
+    # Process any remaining buffered output after the loop exits.
+    while "\n" in buffer:
+        line, buffer = buffer.split("\n", 1)
+        line = line.strip()
+        if not line:
+            continue
 
         try:
-            while time.time() - start_time < timeout:
-                if process.poll() is not None:
-                    remaining = process.stdout.read()
-                    if remaining:
-                        buffer += remaining.decode("utf-8", errors="replace")
-                    break
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
 
-                ready, _, _ = select.select([process.stdout], [], [], 1.0)
-                if not ready:
+        # Early detection via stream events
+        if event.get("type") == "stream_event":
+            se = event.get("event", {})
+            se_type = se.get("type", "")
+
+            if se_type == "content_block_start":
+                cb = se.get("content_block", {})
+                if cb.get("type") == "tool_use":
+                    tool_name = cb.get("name", "")
+                    if tool_name.lower() in ("read_file", "skill", "glob"):
+                        pending_tool_name = tool_name
+                        accumulated_json = ""
+                    else:
+                        pending_tool_name = None
+                        accumulated_json = ""
+
+            elif se_type == "content_block_delta" and pending_tool_name:
+                delta = se.get("delta", {})
+                if delta.get("type") == "input_json_delta":
+                    accumulated_json += delta.get("partial_json", "")
+                    # Check if the skill's name/path is in the input
+                    if clean_name in accumulated_json or skill_name in accumulated_json:
+                        triggered = True
+
+            elif se_type in ("content_block_stop", "message_stop"):
+                if pending_tool_name:
+                    if clean_name in accumulated_json or skill_name in accumulated_json:
+                        triggered = True
+
+        # Fallback: full assistant message
+        elif event.get("type") == "assistant":
+            message = event.get("message", {})
+            for content_item in message.get("content", []):
+                if content_item.get("type") != "tool_use":
                     continue
+                tool_name = content_item.get("name", "")
+                tool_input = content_item.get("input", {})
+                if tool_name.lower() in ("read_file", "glob", "skill") and (
+                    clean_name in str(tool_input) or skill_name in str(tool_input)
+                ):
+                    triggered = True
+            # Don't return early — skill tool call may be in a later message
 
-                chunk = os.read(process.stdout.fileno(), 8192)
-                if not chunk:
-                    break
-                buffer += chunk.decode("utf-8", errors="replace")
+        elif event.get("type") == "result":
+            return triggered
 
-                while "\n" in buffer:
-                    line, buffer = buffer.split("\n", 1)
-                    line = line.strip()
-                    if not line:
-                        continue
-
-                    try:
-                        event = json.loads(line)
-                    except json.JSONDecodeError:
-                        continue
-
-                    # Early detection via stream events
-                    if event.get("type") == "stream_event":
-                        se = event.get("event", {})
-                        se_type = se.get("type", "")
-
-                        if se_type == "content_block_start":
-                            cb = se.get("content_block", {})
-                            if cb.get("type") == "tool_use":
-                                tool_name = cb.get("name", "")
-                                if tool_name.lower() in ("read_file", "skill", "glob"):
-                                    pending_tool_name = tool_name
-                                    accumulated_json = ""
-                                else:
-                                    pending_tool_name = None
-                                    accumulated_json = ""
-
-                        elif se_type == "content_block_delta" and pending_tool_name:
-                            delta = se.get("delta", {})
-                            if delta.get("type") == "input_json_delta":
-                                accumulated_json += delta.get("partial_json", "")
-                                # Check if the skill's name/path is in the input
-                                if clean_name in accumulated_json or skill_name in accumulated_json:
-                                    triggered = True
-
-                        elif se_type in ("content_block_stop", "message_stop"):
-                            if pending_tool_name:
-                                if clean_name in accumulated_json or skill_name in accumulated_json:
-                                    triggered = True
-
-                    # Fallback: full assistant message
-                    elif event.get("type") == "assistant":
-                        message = event.get("message", {})
-                        for content_item in message.get("content", []):
-                            if content_item.get("type") != "tool_use":
-                                continue
-                            tool_name = content_item.get("name", "")
-                            tool_input = content_item.get("input", {})
-                            if tool_name.lower() in ("read_file", "glob", "skill") and (
-                                clean_name in str(tool_input) or skill_name in str(tool_input)
-                            ):
-                                triggered = True
-                        # Don't return early — skill tool call may be in a later message
-
-                    elif event.get("type") == "result":
-                        return triggered
-        finally:
-            # Clean up process - handle race condition where process exits between poll() and kill()
-            if process.poll() is None:
-                try:
-                    process.kill()
-                except ProcessLookupError:
-                    pass  # Process already exited
-            try:
-                process.wait()
-            except Exception:
-                pass  # Ignore wait errors
-
-        return triggered
-    finally:
-        # Clean up skill directory with error logging
-        if skill_dir.exists():
-            try:
-                shutil.rmtree(skill_dir, ignore_errors=True)
-            except Exception as e:
-                print(f"Warning: failed to clean up {skill_dir}: {e}", file=sys.stderr)
+    return triggered
 
 
 def run_eval(
