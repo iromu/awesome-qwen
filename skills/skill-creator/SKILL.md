@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.
+description: Create, edit, improve, and evaluate skills — structured instructions that capture workflows, procedures, and domain knowledge so Qwen can follow them reliably. Use this skill whenever the user wants to create a new skill, improve an existing one, run evals or benchmarks to test skill quality, optimize a skill's description for better triggering, package a skill, or turn a workflow or procedure into a reusable skill. Also trigger when the user mentions skill authoring, skill development, skill evaluation, skill packaging, or wants to measure how well a skill triggers and performs.
 ---
 
 # Skill Creator

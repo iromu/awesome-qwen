@@ -1,11 +1,17 @@
 {
   "version": 1,
   "skills": {
+    "json-formatting": {
+      "source": "iromu/awesome-qwen",
+      "sourceType": "github",
+      "skillPath": "skills/json-formatting/SKILL.md",
+      "computedHash": "PLACEHOLDER"
+    },
     "skill-creator": {
       "source": "iromu/awesome-qwen",
       "sourceType": "github",
       "skillPath": "skills/skill-creator/SKILL.md",
-      "computedHash": "96f312e3bcb1f145b1add27abf78e97b6a36c238a19cd16c808e947fcd9cd990"
+      "computedHash": "bad5efec20a4224c342746ad1933c47130f0e15f2279e170e81541e8376a32c0"
     }
   }
 }

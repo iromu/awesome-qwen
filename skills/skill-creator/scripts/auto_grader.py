@@ -286,16 +286,78 @@ def grade_run(
 def discover_runs(workspace: Path) -> list[dict]:
     """Discover all run directories in the workspace.
 
-    Supports two layouts:
-    1. workspace/eval-M/config/run-K/
-    2. workspace/iteration-N/eval-M/config/run-K/
+    Supports three layouts:
+    1. workspace/eval-M/config/run-K/ (legacy)
+    2. workspace/iteration-N/eval-M/config/run-K/ (legacy)
+    3. workspace/eval-M/config/ (run_test.py output — transcript.md directly in config)
     """
     runs = []
+    seen = set()
 
+    # Layout 3: run_test.py output — transcript.md directly in config dir
+    for config_dir in sorted(workspace.rglob("*")):
+        if not config_dir.is_dir():
+            continue
+        transcript = config_dir / "transcript.md"
+        if not transcript.exists():
+            continue
+        # Skip if this is inside a run-* dir (handled by layout 1/2 below)
+        parts = config_dir.relative_to(workspace).parts
+        if len(parts) >= 2 and parts[1].startswith("run-"):
+            continue
+        # Skip eval-* dirs themselves (they have eval_metadata.json, not transcript.md)
+        if len(parts) == 1 and parts[0].startswith("eval-"):
+            continue
+
+        # Walk up to find eval_metadata.json
+        eval_id = 0
+        eval_name = ""
+        prompt = ""
+        assertions: list[str] = []
+
+        current = config_dir.parent
+        while current and current != workspace:
+            metadata = current / "eval_metadata.json"
+            if metadata.exists():
+                try:
+                    meta = json.loads(metadata.read_text())
+                    eval_id = meta.get("eval_id", 0)
+                    eval_name = meta.get("eval_name", f"eval-{eval_id}")
+                    prompt = meta.get("prompt", "")
+                    assertions = meta.get("assertions", [])
+                except (json.JSONDecodeError, OSError):
+                    pass
+                break
+            current = current.parent
+
+        if not prompt:
+            # Try to extract from transcript
+            transcript_text = _read_file_safe(transcript)
+            match = re.search(r"## Eval Prompt\n\n([\s\S]*?)(?=\n##|$)", transcript_text)
+            if match:
+                prompt = match.group(1).strip()
+
+        if prompt:
+            key = str(config_dir.resolve())
+            if key not in seen:
+                seen.add(key)
+                runs.append({
+                    "run_dir": config_dir,
+                    "eval_id": eval_id,
+                    "eval_name": eval_name,
+                    "prompt": prompt,
+                    "assertions": assertions,
+                })
+
+    # Layouts 1 & 2: legacy run-* dirs
     for run_dir in sorted(workspace.rglob("run-*")):
         if not run_dir.is_dir():
             continue
         if not (run_dir / "transcript.md").exists():
+            continue
+
+        key = str(run_dir.resolve())
+        if key in seen:
             continue
 
         # Walk up to find eval_metadata.json
@@ -321,12 +383,13 @@ def discover_runs(workspace: Path) -> list[dict]:
 
         if not prompt:
             # Try to extract from transcript
-            transcript = _read_file_safe(run_dir / "transcript.md")
-            match = re.search(r"## Eval Prompt\n\n([\s\S]*?)(?=\n##|$)", transcript)
+            transcript_text = _read_file_safe(run_dir / "transcript.md")
+            match = re.search(r"## Eval Prompt\n\n([\s\S]*?)(?=\n##|$)", transcript_text)
             if match:
                 prompt = match.group(1).strip()
 
         if prompt:
+            seen.add(key)
             runs.append({
                 "run_dir": run_dir,
                 "eval_id": eval_id,

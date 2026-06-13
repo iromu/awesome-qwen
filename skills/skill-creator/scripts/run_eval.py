@@ -85,7 +85,6 @@ def run_single_query(
             "qwen",
             "-p", query,
             "--output-format", "stream-json",
-            "--bare",
             "--yolo",
             "--include-partial-messages",
             "--max-tool-calls", "20",
@@ -151,7 +150,7 @@ def run_single_query(
                             cb = se.get("content_block", {})
                             if cb.get("type") == "tool_use":
                                 tool_name = cb.get("name", "")
-                                if tool_name in ("read_file", "Skill", "Glob"):
+                                if tool_name.lower() in ("read_file", "skill", "glob"):
                                     pending_tool_name = tool_name
                                     accumulated_json = ""
                                 else:
@@ -179,11 +178,11 @@ def run_single_query(
                                 continue
                             tool_name = content_item.get("name", "")
                             tool_input = content_item.get("input", {})
-                            if tool_name in ("read_file", "Glob", "Skill") and (
+                            if tool_name.lower() in ("read_file", "glob", "skill") and (
                                 clean_name in str(tool_input) or skill_name in str(tool_input)
                             ):
                                 triggered = True
-                        return triggered
+                        # Don't return early — skill tool call may be in a later message
 
                     elif event.get("type") == "result":
                         return triggered
@@ -297,7 +296,12 @@ def main():
     parser.add_argument("--verbose", action="store_true", help="Print progress to stderr")
     args = parser.parse_args()
 
-    eval_set = json.loads(Path(args.eval_set).read_text())
+    eval_raw = json.loads(Path(args.eval_set).read_text())
+    # Support both flat arrays and wrapper objects {"skill_name": "...", "evals": [...]}
+    if isinstance(eval_raw, dict) and "evals" in eval_raw:
+        eval_set = eval_raw["evals"]
+    else:
+        eval_set = eval_raw
     skill_path = Path(args.skill_path)
 
     if not (skill_path / "SKILL.md").exists():

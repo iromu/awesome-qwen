@@ -326,7 +326,12 @@ def main():
                         help="Print progress to stderr")
     args = parser.parse_args()
 
-    eval_set = json.loads(Path(args.eval_set).read_text())
+    eval_raw = json.loads(Path(args.eval_set).read_text())
+    # Support both flat arrays and wrapper objects {"skill_name": "...", "evals": [...]}
+    if isinstance(eval_raw, dict) and "evals" in eval_raw:
+        eval_set = eval_raw["evals"]
+    else:
+        eval_set = eval_raw
     skill_path = Path(args.skill_path).resolve()
 
     if not (skill_path / "SKILL.md").exists():
