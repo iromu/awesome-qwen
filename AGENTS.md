@@ -103,3 +103,16 @@ awesome-qwen/
 - **Pitfalls documented** from experience
 - **English** for all documentation
 - **Proper formatting** with code blocks, tables, and checklists
+
+## Skill Improvement Checklist
+
+After improving a skill (or a batch of skills), verify the following:
+
+- [ ] No SKILL.md exceeds 500 lines (or the length is justified)
+- [ ] All skills have trigger phrases in their frontmatter `description`
+- [ ] All skills have a "When NOT to Use" section
+- [ ] No dead references exist (every `reference/*.md` pointer resolves to an actual file)
+- [ ] All frontmatter uses standard fields (`name`, `description`, `version`, `category`, `tags`)
+- [ ] No non-standard fields (e.g., `model: sonnet`)
+- [ ] Progressive disclosure is followed (SKILL.md is the procedural guide; references hold detail)
+- [ ] Skills with objective outputs have `evals/` directories
