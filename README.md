@@ -77,7 +77,7 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [git-workflows](skills/git-workflows) | Git branching strategies, commit conventions, and collaboration workflows | `git` `branching` `collaboration` |
 | [json-formatting](skills/json-formatting) | Format, pretty-print, minify, validate, transform, and convert JSON data | `json` `formatting` `validation` |
 | [rabbitmq-typescript](skills/rabbitmq-typescript) | Expert RabbitMQ development for TypeScript/Node.js using amqplib — exchanges, queues, DLX, publisher confirms | `rabbitmq` `typescript` `messaging` |
-| [security-audit](skills/security-audit) | Security scanning for OWASP vulnerabilities, dependency issues, and secrets exposure | `security` `owasp` `scanning` |
+| [security-audit](skills/security-audit) | Scan for CVEs, detect secrets, run SAST, audit OWASP Top 10, and check container/IaC security | `security` `owasp` `scanning` `sast` `secrets` |
 | [self-learning](skills/self-learning) | Closed-loop self-learning system — agents create skills from experience, maintain persistent memory, and improve over time | `learning` `memory` `autonomous` |
 | [skill-creator](skills/skill-creator) | Create, edit, improve, and evaluate skills — the meta-tool for building Qwen Code skills | `skill-authoring` `eval` |
 | [spring-ai-mcp](skills/spring-ai-mcp) | Build Spring AI MCP (Model Context Protocol) servers and clients with annotations, security, and testing | `spring` `mcp` `ai` |
