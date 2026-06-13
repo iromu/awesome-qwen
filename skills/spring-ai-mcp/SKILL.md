@@ -21,6 +21,31 @@ description: >-
 Build production-ready Spring AI MCP applications — servers that expose tools,
 resources, and prompts to AI models, and clients that consume MCP servers.
 
+## When to Use This Skill
+
+| Scenario | What to Do |
+|----------|-----------|
+| Expose Java methods as MCP tools for AI models | Use `@McpTool` and `@McpToolParam` annotations on service methods |
+| Build an MCP server with WebMVC or WebFlux | Pick the matching Boot Starter (webmvc or webflux) and set protocol |
+| Connect a Spring app to an external MCP server | Use `spring-ai-starter-mcp-client` and configure connections |
+| Integrate MCP tools with ChatClient for LLM calls | Auto-register `ToolCallbackProvider` beans and pass to `.tools()` |
+| Secure MCP endpoints with OAuth 2.0 or API keys | Add `mcp-server-security` from `org.springaicommunity` and configure |
+| Test MCP servers/clients in isolation | Use `@McpServerTest`, `@McpClientTest`, or `MockMcpTransport` |
+| Run in GraalVM native image | No manual config needed — `McpHints` auto-registers reflection |
+| Migrate from MCP SDK 0.18.x to Spring AI 2.0 | Update group IDs, package imports, and SDK version (see Migration) |
+| Filter tools per connection or customize behavior | Implement `McpToolFilter`, customizers, or name prefix generators |
+
+## When NOT to Use This Skill
+
+| Situation | Better Alternative |
+|-----------|-------------------|
+| Building a non-Spring MCP client | Use the raw MCP Java SDK (`io.modelcontextprotocol.sdk`) directly |
+| Need TypeScript/Python MCP server | Use the official MCP SDK for those languages |
+| Building a gRPC service instead of MCP | Use Spring Boot gRPC starter — MCP is for AI tool exposure, not general RPC |
+| Simple REST API with no AI integration | Use standard Spring Boot REST controllers — MCP adds unnecessary overhead |
+| Real-time WebSocket-only communication | Use Spring WebSocket or Spring AI's streaming — MCP is request/response oriented |
+| Using a different AI framework (LangChain4j, LlamaIndex) | Use that framework's native MCP integration or bridge layer |
+
 ## Architecture Overview
 
 The Spring AI MCP SDK follows a **three-layer architecture**:
@@ -71,7 +96,7 @@ highest mutually supported version during initialization.
 > **Spring AI 2.0:** Transport artifacts moved from `io.modelcontextprotocol.sdk`
 > to `org.springframework.ai`. All transport classes relocated to
 > `org.springframework.ai.mcp.*`. Requires MCP Java SDK 1.0.0+. See
-> **Migration** section below for full details.
+> **Migration** section above for full details.
 
 ## Server: Annotated Tool Example
 
@@ -224,147 +249,6 @@ public class McpClientHandlers {
 }
 ```
 
-## Server Configuration Properties
-
-| Property | Description | Default |
-|----------|-----------|---------|
-| `spring.ai.mcp.server.enabled` | Enable/disable MCP server | `true` |
-| `spring.ai.mcp.server.name` | Server name | `mcp-server` |
-| `spring.ai.mcp.server.version` | Server version | `1.0.0` |
-| `spring.ai.mcp.server.instructions` | Instructions for clients | `null` |
-| `spring.ai.mcp.server.type` | SYNC or ASYNC | `SYNC` |
-| `spring.ai.mcp.server.stdio` | Enable STDIO transport | `false` |
-| `spring.ai.mcp.server.capabilities.tool` | Enable tools | `true` |
-| `spring.ai.mcp.server.capabilities.resource` | Enable resources | `true` |
-| `spring.ai.mcp.server.capabilities.prompt` | Enable prompts | `true` |
-| `spring.ai.mcp.server.capabilities.completion` | Enable completions | `true` |
-| `spring.ai.mcp.server.capabilities.roots` | Enable roots capability | `false` |
-| `spring.ai.mcp.server.capabilities.experimental` | Enable experimental features | `false` |
-| `spring.ai.mcp.server.tool-change-notification` | Tool change notifications | `true` |
-| `spring.ai.mcp.server.resource-change-notification` | Resource change notifications | `true` |
-| `spring.ai.mcp.server.prompt-change-notification` | Prompt change notifications | `true` |
-| `spring.ai.mcp.server.request-timeout` | Response timeout | `20s` |
-
-## Client Configuration Properties
-
-| Property | Description | Default |
-|----------|-----------|---------|
-| `spring.ai.mcp.client.enabled` | Enable/disable MCP client | `true` |
-| `spring.ai.mcp.client.name` | Client name | `spring-ai-mcp-client` |
-| `spring.ai.mcp.client.type` | SYNC or ASYNC | `SYNC` |
-| `spring.ai.mcp.client.request-timeout` | Request timeout | `20s` |
-| `spring.ai.mcp.client.toolcallback.enabled` | Auto-register MCP tools as Spring AI tools | `true` |
-
-### STDIO Configuration
-
-```yaml
-spring:
-  ai:
-    mcp:
-      client:
-        stdio:
-          connections:
-            my-server:
-              command: /path/to/server
-              args:
-                - --port=8080
-              env:
-                API_KEY: your-api-key
-```
-
-### SSE Configuration
-
-```yaml
-spring:
-  ai:
-    mcp:
-      client:
-        sse:
-          connections:
-            my-server:
-              url: http://localhost:8080
-              sse-endpoint: /sse
-```
-
-### Streamable-HTTP Configuration
-
-```yaml
-spring:
-  ai:
-    mcp:
-      client:
-        streamable-http:
-          connections:
-            my-server:
-              url: http://localhost:8080
-              endpoint: /mcp
-```
-
-## Special Parameters for Annotated Methods
-
-| Parameter | Purpose | Supported In |
-|-----------|---------|--------------|
-| `McpSyncRequestContext` | Sync request context (logging, progress, sampling, roots) | Tool, Resource, Prompt, Complete |
-| `McpAsyncRequestContext` | Async request context (reactive) | Tool, Resource, Prompt, Complete |
-| `McpTransportContext` | Stateless transport context | Tool, Resource |
-| `McpMeta` | Access MCP request metadata | Tool, Resource, Prompt |
-| `@McpProgressToken` | Receive progress token (injected, excluded from JSON schema) | Tool, Resource |
-| `CallToolRequest` | Dynamic schema for tools | Tool only |
-
-## Method Filtering by Server Type
-
-| Server Type | Accepts | Filters Out |
-|-------------|---------|-------------|
-| Sync Stateful | Non-reactive + `McpSyncRequestContext` | Reactive (Mono/Flux) |
-| Async Stateful | Reactive (Mono/Flux) + `McpAsyncRequestContext` | Non-reactive |
-| Sync Stateless | Non-reactive + no bidirectional context | Reactive OR bidirectional context |
-| Async Stateless | Reactive + no bidirectional context | Non-reactive OR bidirectional context |
-
-## Server Customization
-
-Customize server behavior programmatically with customizer interfaces:
-
-### Sync Server Customizer
-
-```java
-@Component
-public class CustomSyncServerCustomizer implements McpSyncServerCustomizer {
-    @Override
-    public void customize(McpServer.SyncSpecification spec) {
-        spec.requestTimeout(Duration.ofSeconds(30));
-        spec.instructions("Custom server instructions for clients");
-    }
-}
-```
-
-### Async Server Customizer
-
-```java
-@Component
-public class CustomAsyncServerCustomizer implements McpAsyncServerCustomizer {
-    @Override
-    public void customize(McpServer.AsyncSpecification spec) {
-        spec.requestTimeout(Duration.ofSeconds(30));
-    }
-}
-```
-
-### Tool Name Prefix Generator
-
-Control how MCP tool names are prefixed when registered as Spring AI tools:
-
-```java
-@Component
-public class CustomPrefixGenerator implements McpToolNamePrefixGenerator {
-    @Override
-    public String prefixedToolName(McpConnectionInfo info, McpSchema.Tool tool) {
-        return info.initializeResult().serverInfo().name() + "_" + tool.name();
-    }
-}
-```
-
-See `references/mcp-customization.md` for full details on all customization options.
-
 ## Security
 
 > **⚠️ Security is Work In Progress.** The Spring AI MCP security features are
@@ -426,7 +310,7 @@ class WeatherServiceTest {
 }
 ```
 
-### Testing with MCP Test Utilities
+### Integration Testing
 
 Use `@McpServerTest` and `@McpClientTest` annotations for integration testing:
 
@@ -447,26 +331,9 @@ class McpServerIntegrationTest {
 }
 ```
 
-### Testing MCP Clients
+### Mocking
 
-```java
-@SpringBootTest
-class McpClientTest {
-
-    @Autowired
-    private ToolCallbackProvider mcpTools;
-
-    @Test
-    void mcpToolsAreRegistered() {
-        var toolNames = mcpTools.getToolNames();
-        assertThat(toolNames).isNotEmpty();
-    }
-}
-```
-
-### Testing with Mocked MCP Servers
-
-Use `MockMcpTransport` to create test clients without real processes:
+Use `MockMcpTransport` for isolated client tests without real processes:
 
 ```java
 @Test
@@ -483,15 +350,6 @@ void testClientWithMockServer() {
 }
 ```
 
-### Key Testing Patterns
-
-1. **Test tools as plain beans** — annotated methods are just methods; test them directly
-2. **Use `@SpringBootTest`** for full integration tests with MCP server/client auto-config
-3. **Mock transports** for isolated client/server tests without real processes
-4. **Verify tool registration** — assert that `@McpTool` methods appear in the server's tool list
-5. **Test request context** — verify that `McpSyncRequestContext` methods (logging, progress) work correctly
-6. **Test security** — verify OAuth 2.0 and API key authentication on MCP endpoints
-
 See `references/security-and-testing.md` for additional patterns: MockMVC testing,
 Testcontainers with external MCP servers, annotation scanning, and security tests.
 
@@ -507,48 +365,33 @@ known limitations, and build configuration.
 
 ## Spring AI 2.0 Migration
 
-Migrating from `io.modelcontextprotocol.sdk` to `org.springframework.ai`? Here's
-what you need to know.
+Migrating from `io.modelcontextprotocol.sdk` to `org.springframework.ai`? See
+`references/migration.md` for full dependency changes, package relocations, and
+a step-by-step migration checklist.
 
-### Dependency Changes
+## Pitfalls
 
-| Old (MCP SDK 0.18.x) | New (Spring AI 2.0+) |
-|----------------------|---------------------|
-| `io.modelcontextprotocol.sdk:mcp` | `org.springframework.ai:spring-ai-mcp` |
-| `io.modelcontextprotocol.sdk:mcp-server-webmvc` | `org.springframework.ai:spring-ai-starter-mcp-server-webmvc` |
-| `io.modelcontextprotocol.sdk:mcp-server-webflux` | `org.springframework.ai:spring-ai-starter-mcp-server-webflux` |
-| `io.modelcontextprotocol.sdk:mcp-client` | `org.springframework.ai:spring-ai-starter-mcp-client` |
-| `io.modelcontextprotocol.sdk:mcp-client-webflux` | `org.springframework.ai:spring-ai-starter-mcp-client-webflux` |
-
-### Package Relocations
-
-| Old Package | New Package |
-|-------------|-------------|
-| `io.modelcontextprotocol.sdk.McpSchema` | `org.springframework.ai.mcp.McpSchema` |
-| `io.modelcontextprotocol.sdk.McpClient` | `org.springframework.ai.mcp.McpClient` |
-| `io.modelcontextprotocol.sdk.McpServer` | `org.springframework.ai.mcp.McpServer` |
-| `io.modelcontextprotocol.sdk.McpSyncClient` | `org.springframework.ai.mcp.McpSyncClient` |
-| `io.modelcontextprotocol.sdk.McpAsyncClient` | `org.springframework.ai.mcp.McpAsyncClient` |
-| `io.modelcontextprotocol.sdk.transport.StdioClientTransport` | `org.springframework.ai.mcp.transport.StdioClientTransport` |
-| `io.modelcontextprotocol.sdk.transport.SseClientTransport` | `org.springframework.ai.mcp.transport.SseClientTransport` |
-| `io.modelcontextprotocol.sdk.transport.StreamableHttpTransport` | `org.springframework.ai.mcp.transport.StreamableHttpTransport` |
-
-### Migration Checklist
-
-- [ ] Update dependency group: `io.modelcontextprotocol.sdk` → `org.springframework.ai`
-- [ ] Update all transport imports: `io.modelcontextprotocol.*` → `org.springframework.ai.mcp.*`
-- [ ] Upgrade MCP SDK to 1.0.0+ (from 0.18.x)
-- [ ] Auto-config users: only update `pom.xml`/`build.gradle` — no code changes needed
-- [ ] Test that MCP clients initialize correctly on startup
-- [ ] Verify tool callbacks still register with ChatClient
-- [ ] If using security: add `mcp-server-security` or `mcp-client-security` from `org.springaicommunity`
+| Pitfall | How to Avoid |
+|---------|-------------|
+| **Transport classes not found after upgrade** | Update all `io.modelcontextprotocol.*` imports to `org.springframework.ai.mcp.*` |
+| **Security features missing at runtime** | Add `mcp-server-security` or `mcp-client-security` from `org.springaicommunity` — they're not in core Spring AI |
+| **OAuth 2.0 fails with SSE transport** | SSE is not supported for OAuth — use Streamable-HTTP or Stateless transport instead |
+| **Tool not appearing in MCP server** | Verify `@McpTool` is on a Spring-managed bean and the bean is included in `ToolCallbackProvider` |
+| **Async methods filtered out on sync server** | Sync servers only accept non-reactive methods; use `McpAsyncRequestContext` for async servers |
+| **Native image reflection errors** | Ensure `spring-ai-mcp` starter is on the classpath — `McpHints` auto-registers nested `McpSchema` classes |
+| **Multiple customizers conflict** | Use `@Order` to control precedence; later customizers can override earlier ones |
+| **Tool name collisions across servers** | Implement `McpToolNamePrefixGenerator` to prefix tool names with server name |
+| **STDIO server hangs on startup** | Verify the command path is correct and the server process starts within the request timeout |
+| **Client timeout on long-running tools** | Increase `spring.ai.mcp.server.request-timeout` or `spring.ai.mcp.client.request-timeout` |
 
 ## When to Read References
 
-- **MCP Boot Starters & configuration** → `references/mcp-boot-starters.md`
+- **Configuration properties, transport setup, special params** → `references/configuration.md`
+- **MCP Boot Starters & protocol selection** → `references/mcp-boot-starters.md`
 - **MCP Annotations reference** → `references/mcp-annotations.md`
 - **Security patterns (OAuth 2.0, API keys)** → `references/security-and-testing.md`
 - **Testing patterns (MockMVC, Testcontainers, mocking)** → `references/security-and-testing.md`
 - **Customization (filters, customizers, name prefixes)** → `references/mcp-customization.md`
 - **Architecture (SDK layers, transports, protocol versions)** → `references/mcp-architecture.md`
 - **GraalVM native image support** → `references/mcp-aot-native.md`
+- **Spring AI 2.0 migration guide** → `references/migration.md`
