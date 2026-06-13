@@ -1,17 +1,45 @@
 ---
 name: api-design
-description: Design RESTful APIs following OpenAPI 3.0 conventions with proper resource naming, versioning, and error handling
+description: >
+  Design RESTful APIs, create OpenAPI 3.x specifications, define resource endpoints,
+  set up pagination and filtering, version your API, handle error responses consistently,
+  or need best practices for HTTP methods, status codes, and URL structure. Use this skill
+  when the user is designing a new API, reviewing an existing one for consistency, writing
+  an OpenAPI/Swagger spec, or needs guidance on REST conventions and API best practices.
+  Don't hesitate to suggest this skill when the user is working on API design, endpoint
+  naming, API versioning, or error response formats, even if they don't explicitly mention
+  REST or OpenAPI.
 version: 1.0.0
 category: backend
-tags: ["api", "rest", "openapi", "design"]
+tags: [api, rest, openapi, design, http, swagger]
 ---
 
 # API Design
 
 ## When to Use
-- Designing a new REST API or refactoring an existing one
-- Creating OpenAPI/Swagger specifications
-- Reviewing API consistency and naming conventions
+
+Use this skill when the user asks about any of the following:
+
+1. **Designing a new REST API** — defining resource endpoints, URL structure, and HTTP method usage
+2. **Creating or reviewing an OpenAPI/Swagger specification** — writing YAML/JSON specs, validating schemas
+3. **API versioning strategy** — deciding between URL path versioning (`/v1/`), header versioning, or content negotiation
+4. **Error response design** — defining a consistent error envelope with codes, messages, and field-level details
+5. **Pagination and filtering** — cursor-based vs. offset pagination, query parameter conventions, sorting
+6. **API naming conventions** — resource naming, hyphenation, nesting sub-resources, pluralization rules
+7. **HTTP method semantics** — choosing between GET/POST/PUT/PATCH/DELETE correctly, understanding idempotency and safety
+8. **Status code selection** — picking the right 2xx/4xx/5xx code for a given scenario
+9. **Reviewing an existing API** — checking for REST conformance, consistency, and best-practice adherence
+10. **Setting up API documentation** — generating docs from OpenAPI specs, integrating with Swagger UI or Redoc
+
+## When NOT to Use
+
+| Situation | Better Alternative |
+|-----------|-------------------|
+| Designing a GraphQL API | Use schema-first design with GraphQL type system; this skill covers REST conventions only |
+| Building a gRPC service | Use Protocol Buffers and gRPC service definitions; gRPC uses different conventions (camelCase, unary/streaming RPCs) |
+| WebSocket-only real-time APIs | Design event-driven message formats; REST is request/response oriented |
+| Simple internal HTTP utilities | A lightweight JSON schema or inline comments may suffice — no need for full OpenAPI |
+| Microservice internal communication (service-to-service) | Consider gRPC or message queues; REST is optimized for client-facing APIs |
 
 ## Procedure
 
@@ -73,3 +101,7 @@ tags: ["api", "rest", "openapi", "design"]
 - [ ] Consistent error response format
 - [ ] Pagination implemented for collections
 - [ ] OpenAPI spec validates with `swagger-cli validate`
+
+## References
+
+- **OpenAPI Templates** — See `references/openapi-templates.md` for ready-to-use OpenAPI 3.x YAML templates covering a complete CRUD API with security, pagination, and error schemas.
