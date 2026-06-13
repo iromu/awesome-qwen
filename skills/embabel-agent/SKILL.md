@@ -1,7 +1,7 @@
 ---
 name: embabel-agent
 description: >-
-  Build agentic AI applications on the JVM with Embabel — a Spring-based framework by Rod Johnson for creating agents that mix LLM interactions with code, domain models, and non-LLM planning algorithms (GOAP, Utility AI, Hybrid, Supervisor). Use this skill whenever the user asks about Embabel agent development, agent annotations (@Agent, @Agentic, @Action, @Condition, @AchievesGoal, @State, @EmbabelComponent), agentic tool design (@LlmTool, @Tool, ToolCallContext, tool groups, subagent handoffs), planning configuration, testing with FakePromptRunner or EmbabelMockitoIntegrationTest, LLM provider setup, execution modes (SIMPLE/CONCURRENT), autonomy modes (CLOSED/OPEN), state-based workflows, human-in-the-loop patterns, or project scaffolding with project-creator.sh. Also trigger when the user mentions Embabel, DICE framework, Rod Johnson's agent framework, JVM-based agentic flows, or building agents with Spring Boot and LLMs.
+  Build agentic AI applications on the JVM with Embabel — a Spring-based framework by Rod Johnson for creating agents that mix LLM interactions with code, domain models, and non-LLM planning algorithms (GOAP, Utility AI, Hybrid, Supervisor). Use this skill whenever the user asks about Embabel agent development, agent annotations (@Agent, @Agentic, @Action, @Condition, @AchievesGoal, @State, @EmbabelComponent, @SecureAgentTool, @Provided, @Cost, @LlmTool, @Tool, @RequireNameMatch, SomeOf, trigger), agentic tool design (ToolCallContext, tool groups, subagent handoffs, SimpleAgenticTool, PlaybookTool, StateMachineTool), planning configuration, testing with FakePromptRunner or EmbabelMockitoIntegrationTest, LLM provider setup, execution modes (SIMPLE/CONCURRENT), autonomy modes (CLOSED/OPEN), state-based workflows, human-in-the-loop patterns, agent skills (loading from GitHub, lazy loading, validation), guardrails (input validation, response validation, budget guardrails), cost tracking, structured prompts (PromptContributor, LlmReference, Persona), streaming (thinking, object streaming), DSL builders (SimpleAgentBuilder, ScatterGatherBuilder, RepeatUntil), domain objects (DICE), templates, or project scaffolding with project-creator.sh. Also trigger when the user mentions Embabel, DICE framework, Rod Johnson's agent framework, JVM-based agentic flows, building agents with Spring Boot and LLMs, or MCP integration with Embabel.
 ---
 
 # Embabel Agent Framework
@@ -29,6 +29,9 @@ Every Embabel agent is built from these building blocks:
 - **Domain Model** — Strongly-typed objects carrying both data and behavior (DICE).
 - **Blackboard** — Shared memory where actions add results and read inputs by type.
 - **Plan** — Dynamically generated sequence of actions. The planner recomputes after each action (OODA loop).
+- **Agent Skills** — Lazy-loaded, reusable skill packages (scripts, references, assets) following the Agent Skills Specification.
+- **Guardrails** — Configurable validation policies for user inputs and LLM responses.
+- **Cost Tracking** — Real-time event-based tracking of LLM and embedding costs.
 
 > **Key insight:** Application developers rarely interact with the blackboard directly. Most pre/post conditions are inferred from data flow in method signatures.
 
@@ -97,6 +100,53 @@ GEMINI_API_KEY=your_key_here
 | Ollama | `embabel-agent-starter-ollama` | llama3.3 |
 | OCI | `embabel-agent-starter-oci-genai` | oci-genai |
 
+## Agent Process Lifecycle
+
+An `AgentProcess` manages the complete execution lifecycle with these states:
+
+**Process States:**
+- `NOT_STARTED` → `RUNNING` → `COMPLETED` / `FAILED` / `TERMINATED` / `KILLED` / `STUCK` / `WAITING` / `PAUSED`
+
+**Execution Methods:**
+- `tick()` — perform the next single step
+- `run()` — execute as far as possible
+
+### Planning (OODA Loop)
+
+After each action execution, the planner:
+1. **Observe** — Examine current blackboard state
+2. **Orient** — Understand what changed since last planning cycle
+3. **Decide** — Use A* search (GOAP) or value-picking (Utility) to find optimal action sequence
+4. **Act** — Execute next planned action, then replan
+
+This creates a dynamic **OODA loop** that allows agents to adapt to unexpected results, handle dynamic environments, recover from partial failures, and take advantage of new opportunities.
+
+### Blackboard
+
+The blackboard is the shared memory system:
+
+```java
+blackboard.add("key", value);        // add with explicit name
+blackboard.add(value);               // add with default name ("it")
+blackboard.get(MyClass.class);       // get most recent by type
+blackboard.get("key", MyClass.class); // get by name and type
+blackboard.hide(MyClass.class);      // hide from planning
+```
+
+Most of the time, user code doesn't interact with the blackboard directly — action inputs come from it and outputs are automatically added.
+
+### Context (Cross-Process State)
+
+Embabel's `Context` persists state across multiple agent processes:
+
+```java
+var options = ProcessOptions.builder()
+    .withContextId("user-session-123")
+    .build();
+```
+
+Context is identified by `contextId` and populated into each process's blackboard. Implementation depends on `ContextRepository` — the default is in-memory only.
+
 ## Agent Authoring Patterns
 
 ### Annotation-Based Model (Java/Kotlin)
@@ -157,20 +207,6 @@ Useful with Utility AI planner that selects the most valuable next action among 
 
 ### @Action Annotation Details
 
-```java
-@Action(
-    description = "Search for flights",
-    pre = {"spel:destination != null"},
-    post = {"flightInfo != null"},
-    canRerun = false,
-    readOnly = true,
-    clearBlackboard = false,
-    cost = 0.1,
-    value = 0.5
-)
-public FlightInfo searchFlights(Destination dest, Ai ai) { ... }
-```
-
 Key attributes:
 - **pre/post** — Additional conditions beyond input types (SpEL or method names)
 - **canRerun** — Can the action run again? Defaults to false.
@@ -178,63 +214,9 @@ Key attributes:
 - **clearBlackboard** — Clear blackboard after action, keeping only output. Useful for looping states.
 - **cost/value** — For Utility AI planning (0.0–1.0)
 - **outputBinding** — Explicit blackboard binding name
-- **trigger** — Fire only when a specific type is the most recently added blackboard value
+- **trigger** — Fire only when a specific type is the most recently added blackboard value (reactive/event-driven)
 
-#### Dynamic Cost Computation
-
-```java
-@Cost(name = "computeCost")
-public double computeCost(@Nullable GHIssue issue, Blackboard bb) {
-    return issue != null ? 0.8 : 0.2;
-}
-
-@Action(costMethod = "computeCost")
-public GHIssue saveIssue(GHIssue input, OperationContext context) { ... }
-```
-
-#### @Provided — Inject Platform Beans
-
-```java
-@Action
-public TicketCategory triage(
-        Ticket ticket,
-        @Provided TicketFlow flow) {  // injected from Spring context
-    return flow.process(ticket);
-}
-```
-
-Use `@Provided` for services, configuration, or enclosing component references (especially in `@State` classes).
-
-### @Condition Annotation
-
-```java
-@Condition
-public boolean hasCriticalTicket(Ticket ticket) {
-    return ticket.isCritical();
-}
-```
-
-Conditions should not have side effects — they may be called multiple times.
-
-#### Dynamic SpEL Conditions
-
-```java
-@Action(pre = {
-    "spel:urgency > 0.5",
-    "spel:newEntity.newEntities.?[#this instanceof T(com.example.Issue)].size() > 0"
-})
-public void handleIssue(GHIssue issue, OperationContext context) { ... }
-```
-
-### @SecureAgentTool — Security
-
-```java
-@Agent
-@SecureAgentTool(expression = "hasAuthority('news:read')")
-public class NewsAgent { ... }
-```
-
-Method-level annotations override class-level. Requires `embabel-agent-mcp-security` starter.
+See `reference/annotations.md` for full details: `@Cost`/`costMethod`, `@SecureAgentTool`, `@Provided`, `@RequireNameMatch`, `SomeOf`, `trigger`, SpEL patterns, parameter types, inheritance.
 
 ## Domain Objects
 
@@ -243,16 +225,11 @@ Domain objects carry both data and behavior. Expose methods to LLMs with `@Tool`
 ```java
 public record Customer(long id, String name, double balance) {
     @Tool
-    public double getLoyaltyDiscount() {
-        return balance > 1000 ? 0.15 : 0.05;
-    }
-
+    public double getLoyaltyDiscount() { return balance > 1000 ? 0.15 : 0.05; }
     // Unannotated methods are never exposed to LLMs
     void updateLoyaltyLevel() { ... }
 }
 ```
-
-Add to prompts:
 
 ```java
 context.ai().withDefaultLlm()
@@ -260,6 +237,10 @@ context.ai().withDefaultLlm()
     .creating(Order.class)
     .fromPrompt("Create an order for this customer");
 ```
+
+> **DICE principle:** Domain-Integrated Context Engineering — domain objects should not be anemic; they should encapsulate business logic and expose it selectively to LLMs.
+
+See `reference/domain-objects.md` for DICE patterns, @Tool rules, domain objects in actions, and best practices.
 
 ## Tools
 
@@ -352,6 +333,17 @@ context.ai().withDefaultLlm()
 // After customer is returned, customer.getLoyaltyDiscount() becomes available
 ```
 
+### OneShotPerLoopTool
+
+For tools meant to fire at most once per agentic loop iteration:
+
+```java
+var tool = new OneShotPerLoopTool(
+    underlyingTool,
+    "The body was returned earlier — read it from your conversation history."
+);
+```
+
 ## Planning Algorithms
 
 | Planner | Best For | Determinism | Algorithm |
@@ -393,6 +385,33 @@ For looping states, use `@Action(clearBlackboard = true)`.
 For human-in-the-loop: `WaitFor.formSubmission("Review this", HumanFeedback.class)`
 
 See `reference/states.md` for detailed state patterns.
+
+### DSL Builders (Kotlin/Java)
+
+For atomic workflows that contain multiple steps:
+
+```java
+// Simple agent
+var agent = SimpleAgentBuilder.builder(String.class)
+    .withAction(ctx -> ctx.ai().withDefaultLlm()
+        .creating(String.class)
+        .fromPrompt(ctx.getInput()))
+    .buildAgent("simple-agent", "Simple text generation");
+
+// Scatter-Gather (parallel processing)
+var agent = ScatterGatherBuilder.builder(String.class, FactCheck.class)
+    .withForks(List.of(factCheck1, factCheck2, factCheck3))
+    .withGather(facts -> new FactChecks(facts))
+    .buildAgent("fact-checker", "Fact check from multiple sources");
+
+// Repeat until condition met
+var agent = RepeatUntil.builder(String.class)
+    .withStep(ctx -> generateDraft(ctx.getInput()))
+    .withCondition(draft -> draft.isAcceptable())
+    .buildAgent("draft-until-acceptable", "Iterative draft refinement");
+```
+
+See `reference/dsl.md` for all builder types, subprocess execution, and Spring bean registration.
 
 ## Execution Modes
 
@@ -500,6 +519,8 @@ context.ai().withDefaultLlm()
 
 ### Streaming
 
+Embabel supports streaming with thinking and object events:
+
 ```java
 context.ai().withDefaultLlm()
     .streaming()
@@ -513,41 +534,56 @@ context.ai().withDefaultLlm()
     .subscribe();
 ```
 
-### Custom LLM Provider
+See `reference/llm-integration.md` for full details: LlmOptions, PromptRunner methods, custom LLM providers, embedding services, callbacks, Anthropic caching, structured prompts.
 
-Implement `LlmMessageSender` for unsupported providers:
+## Agent Skills
+
+Agent Skills provide reusable, shareable skill packages following the [Agent Skills Specification](https://agentspec.dev).
 
 ```java
-public class CustomLlmMessageSender implements LlmMessageSender {
-    @Override
-    public LlmMessageResponse sendMessage(List<Message> messages) {
-        // HTTP call to your provider
-        return new LlmMessageResponse(message, textContent, usage);
-    }
-}
+// Load from GitHub
+var skills = Skills.fromGitHub("github.com/owner/repo");
+// Load locally
+var skills = Skills.fromLocal(new File("./skills/"));
+// Use with PromptRunner
+context.ai().withDefaultLlm()
+    .withSkills(skills)
+    .creating(Result.class)
+    .fromPrompt("...");
+```
 
-@Bean
-LlmService customLlm() {
-    return new LlmService() {
-        @Override public String getName() { return "my-custom-llm"; }
-        @Override public LlmMessageSender createMessageSender() { return new CustomLlmMessageSender(); }
-    };
+Skills use **lazy loading** — metadata in system prompt, full content on `activate`. See `reference/agent-skills.md` for full details (GitHub URLs, validation, combining with LlmReference).
+
+## Guardrails
+
+Guardrails validate user inputs and LLM responses using configurable policies.
+
+```java
+// Per-call guardrails
+context.ai().withDefaultLlm()
+    .withGuardRails(new ToxicityGuardRail(), new PiiGuardRail())
+    .creating(Analysis.class)
+    .fromPrompt("Analyze this data");
+
+// Global guardrails in application.yml
+// embabel.agent.platform.guardrails.user-input=com.example.ToxicityGuardRail
+```
+
+`CRITICAL` severity blocks execution. See `reference/guardrails.md` for custom guardrails, global config, and POJO guardrails.
+
+## Cost Tracking
+
+Embabel emits `LlmInvocationEvent` and `EmbeddingInvocationEvent` for every call.
+
+```java
+@EventListener
+public void onCost(LlmInvocationEvent event) {
+    double cost = event.getInvocation().getCost();
+    // Track by process, tenant, user, etc.
 }
 ```
 
-### Callbacks / Interceptors
-
-```java
-@Bean
-ToolLoopInspector toolLoopLoggingInspector() {
-    return new ToolLoopLoggingInspector();
-}
-
-@Bean
-ToolResultTruncatingTransformer truncatingTransformer() {
-    return new ToolResultTruncatingTransformer(5000);
-}
-```
+Combine cost tracking with guardrails to enforce budgets. See `reference/cost-tracking.md` for the full budget guardrail pattern and EarlyTerminationPolicy.
 
 ## Configuration
 
@@ -655,15 +691,43 @@ class StoryWriterIntegrationTest extends EmbabelMockitoIntegrationTest {
 
 See `reference/testing.md` for more patterns.
 
+## Common Pitfalls
+
+1. **Forgetting `@Agent` or `@Agentic` on the class** — The agent won't be discovered by the platform
+2. **Not providing `OperationContext`** — Actions need it to access the AI and blackboard
+3. **Confusing execution modes** — SIMPLE vs CONCURRENT (process execution) vs CLOSED vs OPEN (autonomy)
+4. **Not using `@AchievesGoal`** — Without it, the planner can't determine goal satisfaction
+5. **Ignoring tool loop iterations** — Default is 20; increase for complex multi-step agents
+6. **Not setting model per-action** — Using the default model for everything wastes money or sacrifices quality
+7. **Forgetting `.withId()` on LLM calls** — Makes test verification harder and debugging opaque
+8. **Using non-static inner classes for @State** — Causes serialization/persistence issues; use records (Java) or top-level classes (Kotlin)
+9. **Not using `clearBlackboard = true` for looping states** — Planner sees output type already exists and skips
+10. **Allowing LLMs to call sensitive methods** — Always gate with `@Tool`/`@LlmTool`; unannotated methods stay hidden
+11. **Missing `@Export(remote=true)` on MCP agents** — Agents won't be visible to MCP clients like Claude Desktop
+12. **Circular type dependencies** — Check that action input/output types form a valid plan path; use `ProcessOptions.verbosity` to debug planning
+13. **Custom conditions without postconditions** — If an action sets a custom condition, mark it in `post`; if another action depends on it, mark it in `pre`
+
 ## Reference Files
 
-- `reference/configuration.md` — Full configuration property reference, provider-specific setup, custom LLM integration
-- `reference/testing.md` — Testing patterns and examples
-- `reference/planners.md` — Detailed planner guide (GOAP, Utility AI, Hybrid, Supervisor)
-- `reference/states.md` — State patterns, looping, human-in-the-loop, WaitFor
-- `reference/tools.md` — Tools, tool groups, ToolCallContext, subagents, agentic tools
-- `reference/invocation.md` — Invocation patterns, Autonomy, REST endpoints, webhooks
-- `reference/guide-server.md` — Guide server setup, MCP client integrations, WebSocket chat API, Docker deployment
+Read these when you need deeper detail on a specific topic. The SKILL.md covers the core workflow; reference files fill in the edges.
+
+| File | When to Read |
+|------|-------------|
+| `reference/configuration.md` | Full property reference, provider-specific setup, custom LLM/EmbeddingService |
+| `reference/testing.md` | Advanced testing patterns (Mockito, examples, multi-step verification) |
+| `reference/planners.md` | Detailed planner comparison, when to choose each planner |
+| `reference/states.md` | Complex state patterns, inheritance, parent state interface, WaitFor |
+| `reference/tools.md` | Tool groups config, framework-agnostic Tool interface, detailed tool patterns |
+| `reference/invocation.md` | Autonomy, GoalSelectionOptions, Shell usage, blackboard operations, Context |
+| `reference/guardrails.md` | Custom guardrails, global config, budget guardrail pattern, POJO guardrails |
+| `reference/cost-tracking.md` | Cost events, budget enforcement, EarlyTerminationPolicy |
+| `reference/agent-skills.md` | GitHub/local loading, validation, combining with LlmReference |
+| `reference/structured-prompts.md` | Persona, RoleGoalBackstory, custom contributors, YML config, built-in providers |
+| `reference/streams.md` | Raw text streaming, thinking/object streaming, reactive callbacks |
+| `reference/dsl.md` | SimpleAgentBuilder, ScatterGatherBuilder, RepeatUntil, DSL registration |
+| `reference/guide-server.md` | Guide server, MCP server/client, WebSocket chat, Docker deployment |
+
+> **Tip:** If a section in SKILL.md mentions "see X.md for details," read that reference file for the full picture.
 
 ## Scaffolding
 
@@ -692,16 +756,3 @@ After scaffolding, the user can:
 - Add more agents, tools, and planners as needed
 
 > **When to use:** New projects, quick prototypes, or when the user says "create a new Embabel project", "scaffold an Embabel app", or "generate an Embabel template".
-
-## Common Pitfalls
-
-1. **Forgetting `@Agent` or `@Agentic` on the class** — The agent won't be discovered by the platform
-2. **Not providing `OperationContext`** — Actions need it to access the AI and blackboard
-3. **Confusing execution modes** — SIMPLE vs CONCURRENT (process execution) vs CLOSED vs OPEN (autonomy)
-4. **Not using `@AchievesGoal`** — Without it, the planner can't determine goal satisfaction
-5. **Ignoring tool loop iterations** — Default is 20; increase for complex multi-step agents
-6. **Not setting model per-action** — Using the default model for everything wastes money or sacrifices quality
-7. **Forgetting `.withId()` on LLM calls** — Makes test verification harder and debugging opaque
-8. **Using non-static inner classes for @State** — Causes serialization/persistence issues; use records (Java) or top-level classes (Kotlin)
-9. **Not using `clearBlackboard = true` for looping states** — Planner sees output type already exists and skips
-10. **Allowing LLMs to call sensitive methods** — Always gate with `@Tool`/`@LlmTool`; unannotated methods stay hidden
