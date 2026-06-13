@@ -80,6 +80,33 @@ skill-name/
     └── assets/     - Files used in output (templates, icons, fonts)
 ```
 
+#### Frontmatter Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | Skill identifier |
+| `description` | Yes | When to trigger, what it does. This is the primary triggering mechanism — include both what the skill does AND specific contexts for when to use it. All "when to use" info goes here, not in the body. |
+| `paths` | No | List of glob patterns. Gates model-side discovery: the Skill stays out of the model's `available_skills` listing until a tool call touches a matching file. Globs are matched relative to the project root using [picomatch](https://github.com/micromatch/picomatch). Files outside the project root never trigger activation. |
+| `compatibility` | No | Required tools, dependencies (rarely needed) |
+| `disable-model-invocation` | No | If `true`, hides the Skill from the model entirely — only the user can invoke it via `/<skill-name>` or the `/skills` picker. Combining this with `paths:` has no effect (the Skill is hidden regardless). |
+
+**Path-gating behavior:**
+- A path-gated Skill stays activated for the rest of the session once a matching file is touched.
+- A new session, or a `refreshCache` triggered by editing any Skill file, resets activations.
+- `paths:` only gates model discovery. The user can always invoke a path-gated Skill via `/<skill-name>` regardless of activation state.
+- A slash invocation does **not** unlock model-side activation — if you want the model to chain off your invocation (call `Skill { skill: ... }` itself), also access a file matching the skill's `paths:` first.
+
+**Example:**
+```yaml
+---
+name: tsx-helper
+description: React TSX component helper
+paths:
+  - 'src/**/*.tsx'
+  - 'packages/*/src/**/*.tsx'
+---
+```
+
 #### Progressive Disclosure
 
 Skills use a three-level loading system:
