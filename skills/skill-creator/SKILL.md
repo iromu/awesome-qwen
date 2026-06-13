@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Create, edit, improve, and evaluate skills — structured instructions that capture workflows, procedures, and domain knowledge so Qwen can follow them reliably. Use this skill whenever the user wants to create a new skill, improve an existing one, run evals or benchmarks to test skill quality, optimize a skill's description for better triggering, package a skill, or turn a workflow or procedure into a reusable skill. Also trigger when the user mentions skill authoring, skill development, skill evaluation, skill packaging, or wants to measure how well a skill triggers and performs.
+description: Create, edit, improve, and evaluate skills — structured instructions that capture workflows, procedures, and domain knowledge so Qwen can follow them reliably. Use this skill whenever the user wants to create a new skill, improve an existing one, run evals or benchmarks to test skill quality, optimize a skill's description for better triggering, package a skill, or turn a workflow or procedure into a reusable skill. Also trigger when the user mentions skill authoring, skill development, skill evaluation, skill packaging, or wants to measure how well a skill triggers and performs. Use this skill whenever the user asks to automate any repetitive workflow, create a Qwen extension or agent, or build a reusable prompt template — even if they don't use the word "skill."
 ---
 
 # Skill Creator
@@ -63,7 +63,7 @@ Based on the user interview, fill in these components:
 - **name**: Skill identifier
 - **description**: When to trigger, what it does. This is the primary triggering mechanism - include both what the skill does AND specific contexts for when to use it. All "when to use" info goes here, not in the body. Note: currently Qwen has a tendency to "undertrigger" skills -- to not use them when they'd be useful. To combat this, please make the skill descriptions a little bit "pushy". So for instance, instead of "How to build a simple fast dashboard to display internal company data.", you might write "How to build a simple fast dashboard to display internal company data. Make sure to use this skill whenever the user mentions dashboards, data visualization, internal metrics, or wants to display any kind of company data, even if they don't explicitly ask for a 'dashboard.'"
 - **compatibility**: Required tools, dependencies (optional, rarely needed)
-- **the rest of the skill :)**
+- **body**: The core instructions, examples, and reference material that guide Qwen through the workflow
 
 ### Skill Writing Guide
 
@@ -345,7 +345,7 @@ Understanding the triggering mechanism helps design better eval queries. Skills 
 
 This means your eval queries should be substantive enough that Qwen would actually benefit from consulting a skill. Simple queries like "read file X" are poor test cases — they won't trigger skills regardless of description quality.
 
-### Step 3: Apply the result
+### Step 4: Apply the result
 
 Take `best_description` from the JSON output and update the skill's SKILL.md frontmatter. Show the user before/after and report the scores.
 
