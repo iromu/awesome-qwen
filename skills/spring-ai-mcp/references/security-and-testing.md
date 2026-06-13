@@ -2,7 +2,16 @@
 
 ## MCP Server Security (OAuth 2.0)
 
+> **⚠️ Work In Progress.** MCP security features are marked as WIP. The security
+> artifacts live in the separate `org.springaicommunity` Maven group, not in the
+> core Spring AI distribution.
+
 WebMVC servers only. Requires `mcp-server-security` from `org.springaicommunity`.
+
+**Limitations:**
+- SSE transport not supported — use Streamable HTTP or Stateless
+- WebFlux servers not supported
+- Opaque tokens not supported — use JWT
 
 ### Basic OAuth 2.0 Setup
 
@@ -27,6 +36,9 @@ class McpServerSecurity {
 ```
 
 ### Securing Tool Calls Only
+
+Allow unauthenticated access to the MCP endpoint but require authentication for
+tool execution:
 
 ```java
 @Configuration
@@ -88,15 +100,14 @@ class McpServerSecurity {
 
 Call with header: `X-API-key: api01.mycustomapikey`
 
-### Security Limitations
-
-- SSE transport not supported — use Streamable HTTP or Stateless
-- WebFlux servers not supported
-- Opaque tokens not supported — use JWT
-
 ## MCP Client Security (OAuth 2.0)
 
-Supports `McpSyncClient` only. Requires `mcp-client-security`.
+Supports `McpSyncClient` only. Requires `mcp-client-security` from `org.springaicommunity`.
+
+**Limitations:**
+- WebFlux servers not supported
+- Auto-config initializes clients at app start (workaround needed for user-based auth)
+- SSE transport with HttpClient and WebClient
 
 ### HttpClient-Based Client
 
@@ -128,12 +139,6 @@ WebClient.Builder mcpWebClientBuilder(OAuth2AuthorizedClientManager manager) {
 - **Authorization Code** — User-level permissions, request in user context
 - **Client Credentials** — Machine-to-machine, no human in loop
 - **Hybrid** — Both flows combined
-
-### Client Limitations
-
-- WebFlux servers not supported
-- Auto-config initializes clients at app start (workaround needed for user-based auth)
-- SSE transport with HttpClient and WebClient
 
 ## MCP Testing Patterns
 
@@ -298,3 +303,74 @@ class SecurityTest {
     }
 }
 ```
+
+### Testing with MockMcpTransport
+
+Use `MockMcpTransport` for isolated client tests without a real server process:
+
+```java
+class MockTransportTest {
+
+    @Test
+    void testClientWithMockServer() {
+        var mockTransport = new MockMcpTransport();
+        var client = McpClient.sync(mockTransport)
+            .requestTimeout(Duration.ofSeconds(5))
+            .build()
+            .sync();
+
+        client.initialize(new InitializeRequest(
+            new ClientSpecification("test-client", "1.0.0")));
+        var tools = client.listTools(null);
+        assertThat(tools.tools()).hasSize(3);
+    }
+}
+```
+
+### Testing with @McpServerTest / @McpClientTest
+
+Use these test annotations for full integration testing with MCP auto-config:
+
+```java
+@SpringBootTest
+@McpServerTest
+class McpServerIntegrationTest {
+
+    @Autowired
+    private McpSyncServer mcpServer;
+
+    @Test
+    void serverExposesExpectedTools() {
+        var tools = mcpServer.listTools(null).tools();
+        assertThat(tools).extracting(McpSchema.Tool::name)
+            .contains("get-weather", "get-forecast");
+    }
+}
+```
+
+```java
+@SpringBootTest
+@McpClientTest
+class McpClientIntegrationTest {
+
+    @Autowired
+    private McpSyncClient mcpClient;
+
+    @Test
+    void client_connectsToServer() {
+        var result = mcpClient.initialize(new InitializeRequest(
+            new ClientSpecification("test-client", "1.0.0")));
+        assertNotNull(result);
+    }
+}
+```
+
+### Key Testing Patterns
+
+1. **Test tools as plain beans** — annotated methods are just methods; test them directly
+2. **Use `@SpringBootTest`** for full integration tests with MCP server/client auto-config
+3. **Mock transports** for isolated client/server tests without real processes
+4. **Verify tool registration** — assert that `@McpTool` methods appear in the server's tool list
+5. **Test request context** — verify that `McpSyncRequestContext` methods (logging, progress) work correctly
+6. **Test security** — verify OAuth 2.0 and API key authentication on MCP endpoints
+7. **Use `@McpServerTest` / `@McpClientTest`** for integration tests with auto-configured MCP components

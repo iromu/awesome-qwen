@@ -29,8 +29,9 @@
 
 | Type | Starter | Transport |
 |------|---------|-----------|
-| Sync | `spring-ai-starter-mcp-client` | STDIO, JDK HttpClient SSE/Streamable-HTTP |
-| Async | `spring-ai-starter-mcp-client-webflux` | WebFlux SSE/Streamable-HTTP |
+| Sync (JDK HttpClient) | `spring-ai-starter-mcp-client` | STDIO, JDK HttpClient SSE/Streamable-HTTP |
+| Sync (WebClient) | `spring-ai-starter-mcp-client-webflux` | WebClient Streamable-HTTP, SSE |
+| Async (WebFlux) | `spring-ai-starter-mcp-client-webflux` | WebFlux SSE/Streamable-HTTP |
 
 ## Common Configuration Properties
 
@@ -52,6 +53,8 @@
 | Resources | `spring.ai.mcp.server.capabilities.resource` | `true` |
 | Prompts | `spring.ai.mcp.server.capabilities.prompt` | `true` |
 | Completions | `spring.ai.mcp.server.capabilities.completion` | `true` |
+| Roots | `spring.ai.mcp.server.capabilities.roots` | `false` |
+| Experimental | `spring.ai.mcp.server.capabilities.experimental` | `false` |
 
 ## SSE Configuration
 
@@ -87,7 +90,7 @@ spring:
                 API_KEY: your-key
 ```
 
-### Streamable-HTTP
+### Streamable-HTTP (JDK HttpClient)
 
 ```yaml
 spring:
@@ -99,6 +102,26 @@ spring:
             server1:
               url: http://localhost:8080
               endpoint: /mcp
+              resumable: true
+```
+
+### Streamable-HTTP (WebClient)
+
+When using the WebFlux client starter, the WebClient-based transport is
+auto-configured with the same properties:
+
+```yaml
+spring:
+  ai:
+    mcp:
+      client:
+        streamable-http:
+          connections:
+            server1:
+              url: http://localhost:8080
+              endpoint: /mcp
+              resumable: true
+              protocol-version: 2025-06-18
 ```
 
 ### SSE
@@ -164,3 +187,33 @@ public class CustomPrefixGenerator implements McpToolNamePrefixGenerator {
         return info.initializeResult().serverInfo().name() + "_" + tool.name();
     }
 }
+```
+
+## Server Customization
+
+Implement `McpSyncServerCustomizer` or `McpAsyncServerCustomizer`:
+
+```java
+@Component
+public class CustomSyncServerCustomizer implements McpSyncServerCustomizer {
+    @Override
+    public void customize(McpServer.SyncSpecification spec) {
+        spec.requestTimeout(Duration.ofSeconds(30));
+        spec.instructions("Custom server instructions for clients");
+    }
+}
+```
+
+## Event Listening
+
+Listen for `McpToolsChangedEvent` to react to tool list changes:
+
+```java
+@Component
+public class ToolChangeHandler {
+    @EventListener
+    public void onToolsChanged(McpToolsChangedEvent event) {
+        System.out.println("Tools changed on " + event.getConnectionName());
+    }
+}
+```

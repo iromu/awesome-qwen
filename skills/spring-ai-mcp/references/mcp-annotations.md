@@ -147,6 +147,8 @@ public List<String> completeConfigKey(String prefix) {
 
 ### @McpLogging
 
+Handle logging notifications from MCP servers.
+
 ```java
 @McpLogging(clients = "my-server")
 public void handleLogging(LoggingMessageNotification notification) {
@@ -155,6 +157,8 @@ public void handleLogging(LoggingMessageNotification notification) {
 ```
 
 ### @McpSampling
+
+Handle LLM sampling requests from MCP servers.
 
 ```java
 @McpSampling(clients = "llm-server")
@@ -166,16 +170,31 @@ public CreateMessageResult handleSampling(CreateMessageRequest request) {
 
 ### @McpElicitation
 
+Handle user elicitation requests from MCP servers. Uses the builder pattern
+with `Action.ACCEPT` or `Action.DECLINE`.
+
 ```java
 @McpElicitation(clients = "interactive-server")
 public ElicitResult handleElicitation(ElicitRequest request) {
     Map<String, Object> data = presentFormToUser(request.requestedSchema());
-    return data != null ? new ElicitResult(Action.ACCEPT, data)
-                        : new ElicitResult(Action.DECLINE, null);
+    if (data != null) {
+        return ElicitResult.builder()
+            .action(Action.ACCEPT)
+            .message("User accepted")
+            .requestedSchema(data)
+            .build();
+    }
+    return ElicitResult.builder()
+        .action(Action.DECLINE)
+        .message("User declined")
+        .build();
 }
 ```
 
 ### @McpProgress
+
+Handle progress notifications from MCP servers. The `ProgressNotification` type
+provides `progress()` (0.0–1.0) and `message()` fields.
 
 ```java
 @McpProgress(clients = "my-server")
@@ -186,6 +205,15 @@ public void handleProgress(ProgressNotification notification) {
 ```
 
 ### @McpToolListChanged, @McpResourceListChanged, @McpPromptListChanged
+
+Handle list change notifications from MCP servers that declare the `listChanged`
+capability. When a server's tool, resource, or prompt list changes, it sends a
+notification to connected clients.
+
+**MCP Spec Context:** Servers that declare the `listChanged` capability in their
+`capabilities` during initialization will send these notifications whenever their
+corresponding list is modified. Clients should implement handlers to react to
+these changes (e.g., refresh caches, update registries).
 
 ```java
 @McpToolListChanged(clients = "tool-server")
@@ -240,7 +268,9 @@ public String tool(McpMeta meta) {
 
 ### @McpProgressToken
 
-Injected progress token, excluded from JSON schema:
+Injected progress token, excluded from JSON schema. Use this parameter to track
+progress for a specific tool call:
+
 ```java
 @McpTool
 public String tool(@McpProgressToken String token) {
