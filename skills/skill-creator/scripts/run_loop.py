@@ -300,7 +300,11 @@ def main():
             "<html><body><h1>Starting optimization loop...</h1>"
             "<meta http-equiv='refresh' content='5'></body></html>"
         )
-        webbrowser.open(str(live_report_path))
+        try:
+            webbrowser.open(str(live_report_path))
+        except Exception:
+            # Headless environment — no display available
+            pass
     else:
         live_report_path = None
 

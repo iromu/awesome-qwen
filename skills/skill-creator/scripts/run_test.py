@@ -274,7 +274,6 @@ def run_tests(
         for future in as_completed(future_to_info):
             eval_item, config = future_to_info[future]
             completed += 1
-            result = future_to_info.get(future, (eval_item, config))
             try:
                 r = future.result()
                 results.append(r)

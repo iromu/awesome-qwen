@@ -183,7 +183,7 @@ def run_single_query(
                                 clean_name in str(tool_input) or skill_name in str(tool_input)
                             ):
                                 triggered = True
-                            return triggered
+                        return triggered
 
                     elif event.get("type") == "result":
                         return triggered
