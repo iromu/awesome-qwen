@@ -65,6 +65,10 @@ The `SKILL.md` should include:
 - Pitfalls and edge cases
 - Verification checklist
 
+**Constraints:**
+- **SKILL.md must not exceed 500 lines** (or the length is justified)
+- **The frontmatter `description` field must not exceed 1024 characters** — this is the primary trigger text Qwen uses to decide whether to invoke the skill, so keep it concise and packed with trigger keywords
+
 ### Step 4: Update the Awesome List README
 
 After creating a skill, update `README.md` to include it in the skills table. Use the **update-awesome-readme** skill for this.
@@ -109,6 +113,7 @@ awesome-qwen/
 After improving a skill (or a batch of skills), verify the following:
 
 - [ ] No SKILL.md exceeds 500 lines (or the length is justified)
+- [ ] The frontmatter `description` field does not exceed 1024 characters
 - [ ] All skills have trigger phrases in their frontmatter `description`
 - [ ] All skills have a "When NOT to Use" section
 - [ ] No dead references exist (every `reference/*.md` pointer resolves to an actual file)
