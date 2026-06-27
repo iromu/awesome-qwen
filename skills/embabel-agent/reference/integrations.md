@@ -177,7 +177,7 @@ embabel:
 
 ### Migration Notes
 
-Older versions used different property names. Check the migration guide in `reference/migrating.md` for upgrade instructions.
+Older versions used different property names. Check the migration guide in `migrating.md` for upgrade instructions.
 
 ## A2A (Agent-to-Agent)
 

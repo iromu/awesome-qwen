@@ -69,6 +69,23 @@ The `SKILL.md` should include:
 - **SKILL.md must not exceed 500 lines** (or the length is justified)
 - **The frontmatter `description` field must not exceed 1024 characters** — this is the primary trigger text Qwen uses to decide whether to invoke the skill, so keep it concise and packed with trigger keywords
 
+
+    YAML Frontmatter: The SKILL.md frontmatter requires two fields:
+    
+    name:
+    
+    Maximum 64 characters
+    Must contain only lowercase letters, numbers, and hyphens
+    Cannot contain XML tags
+    Cannot contain reserved words: "anthropic", "claude"
+    description:
+    
+    Must be non-empty
+    Maximum 1024 characters
+    Cannot contain XML tags
+    Should describe what the Skill does and when to use it
+
+
 ### Step 4: Update the Awesome List README
 
 After creating a skill, update `README.md` to include it in the skills table. Use the **update-awesome-readme** skill for this.
