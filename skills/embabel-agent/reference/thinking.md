@@ -81,3 +81,6 @@ Embabel exposes thinking through a provider-neutral API:
 Under the hood, provider integrations translate thinking options to provider-specific capabilities (e.g., Google GenAI maps to `includeThoughts` and `thinkingBudget`). No new application-level thinking API is required — existing applications should continue using Embabel's generic thinking API rather than provider-specific configuration.
 
 Some providers expose reasoning on the assistant message itself; others expose it through generation metadata. As a result, the presence and shape of extracted thinking blocks may vary by provider and Spring AI integration version.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

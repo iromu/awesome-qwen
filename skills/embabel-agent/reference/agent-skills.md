@@ -150,3 +150,6 @@ var loader = new DefaultDirectorySkillDefinitionLoader(false);
 
 - **Script execution** — Skills with `scripts/` directories are loaded, but script execution is not yet supported. A warning is logged.
 - **`allowed-tools` field** — The `allowed-tools` frontmatter field is parsed but not currently enforced.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

@@ -191,3 +191,6 @@ The `OrderProcessor` carries private state (`discounts` map) that the LLM can in
 - **Evolution** — adding new `@Tool` methods to domain objects extends agent capabilities
 
 This approach ensures agents work with meaningful business entities rather than generic data structures, leading to more natural and effective AI interactions.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

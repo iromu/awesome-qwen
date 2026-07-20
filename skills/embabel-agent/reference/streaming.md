@@ -85,3 +85,6 @@ Because Embabel uses Spring Reactive Programming, you can compose streams with a
 - Always set a timeout to prevent indefinite hangs
 - Use `.blockLast()` to synchronously consume the stream (useful in tests)
 - For async consumption, use `.subscribe()` instead of `.blockLast()`
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

@@ -293,3 +293,6 @@ DrivineStore drivineStore(PersistenceManager pm, EmbeddingService es, ChunkTrans
 ## Implementing a Custom Store
 
 Implement only the `SearchOperations` subinterfaces that fit your store. A vector database implements only `VectorSearch`; a full-text engine implements `TextSearch` + `RegexSearchOperations`; a full-featured store like Lucene implements all. `ToolishRag` automatically exposes only the tools your store supports — no stub implementations needed. For ingestion support, extend `ChunkingContentElementRepository`.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

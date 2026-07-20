@@ -445,3 +445,6 @@ verifyCreateObjectMatching(
 8. **Access tools via `getInteraction().getTools()`** (actual tools from `withToolObject()`/`withTool()`), and tool groups via `getInteraction().getToolGroups()` (named requirements from `withToolGroup()`). Most tests should use `getTools()`.
 9. **For integration tests with real LLM providers**, configure the model via `@SpringBootTest(properties = { "embabel.models.default-llm=..." })` and use `withDefaultLlm()` so the model is changeable without code changes.
 10. **Building Gen AI applications is no different from building other software** -- test from the outset, not as an afterthought.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

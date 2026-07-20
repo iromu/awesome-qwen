@@ -137,3 +137,6 @@
 **Impact:** Slow tests, non-deterministic results, API costs.
 
 **Fix:** Use `FakePromptRunner` with `expectResponse()` for deterministic, fast unit tests.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

@@ -401,3 +401,6 @@ var tool = UnfoldingTool.fromInstance(new DatabaseTools());
 - **Tool chaining uses last-wins semantics** — only the most recent artifact of a type is active
 - **Async/reactive types are not supported** as tool parameters or return types
 - **Lazy MCP init requires three properties** — both Spring AI flags and `embabel.agent.platform.tools.lazy-init=true`
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

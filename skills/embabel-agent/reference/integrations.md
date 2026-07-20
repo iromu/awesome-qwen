@@ -213,7 +213,7 @@ class NewsDigestAgent {
     @Action
     fun extractTopic(userInput: UserInput, context: OperationContext): NewsTopic { ... }
 
-    @AchievesGoal(description = "Produce news digest",
+    @Goal(description = "Produce news digest",
                   export = Export(remote = true, name = "newsDigest",
                                   startingInputTypes = [UserInput::class]))
     @Action
@@ -230,7 +230,7 @@ public class NewsDigestAgent {
     @Action
     public NewsTopic extractTopic(UserInput userInput, OperationContext context) { ... }
 
-    @AchievesGoal(description = "Produce news digest",
+    @Goal(description = "Produce news digest",
                   export = @Export(remote = true, name = "newsDigest",
                                    startingInputTypes = {UserInput.class}))
     @Action
@@ -405,3 +405,6 @@ MCP tools are discovered at startup and registered as `Tool` beans. Use `McpTool
 ## Agent-to-Agent (A2A)
 
 A2A enables agents to communicate across process boundaries. Configure A2A cards and task definitions for inter-agent workflows.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

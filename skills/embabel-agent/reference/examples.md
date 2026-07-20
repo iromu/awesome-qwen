@@ -85,4 +85,6 @@ All source code, including the horoscope and movies agents, is available at:
 
 **[github.com/embabel/embabel-agent-examples](https://github.com/embabel/embabel-agent-examples)**
 
-For deeper dives into `ToolCallContext` (including `@LlmTool` injection and `ToolCallContextMcpMetaConverter`), see the Embabel reference documentation.
+For deeper dives into `ToolCallContext` (including `@LlmTool` injection and `ToolCallContextMcpMetaConverter`), see the Embabel reference documentation.---
+
+*Source: Embabel Agent v1.0.0 documentation*

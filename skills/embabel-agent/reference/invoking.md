@@ -315,3 +315,6 @@ embabel.agent.platform.rest.process-status-enabled=false
 embabel.agent.platform.rest.process-kill-enabled=false
 embabel.agent.platform.rest.process-events-enabled=false
 ```
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

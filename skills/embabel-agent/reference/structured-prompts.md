@@ -181,3 +181,6 @@ List<LmmReference> references = LlmReferenceProviders.fromYml("references.yml");
 - Implement custom `PromptContributor` for domain-specific content
 - Use `LlmReference` when you need both content and tools from the same source
 - Test contributions to verify desired LLM behavior
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

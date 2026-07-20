@@ -298,3 +298,6 @@ Since `@State` classes must be static nested or top-level classes, `@Provided` i
 9. **`@Export` on `@Goal`** — Use `@Export(remote = true)` on `@Goal` methods for MCP publishing, not on regular `@Action` methods.
 
 10. **`readOnly` actions** — `readOnly = true` actions only analyze data without modifying external systems (APIs, databases, files). Useful for learning/catchup modes.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

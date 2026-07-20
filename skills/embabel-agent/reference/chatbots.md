@@ -383,3 +383,6 @@ See the [rag-demo project](https://github.com/embabel/rag-demo) for a complete c
 - Goals are optional — omit for open-ended conversations, add for transactional flows
 - Use `@Cost` methods for dynamic action selection based on blackboard state
 - Assets track structured outputs at conversation and message levels
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

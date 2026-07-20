@@ -272,3 +272,6 @@ Always use HTTPS in production for REST and SSE endpoints. Configure your revers
 - [ ] Set up monitoring/alerting for process failures and SSE events
 - [ ] Configure backup for `ContextRepository` if using persistent context
 - [ ] On Java 25+, verify container CPU limits are sufficient for parallelism needs
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

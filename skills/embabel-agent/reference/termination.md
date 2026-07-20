@@ -109,3 +109,6 @@ Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a s
 | **Action** | Graceful | `terminateAction(ctx, reason)` | "Finish current tool, then stop action" — allow next action |
 | **Action** | Immediate | `throw TerminateActionException(reason)` | "Stop now" — try a different approach |
 | **Process** | Policy | `EarlyTerminationPolicy` | Hard cap on actions or budget — last-resort safeguard |
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

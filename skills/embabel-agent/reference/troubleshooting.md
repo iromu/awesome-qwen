@@ -19,7 +19,7 @@ Common issues when developing with Embabel agents and how to resolve them.
 
 **Fix:**
 1. Check that the input type matches an action's parameter type
-2. Verify at least one action has `@AchievesGoal`
+2. Verify at least one action has `@Goal`
 3. Ensure action postconditions form a valid chain to the goal
 4. Enable debug logging: `embabel.agent.platform.logging.level: DEBUG`
 5. Use `ProcessOptions.builder().withVerbose(true).build()`
@@ -127,15 +127,15 @@ Common issues when developing with Embabel agents and how to resolve them.
 **Symptom:** Agent cannot execute — no terminal action found.
 
 **Fix:**
-1. Use `@AchievesGoal` on the terminal action that defines completion
-2. Every agent needs at least one action marked with `@AchievesGoal`
+1. Use `@Goal` on the terminal action that defines completion
+2. Every agent needs at least one action marked with `@Goal`
 
 ### Agent Not Visible to MCP Client
 
 **Symptom:** MCP clients (Claude Desktop, etc.) can't see the agent.
 
 **Fix:**
-1. Add `@Export(remote=true)` to the `@AchievesGoal` annotation
+1. Add `@Export(remote=true)` to the `@Goal` annotation
 2. Verify MCP server is running and accessible
 3. Check Docker configuration if using the default Docker MCP Gateway
 4. Verify Spring AI MCP client configuration
@@ -156,7 +156,7 @@ Common issues when developing with Embabel agents and how to resolve them.
 | Issue | Quick Fix |
 |-------|-----------|
 | Agent not discovered | Add `@Agent` / `@Agentic` / `@Bean(Agent)` in component scan path |
-| Planner can't find plan | Check `@AchievesGoal`, valid type chains, enable `DEBUG` logging |
+| Planner can't find plan | Check `@Goal`, valid type chains, enable `DEBUG` logging |
 | Blackboard type not found | Ensure type was added by a prior action; check nullability |
 | State transitions broken | Annotate with `@State`; use static nested classes (Java); set `clearBlackboard` |
 | Custom conditions not working | Add `post` conditions on setters, `pre` conditions on consumers |
@@ -167,8 +167,8 @@ Common issues when developing with Embabel agents and how to resolve them.
 | Tools not available | Call `withToolGroup()` / `withTools()` on `PromptRunner` |
 | Poor results | Tune persona, temperature, model, context; test actual vs expected |
 | Can't express plan | Use `ScatterGatherBuilder`, `RepeatUntilBuilder`, custom conditions |
-| No goals | Annotate terminal action with `@AchievesGoal` |
-| MCP not visible | Add `@Export(remote=true)` on `@AchievesGoal` |
+| No goals | Annotate terminal action with `@Goal` |
+| MCP not visible | Add `@Export(remote=true)` on `@Goal` |
 | MCP tools error | Verify Docker MCP Gateway or Spring AI MCP client config |
 
 ---
@@ -197,3 +197,6 @@ logging:
 ### Getting Help
 
 The Embabel community is active and helpful. Join their [Discord](https://discord.gg/t6bjkyj93q) server to ask questions and share experiences.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

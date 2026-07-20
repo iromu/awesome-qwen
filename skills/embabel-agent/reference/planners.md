@@ -48,7 +48,7 @@ public class TravelAgent {
     @Action
     public HotelInfo searchHotels(FlightInfo flight, Ai ai) { ... }
 
-    @AchievesGoal(description = "Complete travel plan with flight and hotel")
+    @Goal(description = "Complete travel plan with flight and hotel")
     @Action
     public TravelPlan compilePlan(FlightInfo flight, HotelInfo hotel, Ai ai) { ... }
 }
@@ -225,7 +225,7 @@ public class MarketResearchAgent {
             CompetitorAnalysis.class);
     }
 
-    @AchievesGoal(description = "Compile all information into a final report")
+    @Goal(description = "Compile all information into a final report")
     @Action(description = "Compile the final report")
     public FinalReport compileReport(ReportRequest request, Ai ai) {
         return ai.withDefaultLlm().createObject(
@@ -294,3 +294,6 @@ public class DataProcessor {
 <3> `costMethod` references the `@Cost` method by name.
 
 You can also compute dynamic **value** using `valueMethod` in the same way.
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

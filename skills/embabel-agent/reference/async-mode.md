@@ -123,3 +123,6 @@ Or override ForkJoinPool parallelism at startup:
 ```bash
 java -Djava.util.concurrent.ForkJoinPool.common.parallelism=4 -jar agent.jar
 ```
+---
+
+*Source: Embabel Agent v1.0.0 documentation*

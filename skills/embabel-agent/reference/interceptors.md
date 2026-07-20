@@ -178,3 +178,6 @@ var result = ai.withDefaultLlm()
 - Multiple inspectors and transformers can be chained
 - `ToolCallInspector` is a lightweight alternative to `ToolLoopInspector` when history context is not needed
 - Built-ins cover common patterns: logging, truncation, sliding window
+---
+
+*Source: Embabel Agent v1.0.0 documentation*
