@@ -197,6 +197,4 @@ Key differences:
 | Python tool functions | `@Tool` / `@LlmTool` JVM methods |
 | Checkpointing for persistence | Blackboard + context IDs for session state |
 
-## Migrating from Google ADK
-
-TBD — see the Embabel documentation for updates.
+TBD.
