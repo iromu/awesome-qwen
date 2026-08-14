@@ -85,7 +85,14 @@ Define action methods in an `@EmbabelComponent` that respond to user messages:
 ```java
 @EmbabelComponent
 public class ChatActions {
+
     private final ToolishRag toolishRag;
+    private final RagbotProperties properties;
+
+    public ChatActions(SearchOperations searchOperations, RagbotProperties properties) {
+        this.toolishRag = new ToolishRag("sources", "Sources for answering user questions", searchOperations);
+        this.properties = properties;
+    }
 
     @Action(canRerun = true, trigger = UserMessage.class)
     void respond(Conversation conversation, ActionContext context) {
@@ -101,7 +108,12 @@ public class ChatActions {
 
 ```kotlin
 @EmbabelComponent
-class ChatActions {
+class ChatActions(
+    searchOperations: SearchOperations,
+    private val properties: RagbotProperties
+) {
+    private val toolishRag = ToolishRag("sources", "Sources for answering user questions", searchOperations)
+
     @Action(canRerun = true, trigger = UserMessage::class)
     fun respond(conversation: Conversation, context: ActionContext) {
         val assistantMessage = context.ai()

@@ -217,8 +217,6 @@ val story = context.ai()
 | `withTool(Subagent.ofClass(...))` | Enable handoff to another agent |
 | `withToolObject(Object)` | Expose `@Tool` methods on a domain object |
 | `rendering(String)` | Use Jinja templates for the prompt |
-| `withThinking(Thinking)` | Enable native reasoning mode (e.g. GLM) |
-| `withStreaming(Boolean)` | Enable streaming responses |
 | `withToolNotFoundPolicy(ToolNotFoundPolicy)` | Control tool-name recovery strategy |
 
 ### Full Chain Example
@@ -226,20 +224,20 @@ val story = context.ai()
 ```java
 String answer = context.ai()
     .withLlm(LlmOptions.fromCriteria(
-            ModelSelectionCriteria.getAuto()))
+            ModelSelectionCriteria.getAuto())
+            .withThinking(Thinking.withTokenBudget(2048)))
     .withToolGroup(CoreToolGroups.WEB)
     .withId("research-topic")
-    .withThinking(Thinking.withTokenBudget(2048))
     .createObject("Research and summarize: " + topic, Answer.class);
 ```
 
 ```kotlin
 val answer = context.ai()
     .withLlm(LlmOptions.fromCriteria(
-        ModelSelectionCriteria.getAuto()))
+        ModelSelectionCriteria.getAuto())
+        .withThinking(Thinking.withTokenBudget(2048)))
     .withToolGroup(CoreToolGroups.WEB)
     .withId("research-topic")
-    .withThinking(Thinking.withTokenBudget(2048))
     .createObject("Research and summarize: $topic", Answer::class.java)
 ```
 
@@ -377,12 +375,14 @@ Native structured output enables the model provider to enforce a JSON Schema dir
 ### Usage
 
 ```java
-var options = LlmOptions.withModel(OpenAiModels.GPT_4O)
-    .withNativeStructuredOutput(NativeStructuredOutputMode.ENABLED);
+var options = withNativeStructuredOutput(
+    LlmOptions.fromModel(OpenAiModels.GPT_4O),
+    NativeStructuredOutputMode.ENABLED
+);
 ```
 
 ```kotlin
-val options = LlmOptions.withModel(OpenAiModels.GPT_4O)
+val options = LlmOptions.fromModel(OpenAiModels.GPT_4O)
     .withNativeStructuredOutput(NativeStructuredOutputMode.ENABLED)
 ```
 

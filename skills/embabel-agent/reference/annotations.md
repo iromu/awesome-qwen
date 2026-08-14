@@ -13,16 +13,6 @@ public class WriteAndReviewAgent { ... }
 
 **Must provide `description`** — used by the LLM in agent selection.
 
-## @Agentic Annotation
-
-Sibling of `@Agent` for marking classes that participate in the agent framework.
-Auto-registered via Spring component scanning (enabled by default via `embabel.agent.platform.scanning.annotation`).
-
-```java
-@Agentic(description = "Generates reports from data")
-public class ReportAgent { ... }
-```
-
 ## @EmbabelComponent — Action Container
 
 Exposes actions, goals, and conditions for use by agents without being an agent itself. Most useful with the **Utility AI planner**.
