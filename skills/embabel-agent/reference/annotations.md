@@ -268,7 +268,7 @@ Since `@State` classes must be static nested or top-level classes, `@Provided` i
 
 ## Common Pitfalls
 
-1. **`@AchievesGoal` not `@Goal`** — Embabel v1.0.0 uses `@AchievesGoal` (not `@Goal`). Use `@AchievesGoal` everywhere.
+1. **`@AchievesGoal` not `@Goal`** — Embabel uses `@AchievesGoal` (not `@Goal`). Use `@AchievesGoal` everywhere.
 
 2. **`clearBlackboard` on goal actions** — Avoid using `clearBlackboard = true` on `@AchievesGoal` methods. Clearing removes `hasRun` tracking conditions, interfering with goal satisfaction.
 
@@ -289,4 +289,4 @@ Since `@State` classes must be static nested or top-level classes, `@Provided` i
 10. **`readOnly` actions** — `readOnly = true` actions only analyze data without modifying external systems (APIs, databases, files). Useful for learning/catchup modes.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.0 documentation*

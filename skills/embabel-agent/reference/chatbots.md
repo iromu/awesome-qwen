@@ -359,6 +359,32 @@ conversation.addMessage(message);
 
 `Conversation.assets` provides a **merged view** — tracker assets first, then message assets in chronological order, with duplicates removed by ID (tracker version wins).
 
+### Assets as Tools
+
+Assets can be exposed to the LLM as tools via their `LlmReference`:
+
+```java
+// Get references from recent assets
+List<LlmReference> refs = conversation.mostRecent(5).references();
+
+var assistantMessage = context.ai()
+    .withLlm(properties.chatLlm())
+    .withReferences(refs)  // Assets become available as tools
+    .respond(conversation.getMessages());
+```
+
+```kotlin
+// Get references from recent assets
+val refs = conversation.mostRecent(5).references()
+
+val assistantMessage = context.ai()
+    .withLlm(properties.chatLlm())
+    .withReferences(refs)  // Assets become available as tools
+    .respond(conversation.messages)
+```
+
+This is useful for combining multiple assets, allowing the LLM to query across them, or when assets have `@Tool` methods that the LLM should use.
+
 ### Resilient Responses
 
 Use `respond()` instead of `respondWithSystemPrompt()` for error handling:
@@ -397,4 +423,4 @@ See the [rag-demo project](https://github.com/embabel/rag-demo) for a complete c
 - Assets track structured outputs at conversation and message levels
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.0 documentation*

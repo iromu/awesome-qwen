@@ -434,6 +434,23 @@ embabel:
           max-retries: 3  # Default: 3
 ```
 
+### ToolNotFoundPolicy
+
+Control tool-name recovery strategy:
+
+| Policy | Behavior |
+|--------|----------|
+| `AutoCorrectionPolicy` (default) | Feeds back "did you mean X?" suggestion to the model |
+| `ImmediateThrowPolicy` | Throws immediately on unknown tool name — no retry |
+
+Set programmatically:
+
+```kotlin
+ai.withDefaultLlm()
+    .withToolNotFoundPolicy(ImmediateThrowPolicy())
+    .createObject("...", Result::class.java)
+```
+
 ### Iteration Headroom
 
 Recovery costs LLM calls. If you enable retry policies, raise `max-iterations` so a turn that needs an extra round trip doesn't run out of budget:
@@ -450,4 +467,32 @@ These settings are off-by-default so existing deployments using strong models be
 
 ---
 
-*Source: Embabel Agent v1.0.0 documentation — `reference/llms` and `reference/types`*
+## Custom Embedding Service
+
+Implement a custom embedding service independent of Spring AI for providers not supported by Spring AI, custom pre/post-processing, or proprietary embedding APIs.
+
+### The EmbeddingService Interface
+
+```java
+public interface EmbeddingService {
+    float[] embed(String text);
+    List<float[]> embed(List<String> texts);
+    int getDimensions();
+    String getName();
+    String getProvider();
+}
+```
+
+```kotlin
+interface EmbeddingService {
+    fun embed(text: String): FloatArray
+    fun embed(texts: List<String>): List<FloatArray>
+    val dimensions: Int
+}
+```
+
+Register as a Spring bean and it will be automatically discovered by the RAG subsystem.
+
+---
+
+*Source: Embabel Agent v1.5.0 documentation — `reference/llms` and `reference/types`*
