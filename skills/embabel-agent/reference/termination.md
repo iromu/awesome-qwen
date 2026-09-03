@@ -111,4 +111,4 @@ Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a s
 | **Process** | Policy | `EarlyTerminationPolicy` | Hard cap on actions or budget — last-resort safeguard |
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

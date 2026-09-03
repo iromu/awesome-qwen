@@ -42,4 +42,4 @@ Works with both Community and Ultimate editions (merged into a single distributi
 Plugin source: https://github.com/embabel/embabel-agent-intellij
 
 ---
-*Source: Embabel Agent v1.5.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

@@ -139,4 +139,4 @@
 **Fix:** Use `FakePromptRunner` with `expectResponse()` for deterministic, fast unit tests.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

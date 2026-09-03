@@ -93,6 +93,8 @@ embabel:
 
 **Rule:** `shared=true` enables executor sharing only when both app and Embabel use the same threading model. When models differ, Embabel always creates an isolated executor.
 
+**Caveat on `shared=true`:** Embabel may use the application's `applicationTaskExecutor` when the application and Embabel use the same threading model. If that executor is bounded and uses `CallerRunsPolicy`, saturated executor workers and a full queue can cause Embabel async work to run on the submitting application thread. Embabel preserves `AgentProcess` context in this case, but this configuration couples agent execution to application executor backpressure and may affect request latency. Use executor sharing deliberately.
+
 ## Java 25 & Container CPU Limits
 
 Java 25 accurately reads container cgroup CPU limits, which can cause `availableProcessors() = 1` in constrained containers and serialize ForkJoinPool-based parallelism.
@@ -125,4 +127,4 @@ java -Djava.util.concurrent.ForkJoinPool.common.parallelism=4 -jar agent.jar
 ```
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation — `reference/asynch-mode`*

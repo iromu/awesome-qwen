@@ -40,7 +40,19 @@ public class LlmsConfig {
 
 ### OpenAI-Compatible LLMs
 
-Extend `OpenAiCompatibleModelFactory` to register OpenAI-compatible providers as beans:
+Built-in OpenAI-compatible providers are available as static factories on `OpenAiCompatibleModelFactory` — use them directly for user-supplied keys (e.g., BYOK):
+
+```kotlin
+// DeepSeek (OpenAI-compatible endpoint)
+val service: LlmService<*> = OpenAiCompatibleModelFactory.deepSeek(userKey).buildValidated()
+
+// Atlas Cloud (OpenAI-compatible endpoint)
+val service: LlmService<*> = OpenAiCompatibleModelFactory.atlasCloud(userKey).buildValidated()
+```
+
+`buildValidated()` makes a single probe call with no retries.
+
+Extend `OpenAiCompatibleModelFactory` to register your own OpenAI-compatible providers as beans:
 
 ```java
 @Configuration
@@ -116,7 +128,8 @@ public class EmbeddingModelsConfig {
 - `SpringAiLlmService` wraps any Spring AI `ChatModel`
 - Use `OptionsConverter` to map `LlmOptions` → provider-specific options
 - Add a knowledge cutoff date for temporal awareness
-- Extend `OpenAiCompatibleModelFactory` for OpenAI-compatible providers
+- Use `OpenAiCompatibleModelFactory.<provider>(userKey).buildValidated()` for built-in OpenAI-compatible providers (DeepSeek, Mistral, Gemini, Atlas Cloud)
+- Extend `OpenAiCompatibleModelFactory` for custom OpenAI-compatible providers
 - Embedding models use `SpringAiEmbeddingService` with the same pattern
 
-*Source: Embabel Agent v1.0.0 documentation — `reference/customizing`*
+*Source: Embabel Agent v1.5.1 documentation — `reference/customizing`*

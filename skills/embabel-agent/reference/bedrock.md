@@ -111,4 +111,4 @@ Model type must be either `titan` or `cohere`.
 
 ---
 
-*Source: Embabel Agent v1.0.0 documentation — `reference/bedrock`*
+*Source: Embabel Agent v1.5.1 documentation — `reference/bedrock`*

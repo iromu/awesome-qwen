@@ -22,6 +22,7 @@ Decouples code from specific models:
 | `embabel.models.default-llm` | String | `gpt-4.1-mini` | Default LLM name |
 | `embabel.models.default-embedding-model` | String | `null` | Default embedding model |
 | `embabel.models.llms` | Map\<String, String\> | `{}` | Role to LLM name map |
+| `embabel.models.roles` | Map\<String, Map\<String, LlmRoleConfig\>\> | `{}` | Roles with a provider dimension (nested) |
 | `embabel.models.embedding-services` | Map\<String, String\> | `{}` | Role to embedding service map |
 
 ```yaml
@@ -37,6 +38,47 @@ embabel:
       fast: text-embedding-3-small
       accurate: text-embedding-3-large
 ```
+
+### Roles Across Providers
+
+The flat `llms` map names one model per role, and a model belongs to one provider — right for a deployment keyed for one provider. For BYOK apps or provider failover, give the role a provider dimension with `roles`:
+
+```yaml
+embabel:
+  models:
+    default-llm: gpt-4.1-mini
+    roles:
+      cheapest:
+        openai:
+          model: gpt-4.1-nano
+        anthropic:
+          model: claude-haiku-4-5
+          temperature: 0.3   # tuning configured against the role+provider
+      best:
+        openai:
+          model: gpt-4.1
+        anthropic:
+          model: claude-sonnet-4-6
+```
+
+Call sites do not change: `ai.withLlmByRole("cheapest")` resolves against whichever provider is active for the call. With no user key in play, that is the provider supplying the `default-llm`, so a single-provider deployment needs nothing further. Anything the caller sets explicitly still wins over role configuration.
+
+A role that cannot be satisfied — the active provider has no entry for it, or the model it names is not registered — throws `NoSuitableModelException` at the point of use. It never silently falls back to the `default-llm`.
+
+Startup validation:
+
+| Configuration | At startup | Notes |
+|---|---|---|
+| Keyed deployment, `llms` names an unregistered model | Fails | A typo — the message names the role and available models |
+| Keyed deployment, `roles` names an unregistered model under the deployment's own provider | Fails | Same rule as the flat map |
+| Keyed deployment, `roles` names a model under *any other* provider | Not checked | That entry applies when a user brings a key for that provider |
+| Deployment awaiting a key (BYOK, `default-llm` resolving to the placeholder) | Warns | Roles resolve to the placeholder until a key arrives; the error names the role and model it wanted |
+
+A role reached through a user's own credential is resolved per call against that provider's entry only — it never falls back to the flat `llms` map, so a user's key must not silently select a model the deployment pays for.
+
+To read what a role is *declared* to mean (for a settings screen or diagnostics), use `ModelProvider.configuredOptionsForRole(role)` — it answers against the deployment's own provider, ignoring user keys and application resolvers. Use `resolveLlmOptions` when you need to know what a specific call will really do.
+
+See `reference/llm-integration.md` for `RoleResolver` beans and `CredentialEndpointResolver` for custom providers.
 
 ## Platform Configuration
 
@@ -436,4 +478,4 @@ Experimental modules: `embabel-agent-discord`, `embabel-agent-remote`, `embabel-
 
 ---
 
-*Source: Embabel Agent v1.0.0 documentation — `reference/configuration`, `reference/llms`, `reference/asynch-mode`*
+*Source: Embabel Agent v1.5.1 documentation — `reference/configuration`, `reference/llms`, `reference/asynch-mode`*

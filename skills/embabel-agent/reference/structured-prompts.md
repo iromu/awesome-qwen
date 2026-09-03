@@ -191,4 +191,4 @@ The [embabel-agent-examples](https://github.com/embabel/embabel-agent-examples) 
 - Test contributions to verify desired LLM behavior
 ---
 
-*Source: Embabel Agent v1.5.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

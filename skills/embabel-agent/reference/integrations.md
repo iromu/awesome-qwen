@@ -407,4 +407,4 @@ MCP tools are discovered at startup and registered as `Tool` beans. Use `McpTool
 A2A enables agents to communicate across process boundaries. Configure A2A cards and task definitions for inter-agent workflows.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

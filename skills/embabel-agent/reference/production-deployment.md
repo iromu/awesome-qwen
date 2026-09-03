@@ -274,4 +274,4 @@ Always use HTTPS in production for REST and SSE endpoints. Configure your revers
 - [ ] On Java 25+, verify container CPU limits are sufficient for parallelism needs
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

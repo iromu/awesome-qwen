@@ -189,4 +189,4 @@ Any `@Bean` method returning `Agent` triggers auto-registration, equivalent to a
 All builders are type-safe and share the `.returning()`, `.buildAgent(name, description)` API. Use `.asSubProcess(context)` to run inline within another agent's execution.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

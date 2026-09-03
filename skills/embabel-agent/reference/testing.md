@@ -334,6 +334,27 @@ Integration testing exercises complete agent workflows with real or mock externa
 
 Embabel integration testing is built on top of [Spring's integration testing support](https://docs.spring.io/spring-framework/reference/testing/integration.html), allowing you to work with real databases. Spring's integration with [Testcontainers](https://docs.spring.io/spring-boot/reference/testing/testcontainers.html) is particularly useful.
 
+### Running the Repository Integration Test Suite
+
+Tests whose names end in `IT` are excluded from the default `mvn test` run. Run the complete integration test suite with:
+
+```bash
+mvn -Pintegration-tests test
+```
+
+Tests that require credentials or live services are skipped when their environment variables are absent. Configure only the integrations you want to exercise:
+
+- `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `DEEPSEEK_API_KEY`, `MISTRAL_API_KEY`, `GEMINI_API_KEY`, `GOOGLE_GENAI_API_KEY`, `DASHSCOPE_API_KEY`, `ZAI_API_KEY`
+- `OLLAMA_BASE_URL` for tests using a local Ollama service
+- `EMBABEL_RUN_ONNX_INTEGRATION_TESTS` to opt into the slow Hugging Face model download
+- `GOOGLE_PROJECT_ID` plus `EMBABEL_RUN_VERTEX_INTEGRATION_TESTS` for Vertex AI tests (also need application default credentials: `gcloud auth application-default login`)
+
+Self-contained integration tests still run when none of these variables are set. Use Maven's `-pl` option to limit the run to a module:
+
+```bash
+mvn -Pintegration-tests test -pl embabel-agent-openai
+```
+
 ### Using EmbabelMockitoIntegrationTest
 
 Embabel provides `EmbabelMockitoIntegrationTest` as a base class that simplifies integration testing with convenient helper methods.
@@ -447,4 +468,4 @@ verifyCreateObjectMatching(
 10. **Building Gen AI applications is no different from building other software** -- test from the outset, not as an afterthought.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation — `reference/testing`*

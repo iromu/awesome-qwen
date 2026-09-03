@@ -356,4 +356,4 @@ When `process-type: CONCURRENT` is configured, the platform uses `ConcurrentAgen
 
 ---
 
-*Source: Embabel Agent v1.5.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

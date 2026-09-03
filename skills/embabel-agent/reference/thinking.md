@@ -71,11 +71,39 @@ for (ThinkingBlock block : thinkingBlocks) {
 }
 ```
 
+## Thinking Tag Control
+
+Without changing your prompt, control which XML-tagged reasoning blocks the model produces and returns:
+
+- `includedTags` — keep only blocks wrapped in the named tags; the model is automatically instructed (via a system prompt hint) to use those tags for its reasoning
+- `excludedTags` — drop blocks with specific tag names while keeping all others
+
+Only named TAG blocks are affected. Untagged reasoning (PREFIX and NO_PREFIX style blocks) always passes through.
+
+```java
+// Only return the "analysis" reasoning block; model is guided to use that tag
+ThinkingResponse<MonthItem> response = runner
+        .thinking(Thinking.withIncludedTags("analysis"))
+        .createObject(prompt, MonthItem.class);
+
+// Drop "scratchpad" blocks, keep all others
+ThinkingResponse<MonthItem> response2 = runner
+        .thinking(Thinking.withExcludedTags("scratchpad"))
+        .createObject(prompt, MonthItem.class);
+```
+
+```kotlin
+val response = runner
+        .thinking(Thinking.withIncludedTags("analysis"))
+        .createObject(prompt, MonthItem::class.java)
+```
+
 ## Provider Notes
 
 Embabel exposes thinking through a provider-neutral API:
 
 - `PromptRunner.thinking()` — enable thinking on a runner
+- `PromptRunner.thinking(Thinking)` — enable with tag control (`withIncludedTags`, `withExcludedTags`)
 - `LlmOptions.thinking` — configure thinking at the options level
 
 Under the hood, provider integrations translate thinking options to provider-specific capabilities (e.g., Google GenAI maps to `includeThoughts` and `thinkingBudget`). No new application-level thinking API is required — existing applications should continue using Embabel's generic thinking API rather than provider-specific configuration.
@@ -83,4 +111,4 @@ Under the hood, provider integrations translate thinking options to provider-spe
 Some providers expose reasoning on the assistant message itself; others expose it through generation metadata. As a result, the presence and shape of extracted thinking blocks may vary by provider and Spring AI integration version.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation — `reference/thinking`*

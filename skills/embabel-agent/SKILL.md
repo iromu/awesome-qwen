@@ -1,10 +1,10 @@
 ---
 name: embabel-agent
 description: >-
-  Build agentic AI on the JVM with Embabel v1.5.0 — Rod Johnson's Spring-based framework for authoring agents that combine LLMs with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor). Use when creating agents with @Agent or @EmbabelComponent, annotating actions (@Action), goals (@AchievesGoal), conditions (@Condition), and tools (@LlmTool, @Tool); publishing agents as MCP servers with @Export(remote=true); managing agent state with @State and transitions; configuring LLM providers (OpenAI, Anthropic, Gemini, GenAI, DeepSeek, Ollama, LM Studio, Bedrock, OCI, Mistral, Z.ai native, DashScope, Docker Models, MiniMax, BYOK); implementing RAG with ToolishRAG; writing tests with FakeOperationContext; adding interceptors, guardrails, cost tracking, streaming, thinking, and termination; building chatbots with triggers; using DSL builders, UtilityInvocation, OneShotPerLoopTool, ToolCallContext, ConcurrentAgentProcess; custom LLM integration via LlmMessageSender and EmbeddingService; troubleshooting and migrating from CrewAI, Pydantic AI, or LangGraph.
+  Build agentic AI on the JVM with Embabel v1.5.1 — Spring-based framework combining LLMs with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor). Use when creating agents with @Agent, @Action, @AchievesGoal, @Condition, @LlmTool, @Tool; publishing agents as MCP servers with @Export(remote=true); managing state with @State; configuring providers (OpenAI, Anthropic, Gemini, DeepSeek, Ollama, LM Studio, Bedrock, OCI, Mistral, Z.ai, DashScope, Docker Models, MiniMax, Atlas Cloud, BYOK) and per-provider roles (embabel.models.roles, RoleResolver); RAG with ToolishRAG; embedding-based skill selection with EmbeddingSkillSelector; testing with FakeOperationContext; interceptors, guardrails, cost tracking, streaming (StringResult), thinking tags, termination; chatbots with triggers; DSL builders, UtilityInvocation, OneShotPerLoopTool, ToolCallContext, ConcurrentAgentProcess; custom LLM integration via LlmMessageSender and EmbeddingService; troubleshooting and migrating from CrewAI, Pydantic AI, or LangGraph.
 ---
 
-# Embabel Agent Framework (v1.5.0)
+# Embabel Agent Framework (v1.5.1)
 
 Build agentic AI on the JVM with **Embabel** — a Spring-based framework for authoring agentic flows that mix LLM-prompted interactions with code and domain models. Created by Rod Johnson (creator of Spring), it uses non-LLM AI planning (GOAP, Utility AI, Hybrid, Supervisor) to find intelligent paths toward goals.
 
@@ -67,8 +67,19 @@ Embabel release binaries are published to **Maven Central** — no snapshot repo
 > **Z.ai:** Now uses native `spring-ai-zhipuai` client (not OpenAI-compatible). Supports GLM 5.2, native reasoning/thinking, temperature clamping `(0.0, 1.0]`. See `reference/zai.md`.
 >
 > **DashScope:** Alibaba Cloud Qwen 3.7 family (Max/Plus/Flash). OpenAI-compatible with parameter clamping. See `reference/dashscope.md`.
+>
+> **Atlas Cloud:** OpenAI-compatible endpoint for BYOK deployments — built via `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `reference/customizing.md`.
 
 See `reference/configuration.md` for full provider config details.
+
+## New in v1.5.1
+
+- **Roles across providers** — `embabel.models.roles` gives each role a provider dimension (BYOK, failover). `RoleResolver` beans decide per user; `ModelSelectionContextHolder` carries the user context across threads. Unsatisfiable roles throw `NoSuitableModelException` — never a silent fallback. See `reference/llm-integration.md`, `reference/configuration.md`.
+- **Embedding-based skill selection** — `EmbeddingSkillSelector` picks up to 2 skills by embedding similarity (frontmatter `metadata: activation: embedding`, default threshold 0.30, fail-open). See `reference/agent-skills.md`.
+- **Atlas Cloud** — built-in OpenAI-compatible factory: `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `reference/customizing.md`.
+- **Streaming scalar types** — `StringResult` wrapper for streaming plain-text scalars. See `reference/streaming.md`.
+- **Thinking tag control** — `Thinking.withIncludedTags(...)` / `withExcludedTags(...)`. See `reference/thinking.md`.
+- **Z.ai native provider** — first-class `embabel-agent-starter-zai` (GLM family, native thinking). See `reference/zai.md`.
 
 ## Agent Authoring
 
@@ -123,9 +134,7 @@ See `reference/domain.md` for DICE best practices.
 
 See `reference/tools.md` for full details.
 
-## IDE Tooling
-
-Install the **Embabel Agent IntelliJ IDEA plugin** (ID `31142`) to suppress false "never used" warnings on `@Action`, `@Condition`, and `@Cost` methods. Compatible with IDEA 2023.3+ (JVM 21+). See `reference/tooling.md`.
+> **IDE:** The Embabel Agent IntelliJ plugin (ID `31142`) suppresses false "never used" warnings on `@Action`/`@Condition`/`@Cost` methods. See `reference/tooling.md`.
 
 ## Planning Algorithms
 
@@ -160,21 +169,14 @@ See `reference/dsl.md` for all builder types.
 
 ## Execution Modes
 
-- **SIMPLE** (default): Sequential, one action at a time
-- **CONCURRENT**: All achievable actions run in parallel via virtual threads
+- **SIMPLE** (default): Sequential, one action at a time — predictable, easy to debug
+- **CONCURRENT**: All achievable actions run in parallel via virtual threads — higher throughput, actions must be concurrent-safe
 
 Set: `embabel.agent.platform.process-type: CONCURRENT`
 
 **ConcurrentAgentProcess behavior:**
-- Uses virtual threads via Spring's task executor
 - `ReplanRequestedException`: Only the first request is honored; subsequent ones are dropped
 - Blacklisted actions are prevented from immediate re-execution
-- Actions must be concurrent-safe
-
-| Mode | When to use | Trade-offs |
-|------|-------------|------------|
-| `SIMPLE` | Sequential pipelines, ordered actions | Predictable, easy to debug |
-| `CONCURRENT` | Independent parallel sub-tasks | Higher throughput, concurrent-safe actions required |
 
 **Autonomy:** Closed (LLM picks one agent) vs Open (LLM picks goal, assembles from all actions).
 
@@ -216,32 +218,11 @@ public class ChatbotActions {
 }
 ```
 
-### Dynamic Costs with @Cost
-
-```java
-@Cost(name = "ragCost")
-public double computeRagCost(@Nullable KnowledgeBase kb) {
-    return kb != null ? 0.3 : 0.9;
-}
-
-@Action(costMethod = "ragCost")
-public RagResponse ragAnswer(UserMessage msg, Ai ai) { ... }
-```
-
-### Context IDs and Session State
-
-```java
-ChatSession session = chatbot.createSession(user, outputChannel, "project-alpha", null);
-```
-
-The `contextId` pre-populates the session's blackboard with objects from a named context, enabling stateful conversations across restarts.
+For dynamic costs (`@Cost`/`costMethod`), context IDs (pre-populate the session blackboard from a named context for stateful conversations across restarts), and conversation storage (`embabel.agent.platform.conversation-store: STORED`), see `reference/chatbots.md`.
 
 ### Goals in Chatbots
 
 Typically, chatbot agents **do not need a goal** — the process waits indefinitely. Define a goal only for transactional conversations (e.g., completing a booking).
-
-- **Conversation Storage:** `embabel.agent.platform.conversation-store: STORED` (default: IN_MEMORY)
-- **Context IDs:** Pre-populate session blackboard with objects from a named context
 
 See `reference/chatbots.md` for full chatbot patterns.
 
@@ -293,7 +274,7 @@ See `reference/integrations.md` for MCP server/client, security, observability, 
 ## Testing
 
 - **Unit tests:** Use `FakeOperationContext.create()` and `context.expectResponse()`
-- **Integration tests:** Extend `EmbelMockitoIntegrationTest`, use `whenCreateObject()` and `verifyCreateObjectMatching()`
+- **Integration tests:** Extend `EmbabelMockitoIntegrationTest`, use `whenCreateObject()` and `verifyCreateObjectMatching()`
 - **Always use `.withId("...")`** on LLM calls for traceability
 
 See `reference/testing.md` for more patterns.
@@ -320,9 +301,7 @@ For topics not covered in detail above, consult the reference files:
 
 ## Configuration
 
-Always include the full `embabel:` block with models, planner settings, execution mode, logging, and tool configuration.
-
-See `reference/configuration.md` for full property reference.
+Properties live under `embabel:` (models, planner, execution mode, logging, tool loop). See `reference/configuration.md` for the full property reference.
 
 ## Threading & Async Mode
 
@@ -390,19 +369,6 @@ Explore the [embabel-agent-examples](https://github.com/embabel/embabel-agent-ex
 - **FactChecker**: Multi-LLM fact-checking with ScatterGather, ConsensusBuilder, parallel execution, and MCP publishing
 - **Horoscope**: Human-in-the-loop with WaitFor, cost-based planning, domain tools
 
-## When to Use Embabel
-
-| Scenario | Why Embabel Fits |
-|----------|-----------------|
-| LLM-driven decision making | Planner picks best action sequence dynamically |
-| Domain-driven planning | DICE pattern — data and behavior in one type |
-| Multi-step agentic workflows | GOAP/Utility/Hybrid/Supervisor planners |
-| Human-in-the-loop workflows | `WaitFor.formSubmission()` with state management |
-| Agent composition | `Subagent.ofClass()`, ScatterGather, ConsensusBuilder |
-| MCP server publishing | `@Export(remote=true)` auto-publishes goals as tools |
-| Chatbots with memory | Long-lived `AgentProcess` with blackboard state |
-| Cost-aware planning | `@Cost`/`costMethod` lets planner pick cheapest path |
-
 ## When NOT to Use Embabel
 
 | Scenario | Better Alternative | Why |
@@ -414,10 +380,6 @@ Explore the [embabel-agent-examples](https://github.com/embabel/embabel-agent-ex
 | Simple chatbot with fixed flow | State machine library | No need for LLM-driven planning |
 | High-throughput microservices | Standard Spring Boot | Planning loop adds latency |
 | Batch ETL jobs | Spring Batch, Airflow | No agent planning needed |
-
-**Use Embabel when:** LLM-driven decision making, domain-driven planning, mixing LLM calls with code, human-in-the-loop workflows, agent composition.
-
-**Avoid Embabel when:** Fully deterministic workflows, sub-millisecond response times, simple CRUD APIs, single LLM call agents.
 
 ## Production Deployment
 

@@ -130,4 +130,4 @@ The LLM gains access to `customer.getLoyaltyDiscount()` and `customer.isPremiumE
 This approach ensures agents work with meaningful business entities rather than generic data structures, leading to more natural and effective AI interactions.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

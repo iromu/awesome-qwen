@@ -101,6 +101,45 @@ When skills are added as a reference, the agent can:
 - Activate skills to get full instructions
 - List and read skill resources
 
+### Selecting Skills by Embedding
+
+Lazy activation asks the model to choose: it reads the descriptions, decides a skill is relevant, and calls `activate`. That works for procedural skills, but for skills carrying *reference knowledge* — domain conventions, formulas, terminology — the decision is the weak point: a model confident in a wrong answer never reaches for help.
+
+`EmbeddingSkillSelector` offers a second activation mode: choose skills by similarity between the query and each skill's `description`, and inject the instructions directly. No tool call, no model decision, one embedding call.
+
+A skill opts in through the specification's open `metadata` map, so it stays portable — other Agent Skills runtimes ignore the key:
+
+```yaml
+---
+name: financial-metric-formulas
+description: Derived financial metrics and how to compute them from statement line items -
+  quick ratio, current ratio, EBITDA, operating and gross margin, CAGR, free cash flow.
+metadata:
+  activation: embedding
+---
+```
+
+The natural way to use it with a `PromptRunner` is as a `PromptContributor`:
+
+```java
+var selector = new EmbeddingSkillSelector(embeddingService);
+
+var response = context.ai()
+    .withLlm(llm)
+    .withPromptContributor(selector.contributorFor(question, skills))
+    .respond(conversation.getMessages());
+```
+
+The contributor is lazy: selection happens when the prompt is assembled, so a runner that is configured and never used costs no embedding call. Callers assembling a prompt by hand can use `guidanceFor(query, skills)` for the same content as a string, or `select(...)` for the chosen skills and their scores.
+
+Notes:
+
+- Skills without `activation: embedding` are never selected this way, so existing skill libraries are unaffected.
+- Similarity discriminates by subject, not by difficulty. A selected skill is injected for every question in its subject area, so its instructions must be safe to inject whenever the subject matches.
+- `description` is what gets embedded: write it in the vocabulary of the questions the skill serves.
+- The default threshold (`0.30`) and maximum (2 skills) are constructor parameters. Similarity scores are not calibrated across embedding models — tune the threshold if you change the model.
+- Selection is fail-open: an embedding failure yields no skills rather than an error.
+
 ### Combining with Other References
 
 Skills can be combined with other `LlmReference` implementations:
@@ -150,6 +189,14 @@ var loader = new DefaultDirectorySkillDefinitionLoader(false);
 
 - **Script execution** — Skills with `scripts/` directories are loaded, but script execution is not yet supported. A warning is logged.
 - **`allowed-tools` field** — The `allowed-tools` frontmatter field is parsed but not currently enforced.
+
+## Choosing an Activation Mode
+
+| Mode | Use when |
+|------|----------|
+| Lazy `activate` (default) | Procedural skills the model should decide to reach for |
+| `EmbeddingSkillSelector` | Reference-knowledge skills (formulas, conventions, terminology) the model may confidently get wrong |
+
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation — `reference/agent_skills`*

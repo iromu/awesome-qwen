@@ -386,4 +386,4 @@ var tool = UnfoldingTool.fromInstance(new DatabaseTools());
 - **Lazy MCP init requires three properties** — both Spring AI flags and `embabel.agent.platform.tools.lazy-init=true`
 ---
 
-*Source: Embabel Agent v1.5.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

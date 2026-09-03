@@ -199,4 +199,4 @@ logging:
 The Embabel community is active and helpful. Join their [Discord](https://discord.gg/t6bjkyj93q) server to ask questions and share experiences.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

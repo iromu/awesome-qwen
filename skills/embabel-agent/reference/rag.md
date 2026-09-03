@@ -175,7 +175,7 @@ context.ai().withReference(eagerRag).respondWithSystemPrompt(conversation, Map.o
 
 For more control, pass a `TextSimilaritySearchRequest` directly: `new TextSimilaritySearchRequest("Kotlin coroutines", 0.7, 10)`.
 
-Eager search requires `VectorSearch` support. Preloaded results are included as hints — the LLM still has full access to search tools for follow-up queries.
+Eager search requires `VectorSearch` support. Preloaded results are included as hints — the LLM still has full access to search tools for follow-up queries. Any metadata and entity filters configured on the `ToolishRag` are applied to eager search as well as subsequent tool searches.
 
 ## Result Filtering
 
@@ -212,6 +212,8 @@ ToolishRag scopedRag = toolishRag
 ```
 
 Filters are applied transparently — the LLM cannot see or bypass them. Neo4j translates both filter types to native Cypher WHERE clauses; Spring AI VectorStore handles metadata natively, entities in-memory; Lucene applies both as post-filters.
+
+Non-entity results such as chunks pass through entity filters unchanged, so an entity filter can be used with searches that return both chunks and entities.
 
 ## Ingestion
 
@@ -295,4 +297,4 @@ DrivineStore drivineStore(PersistenceManager pm, EmbeddingService es, ChunkTrans
 Implement only the `SearchOperations` subinterfaces that fit your store. A vector database implements only `VectorSearch`; a full-text engine implements `TextSearch` + `RegexSearchOperations`; a full-featured store like Lucene implements all. `ToolishRag` automatically exposes only the tools your store supports — no stub implementations needed. For ingestion support, extend `ChunkingContentElementRepository`.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation — `reference/rag`*

@@ -110,4 +110,4 @@ Wire the listener and guardrail into the same agent process. The listener accumu
 > **NOTE:** For a hard cap on the agent process itself (e.g. "stop this run after $1 of total spend"), see `EarlyTerminationPolicy`. Use it standalone or alongside the Budget Guardrail as a safety net.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

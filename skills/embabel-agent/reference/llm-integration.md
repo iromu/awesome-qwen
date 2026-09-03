@@ -135,6 +135,69 @@ ai.withLlmByRole("best")
 
 ---
 
+## Roles Across Providers (v1.5.1)
+
+The flat `llms` map above binds each role to one model of one provider. For BYOK applications or provider failover, `embabel.models.roles` gives each role a provider dimension — see `reference/configuration.md` for the YAML shape and startup validation rules. Call sites are unchanged: `ai.withLlmByRole("cheapest")` resolves against whichever provider is active for the call, and an unsatisfiable role throws `NoSuitableModelException` at the point of use (never a silent fallback to `default-llm`).
+
+### Resolving Roles in Code
+
+Register a `RoleResolver` bean to decide what a role means per user rather than per deployment. Resolvers are consulted in `Ordered` order, ahead of the configuration, and returning `null` delegates to the next one:
+
+```kotlin
+@Component
+class ByokRoleResolver(
+    private val userKeyStore: UserKeyStore,
+) : RoleResolver {
+
+    override fun resolve(role: String, context: ModelSelectionContext): RoleResolution? =
+        context.userId
+            ?.let { userKeyStore.activeKeyFor(it) }
+            ?.let { RoleResolution.Credential(ProviderCredential(it.provider, it.apiKey)) }
+}
+```
+
+| Resolution Type | Behavior |
+|---|---|
+| `RoleResolution.Credential` | Hands back a key; the platform looks up the role under that provider, builds the service, and caches it per (provider, key, model) |
+| `RoleResolution.Options` | Names a model and its tuning directly |
+| `RoleResolution.Service` | Supplies an `LlmService` you built yourself |
+
+`embabel-agent-starter-byok` already knows where to send a key for every provider BYOK supports — Anthropic, OpenAI, DeepSeek, Mistral, Gemini and Atlas Cloud. The resolver above is all the code a deployment using any of them needs.
+
+The `ModelSelectionContext` a resolver receives comes from `ModelSelectionContextHolder`, which the application sets at its request boundary:
+
+```kotlin
+ModelSelectionContextHolder.with(ModelSelectionContext(userId = currentUserId)) {
+    agentPlatform.runAgent(...)
+}
+```
+
+The platform carries the context across the threads it starts itself (background agent runs, parallel actions, `OperationContext.parallelMap`), so setting it once at the request boundary is enough. It does not reach threads your own code spawns — capture it there with `ModelSelectionContextHolder.get()` and re-establish it inside the new thread.
+
+### Adding a Provider of Your Own
+
+For a provider the starter does not cover — a gateway, a proxy, a self-hosted endpoint — register a `CredentialEndpointResolver`. It says where a key goes and what the service built from it should call itself; the platform builds the client:
+
+```kotlin
+@Bean
+fun ourGatewayEndpoint() = CredentialEndpointResolver { credential, _ ->
+    if (!credential.provider.equals("OurGateway", ignoreCase = true)) null
+    else CredentialEndpoint.OpenAiCompatible(provider = "OurGateway", baseUrl = GATEWAY_URL)
+}
+```
+
+The case names the wire protocol, which decides the client: `OpenAiCompatible` (OpenAI itself, DeepSeek, Mistral, Gemini, Atlas Cloud and most gateways) or `Anthropic`. Both carry `pricingModel` (defaults to `PricingModel.ALL_YOU_CAN_EAT` — a BYOK call is billed to the user's key, not the deployment) and `knowledgeCutoffDate` (null unless you know it for the model the role named).
+
+Your resolvers are asked first, in `Ordered` order, and the starter's built-in endpoints are the fallback — so answering for a provider the framework handles overrides it (that's how you route OpenAI through your own proxy). Return `null` for a provider you do not handle: a resolver that answers for everything would point someone else's key at your endpoint. If nothing handles the provider, the role fails with `NoSuitableModelException`.
+
+For a wire protocol the framework has no client for, register a `CredentialLlmServiceFactory` instead and build the service yourself. That one names `LlmService` (an SPI type application code should not otherwise depend on), which is why it is the second choice.
+
+### Reading What a Role Is Configured to Mean
+
+`ModelProvider.configuredOptionsForRole(role)` answers "what does this deployment declare this role to be" — against the deployment's own provider, ignoring user keys and application resolvers. Use `resolveLlmOptions` when you need to know what a specific call will really do.
+
+---
+
 ## The Ai Interface
 
 `Ai` is the top-level entry point for all Embabel AI operations. Inject it like any Spring bean via constructor injection, or access it through `OperationContext.ai()`.
@@ -495,4 +558,4 @@ Register as a Spring bean and it will be automatically discovered by the RAG sub
 
 ---
 
-*Source: Embabel Agent v1.5.0 documentation — `reference/llms` and `reference/types`*
+*Source: Embabel Agent v1.5.1 documentation — `reference/llms` and `reference/types`*

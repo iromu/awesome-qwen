@@ -313,4 +313,4 @@ List<AssistantMessageGuardRail> assistantGuards = GlobalGuardRailsRegistry.getAs
 Guardrails and bean validation are complementary; `@SecureAgentTool` is orthogonal -- it enforces access control, not content safety.
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*

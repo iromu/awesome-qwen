@@ -70,6 +70,29 @@ results
         .blockLast(Duration.ofSeconds(6000));
 ```
 
+## Streaming Scalar Types
+
+`createObjectStreamWithThinking` expects the target class to produce a JSON object schema (`{...}`). Passing `String.class` directly makes the LLM emit bare JSON strings such as `"July - 29°C"` instead of JSON objects — the streaming parser cannot recognize these as structured output events and misclassifies them as thinking content.
+
+Wrap scalars in `StringResult` from `com.embabel.common.ai.converters.streaming`:
+
+```java
+import com.embabel.common.ai.converters.streaming.StringResult;
+
+Flux<StreamingEvent<StringResult>> results = new StreamingPromptRunnerBuilder(runner)
+        .streaming()
+        .withPrompt(prompt)
+        .createObjectStreamWithThinking(StringResult.class);
+
+results.doOnNext(event -> {
+    if (event.isObject()) {
+        String value = event.getObject().getValue();  // unwrap the scalar
+    }
+});
+```
+
+`StringResult` produces schema `{"type":"object","properties":{"value":{"type":"string"}}}`, so the LLM returns `{"value":"..."}` which is correctly parsed and emitted as an `isObject()` event.
+
 ## Reactive Callbacks
 
 Because Embabel uses Spring Reactive Programming, you can compose streams with any `Flux` operator:
@@ -85,6 +108,7 @@ Because Embabel uses Spring Reactive Programming, you can compose streams with a
 - Always set a timeout to prevent indefinite hangs
 - Use `.blockLast()` to synchronously consume the stream (useful in tests)
 - For async consumption, use `.subscribe()` instead of `.blockLast()`
+- Streaming scalar values? Wrap them in `StringResult` — bare `String.class` targets get misclassified as thinking events
 ---
 
-*Source: Embabel Agent v1.0.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation — `reference/streaming`*

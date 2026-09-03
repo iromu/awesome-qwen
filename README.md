@@ -70,7 +70,7 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [code-review](skills/code-review) | Automated code review with security, performance, and quality checks | `review` `security` `quality` |
 | [database-migration](skills/database-migration) | Create database migrations, write rollback scripts, and perform zero-downtime schema changes across PostgreSQL, MySQL, and SQLite | `database` `migration` `sql` `schema` |
 | [docker-containerize](skills/docker-containerize) | Dockerize applications with optimized multi-stage builds, security hardening, and best practices | `docker` `containers` `multi-stage` |
-| [embabel-agent](skills/embabel-agent) | Build agentic AI applications on the JVM with Embabel — a Spring-based framework by Rod Johnson for agents mixing LLMs with code and planning algorithms | `jvm` `spring` `agents` |
+| [embabel-agent](skills/embabel-agent) | Build agentic AI applications on the JVM with Embabel v1.5.1 — a Spring-based framework by Rod Johnson for agents mixing LLMs with code and planning algorithms; per-provider roles, embedding-based skill selection, streaming, and 15+ LLM providers | `jvm` `spring` `agents` |
 | [embabel-chatbot](skills/embabel-chatbot) | Build agentic chatbots with RAG, guardrails, reasoning, and custom chat extensions | `chatbot` `rag` `jvm` |
 | [embabel-dice](skills/embabel-dice) | Build proposition-based knowledge graphs for AI agents — structured, confidence-weighted memory with entity resolution | `knowledge-graph` `memory` `jvm` |
 | [embabel-drivine4j](skills/embabel-drivine4j) | Type-safe graph database clients for Neo4j, FalkorDB, Amazon Neptune, and Memgraph | `graph` `neo4j` `jvm` |

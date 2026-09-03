@@ -9,4 +9,4 @@ Embabel makes a clean distinction between its **API** and **SPI** (Service Provi
 
 ---
 
-*Source: Embabel Agent v1.0.0 documentation — `reference/api-spi`*
+*Source: Embabel Agent v1.5.1 documentation — `reference/api-spi`*

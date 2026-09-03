@@ -423,4 +423,4 @@ See the [rag-demo project](https://github.com/embabel/rag-demo) for a complete c
 - Assets track structured outputs at conversation and message levels
 ---
 
-*Source: Embabel Agent v1.5.0 documentation*
+*Source: Embabel Agent v1.5.1 documentation*
