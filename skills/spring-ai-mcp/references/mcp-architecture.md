@@ -53,58 +53,114 @@ The session layer handles:
 
 ### Layer 3: Transport
 
-The transport layer handles message serialization/deserialization over different
-protocols. Implement `McpTransport` for custom transports:
+The transport layer handles message serialisation/deserialisation over different
+protocols. The root contract is `io.modelcontextprotocol.spec.McpTransport`; its real
+members are narrower than they look, and there is no `start()`/`stop()`/`onMessage()`
+triple to implement:
 
 ```java
+// io.modelcontextprotocol.spec
 public interface McpTransport {
-    void initialize();
-    void sendMessage(Object message);
-    void start();
-    void stop();
-    void onMessage(Consumer<Object> handler);
+    Mono<Void> closeGracefully();
+    Mono<Void> sendMessage(JSONRPCMessage message);
+    <T> T unmarshalFrom(Object data, TypeRef<T> typeRef);
+
+    default void close() { /* ... */ }
+    default List<String> protocolVersions() { /* ... */ }
+    static boolean isPeerClosed(Throwable t) { /* ... */ }
 }
 ```
 
+Two sub-contracts split the roles, and concrete transports implement one of these
+rather than `McpTransport` directly:
+
+```java
+public interface McpClientTransport extends McpTransport {
+    Mono<Void> connect(Function<Mono<McpSchema.JSONRPCMessage>,
+                         Mono<McpSchema.JSONRPCMessage>> handler);
+    default void setExceptionHandler(Consumer<Throwable> handler) { /* ... */ }
+}
+
+public interface McpServerTransport extends McpTransport { }
+```
+
+Server-side providers implement `McpServerTransportProvider` /
+`McpServerTransportProviderBase`, and the streamable/stateless shapes have their own
+contracts (`McpStreamableServerTransport`, `McpStreamableServerTransportProvider`,
+`McpStatelessServerTransport`) — all in `io.modelcontextprotocol.spec`.
+
 ## Transport Hierarchy
 
+Every name below is a real class at `v2.0.1`. Note that the interfaces live in
+`io.modelcontextprotocol.spec` while the implementations live in the
+`…client.transport` / `…server.transport` packages.
+
 ```
-McpTransport (interface)
-├── StdioTransport (STDIO — standard I/O)
-├── SseTransport (SSE — Server-Sent Events)
-│   ├── WebMvcSseTransport (Spring WebMVC)
-│   └── WebFluxSseTransport (Spring WebFlux)
-├── StreamableHttpTransport (Streamable HTTP)
-│   ├── WebMvcStreamableHttpTransport
-│   ├── WebFluxStreamableHttpTransport
-│   └── WebClientStreamableHttpTransport (client-side, WebClient-based)
-└── StatelessTransport (Stateless HTTP)
-    ├── WebMvcStatelessTransport
-    └── WebFluxStatelessTransport
+McpTransport (interface, io.modelcontextprotocol.spec)
+├── McpClientTransport (interface)
+│   ├── StdioClientTransport                      (STDIO)
+│   ├── HttpClientSseClientTransport              (SSE, JDK HttpClient)
+│   └── HttpClientStreamableHttpTransport         (Streamable HTTP, JDK HttpClient)
+└── McpServerTransport (interface)
+    ├── StdioServerTransportProvider              (STDIO)
+    ├── HttpServletSseServerTransportProvider      (SSE, servlet)
+    ├── HttpServletStreamableServerTransportProvider (Streamable HTTP, servlet)
+    └── HttpServletStatelessServerTransport        (Stateless, servlet)
 ```
+
+Spring AI contributes its own adapters on top, implementing the same contracts:
+
+| Package | Classes |
+|---------|---------|
+| `org.springframework.ai.mcp.client.webflux.transport` | `WebFluxSseClientTransport`, `WebClientStreamableHttpTransport` |
+| `org.springframework.ai.mcp.server.webflux.transport` | `WebFluxSseServerTransportProvider`, `WebFluxStreamableServerTransportProvider`, `WebFluxStatelessServerTransport` |
+| `org.springframework.ai.mcp.server.webmvc.transport` | `WebMvcSseServerTransportProvider`, `WebMvcStreamableServerTransportProvider`, `WebMvcStatelessServerTransport` |
+
+Names that do **not** exist upstream and should not be written: `StdioTransport`,
+`SseTransport`, `StreamableHttpTransport`, `StatelessTransport`, `WebMvcSseTransport`,
+`WebMvcStreamableHttpTransport`, `WebFluxStreamableHttpTransport`,
+`WebMvcStatelessTransport`, `WebFluxStatelessTransport`. Server-side classes end in
+`…ServerTransportProvider` (or `…ServerTransport` for the stateless one), and
+client-side SSE/Streamable classes carry the `HttpClient` prefix.
 
 ## Protocol Version Negotiation
 
 The SDK supports multiple MCP protocol versions. During initialization, the
 client and server negotiate the highest mutually supported version.
 
-| Version | Release | Features |
-|---------|---------|----------|
-| `2024-11-05` | Original | Base protocol, tools, resources, prompts |
-| `2025-03-26` | Streamable HTTP | Streamable HTTP transport, resumable streams |
-| `2025-06-18` | Latest Stable | Stability improvements, bug fixes |
-| `2025-11-25` | Future | Planned features |
+| Constant | Wire value | Notes |
+|----------|-----------|-------|
+| `MCP_2024_11_05` | `2024-11-05` | Base protocol, tools, resources, prompts |
+| `MCP_2025_03_26` | `2025-03-26` | Streamable HTTP transport, resumable streams |
+| `MCP_2025_06_18` | `2025-06-18` | Stability improvements, bug fixes |
+| `MCP_2025_11_25` | `2025-11-25` | Defined constant — not a placeholder or a future date |
+
+All four are declared on `io.modelcontextprotocol.spec.ProtocolVersions`, which is a
+`public interface` of `String` constants (so the fields are implicitly
+`public static final`). `2025-11-25` is shipped and referenceable, so do not label it
+"planned" or "future".
 
 ### Version Configuration
 
-The SDK auto-selects the highest supported version. To force a specific version:
+The SDK negotiates automatically, so most code sets nothing. To constrain what you
+advertise, pass the list on the **transport builder** — the version list belongs to the
+transport, not to `McpClient.SyncSpec`:
 
 ```java
-McpClient.SyncSpec spec = McpClient.sync()
-    .protocolVersion("2025-06-18")
-    .build()
-    .sync();
+McpClientTransport transport = HttpClientStreamableHttpTransport
+    .builder("http://localhost:8080")
+    .endpoint("/mcp")
+    .supportedProtocolVersions(List.of(ProtocolVersions.MCP_2025_06_18))
+    .build();
+
+McpSyncClient client = McpClient.sync(transport)   // transport is required
+    .requestTimeout(Duration.ofSeconds(30))
+    .build();                                       // build() already yields McpSyncClient
 ```
+
+`McpClient.sync(...)` has no no-argument overload — it takes an `McpClientTransport`
+(`static SyncSpec sync(McpClientTransport transport)`), and `SyncSpec.build()` returns
+`McpSyncClient` directly, so a trailing `.sync()` after `.build()` is wrong.
 
 ## WebClient Streamable HTTP Transport
 
@@ -121,19 +177,24 @@ of the Streamable HTTP transport for MCP clients.
 
 ### Configuration
 
+`builder(...)` takes a `WebClient.Builder` — there is no no-arg `builder()` and no
+`url(...)`/`resumable(...)`/`protocolVersion(...)`/`webClient(...)` setter. The
+available setters are `webClientBuilder(WebClient.Builder)`, `endpoint(String)`,
+`resumableStreams(boolean)`, `openConnectionOnStartup(boolean)`,
+`supportedProtocolVersions(List<String>)` and `jsonMapper(McpJsonMapper)`:
+
 ```java
-WebClientStreamableHttpTransport transport = WebClientStreamableHttpTransport.builder()
-    .webClient(webClient)
-    .url("http://localhost:8080/mcp")
-    .resumable(true)
-    .protocolVersion("2025-06-18")
+WebClientStreamableHttpTransport transport = WebClientStreamableHttpTransport
+    .builder(WebClient.builder())
+    .endpoint("http://localhost:8080/mcp")
+    .resumableStreams(true)
+    .supportedProtocolVersions(List.of(ProtocolVersions.MCP_2025_06_18))
     .jsonMapper(customMapper)
     .build();
 
 McpSyncClient client = McpClient.sync(transport)
     .requestTimeout(Duration.ofSeconds(30))
-    .build()
-    .sync();
+    .build();
 ```
 
 ### Boot Starter Configuration

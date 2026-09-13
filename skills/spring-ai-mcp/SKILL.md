@@ -5,9 +5,10 @@ description: >-
   clients with Boot Starters, annotations, security, and testing. Use this
   skill whenever the user asks about Spring AI MCP, building MCP servers or
   clients, MCP annotations (@McpTool, @McpResource, @McpPrompt, @McpComplete,
-  @McpLogging, @McpSampling, @McpElicitation, @McpProgress, @McpToolListChanged),
+  @McpLogging, @McpSampling, @McpElicitation, @McpProgress, @McpProgressToken,
+  @McpToolListChanged, @McpResourceListChanged, @McpPromptListChanged),
   MCP configuration, Spring AI 2.0 MCP migration, MCP security (OAuth 2.0,
-  API keys), MCP testing, MCP customization (McpToolFilter, customizers,
+  API keys), MCP testing, MCP customization (McpToolFilter, McpClientCustomizer,
   name prefix generators), MCP architecture, or MCP native image support.
   Trigger on any mention of MCP in a Spring context, even if the user says
   "model context protocol", "MCP server", "MCP client", "McpTool annotation",
@@ -21,6 +22,12 @@ description: >-
 Build production-ready Spring AI MCP applications — servers that expose tools,
 resources, and prompts to AI models, and clients that consume MCP servers.
 
+> **Verified against** `spring-projects/spring-ai` `v2.0.1` and the MCP Java SDK
+> `modelcontextprotocol/java-sdk` `v2.0.1` (spring-ai pins it via
+> `<mcp.sdk.version>`). Identifier names and packages in this skill were checked
+> against those tags; re-verify against the tag you actually build against, since
+> the annotation and transport surface has moved between milestones.
+
 ## When to Use This Skill
 
 | Scenario | What to Do |
@@ -30,7 +37,7 @@ resources, and prompts to AI models, and clients that consume MCP servers.
 | Connect a Spring app to an external MCP server | Use `spring-ai-starter-mcp-client` and configure connections |
 | Integrate MCP tools with ChatClient for LLM calls | Auto-register `ToolCallbackProvider` beans and pass to `.tools()` |
 | Secure MCP endpoints with OAuth 2.0 or API keys | Add `mcp-server-security` from `org.springaicommunity` and configure |
-| Test MCP servers/clients in isolation | Use `@McpServerTest`, `@McpClientTest`, or `MockMcpTransport` |
+| Test MCP servers/clients in isolation | Plain JUnit 5 plus the published `mcp-test` module (`TestUtil`, `AbstractMcpSyncServerTests`) |
 | Run in GraalVM native image | No manual config needed — `McpHints` auto-registers reflection |
 | Migrate from MCP SDK 0.18.x to Spring AI 2.0 | Update group IDs, package imports, and SDK version (see Migration) |
 | Filter tools per connection or customize behavior | Implement `McpToolFilter`, customizers, or name prefix generators |
@@ -48,7 +55,10 @@ resources, and prompts to AI models, and clients that consume MCP servers.
 
 ## Architecture Overview
 
-The Spring AI MCP SDK follows a **three-layer architecture**:
+The protocol machinery below lives in the **MCP Java SDK**
+(`io.modelcontextprotocol.sdk`, packages `io.modelcontextprotocol.*`), which
+Spring AI's own `org.springframework.ai.mcp.*` modules build on top of. It
+follows a **three-layer architecture**:
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -66,10 +76,17 @@ The Spring AI MCP SDK follows a **three-layer architecture**:
 └──────────────────────────────────────────────────────────────┘
 ```
 
-**Protocol version negotiation:** The SDK supports MCP protocol versions
-`2024-11-05` (original), `2025-03-26` (Streamable HTTP), `2025-06-18` (latest
-stable), and `2025-11-25` (future). Clients and servers negotiate the
-highest mutually supported version during initialization.
+All three layers are `io.modelcontextprotocol.*` types — `McpSession`,
+`McpClientSession`, `McpServerSession` and `McpTransport` are defined in
+`io.modelcontextprotocol.spec`, not relocated into `org.springframework.ai`.
+Import them from the SDK; the Spring AI modules contribute the annotation
+scanning, Boot auto-configuration and transport adapters instead.
+
+**Protocol version negotiation:** `io.modelcontextprotocol.spec.ProtocolVersions`
+(a `public interface` of `String` constants) defines `MCP_2024_11_05`,
+`MCP_2025_03_26` (Streamable HTTP), `MCP_2025_06_18` and `MCP_2025_11_25`. Clients
+and servers negotiate the highest mutually supported version during
+initialization.
 
 ## Quick Reference: Choose Your Starter
 
@@ -93,10 +110,14 @@ highest mutually supported version during initialization.
 | Sync (WebFlux) | `spring-ai-starter-mcp-client-webflux` | WebFlux SSE/Streamable-HTTP, WebClient Streamable-HTTP |
 | Async (WebFlux) | `spring-ai-starter-mcp-client-webflux` | WebFlux SSE/Streamable-HTTP |
 
-> **Spring AI 2.0:** Transport artifacts moved from `io.modelcontextprotocol.sdk`
-> to `org.springframework.ai`. All transport classes relocated to
-> `org.springframework.ai.mcp.*`. Requires MCP Java SDK 1.0.0+. See
-> **Migration** section above for full details.
+> **Spring AI 2.0:** Spring AI ships its own MCP modules under
+> `org.springframework.ai` (annotations in `org.springframework.ai.mcp.annotation`,
+> customizers in `org.springframework.ai.mcp.customizer`, plus the autoconfigure
+> and starter artifacts), while the protocol types stay in the MCP Java SDK
+> (`groupId io.modelcontextprotocol.sdk`, packages `io.modelcontextprotocol.*`).
+> Spring AI `2.0.1` pins the SDK via `<mcp.sdk.version>` — check the root POM
+> rather than hard-coding a version in your build. Nothing was relocated out of
+> `io.modelcontextprotocol.*`, so keep those imports. See **Migration** below.
 
 ## Server: Annotated Tool Example
 
@@ -106,13 +127,21 @@ public class WeatherService {
 
     @McpTool(name = "get-weather", description = "Get current weather for a location")
     public String getWeather(
-            @McpToolParam(description = "City name", required = true) String city,
-            @McpToolParam(description = "Unit: celsius or fahrenheit", required = false, defaultValue = "celsius") String unit) {
+            @McpToolParam(description = "City name") String city,
+            @McpToolParam(description = "Unit: celsius or fahrenheit", required = false) String unit) {
+        // @McpToolParam has no default value — handle a null/absent unit here
+        String effectiveUnit = unit != null ? unit : "celsius";
         // Implementation
-        return String.format("Weather in %s: 22°C", city);
+        return String.format("Weather in %s: 22°%s", city, effectiveUnit);
     }
 }
 ```
+
+`@McpToolParam` declares only `required` (defaulting to `true`) and `description`;
+it has **no** `defaultValue` and **no** `name` attribute, so a parameter default has
+to be applied inside the method body. Reserve `@McpArg` (which does carry `name`,
+and whose `required` defaults to `false`) for `@McpPrompt` parameters — see
+`references/mcp-annotations.md`.
 
 Register via `ToolCallbackProvider`:
 
@@ -215,11 +244,12 @@ public CommandLineRunner demo(ChatClient chatClient, ToolCallbackProvider mcpToo
 
 ### Client Customization
 
-Implement `McpCustomizer<McpClient.SyncSpec>` or `McpCustomizer<McpClient.AsyncSpec>`:
+Implement `McpClientCustomizer<B>` (`org.springframework.ai.mcp.customizer`) with
+`B` bound to the client spec type you want to reach:
 
 ```java
 @Component
-public class CustomMcpClientCustomizer implements McpCustomizer<McpClient.SyncSpec> {
+public class CustomMcpClientCustomizer implements McpClientCustomizer<McpClient.SyncSpec> {
     @Override
     public void customize(String name, McpClient.SyncSpec spec) {
         spec.requestTimeout(Duration.ofSeconds(30));
@@ -279,7 +309,7 @@ Requires `mcp-client-security` from `org.springaicommunity`. Supports `McpSyncCl
 
 ```java
 @Bean
-McpCustomizer<McpClient.SyncSpec> syncClientCustomizer() {
+McpClientCustomizer<McpClient.SyncSpec> syncClientCustomizer() {
     return (name, spec) -> spec.transportContextProvider(
         new AuthenticationMcpTransportContextProvider());
 }
@@ -312,11 +342,12 @@ class WeatherServiceTest {
 
 ### Integration Testing
 
-Use `@McpServerTest` and `@McpClientTest` annotations for integration testing:
+There is **no** MCP test-slice annotation — no `@McpServerTest` or `@McpClientTest`
+exists upstream, so do not reach for one. `McpServerAutoConfiguration` publishes the
+server as an ordinary `@Bean`, so a plain JUnit 5 `@SpringBootTest` injects it:
 
 ```java
 @SpringBootTest
-@McpServerTest
 class McpServerIntegrationTest {
 
     @Autowired
@@ -331,24 +362,72 @@ class McpServerIntegrationTest {
 }
 ```
 
-### Mocking
+### Base classes from the published `mcp-test` module
 
-Use `MockMcpTransport` for isolated client tests without real processes:
+For a server or client test that does not need the whole application context, extend
+the bases shipped in `io.modelcontextprotocol.sdk:mcp-test`. You supply the
+transport/builder and the base class drives start, stop and the assertions:
+
+```java
+@Timeout(15)
+class WeatherServerTests extends AbstractMcpSyncServerTests {   // io.modelcontextprotocol.server
+
+    @Override
+    protected McpServer.SyncSpecification<?> prepareSyncServerBuilder() {
+        return McpServer.sync(new StdioServerTransportProvider(JSON_MAPPER));
+    }
+}
+```
+
+| Base class | Package | Override you must provide |
+|---|---|---|
+| `AbstractMcpSyncServerTests` | `io.modelcontextprotocol.server` | `prepareSyncServerBuilder()` |
+| `AbstractMcpAsyncServerTests` | `io.modelcontextprotocol.server` | `prepareAsyncServerBuilder()` |
+| `AbstractMcpSyncClientTests` | `io.modelcontextprotocol.client` | `createMcpTransport()` |
+| `AbstractMcpAsyncClientTests` | `io.modelcontextprotocol.client` | `createMcpTransport()` |
+| `AbstractMcpClientServerIntegrationTests` | `io.modelcontextprotocol` (root, not `.server`) | both server builders + `getMcpClientBuilder()` |
+
+Bind to a free port with `TestUtil.findAvailablePort()` (`io.modelcontextprotocol.server`)
+rather than a fixed one, so parallel runs do not collide.
+
+### Driving a client against a server
+
+Build the client from a real transport — `McpClient.sync(...)` takes an
+`McpClientTransport` and its `SyncSpec.build()` already yields an `McpSyncClient`,
+so there is no extra `.sync()` call to chain:
 
 ```java
 @Test
-void testClientWithMockServer() {
-    var mockTransport = new MockMcpTransport();
-    var client = McpClient.sync(mockTransport)
-        .requestTimeout(Duration.ofSeconds(5))
-        .build()
-        .sync();
+void testClientAgainstServer() {
+    McpClientTransport transport = HttpClientStreamableHttpTransport
+        .builder("http://localhost:" + TestUtil.findAvailablePort())
+        .endpoint("/mcp")
+        .connectTimeout(Duration.ofSeconds(5))
+        .build();
 
-    client.initialize(new InitializeRequest(...));
-    var tools = client.listTools(null);
-    assertThat(tools.tools()).hasSize(3);
+    try (McpSyncClient client = McpClient.sync(transport)
+            .requestTimeout(Duration.ofSeconds(5))
+            .build()) {
+
+        client.initialize(new InitializeRequest(...));
+        var tools = client.listTools(null);
+        assertThat(tools.tools()).hasSize(3);
+    }
 }
 ```
+
+`HttpClientStreamableHttpTransport` has no public constructor for you to call — go
+through `static Builder builder(String baseUri)`. The base URI is the builder
+argument; the path is `.endpoint(...)`. Other setters on that builder are
+`clientBuilder`, `customizeClient`, `requestBuilder`, `jsonMapper(McpJsonMapper)`,
+`resumableStreams(boolean)`, `openConnectionOnStartup(boolean)`,
+`httpRequestCustomizer`, `asyncHttpRequestCustomizer`, `authorizationErrorHandler`,
+`supportedProtocolVersions(List<String>)` and `maxResponseSize` — note there is no
+`url(...)`, no `resumable(...)` and no `protocolVersion(String)` on it.
+
+The `MockMcpClientTransport` / `MockMcpServerTransport` classes you may see in the
+SDK are under `src/test`, so they are **not** on a consumer's classpath and are not
+a supported mocking seam — prefer the base classes above or the real transports.
 
 See `references/security-and-testing.md` for additional patterns: MockMVC testing,
 Testcontainers with external MCP servers, annotation scanning, and security tests.
@@ -373,7 +452,7 @@ a step-by-step migration checklist.
 
 | Pitfall | How to Avoid |
 |---------|-------------|
-| **Transport classes not found after upgrade** | Update all `io.modelcontextprotocol.*` imports to `org.springframework.ai.mcp.*` |
+| **Protocol types "not found" after upgrade** | They were never relocated — `McpClient`, `McpServer`, `McpSchema` and the transports stay in `io.modelcontextprotocol.*`. A missing type usually means the SDK is absent from the classpath or `mcp-test` was not added for the test scope |
 | **Security features missing at runtime** | Add `mcp-server-security` or `mcp-client-security` from `org.springaicommunity` — they're not in core Spring AI |
 | **OAuth 2.0 fails with SSE transport** | SSE is not supported for OAuth — use Streamable-HTTP or Stateless transport instead |
 | **Tool not appearing in MCP server** | Verify `@McpTool` is on a Spring-managed bean and the bean is included in `ToolCallbackProvider` |

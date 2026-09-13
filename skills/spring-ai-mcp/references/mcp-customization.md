@@ -134,13 +134,16 @@ public class CustomAsyncServerCustomizer implements McpAsyncServerCustomizer {
 
 ## Client Customizers
 
-Customize client behavior with `McpCustomizer<B>` where `B` is the client spec type.
+Customize client behavior with `McpClientCustomizer<B>` (`org.springframework.ai.mcp.customizer`)
+where the unbounded type argument `B` is the client spec type you want to reach. The
+sibling server-side types are `McpSyncServerCustomizer` and `McpAsyncServerCustomizer`;
+there is no plain `McpCustomizer` type.
 
 ### Sync Client Customizer
 
 ```java
 @Component
-public class CustomSyncClientCustomizer implements McpCustomizer<McpClient.SyncSpec> {
+public class CustomSyncClientCustomizer implements McpClientCustomizer<McpClient.SyncSpec> {
     @Override
     public void customize(String name, McpClient.SyncSpec spec) {
         spec.requestTimeout(Duration.ofSeconds(30));
@@ -160,7 +163,7 @@ public class CustomSyncClientCustomizer implements McpCustomizer<McpClient.SyncS
 
 ```java
 @Component
-public class CustomAsyncClientCustomizer implements McpCustomizer<McpClient.AsyncSpec> {
+public class CustomAsyncClientCustomizer implements McpClientCustomizer<McpClient.AsyncSpec> {
     @Override
     public void customize(String name, McpClient.AsyncSpec spec) {
         spec.requestTimeout(Duration.ofSeconds(30));
@@ -177,7 +180,7 @@ Multiple customizer beans can be registered. They are applied in order of
 ```java
 @Component
 @Order(1)
-public class FirstCustomizer implements McpCustomizer<McpClient.SyncSpec> {
+public class FirstCustomizer implements McpClientCustomizer<McpClient.SyncSpec> {
     @Override
     public void customize(String name, McpClient.SyncSpec spec) {
         // Applied first
@@ -186,7 +189,7 @@ public class FirstCustomizer implements McpCustomizer<McpClient.SyncSpec> {
 
 @Component
 @Order(2)
-public class SecondCustomizer implements McpCustomizer<McpClient.SyncSpec> {
+public class SecondCustomizer implements McpClientCustomizer<McpClient.SyncSpec> {
     @Override
     public void customize(String name, McpClient.SyncSpec spec) {
         // Applied second, can override first

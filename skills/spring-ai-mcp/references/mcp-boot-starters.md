@@ -140,11 +140,11 @@ spring:
 
 ## Client Customization
 
-Implement `McpCustomizer<McpClient.SyncSpec>` or `McpCustomizer<McpClient.AsyncSpec>`:
+Implement `McpClientCustomizer<McpClient.SyncSpec>` or `McpClientCustomizer<McpClient.AsyncSpec>`:
 
 ```java
 @Component
-public class CustomMcpClientCustomizer implements McpCustomizer<McpClient.SyncSpec> {
+public class CustomMcpClientCustomizer implements McpClientCustomizer<McpClient.SyncSpec> {
     @Override
     public void customize(String name, McpClient.SyncSpec spec) {
         spec.requestTimeout(Duration.ofSeconds(30));

@@ -113,7 +113,7 @@ Supports `McpSyncClient` only. Requires `mcp-client-security` from `org.springai
 
 ```java
 @Bean
-McpCustomizer<McpClient.SyncSpec> syncClientCustomizer() {
+McpClientCustomizer<McpClient.SyncSpec> syncClientCustomizer() {
     return (name, spec) -> spec.transportContextProvider(
         new AuthenticationMcpTransportContextProvider());
 }
@@ -240,7 +240,7 @@ class ExternalMcpServerTest {
     @TestConfiguration
     static class Config {
         @Bean
-        McpCustomizer<McpClient.SyncSpec> customizer() {
+        McpClientCustomizer<McpClient.SyncSpec> customizer() {
             return (name, spec) -> spec
                 .transportContextProvider(() -> new StdioMcpTransport(
                     List.of("npx", "-y", "@modelcontextprotocol/server-filesystem", "/tmp")));
@@ -304,40 +304,59 @@ class SecurityTest {
 }
 ```
 
-### Testing with MockMcpTransport
+### Testing with the `mcp-test` base classes
 
-Use `MockMcpTransport` for isolated client tests without a real server process:
+For an isolated server or client test, extend a base class from the published
+`io.modelcontextprotocol.sdk:mcp-test` module and supply only the transport or
+builder — the base drives startup, shutdown and the assertions:
 
 ```java
 class MockTransportTest {
 
     @Test
-    void testClientWithMockServer() {
-        var mockTransport = new MockMcpTransport();
-        var client = McpClient.sync(mockTransport)
-            .requestTimeout(Duration.ofSeconds(5))
-            .build()
-            .sync();
+    void testClientWithServerBackedTransport() {
+        McpClientTransport transport = HttpClientStreamableHttpTransport
+            .builder("http://localhost:" + TestUtil.findAvailablePort())
+            .endpoint("/mcp")
+            .build();
 
-        client.initialize(new InitializeRequest(
-            new ClientSpecification("test-client", "1.0.0")));
-        var tools = client.listTools(null);
-        assertThat(tools.tools()).hasSize(3);
+        try (McpSyncClient client = McpClient.sync(transport)
+                .requestTimeout(Duration.ofSeconds(5))
+                .build()) {
+
+            client.initialize(new InitializeRequest(
+                new ClientSpecification("test-client", "1.0.0")));
+            var tools = client.listTools(null);
+            assertThat(tools.tools()).hasSize(3);
+        }
     }
 }
 ```
 
-### Testing with @McpServerTest / @McpClientTest
+`McpClient.sync(...)` returns a `SyncSpec` whose `build()` already yields an
+`McpSyncClient`, so there is no trailing `.sync()` to chain, and `McpSyncClient` is
+`AutoCloseable` so try-with-resources is the right shape.
 
-Use these test annotations for full integration testing with MCP auto-config:
+Note that the `MockMcpClientTransport` / `MockMcpServerTransport` classes visible in
+the SDK source live under `src/test` and are therefore **not** published to a
+consumer's classpath — they are not a supported mocking seam. Reach for
+`AbstractMcpSyncServerTests`, `AbstractMcpAsyncServerTests`,
+`AbstractMcpSyncClientTests`, `AbstractMcpAsyncClientTests` or
+`AbstractMcpClientServerIntegrationTests` instead (see `SKILL.md` for the package and
+required-override table), and use `TestUtil.findAvailablePort()` for port binding.
+
+### Integration testing without a test-slice annotation
+
+There is no `@McpServerTest` or `@McpClientTest` in Spring AI — no MCP test-slice
+annotation exists. The auto-configuration publishes the server and client as ordinary
+beans, so a plain JUnit 5 `@SpringBootTest` is the integration harness:
 
 ```java
 @SpringBootTest
-@McpServerTest
 class McpServerIntegrationTest {
 
     @Autowired
-    private McpSyncServer mcpServer;
+    private McpSyncServer mcpServer;          // @Bean from McpServerAutoConfiguration
 
     @Test
     void serverExposesExpectedTools() {
@@ -350,7 +369,6 @@ class McpServerIntegrationTest {
 
 ```java
 @SpringBootTest
-@McpClientTest
 class McpClientIntegrationTest {
 
     @Autowired
@@ -369,8 +387,8 @@ class McpClientIntegrationTest {
 
 1. **Test tools as plain beans** — annotated methods are just methods; test them directly
 2. **Use `@SpringBootTest`** for full integration tests with MCP server/client auto-config
-3. **Mock transports** for isolated client/server tests without real processes
+3. **Use the `mcp-test` base classes or real transports** for isolated tests — the SDK's `Mock*Transport` classes are `src/test`-only and are not published
 4. **Verify tool registration** — assert that `@McpTool` methods appear in the server's tool list
 5. **Test request context** — verify that `McpSyncRequestContext` methods (logging, progress) work correctly
 6. **Test security** — verify OAuth 2.0 and API key authentication on MCP endpoints
-7. **Use `@McpServerTest` / `@McpClientTest`** for integration tests with auto-configured MCP components
+7. **Use `@SpringBootTest` with an injected `McpSyncServer` / `McpSyncClient`** for integration tests — there is no MCP test-slice annotation to lean on

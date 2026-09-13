@@ -16,6 +16,10 @@ Mark a method as an MCP tool with automatic JSON schema generation.
 
 ### Tool Annotations (Hints)
 
+`McpAnnotations` is **nested** inside `McpTool` — there is no package-level
+`org.springframework.ai.mcp.annotation.McpAnnotations` to import. Reference it through
+the enclosing annotation, as `@McpTool(annotations = @McpAnnotations(...))`:
+
 | Hint | Default | Description |
 |------|---------|-------------|
 | `title` | `""` | Human-readable title |
@@ -23,6 +27,10 @@ Mark a method as an MCP tool with automatic JSON schema generation.
 | `destructiveHint` | `true` | Tool may perform destructive updates |
 | `idempotentHint` | `false` | Same args = same effect |
 | `openWorldHint` | `true` | Tool may interact with external entities |
+
+`@McpResource` declares its own separate nested `McpAnnotations` with a different
+shape — `Role[] audience()`, `String lastModified()`, `double priority()` — so the
+two are not interchangeable.
 
 ### Example
 
@@ -258,11 +266,13 @@ public String tool(McpTransportContext context) {
 
 ### McpMeta
 
-Access `_meta` field from MCP requests:
+`McpMeta` is a **record** (`record McpMeta(Map<String, Object> meta)`), not an
+annotation — write it as a parameter type, without an `@`. Its single component gives
+you the request's `_meta` map:
 ```java
 @McpTool
 public String tool(McpMeta meta) {
-    return "Request ID: " + meta.requestId();
+    return "Trace: " + meta.meta().get("trace-id");
 }
 ```
 
