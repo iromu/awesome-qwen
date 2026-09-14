@@ -27,7 +27,7 @@ No build step, no dependencies — just markdown files Qwen Code auto-discovers.
 |----------|-------------|-------|
 | [Agents](#agents) | Specialized AI personas with specific tool access and expertise | 4 |
 | [Instructions](#instructions) | Coding standards applied automatically by file pattern | 3 |
-| [Skills](#skills) | Self-contained capabilities for specific tasks | 25 |
+| [Skills](#skills) | Self-contained capabilities for specific tasks | 21 |
 | [Hooks](#hooks) | Automated actions triggered during Qwen Code sessions | 3 |
 | [Workflows](#workflows) | Reusable automation sequences (coming soon) | 0 |
 | [Cookbook](#cookbook) | Language-specific recipes and examples (coming soon) | 0 |
@@ -63,11 +63,9 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 |-------|-------------|------|
 | [htmx](skills/htmx) | Build interactive web UIs with declarative AJAX — hx-get, hx-post, hx-trigger, hx-swap, hx-boost, real-time updates, CSS transitions, WebSockets, SSE, inline editing, infinite scroll, active search, progress bars, and out-of-band swaps | `htmx` `hypermedia` `ajax` `server-side` `no-javascript` |
 | [agentic-patterns-core](skills/agentic-patterns-core) | 21 agentic design patterns distilled from production — prompt chaining, routing, parallelization, reflection, tool use, planning, multi-agent collaboration, and more | `agentic` `patterns` `architecture` |
-| [agentic-patterns-extra](skills/agentic-patterns-extra) | 180+ agentic AI patterns across 8 categories — context management, multi-agent coordination, reliability, security, feedback loops, and learning | `agentic` `patterns` `catalogue` |
+| [agentic-patterns-extra](skills/agentic-patterns-extra) | 194 agentic AI patterns across 8 categories — context management, multi-agent coordination, reliability, security, feedback loops, and learning | `agentic` `patterns` `catalogue` |
 | [agentic-patterns-research](skills/agentic-patterns-research) | Research-backed techniques and production-proven architectures for reliable, safe, and cost-effective agents | `agentic` `research` `best-practices` |
 | [api-design](skills/api-design) | Design RESTful APIs following OpenAPI 3.0 conventions with proper resource naming, versioning, and error handling | `api` `rest` `openapi` |
-| [api-testing](skills/api-testing) | Test APIs with automated request generation, response validation, and contract testing | `api` `testing` `validation` |
-| [code-review](skills/code-review) | Automated code review with security, performance, and quality checks | `review` `security` `quality` |
 | [database-migration](skills/database-migration) | Create database migrations, write rollback scripts, and perform zero-downtime schema changes across PostgreSQL, MySQL, and SQLite | `database` `migration` `sql` `schema` |
 | [docker-containerize](skills/docker-containerize) | Dockerize applications with optimized multi-stage builds, security hardening, and best practices | `docker` `containers` `multi-stage` |
 | [embabel-agent](skills/embabel-agent) | Build agentic AI applications on the JVM with Embabel v1.5.1 — a Spring-based framework by Rod Johnson for agents mixing LLMs with code and planning algorithms; per-provider roles, embedding-based skill selection, streaming, and 15+ LLM providers | `jvm` `spring` `agents` |
@@ -83,8 +81,6 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [self-learning](skills/self-learning) | Closed-loop self-learning system — agents create skills from experience, maintain persistent memory, and improve over time | `learning` `memory` `autonomous` |
 | [skill-creator](skills/skill-creator) | Create, edit, improve, and evaluate skills — the meta-tool for building Qwen Code skills | `skill-authoring` `eval` |
 | [spring-ai-mcp](skills/spring-ai-mcp) | Build Spring AI MCP (Model Context Protocol) servers and clients with annotations, security, and testing | `spring` `mcp` `ai` |
-| [test-skill](skills/test-skill) | Test skill development patterns and evaluation methodologies | `testing` `skills` |
-| [yaml-validation](skills/yaml-validation) | Validate, lint, and fix YAML files with schema checking and type coercion detection | `yaml` `validation` `linting` |
 | [yaml-validator](skills/yaml-validator) | Validate, lint, and fix YAML files — syntax checking, indentation, special characters, and format conversion | `yaml` `validation` |
 
 ## Hooks
