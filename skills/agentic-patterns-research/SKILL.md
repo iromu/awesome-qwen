@@ -29,6 +29,26 @@ industry implementations, and practical guidance.
 - Building autonomous agent workflows (research loops, task execution)
 - Understanding how production systems (Claude Code, GitHub Copilot, Cursor) implement these patterns
 
+## When NOT to Use This Skill
+
+This skill holds deep research reports on 25 patterns. It is the wrong tool when you
+need breadth or speed rather than depth:
+
+- **Browsing or comparing many patterns** — the sibling `agentic-patterns-extra` skill
+  catalogues 194 patterns across the same 8 categories with one-line summaries; reach for
+  it first when the question is "which pattern fits this situation?" rather than
+  "what does the evidence say about this one?"
+- **The canonical core pattern set** — prompt chaining, routing, parallelization,
+  reflection, tool use, planning and multi-agent collaboration belong to
+  `agentic-patterns-core`; this skill's reports assume those are already settled.
+- **A quick definitional answer** — each reference here is a long-form report with academic
+  sources and production evidence; reading one to settle a one-line question is wasted effort.
+- **Non-agentic work** — plain application code, infrastructure, or model-training questions
+  with no agent-architecture content should not trigger this skill at all.
+- **When the pattern is not listed below** — do not extrapolate a report for a pattern that
+  has no row here. Say it is not covered and point at `agentic-patterns-extra` instead of
+  inventing findings.
+
 ## Pattern Categories
 
 The 25 patterns are organized into 8 categories. Read the reference file
@@ -146,6 +166,29 @@ Patterns for designing effective agent workflows and team structures.
 **Key insight:** The Factory-over-Assistant paradigm moves from sidebar-based agents
 to autonomous parallel spawning — agents spawn sub-agents with specific roles,
 enabling true multi-agent collaboration (OpenDevin, AutoGen, MetaGPT).
+
+## Category Overviews
+
+Before drilling into a single report, orient with the category overview that covers it.
+These are cross-pattern taxonomies: they name every pattern in the category, rank the
+options, and show which patterns compose. Start with the master taxonomy when the
+category itself is unclear.
+
+| Overview | Covers | Use it for |
+|----------|--------|-----------|
+| `references/01-pattern-taxonomy.md` | Master taxonomy across all categories | Seeing the whole pattern space, cross-category relationships, and a composition guide |
+| `references/01-context-memory-patterns.md` | Context & Memory | Choosing between context minimization, window-anxiety management and episodic retrieval |
+| `references/01-reasoning-patterns.md` | Reasoning | The pattern hierarchy and a performance comparison across the reasoning options |
+| `references/02-reasoning-patterns-detailed.md` | Reasoning | Deep dives on Graph of Thoughts, LATS and ReAct |
+| `references/01-orchestration-patterns.md` | Orchestration | Core orchestration options plus a decision framework and combination guidance |
+| `references/02-orchestration-patterns-detailed.md` | Orchestration | Technical deep dives on sub-agent spawning and autonomous workflow architectures |
+| `references/01-security-patterns.md` | Security & Safety | Comparing the action-selector, hook-based guard rail and sandboxed authorization approaches |
+| `references/01-reliability-patterns.md` | Reliability & Evaluation | Output verification, action caching, circuit breaking and schema-validation retry |
+| `references/01-tool-use-patterns.md` | Tool Use & Environment | Agent-first tooling, code-first tool interfaces and code-then-execute |
+| `references/01-feedback-loop-patterns.md` | Feedback Loops | Surveying reflection, rich feedback, self-critique and RLAIF |
+| `references/02-feedback-loop-patterns-detailed.md` | Feedback Loops | The detailed analysis accompanying the survey above |
+| `references/01-learning-patterns.md` | Learning & Adaptation | Agent RFT, memory reinforcement learning and skill library evolution |
+| `references/01-ux-collaboration-patterns.md` | UX & Collaboration | Human-in-the-loop approval, the spectrum of control, and verbose reasoning transparency |
 
 ## How to Use This Skill
 
