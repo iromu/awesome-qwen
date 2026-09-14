@@ -1,7 +1,7 @@
 ---
 name: agentic-patterns-extra
 description: >-
-  Curated catalogue of 180+ agentic AI patterns across 8 categories — real-world
+  Curated catalogue of 194 agentic AI patterns across 8 categories — real-world
   tricks, workflows, and mini-architectures for autonomous agents in production.
   Use this skill whenever the user asks about agent architecture, agent design
   patterns, how to solve an agent-related challenge, or wants pattern recommendations.
@@ -37,9 +37,11 @@ Patterns for managing agent context, working memory, state persistence, and know
 | Pattern | Status | Description |
 |---------|--------|-------------|
 | [Agent-Powered Codebase Q&A / Onboarding](references/context-memory/agent-powered-codebase-qa-onboarding.md) | validated-in-production | Leverage AI agent with retrieval and QA capabilities to assist developers understanding codebases |
+| [Context Budget as a Governed Resource](references/context-memory/context-budget-as-a-governed-resource.md) | validated-in-production | Always-loaded context accretes silently. |
 | [Context-Minimization Pattern](references/context-memory/context-minimization-pattern.md) | emerging | Purge or redact untrusted segments from context once they have served their purpose to prevent delayed prompt injection and reduce context bloat |
 | [Context Window Anxiety Management](references/context-memory/context-window-anxiety-management.md) | emerging | Mitigate models that become aware of approaching context window limits and proactively summarize or rush task completion through buffer strategies and counter-prompting |
 | [Context Window Auto-Compaction](references/context-memory/context-window-auto-compaction.md) | validated-in-production | Automatic session compaction triggered by context overflow errors, with smart reserve tokens and lane-aware retry to preserve essential information while staying within token limits |
+| [Cross-Agent Lesson Sharing via Git](references/context-memory/cross-agent-lesson-sharing.md) | validated-in-production | AI agents working in isolation waste hours debugging issues that other agents have already solved. |
 | [Curated Code Context Window](references/context-memory/curated-code-context-window.md) | best-practice | Maintain minimal, high-signal code context using search subagent for code discovery |
 | [Curated File Context Window](references/context-memory/curated-file-context-window.md) | best-practice | Sterile curated "main" context window with helper sub-agents for file ranking |
 | [Dynamic Context Injection](references/context-memory/dynamic-context-injection.md) | established | File/folder at-mentions and custom slash commands for on-demand context loading |
@@ -67,12 +69,14 @@ Patterns for self-improvement, evaluation, iterative refinement, and quality ass
 | [AI-Assisted Code Review / Verification](references/feedback-loops/ai-assisted-code-review-verification.md) | emerging | Multi-agent code review where one agent generates while another critiques |
 | [Background Agent CI Feedback](references/feedback-loops/background-agent-ci.md) | validated-in-production | Run agent asynchronously in background with CI as objective feedback channel |
 | [Coding Agent CI Feedback Loop](references/feedback-loops/coding-agent-ci-feedback-loop.md) | best-practice | Asynchronous coding agent against CI with partial feedback ingestion |
+| [Deterministic Grader in the Loop](references/feedback-loops/deterministic-grader-in-the-loop.md) | emerging | Replace the LLM-as-judge in an agent's self-review loop with a deterministic scorer that returns the raw counts behind each sub-score, so the… |
 | [Dogfooding with Rapid Iteration for Agent Improvement](references/feedback-loops/dogfooding-with-rapid-iteration-for-agent-improvement.md) | best-practice | Development team uses own agent product for daily tasks, rapid feedback loop |
 | [Graph of Thoughts](references/feedback-loops/graph-of-thoughts.md) | emerging | Represent reasoning as a graph with branching, aggregation, and refinement |
 | [Incident-to-Eval Synthesis](references/feedback-loops/incident-to-eval-synthesis.md) | emerging | Convert production incidents into executable eval cases to prevent repeat failures |
 | [Inference-Healed Code Review Reward](references/feedback-loops/inference-healed-code-review-reward.md) | proposed | Decompose code quality into subcriteria with CoT reasoning for explainable feedback |
 | [Iterative Prompt & Skill Refinement](references/feedback-loops/iterative-prompt-skill-refinement.md) | established | Multi-pronged refinement strategy with responsive, owner-led, and dashboard feedback |
 | [Reflection Loop](references/feedback-loops/reflection.md) | established | Self-evaluate output, feed critique into revision — repeat until threshold met |
+| [Rendered UI Finish Gate](references/feedback-loops/rendered-ui-finish-gate.md) | emerging | Verify an agent-built interface against its intended design contract, required states, interaction semantics, and rendered output before merging. |
 | [Rich Feedback Loops](references/feedback-loops/rich-feedback-loops.md) | validated-in-production | Invest in iterative machine-readable feedback infrastructure over prompt perfection |
 | [Self-Critique Evaluator Loop](references/feedback-loops/self-critique-evaluator-loop.md) | emerging | Agent critiques its own output before final delivery |
 | [Self-Discover: LLM Self-Composed Reasoning](references/feedback-loops/self-discover-reasoning-structures.md) | emerging | LLM self-composes its own reasoning structures for complex tasks |
@@ -87,9 +91,11 @@ Patterns for long-term agent improvement, fine-tuning, skill evolution, and know
 | Pattern | Status | Description |
 |---------|--------|-------------|
 | [Agent Reinforcement Fine-Tuning (Agent RFT)](references/learning-adaptation/agent-reinforcement-fine-tuning.md) | validated-in-production | Train model weights end-to-end on agentic tasks with real tool calls and custom rewards |
+| [Commitment Ledger with Reality-Gated Credit](references/learning-adaptation/commitment-ledger-reality-gated-credit.md) | proposed | Records agent promises and credits retrieved memory only after an externally verifiable outcome settles. |
 | [Compounding Engineering Pattern](references/learning-adaptation/compounding-engineering-pattern.md) | emerging | Codify all learnings from each feature into reusable prompts, slash commands, hooks |
 | [Frontier-Focused Development](references/learning-adaptation/frontier-focused-development.md) | emerging | Always target the state-of-the-art models, design products that evolve as frontier moves |
 | [Memory Reinforcement Learning (MemRL)](references/learning-adaptation/memory-reinforcement-learning-memrl.md) | proposed | Transfer RL from parameter space to context space, rank memories by learned utility |
+| [Persistent Test Memory Feedback Loop](references/learning-adaptation/persistent-test-memory-feedback-loop.md) | emerging | Preserve validated test lessons so an agent can reuse successful paths, recognize recurring failures, and retire stale knowledge. |
 | [Shipping as Research](references/learning-adaptation/shipping-as-research.md) | emerging | Treat shipping as research — release features to learn, not because you're certain |
 | [Skill Library Evolution](references/learning-adaptation/skill-library-evolution.md) | validated-in-production | Agents persist working code as reusable skills that evolve into documented capabilities |
 | [Variance-Based RL Sample Selection](references/learning-adaptation/variance-based-rl-sample-selection.md) | validated-in-production | Run multiple baseline evaluations per sample, prioritize high-variance samples for training |
@@ -102,10 +108,12 @@ Patterns for task decomposition, multi-agent coordination, workflow management, 
 |---------|--------|-------------|
 | [Agent-Driven Research](references/orchestration-control/agent-driven-research.md) | established | Autonomous agent that researches codebases and produces structured reports |
 | [Autonomous Workflow Agent Architecture](references/orchestration-control/autonomous-workflow-agent-architecture.md) | established | Multi-agent architecture for complex engineering task automation |
+| [Board-Mediated Async Inter-Agent Coordination](references/orchestration-control/board-mediated-inter-agent-coordination.md) | validated-in-production | >- Route messages between agents through board card comment threads. A routing prefix triggers inbox card creation for notification; the actual… |
 | [Burn the Boats](references/orchestration-control/burn-the-boats.md) | emerging | Intentionally kill features to force evolution and prevent paradigm lock-in |
 | [Budget-Aware Model Routing](references/orchestration-control/budget-aware-model-routing.md) | established | Route requests to tiered models with explicit budget contracts and hard caps |
 | [Capability-Escrow-Receipt](references/orchestration-control/capability-escrow-receipt.md) | experimental-but-awesome | Atomic three-object loop for agent-to-agent commerce (capability, escrow, receipt) |
 | [Continuous Autonomous Task Loop Pattern](references/orchestration-control/continuous-autonomous-task-loop-pattern.md) | established | Autonomous task loop with rate-limiting, git automation, and self-recovery |
+| [Cross-Domain Agent Conflict Resolution](references/orchestration-control/cross-domain-agent-conflict-resolution.md) | emerging | A coordination layer that cross-references recommendations from independent domain agents, detects conflicts on shared resources, and resolves… |
 | [Custom Sandboxed Background Agent](references/orchestration-control/custom-sandboxed-background-agent.md) | emerging | Custom sandboxed background agent for company-specific dev environments |
 | [Declarative Multi-Agent Topology Definition](references/orchestration-control/declarative-multi-agent-topology-definition.md) | emerging | Define multi-agent systems declaratively, compile to any framework |
 | [Deterministic Zero-LLM Orchestration](references/orchestration-control/deterministic-zero-llm-orchestration.md) | validated-in-production | Deterministic Python orchestrator spending zero LLM tokens on coordination |
@@ -113,6 +121,7 @@ Patterns for task decomposition, multi-agent coordination, workflow management, 
 | [Disposable Scaffolding Over Durable Features](references/orchestration-control/disposable-scaffolding-over-durable-features.md) | best-practice | Treat code around models as disposable scaffolding, not durable features |
 | [Distributed Execution with Cloud Workers](references/orchestration-control/distributed-execution-cloud-workers.md) | emerging | Distribute agent work across cloud workers for parallel execution |
 | [Dual LLM Pattern](references/orchestration-control/dual-llm-pattern.md) | emerging | Split privileged and quarantined LLM roles for clear trust boundaries |
+| [Dual-Rail Message Delivery](references/orchestration-control/dual-rail-message-delivery.md) | validated-in-production | Agents running on separate machines coordinate over a single channel: a synced folder, a queue, or a chat. |
 | [Economic Value Signaling in Multi-Agent Networks](references/orchestration-control/economic-value-signaling-multi-agent.md) | experimental-but-awesome | Economic value signaling for multi-agent task prioritization and coordination |
 | [Explicit Posterior-Sampling Planner](references/orchestration-control/explicit-posterior-sampling-planner.md) | emerging | RL-based posterior sampling planner for exploration in uncertain environments |
 | [Factory over Assistant](references/orchestration-control/factory-over-assistant.md) | validated-in-production | Spawn multiple autonomous agents in parallel instead of watching one in a sidebar |
@@ -125,6 +134,7 @@ Patterns for task decomposition, multi-agent coordination, workflow management, 
 | [Lane-Based Execution Queueing](references/orchestration-control/lane-based-execution-queueing.md) | validated-in-production | Lane-based queueing for parallel agent execution with isolation guarantees |
 | [Language Agent Tree Search (LATS)](references/orchestration-control/language-agent-tree-search-lats.md) | emerging | Combines Monte Carlo Tree Search with LLM reflection for complex reasoning |
 | [LLM Map-Reduce Pattern](references/orchestration-control/llm-map-reduce-pattern.md) | emerging | Map-reduce workflow isolating untrusted documents across sandboxed LLMs |
+| [Markdown Polis — Multi-Vendor Agent Coordination via Filesystem Constitution](references/orchestration-control/markdown-polis-coordination.md) | emerging | When agents from different vendors (Claude Code, Codex, Gemini CLI, Cursor, local Ollama, etc.) work on the same long-lived project, they have no… |
 | [Multi-Model Orchestration for Complex Edits](references/orchestration-control/multi-model-orchestration-for-complex-edits.md) | validated-in-production | Pipeline of specialized models for retrieval, generation, and editing tasks |
 | [Multi-Step Analysis Pipeline Orchestration](references/orchestration-control/multi-step-analysis-pipeline-orchestration.md) | emerging | LLM-orchestrated artifact-driven pipeline with semantic step integration |
 | [Opponent Processor / Multi-Agent Debate Pattern](references/orchestration-control/opponent-processor-multi-agent-debate.md) | emerging | Multi-agent debate pattern for bias reduction and validation |
@@ -141,6 +151,7 @@ Patterns for task decomposition, multi-agent coordination, workflow management, 
 | [Sub-Agent Spawning](references/orchestration-control/sub-agent-spawning.md) | validated-in-production | Spawn focused sub-agents with isolated contexts for parallel execution |
 | [Swarm Migration Pattern](references/orchestration-control/swarm-migration-pattern.md) | validated-in-production | 10+ parallel sub-agents for large-scale code migrations (10x+ speedup) |
 | [Three-Stage Perception Architecture](references/orchestration-control/three-stage-perception-architecture.md) | established | Three-stage pipeline: perception, processing, action for modular AI agents |
+| [Tracker-as-Desired-State Reconciliation](references/orchestration-control/tracker-as-desired-state-reconciliation.md) | emerging | Derive agent dispatch by re-reading workflow states in the team's issue tracker every tick, keeping only a short-lived claim locally, so missed… |
 | [Tree-of-Thought Reasoning](references/orchestration-control/tree-of-thought-reasoning.md) | established | Explore a search tree of intermediate thoughts with branching and pruning |
 | [Workspace-Native Multi-Agent Orchestration](references/orchestration-control/workspace-native-multi-agent-orchestration.md) | emerging | Multi-agent orchestration native to workspace collaboration environments |
 
@@ -157,13 +168,18 @@ Patterns for ensuring agent reliability, evaluation, fault tolerance, and observ
 | [Asynchronous Coding Agent Pipeline](references/reliability-eval/asynchronous-coding-agent-pipeline.md) | proposed | Decouple inference, tool execution, and learning into parallel async components |
 | [Canary Rollout and Automatic Rollback for Agent Policy Changes](references/reliability-eval/canary-rollout-and-automatic-rollback-for-agent-policy-changes.md) | established | Staged traffic rollout with auto-rollback for agent policy changes |
 | [CriticGPT-Style Code Review](references/reliability-eval/criticgpt-style-evaluation.md) | validated-in-production | Specialized AI models for automated code critique and quality evaluation |
+| [Dead-Man's Switch for Scheduled Agent Jobs](references/reliability-eval/dead-mans-switch-for-scheduled-agent-jobs.md) | validated-in-production | An agent workspace accumulates scheduled jobs: a morning digest, a background task manager, a weekly self-audit, a memory consolidation pass. |
+| [Evidence-Layered Evaluation for Interactive Agents](references/reliability-eval/evidence-layered-evaluation-for-interactive-agents.md) | emerging | Interactive agents can reach the wrong outcome for many different reasons: a bad plan, an incorrect click, a transient site response, or an… |
 | [Extended Coherence Work Sessions](references/reliability-eval/extended-coherence-work-sessions.md) | rapidly-improving | Models that maintain focus and context over multi-hour sessions |
 | [Failover-Aware Model Fallback](references/reliability-eval/failover-aware-model-fallback.md) | validated-in-production | Semantic error classification with intelligent fallback chains across models |
 | [Lethal Trifecta Threat Model](references/reliability-eval/lethal-trifecta-threat-model.md) | best-practice | Audit tools against private data + untrusted content + external communication capabilities |
 | [LLM Observability](references/reliability-eval/llm-observability.md) | proposed | Span-level tracing of agent workflows with visual UI debugging and aggregate metrics |
 | [Merged Code + Language Skill Model](references/reliability-eval/merged-code-language-skill-model.md) | emerging | Decentralized training + model merging for unified NL and code capabilities |
 | [No-Token-Limit Magic](references/reliability-eval/no-token-limit-magic.md) | experimental-but-awesome | Relax token limits during prototyping to optimize for learning velocity first |
+| [Orchestration Prompt-Writing Benchmark](references/reliability-eval/orchestration-prompt-writing-benchmark.md) | emerging | Score an orchestrator LLM on whether it assigns the right information fragments to the right sub-agent roles and writes correct sub-agent prompts,… |
 | [Output Verification Loop](references/reliability-eval/output-verification-loop.md) | emerging | Verify outputs against expected structure before accepting results |
+| [Own-Check Fault Injection](references/reliability-eval/own-check-fault-injection.md) | emerging | >- Plant a controlled fault inside a running agent pipeline and score whether the pipeline's own checks emit a detection act, keeping detected,… |
+| [Reasoning-Token Firewall](references/reliability-eval/reasoning-token-firewall.md) | validated-in-production | Assemble an agent's result only from answer-typed stream events, never by string-stripping interleaved reasoning tokens. |
 | [RLAIF (Reinforcement Learning from AI Feedback)](references/reliability-eval/rlaif-reinforcement-learning-from-ai-feedback.md) | emerging | AI-generated preference labels replacing human annotators for scalable alignment training |
 | [Schema Validation Retry with Cross-Step Learning](references/reliability-eval/schema-validation-retry-cross-step-learning.md) | emerging | Multi-attempt retry with detailed error feedback and cross-step error accumulation |
 | [Structured Output Specification](references/reliability-eval/structured-output-specification.md) | established | Constrain outputs using deterministic schemas for reliable validation |
@@ -179,14 +195,18 @@ Patterns for securing agent systems, protecting data, and ensuring safe operatio
 | Pattern | Status | Description |
 |---------|--------|-------------|
 | [Action-Selector Pattern](references/security-safety/action-selector-pattern.md) | emerging | Constrain LLM to action allowlist with schema-validated parameters to prevent prompt injection |
+| [Authenticated Authority Channel](references/security-safety/authenticated-authority-channel.md) | emerging | Preserve a distinguishable channel for authenticated intent so retrieved content can inform reasoning without granting itself authority. |
 | [Black-Box Skill Invocation](references/security-safety/black-box-skill-invocation.md) | emerging | Schema-only skill discovery with remote execution to prevent knowledge leakage across agent collaboration boundaries |
+| [Consequence-Family Coverage Audit](references/security-safety/consequence-family-coverage-audit.md) | emerging | Audit an agent's risk policy by enumerating families of consequence and asking which rule covers each, because a hand-written risk list reliably… |
 | [Cryptographic Governance Audit Trail](references/security-safety/cryptographic-governance-audit-trail.md) | emerging | Post-quantum signed audit trail for agent tool calls with policy enforcement middleware |
 | [Denial Tracking & Permission Escalation](references/security-safety/denial-tracking-permission-escalation.md) | emerging | Auto-escalate repeated tool denials to blanket permission prompts or fallback strategies |
 | [Deterministic Security Scanning Build Loop](references/security-safety/deterministic-security-scanning-build-loop.md) | proposed | Integrate deterministic security scanning tools into build loops for AI code generation |
 | [Deterministic Threat Rule Scanning](references/security-safety/deterministic-threat-rule-scanning.md) | emerging | Regex-based threat detection rules for agent tool calls and skill definitions |
+| [Exact-Action Authorization Binding](references/security-safety/exact-action-authorization-binding.md) | proposed | Bind a short-lived approval to the complete action presented to the reviewer, then rederive and compare that identity at the acting boundary… |
 | [External Credential Sync](references/security-safety/external-credential-sync.md) | validated-in-production | Cross-source credential synchronization with near-expiry detection and type-aware upgrades |
 | [Hook-Based Safety Guard Rails](references/security-safety/hook-based-safety-guard-rails.md) | validated-in-production | Enforce safety constraints by intercepting agent actions before execution |
 | [Isolated VM Per RL Rollout](references/security-safety/isolated-vm-per-rl-rollout.md) | proposed | Run RL policy rollouts in isolated VMs with controlled interfaces and kill switches |
+| [Local-First Credential Broker](references/security-safety/local-first-credential-broker.md) | emerging | Keep raw secrets out of the agent process by injecting credentials at the network layer through a local broker, rather than handing the agent… |
 | [Non-Custodial Spending Controls](references/security-safety/non-custodial-spending-controls.md) | emerging | Policy enforcement layer between agents and wallet transaction signing |
 | [PII Tokenization](references/security-safety/pii-tokenization.md) | established | Tokenize PII before it reaches the model, untokenize for tool calls |
 | [Policy-Gated Tool Proxy](references/security-safety/policy-gated-tool-proxy.md) | emerging | Transparent proxy between agents and tools with policy evaluation and audit trail |
@@ -194,6 +214,7 @@ Patterns for securing agent systems, protecting data, and ensuring safe operatio
 | [Soulbound Identity Verification](references/security-safety/soulbound-identity-verification.md) | emerging | Non-transferable agent identity credentials with tamper-resistant state transition logging |
 | [Tool Capability Compartmentalization](references/security-safety/tool-capability-compartmentalization.md) | emerging | Split tools into reader/processor/writer micro-tools with per-call consent |
 | [Transitive Vouch-Chain Trust](references/security-safety/transitive-vouch-chain-trust.md) | emerging | Cryptographically signed vouch graph with trust propagation and decay |
+| [Zero-Knowledge Verified Agent Egress](references/security-safety/zero-knowledge-verified-agent-egress.md) | emerging | An agent can be tricked into making an outbound request that looks fine at the network layer but carries a false claim: a payment to the wrong… |
 | [Zero-Trust Agent Mesh](references/security-safety/zero-trust-agent-mesh.md) | established | Cryptographic agent identities with mutual trust handshakes and bounded delegation |
 
 ### Tool Use & Environment
@@ -224,6 +245,8 @@ Patterns for tool discovery, execution, environment management, and integration.
 | [Multi-Platform Webhook Triggers](references/tool-use-environment/multi-platform-webhook-triggers.md) | emerging | Webhook triggers from SaaS tools (Notion, Slack, Jira) to initiate agent workflows |
 | [Parallel Tool Call Learning](references/tool-use-environment/parallel-tool-call-learning.md) | emerging | Learn optimal parallel tool call strategies from execution data |
 | [Conditional Parallel Tool Execution](references/tool-use-environment/parallel-tool-execution.md) | validated-in-production | Conditional parallel tool execution based on read-only vs stateful classification |
+| [Filesystem-Mediated Host Delegation](references/tool-use-environment/filesystem-mediated-host-delegation.md) | emerging | An agent that runs inside a sandbox — a container, a hosted runtime, a cloud
+workspace — is deliberately cut off from the developer's real machine. |
 | [Patch Steering via Prompted Tool Selection](references/tool-use-environment/patch-steering-via-prompted-tool-selection.md) | best-practice | Guide agent's tool selection through explicit natural language instructions in prompts |
 | [Progressive Tool Discovery](references/tool-use-environment/progressive-tool-discovery.md) | established | Filesystem-like tool hierarchy with on-demand discovery by exploring structure |
 | [Shell Command Contextualization](references/tool-use-environment/shell-command-contextualization.md) | established | Execute shell commands with automatic capture and injection of output into agent context |
@@ -314,12 +337,12 @@ Each reference file includes:
 
 - **Website**: [https://agentic-patterns.com](https://agentic-patterns.com) — Interactive pattern explorer, compare tool, decision guide, graph visualization
 - **llms.txt**: [https://agentic-patterns.com/llms.txt](https://agentic-patterns.com/llms.txt) — Machine-readable documentation for AI assistants
-- **GitHub**: [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) — Full source with 180+ patterns
+- **GitHub**: [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) — Upstream catalogue this skill distills from
 
 ## Documentation sources
 
-- **Raw docs**: `raw/agentic-patterns-extra-docs/` — 171 unprocessed markdown files, one per pattern (flat structure)
-- **Reference docs**: `references/` — 173 distilled reference files organized by category (8 categories), plus `INDEX.md`
+- **Raw docs**: `raw/agentic-patterns-extra-docs/` — 195 markdown files (flat structure): 193 pattern docs plus `TEMPLATE.md` and `INDEX.md`
+- **Reference docs**: `references/` — 194 distilled reference files organised by category (8 categories), plus `INDEX.md`
 - **Source repo**: [nibzard/awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns) — Original patterns with templates, categories, and metadata
 
 The reference directory is a curated, categorized subset of the raw docs. Each reference file follows the same structure as the source templates (title, status, authors, source, tags, problem, solution, evidence, how to use, trade-offs, references).
@@ -330,8 +353,8 @@ This skill's documentation is organized in three layers:
 
 | Layer | Location | Purpose |
 |-------|----------|---------|
-| **Catalog** | This file (SKILL.md) | Quick-reference index of all 180+ patterns with status and one-line descriptions |
+| **Catalog** | This file (SKILL.md) | Quick-reference index of all 194 patterns with status and one-line descriptions |
 | **Reference** | `references/<category>/<pattern>.md` | Detailed pattern docs: problem, solution, implementation, trade-offs, evidence |
-| **Raw sources** | `raw/agentic-patterns-extra-docs/` | Original documentation files (171 files, flat structure) before distillation into references/ |
+| **Raw sources** | `raw/agentic-patterns-extra-docs/` | Original documentation files (195 files, flat structure) before distillation into references/ |
 
 The `references/` directory is the curated, categorized output distilled from the raw docs. Each reference file corresponds to a raw doc file (with minor naming normalization for consistency). The INDEX.md in `references/` provides a complete cross-reference between categories and patterns.
