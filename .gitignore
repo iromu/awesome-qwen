@@ -8,3 +8,4 @@ inputs.txt
 .agents/skills
 .qwen/skills
 .playwright-mcp
+__pycache__
