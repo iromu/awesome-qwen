@@ -83,7 +83,7 @@
       "query": "Which agentic pattern should I reach for when I want a quick read on a couple of hundred patterns rather than a deep dive on one? I just want to browse the catalogue.",
       "prompt": "Which agentic pattern should I reach for when I want a quick read on a couple of hundred patterns rather than a deep dive on one? I just want to browse the catalogue.",
       "should_trigger": false,
-      "expected_output": "Should route to the agentic-patterns-extra skill, which catalogues 194 patterns with one-line summaries; this skill holds deep research reports on 25 patterns only.",
+      "expected_output": "Should route to the agentic-patterns-extra skill, which catalogues 194 patterns with one-line summaries; this skill holds long-form research reports on 220 patterns.",
       "files": [],
       "assertions": [
         "routes to agentic-patterns-extra"

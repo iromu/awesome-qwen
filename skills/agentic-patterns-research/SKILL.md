@@ -15,9 +15,11 @@ description: >
 
 # Agentic Patterns Research
 
-A research-backed collection of 25 validated patterns for building reliable,
-safe, and efficient AI agents. Each pattern includes academic foundations,
-industry implementations, and practical guidance.
+A research-backed collection of 220 deep-dive research reports on agentic design
+patterns, each covering academic foundations, industry implementations, and practical
+guidance. The 25 patterns with the strongest production evidence are featured in the
+category tables below; the rest are reachable through the category overviews and the
+full index.
 
 ## When to Use This Skill
 
@@ -31,7 +33,7 @@ industry implementations, and practical guidance.
 
 ## When NOT to Use This Skill
 
-This skill holds deep research reports on 25 patterns. It is the wrong tool when you
+This skill holds 220 long-form research reports. It is the wrong tool when you
 need breadth or speed rather than depth:
 
 - **Browsing or comparing many patterns** — the sibling `agentic-patterns-extra` skill
@@ -51,8 +53,9 @@ need breadth or speed rather than depth:
 
 ## Pattern Categories
 
-The 25 patterns are organized into 8 categories. Read the reference file
-for the specific pattern you need.
+The 25 best-evidenced patterns are organised into 8 categories below. Read the reference
+file for the specific pattern you need; the remaining 195 reports are listed in
+`references/INDEX.md`.
 
 ### 1. Context Management
 
@@ -189,6 +192,18 @@ category itself is unclear.
 | `references/02-feedback-loop-patterns-detailed.md` | Feedback Loops | The detailed analysis accompanying the survey above |
 | `references/01-learning-patterns.md` | Learning & Adaptation | Agent RFT, memory reinforcement learning and skill library evolution |
 | `references/01-ux-collaboration-patterns.md` | UX & Collaboration | Human-in-the-loop approval, the spectrum of control, and verbose reasoning transparency |
+
+## The Full Corpus
+
+Beyond the 25 patterns tabled above, `references/` carries the complete upstream research
+corpus: 220 reports plus the 13 category overviews. Each is a verbatim copy of its
+upstream document, opening with a `<!-- Source: … -->` comment that names the exact path
+it came from.
+
+`references/INDEX.md` is the complete registry — every file with its document title and
+length. Consult it before recommending a report: if a pattern has no row there, it is not
+covered by this skill, and the right answer is `agentic-patterns-extra` rather than a
+report that does not exist.
 
 ## How to Use This Skill
 
