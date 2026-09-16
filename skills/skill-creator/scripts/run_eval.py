@@ -34,6 +34,27 @@ def find_project_root() -> Path:
     return current
 
 
+def _configured_model() -> str | None:
+    """Resolve the model the user actually runs, for use as a `qwen -p` default.
+
+    run_single_query passes --bare, which skips the normal model resolution, so an
+    unset --model makes qwen -p fall back to a model id the endpoint may not serve;
+    the run then dies on a 404 and the eval scores every query 0.00 regardless of the
+    description. Reading the settings default keeps the documented
+    "default: user's configured model" promise and the triggering test honest.
+    """
+    settings = Path.home() / ".qwen" / "settings.json"
+    try:
+        cfg = json.loads(settings.read_text())
+    except (OSError, ValueError):
+        return None
+    model = cfg.get("model")
+    if isinstance(model, dict):
+        name = model.get("name")
+        return name if isinstance(name, str) and name else None
+    return model if isinstance(model, str) and model else None
+
+
 def run_single_query(
     query: str,
     skill_name: str,
@@ -279,9 +300,14 @@ def main():
     parser.add_argument("--timeout", type=int, default=30, help="Timeout per query in seconds")
     parser.add_argument("--runs-per-query", type=int, default=3, help="Number of runs per query")
     parser.add_argument("--trigger-threshold", type=float, default=0.5, help="Trigger rate threshold")
-    parser.add_argument("--model", default=None, help="Model to use for qwen -p (default: user's configured model)")
+    parser.add_argument("--model", default=None, help="Model to use for qwen -p "
+                        "(default: the model name in ~/.qwen/settings.json, since --bare "
+                        "skips normal model resolution)")
     parser.add_argument("--verbose", action="store_true", help="Print progress to stderr")
     args = parser.parse_args()
+
+    if args.model is None:
+        args.model = _configured_model()
 
     eval_raw = json.loads(Path(args.eval_set).read_text())
     # Support both flat arrays and wrapper objects {"skill_name": "...", "evals": [...]}

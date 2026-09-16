@@ -34,12 +34,34 @@ from pathlib import Path
 from scripts.utils import parse_skill_md
 
 
+def _configured_model() -> str | None:
+    """Resolve the model the user actually runs, for use as a `qwen -p` default.
+
+    run_single_query passes --bare, which skips the normal model resolution, so an
+    unset --model makes qwen -p fall back to a model id the endpoint may not serve;
+    the run then dies on a 404 and the eval scores every query 0.00 regardless of the
+    description. Reading the settings default keeps the documented
+    "default: user's configured model" promise and the triggering test honest.
+    """
+    settings = Path.home() / ".qwen" / "settings.json"
+    try:
+        cfg = json.loads(settings.read_text())
+    except (OSError, ValueError):
+        return None
+    model = cfg.get("model")
+    if isinstance(model, dict):
+        name = model.get("name")
+        return name if isinstance(name, str) and name else None
+    return model if isinstance(model, str) and model else None
+
+
 def _call_qwen(
     prompt: str,
     model: str | None,
     timeout: int,
     max_tool_calls: int,
     skill_md_content: str | None = None,
+    approval_mode: str | None = None,
 ) -> str:
     """Run `qwen -p` with the prompt on stdin and return the response text.
 
@@ -49,6 +71,12 @@ def _call_qwen(
     cmd = ["qwen", "-p", "--output-format", "text"]
     if model:
         cmd.extend(["--model", model])
+    # A non-interactive -p run auto-declines tools that would need approval, so a case
+    # whose task runs shell commands gets "permission declined" and ends up measuring
+    # tool denial rather than skill quality. run_eval.py already passes --yolo for the
+    # same reason; the default is untouched when this flag is absent.
+    if approval_mode:
+        cmd.extend(["--approval-mode", approval_mode])
     cmd.extend(["--max-tool-calls", str(max_tool_calls)])
 
     full_prompt = prompt
@@ -140,6 +168,7 @@ def run_single_test(
     max_tool_calls: int,
     config: str,
     baseline_skill_path: Path | None = None,
+    approval_mode: str | None = None,
 ) -> dict:
     """Run a single test case (with_skill or without_skill).
 
@@ -201,6 +230,7 @@ def run_single_test(
             timeout=timeout,
             max_tool_calls=max_tool_calls,
             skill_md_content=skill_content if config in ("with_skill", "old_skill") else None,
+            approval_mode=approval_mode,
         )
         elapsed = time.time() - t0
 
@@ -245,6 +275,7 @@ def run_tests(
     model: str | None,
     max_tool_calls: int,
     baseline_skill_path: Path | None = None,
+    approval_mode: str | None = None,
 ) -> dict:
     """Run all test cases and return results summary."""
     workspace_dir.mkdir(parents=True, exist_ok=True)
@@ -273,6 +304,7 @@ def run_tests(
                     max_tool_calls,
                     config,
                     baseline_skill_path,
+                    approval_mode,
                 )
                 future_to_info[future] = (eval_item, config)
 
@@ -319,12 +351,23 @@ def main():
     parser.add_argument("--timeout", type=int, default=120,
                         help="Timeout per test in seconds")
     parser.add_argument("--model", default=None,
-                        help="Model for qwen -p (default: user's configured model)")
+                        help="Model for qwen -p (default: the model name in "
+                             "~/.qwen/settings.json; --bare/`-p` fallbacks can name an "
+                             "unserved model and 404 the whole run)")
     parser.add_argument("--max-tool-calls", type=int, default=20,
                         help="Max tool calls per run")
+    parser.add_argument("--approval-mode", default=None,
+                        choices=["plan", "default", "auto-edit", "auto", "yolo"],
+                        help="Forward this --approval-mode to each `qwen -p` run. A "
+                             "non-interactive -p run auto-declines tools that would need "
+                             "approval, so cases whose task runs shell commands need e.g. "
+                             "`yolo` or they measure tool denial instead of skill quality.")
     parser.add_argument("--verbose", action="store_true",
                         help="Print progress to stderr")
     args = parser.parse_args()
+
+    if args.model is None:
+        args.model = _configured_model()
 
     eval_raw = json.loads(Path(args.eval_set).read_text())
     # Support both flat arrays and wrapper objects {"skill_name": "...", "evals": [...]}
@@ -358,6 +401,7 @@ def main():
         model=args.model,
         max_tool_calls=args.max_tool_calls,
         baseline_skill_path=baseline_path,
+        approval_mode=args.approval_mode,
     )
 
     print(json.dumps(output, indent=2))

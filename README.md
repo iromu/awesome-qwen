@@ -27,7 +27,7 @@ No build step, no dependencies — just markdown files Qwen Code auto-discovers.
 |----------|-------------|-------|
 | [Agents](#agents) | Specialized AI personas with specific tool access and expertise | 4 |
 | [Instructions](#instructions) | Coding standards applied automatically by file pattern | 3 |
-| [Skills](#skills) | Self-contained capabilities for specific tasks | 21 |
+| [Skills](#skills) | Self-contained capabilities for specific tasks | 22 |
 | [Hooks](#hooks) | Automated actions triggered during Qwen Code sessions | 3 |
 | [Workflows](#workflows) | Reusable automation sequences (coming soon) | 0 |
 | [Cookbook](#cookbook) | Language-specific recipes and examples (coming soon) | 0 |
@@ -76,6 +76,7 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [git-commit](skills/git-commit) | Automated git commit message generation with conventional commit style | `git` `commits` |
 | [git-workflows](skills/git-workflows) | Git branching strategies, commit conventions, and collaboration workflows | `git` `branching` `collaboration` |
 | [json-formatting](skills/json-formatting) | Format, pretty-print, minify, validate, transform, and convert JSON data | `json` `formatting` `validation` |
+| [maven-version-audit](skills/maven-version-audit) | Audit Maven version currency from harvested evidence — POM coordinate harvest, per-coordinate `maven-metadata.xml` lookups, pinned/in-use/latest columns, behind-vs-current verdicts, lockstep family rules, and regeneration of the dependency-versions doc | `maven` `dependencies` `versions` `audit` |
 | [rabbitmq-typescript](skills/rabbitmq-typescript) | Expert RabbitMQ development for TypeScript/Node.js using amqplib — exchanges, queues, DLX, publisher confirms | `rabbitmq` `typescript` `messaging` |
 | [security-audit](skills/security-audit) | Scan for CVEs, detect secrets, run SAST, audit OWASP Top 10, and check container/IaC security | `security` `owasp` `scanning` `sast` `secrets` |
 | [self-learning](skills/self-learning) | Closed-loop self-learning system — agents create skills from experience, maintain persistent memory, and improve over time | `learning` `memory` `autonomous` |
