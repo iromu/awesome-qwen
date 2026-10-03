@@ -1,0 +1,63 @@
+{
+  "skill_name": "unsloth-finetuning",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a Python script that QLoRA fine-tunes unsloth/Qwen3-4B-Instruct-2507 on my local HuggingFace QA dataset (columns: instruction, input, output, ~2000 rows) using Unsloth, on a single 24GB RTX 4090. Use a learning rate of 2e-4, 2 epochs, and save the LoRA adapter plus a merged 16-bit model at the end.",
+      "query": "Write a Python script that QLoRA fine-tunes unsloth/Qwen3-4B-Instruct-2507 on my local HuggingFace QA dataset (columns: instruction, input, output, ~2000 rows) using Unsloth, on a single 24GB RTX 4090. Use a learning rate of 2e-4, 2 epochs, and save the LoRA adapter plus a merged 16-bit model at the end.",
+      "expected_output": "A complete Unsloth QLoRA SFT script: pip install unsloth, FastLanguageModel.from_pretrained with load_in_4bit=True, get_peft_model with r/target_modules/lora_alpha, a formatting function that builds instruction/input/output texts and appends the EOS token, SFTTrainer with SFTConfig (learning_rate=2e-4, num_train_epochs=2), for_inference + generate for a smoke test, and save_pretrained plus save_pretrained_merged with save_method='merged_16bit'.",
+      "files": [],
+      "assertions": [
+        "imports FastLanguageModel from unsloth",
+        "calls FastLanguageModel.from_pretrained with load_in_4bit = True",
+        "calls FastLanguageModel.get_peft_model with r and target_modules covering q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj",
+        "appends tokenizer.eos_token (EOS_TOKEN) to each formatted text in the data formatting function",
+        "uses SFTTrainer from trl with an SFTConfig that sets learning_rate = 2e-4 and num_train_epochs = 2 (not max_steps)",
+        "calls model.save_pretrained for the LoRA and model.save_pretrained_merged with save_method = 'merged_16bit'"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I have a dataset of medical X-ray images with captions (fields: image, caption). Write the Unsloth code to QLoRA fine-tune unsloth/gemma-3-4b-pt as a vision model so it describes the X-rays. Include the dataset conversion to the right message format, the trainer setup, and saving the LoRA.",
+      "query": "I have a dataset of medical X-ray images with captions (fields: image, caption). Write the Unsloth code to QLoRA fine-tune unsloth/gemma-3-4b-pt as a vision model so it describes the X-rays. Include the dataset conversion to the right message format, the trainer setup, and saving the LoRA.",
+      "expected_output": "Vision SFT code using FastVisionModel (returns model + processor), FastVisionModel.get_peft_model with LoRA, a convert function producing role/content messages with {'type': 'text'} and {'type': 'image'} content entries, SFTTrainer with UnslothVisionDataCollator as data_collator and the mandatory vision SFTConfig block (remove_unused_columns=False, dataset_text_field='', dataset_kwargs={'skip_prepare_dataset': True}, max_length), plus model/processor save_pretrained for the LoRA.",
+      "files": [],
+      "assertions": [
+        "uses FastVisionModel.from_pretrained (not FastLanguageModel) with load_in_4bit = True and unpacks (model, processor)",
+        "calls FastVisionModel.get_peft_model with r and lora_alpha",
+        "converts each sample into messages with role/content turns whose content is a list containing both {'type': 'text', 'text': ...} and {'type': 'image', 'image': ...} entries",
+        "uses UnslothVisionDataCollator as the data_collator in SFTTrainer",
+        "sets the required vision SFTConfig items: remove_unused_columns = False, dataset_text_field = '', dataset_kwargs = {'skip_prepare_dataset': True}, and max_length",
+        "saves the LoRA via model.save_pretrained and processor.save_pretrained to the same directory"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write an Unsloth fine-tuning script for meta-llama/Llama-3.1-8B-Instruct using a ShareGPT-style dataset (a 'conversations' column with from/value entries from human/gpt). It should apply the Llama-3.1 chat template, train only on the assistant responses, and use SFTTrainer. Show the full data prep and trainer code.",
+      "query": "Write an Unsloth fine-tuning script for meta-llama/Llama-3.1-8B-Instruct using a ShareGPT-style dataset (a 'conversations' column with from/value entries from human/gpt). It should apply the Llama-3.1 chat template, train only on the assistant responses, and use SFTTrainer. Show the full data prep and trainer code.",
+      "expected_output": "Conversational SFT code: get_chat_template from unsloth.chat_templates with chat_template='llama-3.1', standardize_sharegpt to convert from/value to role/content, a formatting function applying tokenizer.apply_chat_template with tokenize=False and add_generation_prompt=False, the trainer wrapped with train_on_responses_only, and SFTTrainer with SFTConfig.",
+      "files": [],
+      "assertions": [
+        "uses get_chat_template from unsloth.chat_templates with a Llama-3.1 template name (e.g. 'llama-3.1' or 'llama-31')",
+        "converts the ShareGPT dataset with standardize_sharegpt before mapping",
+        "applies tokenizer.apply_chat_template with tokenize = False and add_generation_prompt = False in the formatting function",
+        "wraps the trainer with train_on_responses_only from unsloth.chat_templates",
+        "uses SFTTrainer from trl with an SFTConfig and dataset_text_field = 'text'"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to continue pretraining unsloth/mistral-7b-v0.3 on a raw Korean Wikipedia corpus (fields: title, text) with Unsloth to improve Korean coverage. Write the full setup: model loading, LoRA configuration, dataset formatting, and the trainer with the right hyperparameters for continued pretraining.",
+      "query": "I want to continue pretraining unsloth/mistral-7b-v0.3 on a raw Korean Wikipedia corpus (fields: title, text) with Unsloth to improve Korean coverage. Write the full setup: model loading, LoRA configuration, dataset formatting, and the trainer with the right hyperparameters for continued pretraining.",
+      "expected_output": "CPT code: sets UNSLOTH_RETURN_LOGITS=1 before any Unsloth import to disable CCE, FastLanguageModel.from_pretrained, get_peft_model with target_modules that add embed_tokens and lm_head, a formatting function producing a single 'text' column with the EOS token appended, and UnslothTrainer with UnslothTrainingArguments where embedding_learning_rate is at least 2x smaller than learning_rate.",
+      "files": [],
+      "assertions": [
+        "sets os.environ['UNSLOTH_RETURN_LOGITS'] = '1' (or a %env equivalent) before any Unsloth import to disable CCE",
+        "adds 'embed_tokens' and 'lm_head' to target_modules in FastLanguageModel.get_peft_model",
+        "formats the raw corpus into a single 'text' column with the EOS token appended to each row",
+        "uses UnslothTrainer with UnslothTrainingArguments from unsloth (not plain SFTTrainer)",
+        "sets embedding_learning_rate smaller than learning_rate by at least 2x (e.g. learning_rate = 5e-5 with embedding_learning_rate = 1e-5)"
+      ]
+    }
+  ]
+}

@@ -102,14 +102,19 @@ def load_run_results(benchmark_dir: Path) -> dict:
             if not config_dir.is_dir():
                 continue
             # Skip non-config directories (inputs, outputs, etc.)
-            if not list(config_dir.glob("run-*")):
+            run_dirs = sorted(config_dir.glob("run-*"))
+            # run_test.py + auto_grader.py write grading.json directly in the
+            # config dir (no run-N subdirs); accept that layout as a single run-1.
+            if not run_dirs and not (config_dir / "grading.json").exists():
                 continue
             config = config_dir.name
             if config not in results:
                 results[config] = []
 
-            for run_dir in sorted(config_dir.glob("run-*")):
-                run_number = int(run_dir.name.split("-")[1])
+            run_entries = [(d, int(d.name.split("-")[1])) for d in run_dirs]
+            if not run_entries:
+                run_entries = [(config_dir, 1)]
+            for run_dir, run_number in run_entries:
                 grading_file = run_dir / "grading.json"
 
                 if not grading_file.exists():

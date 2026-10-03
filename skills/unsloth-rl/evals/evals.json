@@ -1,0 +1,65 @@
+{
+  "skill_name": "unsloth-rl",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Convert Llama 3.1 8B Instruct into a reasoning model on GSM8K with GRPO on a single A100 40GB — write the full script including reward functions and GRPOConfig.",
+      "query": "Convert Llama 3.1 8B Instruct into a reasoning model on GSM8K with GRPO on a single A100 40GB — write the full script including reward functions and GRPOConfig.",
+      "expected_output": "A complete, runnable Python script: pip install unsloth vllm (plus diffusers locally), FastLanguageModel.from_pretrained with load_in_4bit=True and fast_inference=True, get_peft_model with LoRA, GSM8K dataset mapped to prompt/answer columns (answer extracted from the #### marker, no reasoning leaked), at least one correctness reward function plus format/integer reward functions, GRPOConfig with num_generations >= 4 and max_prompt_length/max_completion_length, GRPOTrainer with reward_funcs and train_dataset, trainer.train(), then model.save_lora and a fast_generate test with the loaded LoRA.",
+      "files": [],
+      "assertions": [
+        "Uses GRPOTrainer and GRPOConfig imported from trl",
+        "Loads the model with FastLanguageModel.from_pretrained with fast_inference=True",
+        "Defines at least one reward function that returns a list of floats, one per completion",
+        "The dataset has prompt and answer columns and the answer column does not contain the reasoning chain",
+        "GRPOConfig sets num_generations to a value greater than 2",
+        "Saves the trained adapter with model.save_lora before evaluating"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want to DPO-align Qwen3 4B with a 2k chosen/rejected pair dataset (Hugging Face format with prompt/chosen/rejected string columns). Give me the trainer code.",
+      "query": "I want to DPO-align Qwen3 4B with a 2k chosen/rejected pair dataset (Hugging Face format with prompt/chosen/rejected string columns). Give me the trainer code.",
+      "expected_output": "Code that first calls PatchDPOTrainer() from unsloth, loads the model with FastLanguageModel.from_pretrained (4-bit) and get_peft_model, then builds DPOTrainer with ref_model=None, DPOConfig (batch size, gradient accumulation, learning rate ~5e-6, adamw_8bit), beta around 0.1, tokenizer, max_length and max_prompt_length, and train_dataset pointing at the prompt/chosen/rejected dataset, then calls train(). Should note the dataset column names must be prompt/chosen/rejected.",
+      "files": [],
+      "assertions": [
+        "Calls PatchDPOTrainer() from unsloth before creating the trainer",
+        "Uses DPOTrainer and DPOConfig from trl",
+        "Passes ref_model=None to DPOTrainer",
+        "Sets a beta value on the DPO trainer",
+        "The dataset is expected to have prompt, chosen and rejected columns",
+        "Uses a 4-bit load (load_in_4bit=True) with FastLanguageModel"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design a reward function for training a model to always answer with valid JSON matching my API schema (a dict with 'status' in ['ok','error'] and a 'message' string), then show how to plug it into GRPO.",
+      "query": "Design a reward function for training a model to always answer with valid JSON matching my API schema (a dict with 'status' in ['ok','error'] and a 'message' string), then show how to plug it into GRPO.",
+      "expected_output": "A Python reward function with the GRPO signature (completions, **kwargs) that parses each completion's content with json.loads inside try/except, checks the schema (dict, 'status' in the allowed set, 'message' is a str), returns a list of floats with positive scores for valid schema matches and 0/negative scores for invalid JSON or wrong schema, plus a short GRPOTrainer/GRPOConfig snippet registering it in reward_funcs and a prompt/answer dataset.",
+      "files": [],
+      "assertions": [
+        "The reward function returns a list of floats, one per completion",
+        "Uses json.loads (or equivalent) inside a try/except to handle invalid JSON",
+        "Checks the schema: 'status' in ['ok','error'] and 'message' is a string",
+        "Invalid completions receive a lower (zero or negative) score than valid ones",
+        "Shows the reward function registered in GRPOTrainer's reward_funcs list",
+        "Reads the completion text via completion[0]['content'] or equivalent"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Set up vision GRPO (GSPO) for Qwen3-VL 8B on AI4Math/MathVista testmini — model loading, dataset prep, reward functions and GRPOConfig.",
+      "query": "Set up vision GRPO (GSPO) for Qwen3-VL 8B on AI4Math/MathVista testmini — model loading, dataset prep, reward functions and GRPOConfig.",
+      "expected_output": "Code using FastVisionModel.from_pretrained (max_seq_length 16384, 4-bit), get_peft_model with finetune_vision_layers=False and finetune_language_layers=True, MathVista filtered to numeric answers with images resized and converted to RGB, a multimodal prompt with an image placeholder plus REASONING/SOLUTION tags, formatting and correctness reward functions (ideally with the addCriterion gibberish penalty), and GRPOConfig with importance_sampling_level='sequence' for GSPO.",
+      "files": [],
+      "assertions": [
+        "Uses FastVisionModel.from_pretrained with max_seq_length of 16384",
+        "LoRA is added with finetune_vision_layers=False (vLLM cannot LoRA vision layers)",
+        "The dataset is filtered to numeric answers and images are resized/converted to RGB",
+        "The prompt uses a multimodal content list with an image placeholder",
+        "GRPOConfig enables GSPO via importance_sampling_level='sequence'",
+        "Reward functions include both a formatting reward and a correctness reward"
+      ]
+    }
+  ]
+}

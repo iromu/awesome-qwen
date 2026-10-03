@@ -1,0 +1,64 @@
+{
+  "skill_name": "unsloth-quantization",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just finished a QLoRA fine-tune of Qwen3 4B in Unsloth. Write the code to export it to GGUF as q4_k_m and q8_0 and push both to my Hugging Face account.",
+      "query": "I just finished a QLoRA fine-tune of Qwen3 4B in Unsloth. Write the code to export it to GGUF as q4_k_m and q8_0 and push both to my Hugging Face account.",
+      "expected_output": "Python code that loads the trained LoRA with FastLanguageModel.from_pretrained, then exports GGUF with quantization_method q4_k_m and q8_0, pushing to HF with push_to_hub_gguf (ideally a single multi-quant call). Should mention the HF token and that q8_0 is the default.",
+      "files": [],
+      "assertions": [
+        "Loads the trained LoRA via FastLanguageModel.from_pretrained",
+        "Calls save_pretrained_gguf or push_to_hub_gguf",
+        "Passes quantization_method including q4_k_m",
+        "Passes quantization_method including q8_0 (or notes q8_0 is the default)",
+        "Uses push_to_hub_gguf with an HF token argument",
+        "Passes quantization_method as a list for a single multi-quant call, or explains that this is faster than separate calls"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Explain the difference between Unsloth dynamic GGUFs and standard imatrix quants, and which one I should pick for a 7B model I want to run in Ollama.",
+      "query": "Explain the difference between Unsloth dynamic GGUFs and standard imatrix quants, and which one I should pick for a 7B model I want to run in Ollama.",
+      "expected_output": "Explanation that dynamic GGUFs quantize per-layer with a model-specific scheme plus curated chat-aware imatrix calibration (pure PTQ, no QAT), that standard quants use one global scheme, and that KL divergence (not perplexity) is the right comparison metric. Should recommend a Dynamic 4-bit (UD-Q4_K_XL) for a 7B model and note UD- naming.",
+      "files": [],
+      "assertions": [
+        "Mentions per-layer / dynamic layer selection (or model-specific quant scheme) for dynamic GGUFs",
+        "Mentions imatrix calibration data and that dynamic quants use a curated chat-aware one",
+        "States dynamic GGUFs are post-training quantization (no QAT/QAD training on the calibration data)",
+        "Names KL divergence (KLD) as the preferred metric over perplexity",
+        "Recommends a 4-bit quant (e.g. UD-Q4_K_XL / Q4_K_XL) for the 7B model",
+        "Mentions UD- prefixed naming of Unsloth's quants"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Give me a QAT training script for a small model (like Gemma 4 E2B) that ends in a 4-bit model, using Unsloth and TorchAO.",
+      "query": "Give me a QAT training script for a small model (like Gemma 4 E2B) that ends in a 4-bit model, using Unsloth and TorchAO.",
+      "expected_output": "A script that loads the model with FastLanguageModel.from_pretrained, adds adapters or full finetuning with qat_scheme='int4', trains with SFTTrainer, runs quantize_(model, QATConfig(step='convert')) after training, and saves a 4-bit model with save_pretrained_torchao. Should include the torchao install pin and note QAT has no extra inference overhead.",
+      "files": [],
+      "assertions": [
+        "Uses FastLanguageModel.from_pretrained to load the model",
+        "Sets qat_scheme (e.g. 'int4') in get_peft_model or from_pretrained",
+        "Calls quantize_ with QATConfig(step='convert') after training",
+        "Exports the 4-bit model via save_pretrained_torchao (optionally with Int4WeightOnlyConfig)",
+        "Includes a torchao installation (e.g. torchao==0.14.0 or the notebook's 0.16.0/0.18.0 pins)",
+        "Mentions that QAT recovers accuracy vs naive 4-bit PTQ and/or has no extra inference overhead"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to serve my Unsloth fine-tune in vLLM. Show me how to merge the LoRA into the base model and upload it to Hugging Face.",
+      "query": "I want to serve my Unsloth fine-tune in vLLM. Show me how to merge the LoRA into the base model and upload it to Hugging Face.",
+      "expected_output": "Code using save_pretrained_merged / push_to_hub_merged with save_method='merged_16bit' (float16) and mentioning 'merged_4bit' (int4) as the smaller alternative, with the HF token. Should note the LoRA-adapter-only fallback.",
+      "files": [],
+      "assertions": [
+        "Uses save_pretrained_merged and/or push_to_hub_merged",
+        "Passes save_method = 'merged_16bit'",
+        "Mentions merged_4bit as the int4 alternative",
+        "Includes the HF token in the push call",
+        "Mentions saving just the LoRA adapters (save_pretrained / push_to_hub) as a fallback"
+      ]
+    }
+  ]
+}

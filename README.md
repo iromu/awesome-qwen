@@ -27,7 +27,7 @@ No build step, no dependencies — just markdown files Qwen Code auto-discovers.
 |----------|-------------|-------|
 | [Agents](#agents) | Specialized AI personas with specific tool access and expertise | 4 |
 | [Instructions](#instructions) | Coding standards applied automatically by file pattern | 3 |
-| [Skills](#skills) | Self-contained capabilities for specific tasks | 22 |
+| [Skills](#skills) | Self-contained capabilities for specific tasks | 26 |
 | [Hooks](#hooks) | Automated actions triggered during Qwen Code sessions | 3 |
 | [Workflows](#workflows) | Reusable automation sequences (coming soon) | 0 |
 | [Cookbook](#cookbook) | Language-specific recipes and examples (coming soon) | 0 |
@@ -82,6 +82,10 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [self-learning](skills/self-learning) | Closed-loop self-learning system — agents create skills from experience, maintain persistent memory, and improve over time | `learning` `memory` `autonomous` |
 | [skill-creator](skills/skill-creator) | Create, edit, improve, and evaluate skills — the meta-tool for building Qwen Code skills | `skill-authoring` `eval` |
 | [spring-ai-mcp](skills/spring-ai-mcp) | Build Spring AI MCP (Model Context Protocol) servers and clients with annotations, security, and testing | `spring` `mcp` `ai` |
+| [unsloth-finetuning](skills/unsloth-finetuning) | Supervised fine-tuning of open LLMs/VLMs with the Unsloth Python library — QLoRA/LoRA/FFT via FastLanguageModel + get_peft_model + SFTTrainer, continued pretraining, vision, embedding, MoE, multi-GPU DDP, packing, 500K context | `llm` `finetuning` `lora` `unsloth` |
+| [unsloth-inference](skills/unsloth-inference) | Run, serve, and integrate local models with the Unsloth ecosystem — Desktop/Studio, OpenAI-compatible API, Python SDK, vLLM/SGLang/llama-server/Ollama/LM Studio, `unsloth start` agent wiring, MCP, tool calling | `inference` `serving` `vllm` `unsloth` |
+| [unsloth-quantization](skills/unsloth-quantization) | Quantize and export models with Unsloth — GGUF (Dynamic 2.0/3.0, imatrix), FP8, NVFP4, quantization-aware training (QAT), merged 16-bit/4-bit, speculative decoding, ExecuTorch phone deployment | `quantization` `gguf` `qat` `unsloth` |
+| [unsloth-rl](skills/unsloth-rl) | Reinforcement learning and preference alignment with Unsloth — GRPO/GSPO/DAPO/Dr.GRPO, DPO/ORPO/KTO, reward function design (RLVR), FP8/long-context/vision RL, training agents with RL | `rl` `grpo` `dpo` `unsloth` |
 | [yaml-validator](skills/yaml-validator) | Validate, lint, and fix YAML files — syntax checking, indentation, special characters, and format conversion | `yaml` `validation` |
 
 ## Hooks
