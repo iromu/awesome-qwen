@@ -9,3 +9,5 @@ inputs.txt
 .qwen/skills
 .playwright-mcp
 __pycache__
+*.env
+skillspector-reports

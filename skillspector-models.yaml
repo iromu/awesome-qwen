@@ -1,0 +1,14 @@
+# Models to ensure are present in the active skillspector provider's
+# model_registry.yaml before scanning. scan_skills.sh merges these into the
+# installed registry at runtime, so the entries survive a skillspector
+# reinstall/upgrade (the installed registry is not under version control).
+#
+# Format matches the bundled model_registry.yaml:
+#   models:
+#     "<model-label>":
+#       context_length: <int>          # total context window in tokens (required)
+#       max_output_tokens: <int>       # model's max output cap (optional)
+models:
+  "Qwen3.8-27B-thinking":
+    context_length: 262144
+    max_output_tokens: 8192
