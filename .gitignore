@@ -10,4 +10,3 @@ inputs.txt
 .playwright-mcp
 __pycache__
 *.env
-skillspector-reports

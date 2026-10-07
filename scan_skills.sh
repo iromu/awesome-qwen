@@ -7,7 +7,7 @@
 #   ./scan_skills.sh [SKILLS_DIR] [OUTPUT_DIR] [extra skillspector scan args...]
 #
 #   SKILLS_DIR  directory containing one subdir per skill (default: ./skills)
-#   OUTPUT_DIR  where per-skill reports are written (default: ./skillspector-reports)
+#   OUTPUT_DIR  where per-skill reports are written (default: ./reports/skillspector)
 #   extra args  forwarded verbatim to `skillspector scan` (e.g. --baseline f.yaml)
 #
 #   NO_LLM=1    static analysis only (no LLM, no API key required)
@@ -96,7 +96,7 @@ PY
 }
 
 SKILLS_DIR="${1:-./skills}"
-OUTPUT_DIR="${2:-./skillspector-reports}"
+OUTPUT_DIR="${2:-./reports/skillspector}"
 
 # NO_LLM=1 runs static analysis only (no LLM, no API key needed).
 NO_LLM="${NO_LLM:-0}"
@@ -108,6 +108,18 @@ RESCAN_ALL="${RESCAN_ALL:-0}"
 # static-only report (which carries no "Degraded scan" banner) apart from a
 # real one and re-scan it.
 STATIC_MARKER="<!-- scan_skills.sh: static report (NO_LLM=1) -->"
+
+# skillspector stamps the scanned skill's full local path into the report
+# header ("**Source:** `/abs/path`"), which leaks machine-specific paths into
+# a report meant to be shared. The report is already named after the skill, so
+# strip the header line. Only lines before the first "## " section are touched;
+# the "**Source:**" lines inside findings are external URLs and stay.
+strip_source_line() {
+  local report="$1" tmp
+  tmp="$(mktemp)"
+  awk '/^## /{f=1} !f && /^\*\*Source:\*\*/{next} {print}' "$report" > "$tmp" \
+    && mv "$tmp" "$report"
+}
 
 # Decide whether an existing report is still current. Returns 0 (re-scan) when
 # the report is missing, degraded, static-only, or older than SKILL.md; 1
@@ -207,6 +219,9 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   scan_cmd+=("${EXTRA_SCAN_ARGS[@]}")
   if ! "${scan_cmd[@]}"; then
     echo "warn  $skill_name: scan exited non-zero (report may be partial)" >&2
+  fi
+  if [ -f "$report" ]; then
+    strip_source_line "$report"
   fi
   if [ "$NO_LLM" = "1" ] && [ -f "$report" ]; then
     printf '\n%s\n' "$STATIC_MARKER" >> "$report"
