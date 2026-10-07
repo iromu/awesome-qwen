@@ -178,6 +178,14 @@ The previous error message was misleading and didn't indicate
 whether the issue was credentials or session expiry.
 ```
 
+## Examples
+
+**Staged diff renames a field and adds tests for it.** Steps 1-2 -> one logical change -> `refactor(model): rename user_name to full_name` with a why-focused body; the test change rides along rather than becoming a separate `test:` commit.
+
+**Diff mixes a feature with unrelated reformatting.** Step 2 -> do not bundle them; propose two commits (feature, then `style:`) or ask which to stage first.
+
+**User amends an open PR commit.** Prefer reword/fixup onto the original commit over stacking a new `fix:` commit; keep the prefix style consistent with `git log --oneline` gathered in Step 1.
+
 ## Pitfalls
 
 - ❌ Don't use past tense ("added", "fixed") — use imperative ("add", "fix")

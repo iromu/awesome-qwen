@@ -280,6 +280,14 @@ if False: model.save_pretrained_gguf("llama_finetune", tokenizer, quantization_m
 | Environment flags, OOM, broken finetunes, early stopping | `reference/troubleshooting.md` |
 | Unsloth's HF model catalog: families, sizes, MoE/vision flags | `reference/model-catalog.md` |
 
+## Examples
+
+**"Fine-tune Qwen3-8B on 2k QA pairs with a 24 GB card."** Method selection -> QLoRA (8B needs ~6 GB at 4-bit, so the card has headroom); follow "Core Workflow: QLoRA SFT"; mask prompts with `train_on_responses_only` (see `reference/datasets.md` and `reference/chat-templates.md`).
+
+**"Full fine-tune this model, LoRA didn't reach quality."** FFT is the escalation path, not the default - verify VRAM against the "Choosing a Method" table first, then `full_finetuning=True` with a reduced LR (`reference/hyperparameters.md`).
+
+**"Serve the adapter I trained yesterday."** Out of scope here -> `unsloth-inference` (and export/quantizing goes to `unsloth-quantization`).
+
 ## Pitfalls
 
 - **Missing EOS token → infinite generation.** Every formatted text (SFT and

@@ -330,6 +330,14 @@ list of known-good engines.
 disappears, so a drop-then-`ensure` does not resurrect a phantom. On synchronous engines the flag
 is `false` and no polling happens.
 
+## Examples
+
+**"Store our domain objects in Neo4j without hand-written Cypher."** "Choose Your API" -> `GraphObjectManager` with an annotated `@NodeFragment` model and the codegen modules named in "Installation".
+
+**"Vector index for embeddings, FalkorDB-backed."** "Schema Management" -> `SchemaCatalog` with the HNSW recipe and `indexes.ensure`; confirm FalkorDB support and exact module names against "Pin the Version" first.
+
+**"Test graph mapping without a server."** "Testing" -> the in-process EMBABEL Cypher engine; reach for `PersistenceManager` only when custom Cypher genuinely has no high-level equivalent ("use the code names" rule applies to `loadAll`/`seek` either way).
+
 ## Pitfalls
 
 | Pitfall | Fix |

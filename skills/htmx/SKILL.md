@@ -330,6 +330,14 @@ Include the script; extensions apply page-wide, and no `hx-ext` attribute is nee
 Note the v4 paths are `dist/ext/hx-sse.js` / `hx-ws.js`; the bare `sse.js` / `ws.js` names
 belong to the 1.x legacy directory. `htmax.js` bundles htmx with the popular extensions.
 
+## Examples
+
+**"Live search box, no React."** "Core Workflow" -> `hx-get` + `hx-target` + `hx-trigger="keyup changed delay:300ms"`; "Status-Based Handling" -> the 4xx/5xx swap handling, not just the 200 path.
+
+**"Swap a whole page's sidebar links to partial-page navigation."** Out-of-band and partials + `hx-boost` coverage -> boost the container rather than stamping per-link attributes.
+
+**"Real-time price ticker over WebSocket/SSE."** WebSockets/SSE material in "Core Workflow" and "Events"; confirm 2.x vs 4.x with "Which version am I dealing with?" first - the attribute syntax differs.
+
 ## Pitfalls
 
 | Pitfall | Avoidance |

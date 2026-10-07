@@ -195,6 +195,14 @@ Save test cases to `evals/evals.json`. Don't write assertions yet — just the p
 
 See `references/schemas.md` for the full schema (including the `assertions` field, which you'll add later).
 
+## Examples
+
+**"Create a skill for our release-checklist flow."** "Creating a skill" -> gather the docs and code the flow actually consults -> distill into `reference/*.md` -> write the SKILL.md that points at them; then draft `evals/evals.json` prompts with assertions and run the loop.
+
+**"Is this skill actually helping?"** "Running and evaluating test cases" -> with-skill and baseline arms on identical prompts, graded through the auto-grader; report in the "Report structure" shape.
+
+**"The skill fires on the wrong prompts."** "Description Optimization" -> run the description loop against trigger-eval prompts before concluding the body is the problem.
+
 ## Running and evaluating test cases
 
 The skill-creator uses a fully automated eval loop — no subagents, no interactive viewer, no human feedback needed. Everything runs via `qwen -p` subprocess calls using the same auth as the current session. Parallel LLM processes are limited to 4 by default.

@@ -185,6 +185,14 @@ print(json.dumps(schema, indent=2))
 
 Save the generated schema as a `.json` file and use it for validation in Step 4.
 
+## Examples
+
+**"Validate the `.github/workflows` directory."** Steps 1-2 -> recurse over `.yml`/`.yaml` files and run `yamllint` on each; if yamllint is missing, fall back to the Python parser rather than skipping the directory.
+
+**"Write a schema for this compose file."** Schema Generation section -> generate `compose.schema.json` from the file, then validate the file against the generated schema to prove the schema actually binds.
+
+**CI lint fails with a `truthy` warning.** Pitfalls + Verification sections -> `yes`/`on`/`no` parse as booleans in YAML 1.1; quote the values and re-run the linter before committing.
+
 ## Pitfalls
 
 ⚠️ **`yaml.safe_load()` only reads the first document** in multi-document YAML files. Use `yaml.safe_load_all()` to iterate all documents:

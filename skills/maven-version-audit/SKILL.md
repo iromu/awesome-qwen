@@ -123,6 +123,14 @@ if it is absent. A checker that fails is a real signal, not noise - read it befo
 | `latest any` | highest version overall, qualifiers (`-alpha`/`-rc`/`-jre`) included |
 | verdict | `current`, **behind**, *pre-release/qualified pin*, *unpinned*, *ahead of repo*, *not found* |
 
+## Examples
+
+**"Is `spring-boot-starter-web` outdated?"** Report mode -> run the pipeline (step1 coordinates -> Maven-displayed updates -> cross-check), then answer with all three version columns per "Reading the version columns"; never answer from cached version knowledge.
+
+**"Regenerate `docs/dependency-versions.md`."** Regenerate mode -> full pipeline into `$VERSION_AUDIT_TMP`, then the Self-checks; a coordinate without a `Downloaded from` line is unresolved, not current.
+
+**"Which plugins are behind what the parent pins?"** Profile-gated example reactors are in scope (see "Traps that bite"); compare parent-pinned plugin versions against the harvested `maven-metadata.xml` values before answering.
+
 ## Traps that bite (general patterns; the parenthesised cases are this repo's instances)
 
 - **A local cache folder is not proof a version exists.** A directory holding only

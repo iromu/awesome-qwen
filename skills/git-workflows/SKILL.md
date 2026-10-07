@@ -207,6 +207,14 @@ Clean up stale tracking references:
 git fetch origin --prune
 ```
 
+## Examples
+
+**"Team of 3, releases about once a week, no dedicated release owner."** Step 1 -> feature-branch workflow with short-lived branches and PR review; Gitflow's release trains are ceremony without payoff at that scale.
+
+**"My branch has 40 noisy commits - squash or merge?"** Follow the merge-strategy and Verification guidance -> squash into logical commits when the raw history would mislead a future reader; merge as-is only when each commit already tells its own story.
+
+**"Hotfix needed while a release branch is open."** Step 1 (Gitflow variant) -> fix on the release/main lineage and merge back in both directions, never on a long-lived feature branch.
+
 ## Pitfalls
 
 - ❌ Never force-push to shared branches (`main`, `develop`, release branches)

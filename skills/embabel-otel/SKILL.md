@@ -22,7 +22,7 @@ application to export Embabel Agent traces to Langfuse and/or LangSmith.
 
 1. This skill covers trace export configuration only (`opentelemetry-exporter-embabel`); agent/chatbot functionality goes to `embabel-agent` / `embabel-chatbot` (see "When NOT to Use").
 2. Work through Steps 1–4 in order: add the dependency → configure the exporter(s) → enable Embabel-only mode → verify. Don't skip Step 4 even for throwaway demos — silent no-export is the main failure mode.
-3. Look up full property names in the "Reference" section rather than guessing; check "Pitfalls" before finalizing.
+3. Look up full property names in the "Reference" section rather than guessing; verify with the Step 4 command before finalizing.
 
 ## When to Use
 
@@ -139,6 +139,14 @@ management:
 2. Check logs for: `"Langfuse: SpanExporter configured to send traces to ..."` or `"LangSmith: SpanExporter configured to send traces to ..."`
 3. If you see a warning like `"Langfuse exporter is enabled but not fully configured"`, verify that `public-key` and `secret-key` are set (Langfuse) or `api-key` is set (LangSmith)
 4. Visit your Langfuse/LangSmith dashboard and confirm traces appear
+
+## Examples
+
+**"Send traces to Langfuse."** Steps 1-2 -> add the `opentelemetry-exporter-embabel` dependency, then configure the Langfuse exporter endpoint and keys via the "Reference" property names.
+
+**"Export to Langfuse and LangSmith at once."** Step 2 -> both exporters can be configured; then Step 3 (Embabel-only mode) keeps framework noise out of the traces.
+
+**"Nothing shows in the Langfuse UI."** Step 4 -> verify export is actually happening (endpoint, protocol, keys) before touching agent code.
 
 ## Reference
 

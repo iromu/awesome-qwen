@@ -459,6 +459,14 @@ Migrating from `io.modelcontextprotocol.sdk` to `org.springframework.ai`? See
 `references/migration.md` for full dependency changes, package relocations, and
 a step-by-step migration checklist.
 
+## Examples
+
+**"Expose our billing service as an MCP server."** "Quick Reference: Choose Your Starter" -> server starter and transport (Streamable-HTTP vs SSE vs stdio); "Server: Annotated Tool Example" -> `@McpTool` wiring, then the Resource/Prompt/Completion section for non-tool primitives.
+
+**A Spring AI client that calls two external MCP servers.** "Client: Connecting to an MCP Server" -> per-server client assignments and timeouts; "Security" before exposing anything to third parties.
+
+**"MCP tests fail in CI, and we build a native image."** "Testing MCP Applications" + "GraalVM Native Image Support"; on Spring AI 2.0, start in "Spring AI 2.0 Migration" - the annotations and starter names changed.
+
 ## Pitfalls
 
 | Pitfall | How to Avoid |

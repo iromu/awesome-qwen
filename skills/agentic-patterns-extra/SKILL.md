@@ -296,6 +296,12 @@ When the user asks about agentic patterns, agent architecture, or how to solve a
 6. **Suggest combinations** — patterns often work best when combined (e.g., Circuit Breaker + Tool Steering). See the pattern combinations section below.
 7. **Check evidence level** — note which patterns are `validated-in-production` vs `emerging` vs `experimental`. This helps the user assess risk.
 
+## Examples
+
+**"What pattern handles fan-out/fan-in over a doc set?"** Pattern catalog -> the parallelization/decomposition entries; answer with catalog entries, and combine with a second pattern from "Pattern combinations" only when the task genuinely needs it.
+
+**"My agent repeats the same mistake every run."** Catalog -> Reflection/memory patterns; consult "When NOT to use patterns" before adding a layer - if one call suffices, say so instead of bolting on an agent.
+
 ## Pattern combinations
 
 Patterns often work best when combined. Here are some proven combinations:

@@ -202,6 +202,14 @@ CMD ["node", "dist/index.js"]
 - Use secrets for sensitive data, not env vars in Dockerfile
 - Set read-only root filesystem where possible (`--read-only`)
 
+## Examples
+
+**Node API image with dev dependencies leaking to prod.** §1 (multi-stage) -> `npm ci --production=false` in the builder, `--omit=dev` in the runtime stage, copy only `dist/`; §5 (hardening) -> non-root `USER`, `HEALTHCHECK`, pinned `node:20-alpine` tag.
+
+**CI must publish arm64 and amd64.** §2 -> one `docker buildx build --platform linux/amd64,linux/arm64 --push` under a single tag; do not build twice and tag twice - the multi-arch manifest needs one push.
+
+**"Compose starts a 900 MB stack on every dev laptop."** §3 (compose profiles) -> start only the needed services via profiles; §4 -> `.dockerignore` excludes `node_modules`, `.git` and `target/`, shrinking the build context and stopping cache busts.
+
 ## Pitfalls
 
 - ❌ Don't run containers as root — use `USER <non-root>`

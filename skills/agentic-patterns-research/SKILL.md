@@ -247,6 +247,12 @@ These combinations work well together in production:
 5. **Agent-Driven Research + Graph of Thoughts + Episodic Memory**
    → Deep, iterative research with memory retention
 
+## Examples
+
+**"Find every published pattern for multi-agent debate."** "The Full Corpus" -> sweep the Advanced/coordination category and cite the matching entries; "Category Overviews" gives the decision axes for choosing between them.
+
+**"Is there a proven way to evaluate agent output?"** Optimization category -> evaluation and guardrails entries; "Production Validation" separates what has been shown in production from what only exists on paper.
+
 ## Production Validation
 
 Several patterns have been validated-in-production at major companies:

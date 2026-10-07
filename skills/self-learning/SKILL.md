@@ -80,7 +80,15 @@ Trigger conditions for activating this skill.
 2. Step two with verification
 3. Step three with pitfalls
 
-## Pitfalls
+## Examples
+
+**A config bug took 5+ tool calls to fix.** Learning-loop trigger (Step 1) -> extract the pattern into a skill or memory entry instead of moving on; capture the file path and the config that actually fixed it.
+
+**"Remember that evals need `--approval-mode yolo`."** Persistent Memory System section -> store it as a feedback memory with the *why* and the how-to-apply line, and update the existing related memory instead of creating a near-duplicate.
+
+**Session context is near its limit.** Trajectory Compression System section -> compress the exploration history before continuing, so the remaining steps run without a context overflow.
+
+## Pitfalls## Pitfalls
 - Known failure modes and workarounds
 - Edge cases discovered during use
 

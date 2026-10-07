@@ -161,6 +161,14 @@ session.onUserMessage(UserMessage("What does the document say about taxes?"))
 | Structured replies via assets | `AssistantMessage(assets=…)`, `AssetTracker` | [05-structured-output.md](references/05-structured-output.md) |
 | End-to-end, step by step | Full copy-paste examples | [06-quickstart.md](references/06-quickstart.md) |
 
+## Examples
+
+**"Chatbot that answers from our contracts PDF."** "Quick Start" -> the `ToolishRag` + `SearchOperations` chatbot bean, with the Tika reader for ingestion; persona/prompts via the ragbot.jinja wiring shown there.
+
+**"Conversations must survive restarts."** Conversation-store section -> `ChatStoreType.STORED` with `ConversationFactoryProvider` instead of in-memory history.
+
+**"Queries must filter to the requester's department."** Metadata/entity filters section -> `PropertyFilter`/`EntityFilter` plumbing; "When NOT to Use" first if the app has no conversational layer at all.
+
 ## Pitfalls
 
 - **Assuming a `ChatbotBuilder`/`ChatClient`/`ChatMemory`/`ChatOptions` API.** These do **not** exist

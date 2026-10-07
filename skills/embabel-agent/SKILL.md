@@ -353,6 +353,14 @@ See `reference/troubleshooting.md` for detailed steps.
 
 Migrating from Python AI frameworks? See `reference/migrating.md` for guidance on migrating from CrewAI, Pydantic AI, and LangGraph.
 
+## Examples
+
+**"Two-step agent: fetch an order, then write the refund note."** "Agent Authoring" -> two `@Action`s with `@State` handoff, GOAP planner unless the domain grows; "Testing" -> the `FakeOperationContext` skeleton before wiring real LLM calls.
+
+**"Expose our invoicing agent to Claude Code."** "MCP Server Publishing" (`@Export(remote = true)`) - not a bespoke socket server.
+
+**"Migrate this LangGraph app."** "Migration"; and for a fixed, deterministic flow, check "When NOT to Use Embabel" first - a planner earns nothing where the path is already known.
+
 ## Common Pitfalls
 
 A quick checklist of the most frequent issues. See `reference/common-pitfalls.md` for detailed Problem/Impact/Fix treatment.

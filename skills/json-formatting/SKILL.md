@@ -393,6 +393,14 @@ jq 'sort_by(.price)' input.json                   # JMESPath-like sort
 
 ---
 
+## Examples
+
+**"Minify this `config.json`."** Step 1 -> Minify operation; validate after stripping whitespace so a truncation can't ship silently; re-check with `jq -e .` per the Verification Checklist.
+
+**"Flatten this payload and rename `id` to `payment_id`."** Transform operation -> one `jq` pipeline with `walk`/`with_entries` (Quick Reference section) instead of a hand-written recursive script.
+
+**"Generate a schema from this sample payload."** Schema operation -> draft-07 schema; when the payload was fetched from another file, verify inferred types against that source first (see Pitfalls).
+
 ## Pitfalls
 
 - ❌ JSON requires **double quotes** for all keys and string values — single quotes are invalid

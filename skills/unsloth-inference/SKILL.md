@@ -281,6 +281,14 @@ pattern: `reference/api.md` and `reference/llama-server.md`.
 | `reference/ollama-lmstudio.md` | GGUF → Ollama (auto Modelfile, serve, chat) and LM Studio (lms CLI, OpenAI API) |
 | `reference/native-inference.md` | `FastLanguageModel.from_pretrained` + `for_inference` + `TextStreamer`, LoRA loading, save hand-offs |
 
+## Examples
+
+**"Give me a local endpoint that Claude Code can call."** "Choosing an Inference Path" -> `unsloth run`/Studio's OpenAI-compatible API; "Agent Integration" covers the launcher wiring and MCP server setup.
+
+**"Serve this GGUF on a 16 GB card."** llama-server/Ollama/LM Studio paths in "Core Workflows"; look the model up in "Model Catalog" for the recommended quantized repo instead of assuming the FP16 checkpoint fits.
+
+**"Make the model act as a calculator tool."** "Agent Integration" for tool-calling and MCP examples; `reference/native-inference.md` and "Key APIs / CLI" for the native `for_inference` path and CLI flags.
+
 ## Pitfalls
 
 Documented issues only — verify against the referenced source before advising:

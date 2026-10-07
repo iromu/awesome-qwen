@@ -92,6 +92,14 @@ Use this skill when the user asks about any of the following:
 - Include `next_cursor`, `has_more` in response
 - Use `limit` parameter (with sensible default, e.g., 20)
 
+## Examples
+
+**Designing a password-reset API.** Apply §1 (naming) -> `POST /password-resets` as a noun collection, not a `/resetPassword` verb path; §2 (methods) -> 201 on create, 422 on validation failure, 401 vs 403 distinguished; §4 (error format) -> one `code`/`message`/`details` envelope, field names kept consistent.
+
+**"Our list endpoint returns 50k rows and is slow."** §5 (pagination) -> cursor-based for unbounded/ordered data, offset for page-number grids; cap default page size and echo `limit`/`offset` back in the response.
+
+**Reviewing `GET /deleteAccount`.** Verb-in-path plus action-in-URL violates §1; a destructive read violates §2's method semantics -> propose `DELETE /accounts/{id}` with 204 on success, and flag any non-idempotent mutation behind GET (caching/CSRF exposure).
+
 ## Pitfalls
 - ⚠️ Don't use GET for state-changing operations (not idempotent-safe)
 - ❌ Don't expose internal IDs (use UUIDs or hashed IDs)

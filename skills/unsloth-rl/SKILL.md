@@ -315,6 +315,14 @@ Full code: `reference/reward-functions.md`.
 | Reward hacking: signs and counters | `reference/reward-hacking.md` |
 | VRAM rules, Standby, FP8 RL, long-context GRPO (380K/500K), hardware planning | `reference/vram-and-hardware.md` |
 
+## Examples
+
+**"Make the model explain its reasoning on math problems."** "Choosing a Method" -> GRPO family; write the verifier in "Reward Function Design" (answer equality beats free-form judging) before touching trainer args; "Core Workflow: GRPO" shows the full run.
+
+**"We have 10k chosen/rejected pairs, no reward function."** Preference branch -> DPO/ORPO/KTO via `reference/preference.md`; if the data is really plain SFT pairs, say so - preference training is the wrong tool there.
+
+**"Train an agent that calls tools inside a game."** `reference/agents-rl.md` for tool-use RL recipes and their masking caveats; "Key APIs" for the vLLM rollout-engine config that shares weight memory.
+
 ## Pitfalls
 
 - **RL needs probability > 0.** If the base model can never produce the target

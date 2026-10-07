@@ -127,6 +127,14 @@ Patterns rarely work in isolation. Common effective combinations:
 | **HITL + Exception Handling** | Graceful degradation with human oversight |
 | **Goal Setting + Prioritization** | Objective-driven task management |
 
+## Examples
+
+**"We need a pipeline that reviews step 1's output before step 2 runs."** Step 1 -> Advanced/coordination domain -> Pipeline + Reflection from the quick reference; Implementation Checklist -> present the chosen pattern's trade-offs, not just its name.
+
+**"Supervisor or hierarchical team for this fleet of agents?"** Compare both in "Pattern Quick Reference" and answer with the decision axes (coordination overhead vs isolation) rather than picking silently.
+
+**"Add reliability to our multi-agent RAG app."** Route to System-domain patterns (HITL, exception handling, RAG) via the category overviews before inventing a custom orchestrator.
+
 ## Pattern Quick Reference
 
 ### Core Patterns

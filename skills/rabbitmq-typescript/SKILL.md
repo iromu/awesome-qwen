@@ -91,6 +91,14 @@ You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amq
 
 ---
 
+## Examples
+
+**"Fan-out events from order-service to three workers."** §5 -> fan-out exchange per event kind, one bound queue per worker; §6 -> publisher confirms on, consumer `nack` with `requeue=false` for poison messages.
+
+**"Consumers OOM after traffic spikes."** §8 -> prefetch tuning and backpressure, not a larger heap; §7 if the queue type itself is the bottleneck.
+
+**"Prod moves to an mTLS cluster."** §9 + the TLS material -> per-vhost users/permissions and the `tls`/`tlsVerify` URI options; rehearse against the local Docker broker recipe in §12's reference files first.
+
 ## 3b. Pitfalls
 
 | Pitfall | Symptom | Fix |

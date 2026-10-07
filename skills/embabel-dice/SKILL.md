@@ -414,6 +414,14 @@ is inherited: `@LlmTool` / `@LlmTool.Param` and `@ApiStatus` (JetBrains), plus t
 `@ConfigurationProperties` / `@AutoConfiguration`. Do not present a broad DICE annotation set;
 `@Agent` / `@Action` / `@State` / `@Tool` belong to the `embabel-agent` skill.
 
+## Examples
+
+**"Persist chat history as queryable knowledge."** Step 6 -> the Memory facade (agent memory over the proposition store), then Step 7 -> a rebuildable projection for the read side; never hand-edit the store.
+
+**"Expose DICE tools over MCP."** Step 9 -> `dice_recall`/`dice_list`/`dice_store`/`dice_get` via the MCP autoconfigure module; Step 10 (metamodel versioning) is EXPERIMENTAL - flag that to the user before recommending it.
+
+**"The README shows a pipeline builder class."** "Upstream State" -> the pipeline is immutable with static factories only; if the README conflicts with the pinned version, the pin wins.
+
 ## Common Pitfalls
 
 1. **Copying the README's install coordinates** - they are stale on both groupId and version.

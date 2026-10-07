@@ -174,6 +174,14 @@ QAT requires the convert step *before* saving — see `reference/qat.md` for the
 | `reference/phone-deployment.md` | Fine-tune → ExecuTorch `.pte` → iPhone/Android, full command flows |
 | `reference/benchmarks.md` | How to read perplexity/KLD tables, calibration caveats, tensor sensitivity, MXFP4, full Qwen3.5 benchmark table |
 
+## Examples
+
+**"Convert my LoRA to run on Ollama."** "Core Workflow: LoRA -> GGUF" -> merge the adapter into the base, then `save_pretrained_gguf("q4_k_m", ...)`; verify the chat template renders inside the GGUF before shipping.
+
+**"We need FP8 on a B200."** "Choosing a Quant Format" -> the FP8/NVFP4 Blackwell path (`save_pretrained_torchao`, NVFP4 export); check `reference/benchmarks.md` for the expected accuracy/size trade-off.
+
+**"Halve latency on llama.cpp." / "Run this on a phone."** `reference/speculative-decoding.md` -> draft-model GGUF plus the `--model-draft` flag; `reference/phone-deployment.md` -> ExecuTorch `.pte` export.
+
 ## Pitfalls
 
 - **Default is `q8_0`.** `save_pretrained_gguf` with no `quantization_method` saves 8-bit Q8_0 —

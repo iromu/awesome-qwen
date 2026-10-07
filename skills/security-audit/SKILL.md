@@ -178,6 +178,14 @@ checkov -d .
 | One-time quick check on a single file | Run a single tool command directly (e.g., `semgrep file.js`) |
 | Network-level security testing | Use Nmap, Nessus, or a network vulnerability scanner |
 
+## Examples
+
+**"Audit this Spring Boot service before its first deploy."** §1 -> dependency + transitive CVE sweep; §2 -> secrets scan including git history, not just the working tree; §4 -> injection/auth/misconfiguration checks against the OWASP list; §5 -> headers and cookie flags; §6 -> container and compose/terraform config. End with the severity-ordered report and the re-run command for each finding.
+
+**PR adds `System.getenv("API_KEY")` with a hardcoded fallback token.** §2 flags only the fallback literal; the env-var read is legitimate - leaving it unflagged keeps the findings list credible.
+
+**Dockerfile passes but compose binds `0.0.0.0:27017`.** §6 -> exposed database port is a finding even when the Dockerfile is clean; bind to `127.0.0.1` or an internal network.
+
 ## Pitfalls
 
 - ⚠️ Dependency scanning only finds **known** CVEs — it won't catch logic flaws or zero-days; review code manually too

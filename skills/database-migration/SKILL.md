@@ -187,6 +187,14 @@ UPDATE users SET full_name = name WHERE full_name IS NULL;
 ALTER TABLE users DROP COLUMN name;
 ```
 
+## Examples
+
+**Adding a unique index to a hot table.** §1 -> timestamped `2026..._add_email_index.sql`; §2 (forward) -> `CREATE INDEX CONCURRENTLY` on PostgreSQL (no write lock, not wrapped in a transaction); §4 (safe patterns) -> ship the matching rollback file in the same change.
+
+**Renaming `user_name` to `full_name`.** Expand -> migrate -> contract: ship the additive rename first (add `full_name`, backfill, dual-write), then the drop-column migration as a separate file; §3 rollback covers each step independently.
+
+**A migration failed halfway on staging.** §4 -> reruns must be idempotent (`IF NOT EXISTS` guards), so fix and re-run the same file rather than editing migration history or deleting the ledger row before checking the database's actual state.
+
 ## Pitfalls
 
 - ❌ Never drop columns in production without first confirming no code path reads them
