@@ -138,3 +138,12 @@ After improving a skill (or a batch of skills), verify the following:
 - [ ] No non-standard fields (e.g., `model: sonnet`)
 - [ ] Progressive disclosure is followed (SKILL.md is the procedural guide; references hold detail)
 - [ ] Skills with objective outputs have `evals/` directories
+
+
+## Progressive disclosure
+Agents load skills progressively, pulling in more detail only as a task calls for it. Skills should be structured to take advantage of this:
+- Metadata (~100 tokens): The name and description fields are loaded at startup for all skills
+- Instructions (< 5000 tokens recommended): The full SKILL.md body is loaded when the skill is activated
+- Resources (as needed): Files (e.g. those in scripts/, references/, or assets/) are loaded only when required
+
+Keep your main SKILL.md under 500 lines. Move detailed reference material to separate files.
