@@ -29,7 +29,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # --- LLM provider configuration (full scan) --------------------------------
 export SKILLSPECTOR_PROVIDER="${SKILLSPECTOR_PROVIDER:-openai_compatible}"
 export SKILLSPECTOR_COMPAT_BASE_URL="${SKILLSPECTOR_COMPAT_BASE_URL:-http://spark.local:4000/v1}"
-export SKILLSPECTOR_MODEL="${SKILLSPECTOR_MODEL:-Qwen3.8-27B-thinking}"
+export SKILLSPECTOR_MODEL="${SKILLSPECTOR_MODEL:-Qwen3.8-Flash-Next}"
 
 # The vLLM deployment behind this endpoint runs without xgrammar, so it
 # rejects strict json_schema response_format (the default structured-output

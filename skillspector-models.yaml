@@ -9,6 +9,6 @@
 #       context_length: <int>          # total context window in tokens (required)
 #       max_output_tokens: <int>       # model's max output cap (optional)
 models:
-  "Qwen3.8-27B-thinking":
+  "Qwen3.8-Flash-Next":
     context_length: 262144
     max_output_tokens: 8192
