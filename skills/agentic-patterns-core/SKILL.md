@@ -13,6 +13,9 @@ description: >-
   trigger when the user describes an agent problem and needs pattern
   recommendations, wants to compare patterns, or needs implementation guidance
   for a specific pattern.
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Agentic Patterns Core

@@ -1,6 +1,9 @@
 ---
 name: self-learning
 description: "Implements a closed-loop self-learning system where the agent creates skills from experience, maintains persistent memory, and improves over time through trajectory compression and skill refinement. Use when building agents that improve with usage, creating procedural memory from successful task completions, implementing cross-session learning, or designing skill-based knowledge management systems."
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Self-Learning Loop System

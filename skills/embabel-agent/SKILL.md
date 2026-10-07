@@ -2,6 +2,9 @@
 name: embabel-agent
 description: >-
   Build agentic AI on the JVM with Embabel v1.5.1 — Spring-based framework combining LLMs with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor). Use when creating agents with @Agent, @Action, @AchievesGoal, @Condition, @LlmTool, @Tool; publishing agents as MCP servers with @Export(remote=true); managing state with @State; configuring providers (OpenAI, Anthropic, Gemini, DeepSeek, Ollama, LM Studio, Bedrock, OCI, Mistral, Z.ai, DashScope, Docker Models, MiniMax, Atlas Cloud, BYOK) and per-provider roles (embabel.models.roles, RoleResolver); RAG with ToolishRAG; embedding-based skill selection with EmbeddingSkillSelector; testing with FakeOperationContext; interceptors, guardrails, cost tracking, streaming (StringResult), thinking tags, termination; chatbots with triggers; DSL builders, UtilityInvocation, OneShotPerLoopTool, ToolCallContext, ConcurrentAgentProcess; custom LLM integration via LlmMessageSender and EmbeddingService; troubleshooting and migrating from CrewAI, Pydantic AI, or LangGraph.
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Embabel Agent Framework (v1.5.1)

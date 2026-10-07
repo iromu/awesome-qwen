@@ -12,6 +12,9 @@ description: >
 version: 1.0.0
 category: backend
 tags: [database, migration, sql, schema, postgresql, mysql, sqlite]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Database Migration

@@ -1,6 +1,9 @@
 ---
 name: skill-creator
 description: Create, edit, improve, and evaluate skills — structured instructions that capture workflows, procedures, and domain knowledge so Qwen can follow them reliably. Use this skill whenever the user wants to create a new skill, improve an existing one, run evals or benchmarks to test skill quality, optimize a skill's description for better triggering, package a skill, or turn a workflow or procedure into a reusable skill. Also trigger when the user mentions skill authoring, skill development, skill evaluation, skill packaging, or wants to measure how well a skill triggers and performs. Use this skill whenever the user asks to automate any repetitive workflow, create a Qwen extension or agent, or build a reusable prompt template — even if they don't use the word "skill."
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Skill Creator

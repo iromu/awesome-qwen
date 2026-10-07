@@ -4,6 +4,9 @@ description: 'Generate, improve, and format Git commit messages following the Co
 version: 1.0.0
 category: development
 tags: ["git", "commits", "conventional-commits", "commit-messages", "commitizen", "commitlint", "amend", "squash", "reword", "fixup"]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Git Commit Messages

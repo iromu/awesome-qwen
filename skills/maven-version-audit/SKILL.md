@@ -2,6 +2,9 @@
 name: maven-version-audit
 description: |-
   Use this skill whenever the user wants the current/latest version of anything Maven in this repo, or wants to know which Maven build plugins, dependencies, version properties, BOM imports, parents, or parent-pinned plugins (even the profile-gated examples reactor) are behind and should be bumped. Trigger on phrasings like "is a plugin on the newest version / should I raise it?", "what's the latest release of the OpenFeature SDK — are our contrib provider plugins behind?", "what version does the parent pin for the version-less plugins?", "which plugins are behind?", before opening a dependency-upgrade change, and to regenerate docs/dependency-versions.md. Treat any question about version currency of a Maven coordinate as this skill's job, even if the user never says "audit" or "check". It is the ground-truth source, not hand-reading POMs or `mvn versions:*`. Never for npm/package-lock, adding a new dependency or module, release notes or changelogs, build failures, or test runs.
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Maven Version Audit

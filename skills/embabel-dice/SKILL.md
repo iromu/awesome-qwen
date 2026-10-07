@@ -4,6 +4,9 @@ description: Build proposition-based knowledge graphs and agent memory with Emba
 version: 0.2.0
 category: ai-agents
 tags: [embabel, dice, knowledge-graph, agent-memory, propositions, mcp, kotlin, java]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Embabel DICE - Domain-Integrated Context Engineering

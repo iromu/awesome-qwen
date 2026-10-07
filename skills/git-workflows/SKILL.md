@@ -11,6 +11,9 @@ description: >
 version: 1.0.0
 category: development
 tags: [git, branching, merge-conflicts, pr-workflows, gitflow, trunk-based, collaboration]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Git Workflows

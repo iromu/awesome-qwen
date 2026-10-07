@@ -12,6 +12,9 @@ description: >-
   gpt-oss, DeepSeek-R1. NOT for plain supervised fine-tuning (SFT/LoRA/QLoRA — use
   unsloth-finetuning), model export/quantization to GGUF/FP8/NVFP4/QAT (use
   unsloth-quantization), or running/serving models and SDKs (use unsloth-inference).
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Unsloth Reinforcement Learning

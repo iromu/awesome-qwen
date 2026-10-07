@@ -4,6 +4,9 @@ description: Format, pretty-print, minify, validate, transform, and convert JSON
 version: 1.1.0
 category: data
 tags: [json, formatting, validation, conversion, schema, transformation, jq]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # JSON Formatting

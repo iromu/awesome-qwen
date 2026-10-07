@@ -12,6 +12,9 @@ description: >
 version: 1.0.0
 category: backend
 tags: [api, rest, openapi, design, http, swagger]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # API Design

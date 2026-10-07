@@ -12,6 +12,9 @@ description: >-
   Suggest patterns even when the user doesn't mention "patterns" — if they describe
   an agent problem, this skill likely applies. Also trigger on agent failures,
   token waste, context contamination, or operational issues with autonomous agents.
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Agentic Patterns Extra

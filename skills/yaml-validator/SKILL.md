@@ -4,6 +4,9 @@ description: Validate, lint, and fix YAML files. Use this skill whenever the use
 version: 1.0.0
 category: validation
 tags: [yaml, linting, validation, syntax, formatting]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # YAML Validator

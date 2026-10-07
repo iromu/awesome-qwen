@@ -15,6 +15,9 @@ description: >-
 version: 0.0.81
 category: development
 tags: [kotlin, java, graph-database, neo4j, cypher, drivine4j, embabel]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Drivine4j -- Type-Safe Graph Database Client

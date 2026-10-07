@@ -15,6 +15,9 @@ description: >-
   NOT for reinforcement learning / GRPO / DPO / reward functions (use
   unsloth-rl), exporting/quantizing to GGUF/FP8/NVFP4/QAT (use
   unsloth-quantization), or running/serving models (use unsloth-inference).
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Unsloth Fine-tuning

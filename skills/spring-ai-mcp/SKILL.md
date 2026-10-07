@@ -15,6 +15,9 @@ description: >-
   "MCP transport", "MCP Streamable-HTTP", "MCP STDIO", "MCP SSE", "tool
   filtering", "MCP customizer", "MCP native image", or wants to connect an AI
   model to external tools via MCP.
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Spring AI MCP

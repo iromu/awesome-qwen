@@ -11,6 +11,9 @@ description: >
 version: 1.0.0
 category: backend
 tags: [rabbitmq, messaging, typescript, amqp, event-driven]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # RabbitMQ Message Broker Expert (TypeScript/Node.js)

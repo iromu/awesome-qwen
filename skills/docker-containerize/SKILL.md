@@ -9,6 +9,9 @@ description: >
 version: 1.0.0
 category: devops
 tags: [docker, containers, multi-stage, security, buildx, compose]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Docker Containerization

@@ -8,6 +8,9 @@ description: >-
 version: 2.0.0
 category: observability
 tags: [opentelemetry, langfuse, langsmith, embabel, spring-boot, tracing, otel]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # OpenTelemetry Exporter for Embabel

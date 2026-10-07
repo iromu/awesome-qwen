@@ -10,6 +10,9 @@ description: >
 version: 1.0.0
 category: security
 tags: [security, owasp, scanning, dependencies, secrets, sast, vulnerabilities]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Security Audit

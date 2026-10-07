@@ -5,6 +5,9 @@ description: >-
 version: 1.5.1
 category: framework
 tags: [embabel, chatbot, rag, kotlin, java, spring]
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Embabel Chatbot Skill (v1.5.1)

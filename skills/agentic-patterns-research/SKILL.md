@@ -11,6 +11,9 @@ description: >
   autonomous agents, or when designing AI agent systems. Also triggers when
   the user asks about best practices for building reliable, safe, or
   cost-effective agents.
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Agentic Patterns Research

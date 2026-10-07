@@ -2,6 +2,9 @@
 name: unsloth-quantization
 description: |-
   Quantize and export models with Unsloth: convert a fine-tune to GGUF, merge LoRA, export a model. GGUF via save_pretrained_gguf / push_to_hub_gguf (q4_k_m, q5_k_m, q8_0, f16, multiple quants in one call, imatrix); Unsloth Dynamic GGUF 2.0/3.0 (UD-Q4_K_XL, KL-divergence benchmarks); FP8 and NVFP4 for NVIDIA Blackwell (vLLM/SGLang); quantization-aware training (QAT: qat_scheme int4/fp8-int4/int8-int4, save_pretrained_torchao, torchao pins); merged 16-bit/4-bit exports (save_pretrained_merged, save_method merged_16bit / merged_4bit, push_to_hub_merged); speculative-decoding GGUF draft models (--model-draft, MTP); ExecuTorch phone deployment (.pte); reading quantization benchmarks (perplexity, KL divergence, MXFP4). Trigger on: quantize, quantization, GGUF, imatrix, NVFP4, MXFP4, quantization-aware training, dynamic GGUF, export a model, speculative decoding, phone deployment. NOT for training (unsloth-finetuning), RL (unsloth-rl), or running/serving models (unsloth-inference).
+metadata:
+  author: "Iván Rodríguez Murillo <wantez@gmail.com>"
+
 ---
 
 # Unsloth Quantization & Export
