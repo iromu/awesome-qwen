@@ -20,6 +20,14 @@ Maven's own `Downloaded from <repo>:` log lines, and every fetched file is rejec
 inner `<groupId>/<artifactId>` match the coordinate requested. Never reconstruct a URL, retype a
 version, or trust a browser view.
 
+## Instructions
+
+1. Pick the mode in "Two modes - pick by what was asked" (answer a question vs regenerate the audit document) — the script set and output differ per mode.
+2. Work from the paths in "Where things live" (everything is env-overridable — never hardcode paths) and drive "The canonical pipeline" using "The bundled scripts"; harvest, don't hand-read POMs.
+3. Report all three version columns per "Reading the version columns" — "latest" alone is ambiguous and has caused false "must revert" verdicts.
+4. Run the relevant "Self-checks" before answering, and re-read "Traps that bite" before trusting a harvested value or declaring a bump unsatisfiable.
+5. For "is X outdated?" questions, answer in the shape shown in "How to answer an 'is X outdated?' question".
+
 ## Two modes - pick by what was asked
 
 - **Report mode** (default for "is X outdated / what's the latest / is a bump outstanding"):

@@ -75,7 +75,7 @@ metadata:
 ## When to Use
 Trigger conditions for activating this skill.
 
-## Procedure
+## Instructions
 1. Step one with exact commands
 2. Step two with verification
 3. Step three with pitfalls

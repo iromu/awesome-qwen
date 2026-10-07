@@ -35,7 +35,7 @@ resolution**, and **PR/process conventions** — not commit message formatting (
 - Cleaning up messy git history before a PR or merge
 - Deciding between rebase and merge strategies for integrating changes
 
-## Procedure
+## Instructions
 
 ### Step 1: Choose a Branching Strategy
 

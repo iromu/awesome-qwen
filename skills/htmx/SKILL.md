@@ -36,6 +36,13 @@ Server-rendered HTML fragments plus htmx attributes. No build step, no client fr
 > them is 2.x content. The `master` branch is also still 2.x; v4 lives on the
 > `v4.0.0` tag.
 
+## Instructions
+
+1. Establish which htmx version the project targets — "Which version am I dealing with?" disambiguates (attribute syntax differs across 1.x/2.x/4.x); for upgrades, use "Migrating from 2.x" before answering.
+2. For a new page or form, follow "Core Workflow" (hx-target/hx-swap/hx-trigger attributes), then consult "Out-of-Band and Partials" and "Status-Based Handling" as soon as responses get composite.
+3. Look up attributes and events by exact name in "Events", "Server-Side Headers" and "JavaScript API" when event-driven behavior is needed — don't invent `hx-*` names.
+4. Check "Pitfalls" before delivering, and "Configuration"/"Extensions" before assuming a feature is core.
+
 ## Which version am I dealing with?
 
 Any one of these means htmx 4; their absence with `XMLHttpRequest`/camelCase events means 2.x:

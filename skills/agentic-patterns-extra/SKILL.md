@@ -284,7 +284,7 @@ Patterns for human-agent collaboration, handoffs, workflow design, and communica
 | [Team-Shared Agent Configuration as Code](references/ux-collaboration/team-shared-agent-configuration.md) | best-practice | Check agent configuration into version control for consistent team behavior |
 | [Verbose Reasoning Transparency](references/ux-collaboration/verbose-reasoning-transparency.md) | best-practice | On-demand verbose output showing agent's internal reasoning, tool selection, and confidence scores |
 
-## How to use this skill
+## Instructions
 
 When the user asks about agentic patterns, agent architecture, or how to solve a specific agent-related challenge:
 

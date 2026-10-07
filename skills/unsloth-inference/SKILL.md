@@ -18,6 +18,14 @@ All facts and commands below are distilled from the official Unsloth docs
 (unsloth.ai/docs, harvested 2026-09-26) and the official `unslothai/notebooks` code.
 Detailed recipes live in `reference/`.
 
+## Instructions
+
+1. Confirm the task belongs here — training/fine-tuning goes to `unsloth-finetuning`, quantizing/exporting to `unsloth-quantization`, RL to `unsloth-rl` (see "When NOT to Use").
+2. Pick the serving path in "Choosing an Inference Path" (Desktop/Studio, OpenAI-compatible API, Python SDK, llama.cpp/`llama-server`, vLLM/SGLang, Ollama/LM Studio).
+3. Follow the matching recipe in "Core Workflows" for the chosen path; use "Key APIs / CLI" for exact flags and endpoint shapes, and "Agent Integration" for MCP/agent-tool wiring.
+4. For a new model, check "Model Catalog" for the recommended repo and quantization before assuming an FP16 checkpoint fits the target hardware.
+5. Check "Pitfalls" before running.
+
 ## When to Use
 
 - "Run a local model" / "serve an LLM" / "give me an OpenAI-compatible endpoint"

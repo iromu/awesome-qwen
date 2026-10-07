@@ -11,6 +11,14 @@ metadata:
 
 Build agentic AI on the JVM with **Embabel** — a Spring-based framework for authoring agentic flows that mix LLM-prompted interactions with code and domain models. Created by Rod Johnson (creator of Spring), it uses non-LLM AI planning (GOAP, Utility AI, Hybrid, Supervisor) to find intelligent paths toward goals.
 
+## Instructions
+
+1. Confirm the task belongs on Embabel at all — check "When NOT to Use Embabel" first (plain Spring AI apps, non-planner chatbots, observability config → other skills).
+2. Identify the framework version you're writing against (this guide targets v1.5.1); "New in v1.5.1" lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
+3. For a new agent, follow "Getting Started" → "Agent Authoring" → "Tools"; consult "Domain Objects" for state modeling, "Planning Algorithms"/"Execution Modes"/"States with @State" for multi-step flows, and "DSL Builders (Kotlin/Java)" when the annotations-only style doesn't fit.
+4. For specific APIs — chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `reference/`.
+5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing code, and never assert an API from memory — if a symbol isn't named here or in `reference/`, treat it as unverified.
+
 ## Output Quality
 
 - **Be comprehensive** — Full classes with imports, domain models, all annotations

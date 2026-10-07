@@ -18,6 +18,14 @@ arguments. The canonical entry point for everything is a `FastLanguageModel` obj
 methods on it (`save_pretrained_gguf`, `push_to_hub_gguf`, `save_pretrained_merged`,
 `push_to_hub_merged`, `save_pretrained_torchao`).
 
+## Instructions
+
+1. Confirm the task belongs here — training a LoRA goes back to `unsloth-finetuning`, RL to `unsloth-rl`, and serving an already-quantized model to `unsloth-inference` (see "When NOT to Use").
+2. Pick the export format (Dynamic 2.0/3.0 GGUF, FP8, NVFP4, QAT) in "Choosing a Quant Format"; identify the target hardware (desktop GPU vs phone) early — it usually decides the format.
+3. Follow "Core Workflow: LoRA → GGUF" for the full adapter → quantized-file → metadata pipeline; look up export calls in "Key APIs".
+4. Verify expected accuracy and size trade-offs against `reference/benchmarks.md` (and `reference/speculative-decoding.md` when latency matters) before shipping the artifact.
+5. Check "Pitfalls" before running.
+
 ## When to Use
 
 - "Export my fine-tune to GGUF" / "convert to Ollama / llama.cpp / LM Studio"

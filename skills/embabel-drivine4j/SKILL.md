@@ -34,6 +34,14 @@ from one codebase, with two complementary APIs:
 Both sit on the same connection layer: `DataSourceMap` -> `ConnectionProperties` ->
 `DatabaseRegistry` -> `ConnectionProvider`.
 
+## Instructions
+
+1. Read "Pin the Version -- Read This First" before anything else — the API surface and artifact names differ between Drivine4j versions; confirm which version the project pins.
+2. Confirm "Requirements" and "Installation" (which starter/codegen modules the project needs), then pick the API style in "Choose Your API": PersistenceManager for manual Cypher, GraphObjectManager for annotated models.
+3. Use the exact code names from "Search & Pagination (use the code names)" when writing queries — don't paraphrase method names.
+4. Model vector stores and constraints via "Schema Management"; check "Testing" for in-process EMBABEL engine tests.
+5. Cross-check "Pitfalls" and "When NOT to Use" before finalizing; deeper material lives in the files listed under "Reference Files".
+
 ## Pin the Version -- Read This First
 
 ```kotlin

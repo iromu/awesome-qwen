@@ -29,6 +29,14 @@ Of course, you should always be flexible and if the user is like "I don't need t
 
 Then after the skill is done (but again, the order is flexible), you can also run the skill description improver, which we have a whole separate script for, to optimize the triggering of the skill.
 
+## Instructions
+
+1. Decide the mode: **create** a new skill (follow "Creating a skill": gather docs → distill to reference files → write SKILL.md) or **improve/evaluate** an existing one (follow "Improving the skill" and "Running and evaluating test cases").
+2. When evaluating, run both arms — with-skill and baseline — and use "Advanced: Blind comparison" when a fair A/B verdict is needed; keep the eval harness's tooling flags consistent across arms so the delta measures the skill, not the harness.
+3. Report results using "Report structure" (Executive summary → Key findings → Recommendations) and write commit messages per "Commit message format".
+4. Tune trigger accuracy with "Description Optimization" before concluding a skill's content is the problem.
+5. Consult "Reference files" for source material and platform-specific sections ("Qwen Cloud-specific instructions", "Cowork-Specific Instructions") when the target harness differs from this one.
+
 ## Communicating with the user
 
 The skill creator is liable to be used by people across a wide range of familiarity with coding jargon. If you haven't heard (and how could you, it's only very recently that it started), there's a trend now where the power of AI coding assistants is inspiring plumbers to open up their terminals, parents and grandparents to google "how to install npm". On the other hand, the bulk of users are probably fairly computer-literate.

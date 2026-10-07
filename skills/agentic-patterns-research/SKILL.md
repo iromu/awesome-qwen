@@ -208,7 +208,7 @@ length. Consult it before recommending a report: if a pattern has no row there, 
 covered by this skill, and the right answer is `agentic-patterns-extra` rather than a
 report that does not exist.
 
-## How to Use This Skill
+## Instructions
 
 ### Quick Start: Choosing a Pattern
 

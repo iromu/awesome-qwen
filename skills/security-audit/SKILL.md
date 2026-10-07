@@ -27,7 +27,7 @@ metadata:
 - Preparing for a security compliance audit (SOC 2, ISO 27001)
 - Reviewing a pull request that touches auth, crypto, or data handling
 
-## Procedure
+## Instructions
 
 ### 1. Dependency Scanning
 

@@ -32,7 +32,7 @@ pip install pyyaml yamllint
 
 If unavailable, fall back to Python's built-in `yaml.safe_load()` for basic syntax validation.
 
-## Procedure
+## Instructions
 
 ### Step 1: Identify Target Files
 

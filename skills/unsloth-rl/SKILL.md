@@ -28,6 +28,14 @@ The canonical entry points are `GRPOTrainer` + `GRPOConfig` from `trl` (for
 generation-based RL) and `DPOTrainer`/`ORPOTrainer` from `trl` (for preference
 optimization), driven by `FastLanguageModel` / `FastVisionModel` from `unsloth`.
 
+## Instructions
+
+1. Confirm the task belongs here — SFT/LoRA training goes to `unsloth-finetuning`, export to `unsloth-quantization`, serving to `unsloth-inference` (see "When NOT to Use").
+2. Pick the algorithm in "Choosing a Method" — GRPO/GSPO/DAPO/Dr.GRPO/BNPO for on-policy RL, DPO/ORPO/KTO for preference data.
+3. Design the reward in "Reward Function Design" before anything else; RL runs succeed or fail on the reward function, so treat that section as mandatory reading.
+4. Follow "Core Workflow: GRPO" for a full run; look up arguments in "Key APIs" and the matching `reference/*.md` file (`grpo-basics.md`, `grpo-advanced.md`, `preference.md`, `agents-rl.md`).
+5. Check "Pitfalls" before running.
+
 ## When to Use
 
 - The user wants to turn an instruct (or base) model into a **reasoning model**

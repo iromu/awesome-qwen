@@ -23,7 +23,7 @@ metadata:
 - User needs JSON Patch (RFC 6902) or JSON Merge Patch (RFC 7396) operations
 - User wants CLI one-liners for JSON processing (jq, python -m json.tool)
 
-## Procedure
+## Instructions
 
 ### Step 1: Identify the Task
 

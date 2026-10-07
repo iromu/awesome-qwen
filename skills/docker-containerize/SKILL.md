@@ -25,7 +25,7 @@ metadata:
 - Building multi-platform images (ARM/x86) with Docker Buildx
 - Using Docker Compose profiles for environment-specific services
 
-## Procedure
+## Instructions
 
 ### 1. Multi-Stage Build Pattern
 

@@ -75,7 +75,7 @@ cons, and real-world examples.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## How to Use This Skill
+## Instructions
 
 ### Step 1: Identify the Problem Domain
 

@@ -48,7 +48,7 @@ If the user's message contains any of these, this skill applies:
 | "Signed-off-by" | Add DCO footer |
 | "Closes #123" | Add issue reference footer |
 
-## Procedure
+## Instructions
 
 ### Step 1: Gather Context
 

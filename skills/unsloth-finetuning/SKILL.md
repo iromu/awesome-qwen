@@ -29,6 +29,14 @@ Supervised fine-tuning of open LLMs/VLMs with **Unsloth** (`unsloth` +
 train — followed by `for_inference` and `save_pretrained*` to evaluate and
 export.
 
+## Instructions
+
+1. Confirm the task belongs here — RL (GRPO/DPO) goes to `unsloth-rl`, GGUF/FP8/NVFP4 export to `unsloth-quantization`, serving to `unsloth-inference` (see "When NOT to Use").
+2. Pick the training method (QLoRA, 16-bit LoRA, 8-bit, FFT) and budget VRAM in "Choosing a Method"; check card capacity against `reference/requirements-vram.md` before committing to a run.
+3. Locate the model in `reference/model-catalog.md` and its chat template in `reference/chat-templates.md` before training a chat model.
+4. Follow "Core Workflow: QLoRA SFT" for a real run; look up exact calls in "Key APIs" and the matching `reference/*.md` file (datasets, hyperparameters, long-context, multi-GPU, vision, embedding, MoE).
+5. Check "Pitfalls" before running.
+
 ## When to Use
 
 - The user wants to **fine-tune** (SFT) an open model — Qwen, Llama, Gemma,

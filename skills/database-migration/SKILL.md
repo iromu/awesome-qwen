@@ -42,7 +42,7 @@ Use this skill when the user asks about any of the following:
 | Database provisioning (creating the database itself) | Use infrastructure-as-code (Terraform, Pulumi) or a setup script; migrations assume the DB exists |
 | Real-time schema sync across clusters | Use logical replication, Debezium, or a CDC tool; migrations are sequential and manual |
 
-## Procedure
+## Instructions
 
 ### 1. Migration File Naming
 

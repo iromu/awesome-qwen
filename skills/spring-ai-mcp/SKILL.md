@@ -31,6 +31,14 @@ resources, and prompts to AI models, and clients that consume MCP servers.
 > against those tags; re-verify against the tag you actually build against, since
 > the annotation and transport surface has moved between milestones.
 
+## Instructions
+
+1. Decide the role first — exposing tools as an MCP **server** or **consuming** an MCP server — and pick the starter and config prefixes in "Quick Reference: Choose Your Starter"; consult "Architecture Overview" if the transport choice is unclear.
+2. If the project is on Spring AI 2.0 or migrating to it, read "Spring AI 2.0 Migration" first — annotations and starter names changed from 1.x.
+3. For server code, follow "Server: Annotated Tool Example", then "Server: Resource, Prompt, and Completion"; for client integration, use "Client: Connecting to an MCP Server".
+4. Apply "Security" (OAuth 2.0, API keys) and "Testing MCP Applications" before shipping; consult "When to Read References" for the deeper reference files, and "GraalVM Native Image Support" for native builds.
+5. Check "Pitfalls" and "When NOT to Use This Skill" — if the task isn't MCP-specific, this is the wrong skill.
+
 ## When to Use This Skill
 
 | Scenario | What to Do |

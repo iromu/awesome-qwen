@@ -25,6 +25,13 @@ best fit). Retrieval is **agentic and tool-based** — the LLM decides when and 
 > the `@Action(trigger=…)` pattern, and `embabel-chat-store`). For the core agent framework
 > (`@Agent`, planners, `@State`, MCP publishing, provider selection) use the companion **embabel-agent** skill.
 
+## Instructions
+
+1. Confirm the task belongs here — core @Agent/@Action planner framework, MCP publishing and provider config go to `embabel-agent`; DICE persistence to `embabel-dice`; observability to `embabel-otel` (see "When NOT to Use").
+2. Check "Prerequisites" (starters, versions, required beans) before writing code, then reproduce the minimal working chatbot from "Quick Start" verbatim — don't improvise a new skeleton.
+3. Extend a working chatbot via "What to Add Next" (RAG sources, filters, conversation store, persona prompts) rather than rewriting the wiring.
+4. Cross-check "Pitfalls" and the "Checklist" before finalizing.
+
 ## When to Use
 
 - Build a chatbot / conversational agent on the JVM with Embabel

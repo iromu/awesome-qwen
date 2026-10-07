@@ -19,6 +19,13 @@ the Embabel agent framework.
 Source -> PropositionPipeline -> Propositions (system of record) -> Projections
 ```
 
+## Instructions
+
+1. Treat "Upstream State (verify against this, not against the README)" as the source of truth for what exists in current DICE; where this guide and a README/blog disagree, trust the version pins and module list stated there.
+2. Work through Steps 1–10 in order (Schema → Pipeline → Entity resolution → Extract/persist → Query → Agent memory → Projections → Maintenance → MCP exposure → Metamodel versioning); each step builds on the previous, so don't jump ahead except when fixing an existing app.
+3. Use only the two annotations in "Annotation Surface - only two DICE annotations exist" and the property prefixes in "Configuration - real prefixes only" — anything else is invented.
+4. Before finalizing, cross-check "Common Pitfalls" and the "Verification Checklist", and confirm scope against "When NOT to Use".
+
 ## Upstream State (verify against this, not against the README)
 
 | Fact | Value | Authority |

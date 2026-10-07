@@ -44,7 +44,7 @@ Use this skill when the user asks about any of the following:
 | Simple internal HTTP utilities | A lightweight JSON schema or inline comments may suffice — no need for full OpenAPI |
 | Microservice internal communication (service-to-service) | Consider gRPC or message queues; REST is optimized for client-facing APIs |
 
-## Procedure
+## Instructions
 
 ### 1. Resource Naming
 - Use nouns for resources: `/users`, `/orders`, `/products`

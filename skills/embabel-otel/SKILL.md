@@ -18,6 +18,12 @@ metadata:
 Add `LangfuseSpanExporter` and/or `LangSmithSpanExporter` to an existing Spring Boot + OpenTelemetry
 application to export Embabel Agent traces to Langfuse and/or LangSmith.
 
+## Instructions
+
+1. This skill covers trace export configuration only (`opentelemetry-exporter-embabel`); agent/chatbot functionality goes to `embabel-agent` / `embabel-chatbot` (see "When NOT to Use").
+2. Work through Steps 1–4 in order: add the dependency → configure the exporter(s) → enable Embabel-only mode → verify. Don't skip Step 4 even for throwaway demos — silent no-export is the main failure mode.
+3. Look up full property names in the "Reference" section rather than guessing; check "Pitfalls" before finalizing.
+
 ## When to Use
 
 - You have an Embabel Agent (or Spring AI) app and want traces in Langfuse or LangSmith
