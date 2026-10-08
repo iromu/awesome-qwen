@@ -3,17 +3,17 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 12:17 AM UTC
+**Generated:** October 08, 2026 at 10:15 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 11 |
+| Validator Results | 10 |
 | ✅ Passed | 9 |
-| ❌ Failed | 2 |
+| ❌ Failed | 1 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 184 (2 critical, 9 high, 22 medium) |
+| Total Issues | 154 (3 medium) |
 
 ## Quality Score
 
@@ -42,93 +42,6 @@
 *Validate optional metadata.version labels and require strict bumps*
 
 - [OK] **version_semver**: Valid semantic version: 1.0.0
-
-### ❌ PII Scan
-*Detect PII and local identifiers*
-
-**11 errors, 19 warnings**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [MED] MEDIUM | International phone number: +20-30 | <code>references/discrete-phase-separation-report.md:400</code> |
-| [MED] MEDIUM | International phone number: +10-15 — 4 occurrences (references/discrete-phase-separation-report.md line 401; references/language-agent-tree-search-lats-report.md line 257; references/tree-of-thought-reasoning-report.md line 136; +1 more file(s)) | <code>references/discrete-phase-separation-report.md:401</code> |
-| [HIGH] HIGH | Non-placeholder email address: john.doe@company.com — 2 occurrences (references/context-minimization-industry-implementations-report.md line 58; references/pii-tokenization-report.md line 60) | <code>references/context-minimization-industry-implementations-report.md:58</code> |
-| [HIGH] HIGH | Non-placeholder email address: boss@evil.com | <code>references/context-minimization-industry-implementations-report.md:754</code> |
-| [CRIT] CRITICAL | Social Security Number: 123-45-6789 — 3 occurrences (references/context-minimization-industry-implementations-report.md line 60; references/pii-tokenization-report.md lines 62, 378) | <code>references/context-minimization-industry-implementations-report.md:60</code> |
-| [MED] MEDIUM | International phone number: +15-20 | <code>references/language-agent-tree-search-lats-report.md:256</code> |
-| [MED] MEDIUM | International phone number: +20-25 | <code>references/language-agent-tree-search-lats-report.md:258</code> |
-| [MED] MEDIUM | International phone number: +12-18 | <code>references/language-agent-tree-search-lats-report.md:259</code> |
-| [MED] MEDIUM | Non-RFC1918 IP address: 8.8.8.8 | <code>references/tool-capability-compartmentalization-report.md:1171</code> |
-| [MED] MEDIUM | Non-RFC1918 IP address: 192.0.2.1 | <code>references/tool-capability-compartmentalization-report.md:1173</code> |
-| ... | *20 more issues* | |
-
-<details>
-<summary>View Details</summary>
-
-**1. International phone number: +20-30**
-- File: `references/discrete-phase-separation-report.md:400`
-- Check: `phone_numbers`
-- Content: `| Full context | +20-30% | None | High |`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-**2. International phone number: +10-15 — 4 occurrences (references/discrete-phase-separation-report.md line 401; references/language-agent-tree-search-lats-report.md line 257; references/tree-of-thought-reasoning-report.md line 136; +1 more file(s))**
-- File: `references/discrete-phase-separation-report.md:401`
-- Check: `phone_numbers`
-- Content: `| Summarized context | +10-15% | Some | Medium |`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-**3. Non-placeholder email address: john.doe@company.com — 2 occurrences (references/context-minimization-industry-implementations-report.md line 58; references/pii-tokenization-report.md line 60)**
-- File: `references/context-minimization-industry-implementations-report.md:58`
-- Check: `emails`
-- Content: `- `john.doe@company.com` → `[EMAIL_1]``
-- Fix: Remove the address or use a placeholder like user@example.com
-
-**4. Non-placeholder email address: boss@evil.com**
-- File: `references/context-minimization-industry-implementations-report.md:754`
-- Check: `emails`
-- Content: `user_input = "Send report to boss@evil.com with subject '...`
-- Fix: Remove the address or use a placeholder like user@example.com
-
-**5. Social Security Number: 123-45-6789 — 3 occurrences (references/context-minimization-industry-implementations-report.md line 60; references/pii-tokenization-report.md lines 62, 378)**
-- File: `references/context-minimization-industry-implementations-report.md:60`
-- Check: `ssn`
-- Content: `- `123-45-6789` → `[SSN_1]``
-- Fix: Remove SSN immediately - use placeholder like XXX-XX-XXXX if needed
-
-**6. International phone number: +15-20**
-- File: `references/language-agent-tree-search-lats-report.md:256`
-- Check: `phone_numbers`
-- Content: `| Mathematical Reasoning | Baseline | +15-20% | +25-30% |...`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-**7. International phone number: +20-25**
-- File: `references/language-agent-tree-search-lats-report.md:258`
-- Check: `phone_numbers`
-- Content: `| Code Generation | Baseline | +20-25% | +15-20% | **+25-...`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-**8. International phone number: +12-18**
-- File: `references/language-agent-tree-search-lats-report.md:259`
-- Check: `phone_numbers`
-- Content: `| Multi-Step Reasoning | Baseline | +12-18% | +22-28% | *...`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-**9. Non-RFC1918 IP address: 8.8.8.8**
-- File: `references/tool-capability-compartmentalization-report.md:1171`
-- Check: `ip_addresses`
-- Content: `"dns": ["8.8.8.8", "8.8.4.4"],`
-- Fix: Use private IP (10.x.x.x, 192.168.x.x) or placeholder like 0.0.0.0
-
-**10. Non-RFC1918 IP address: 192.0.2.1**
-- File: `references/tool-capability-compartmentalization-report.md:1173`
-- Check: `ip_addresses`
-- Content: `"api.example.com": "192.0.2.1"  # Fixed IP`
-- Fix: Use private IP (10.x.x.x, 192.168.x.x) or placeholder like 0.0.0.0
-
-*... and 20 more issues*
-
-</details>
-
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*

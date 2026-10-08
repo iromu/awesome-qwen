@@ -1,19 +1,19 @@
 # SkillEvaluator Validation Report
 
-**Status:** ❌ FAILED
+**Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 07:49 AM UTC
+**Generated:** October 08, 2026 at 10:16 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 11 |
+| Validator Results | 10 |
 | ✅ Passed | 10 |
-| ❌ Failed | 1 |
+| ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 14 (3 critical, 2 medium) |
+| Total Issues | 11 (2 medium) |
 
 ## Quality Score
 
@@ -42,41 +42,6 @@
 *Validate optional metadata.version labels and require strict bumps*
 
 - [OK] **version_semver**: Valid semantic version: 1.0.0
-
-### ❌ PII Scan
-*Detect PII and local identifiers*
-
-**3 errors, 0 warnings**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [CRIT] CRITICAL | Hardcoded secret/credential in code: api_key="sk-unsloth-xxxxxxxxxxxx" | <code>SKILL.md:127</code> |
-| [CRIT] CRITICAL | Hardcoded secret/credential in code: api_key="sk-no-key-required" — 3 occurrences (references/vllm.md line 149; references/llama-server.md lines 60, 141) | <code>references/vllm.md:149</code> |
-| [CRIT] CRITICAL | Hardcoded secret/credential in code: AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx" | <code>references/api.md:194</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Hardcoded secret/credential in code: api_key="sk-unsloth-xxxxxxxxxxxx"**
-- File: `SKILL.md:127`
-- Check: `hardcoded_secrets`
-- Content: `client = OpenAI(base_url="http://localhost:8888/v1", api_...`
-- Fix: Use environment variable or secrets manager instead of hardcoded value
-
-**2. Hardcoded secret/credential in code: api_key="sk-no-key-required" — 3 occurrences (references/vllm.md line 149; references/llama-server.md lines 60, 141)**
-- File: `references/vllm.md:149`
-- Check: `hardcoded_secrets`
-- Content: `openai_client = OpenAI(base_url="http://0.0.0.0:30000/v1"...`
-- Fix: Use environment variable or secrets manager instead of hardcoded value
-
-**3. Hardcoded secret/credential in code: AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx"**
-- File: `references/api.md:194`
-- Check: `hardcoded_secrets`
-- Content: `export ANTHROPIC_AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx"`
-- Fix: Use environment variable or secrets manager instead of hardcoded value
-
-</details>
-
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*

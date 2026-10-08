@@ -3,17 +3,17 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 12:17 AM UTC
+**Generated:** October 08, 2026 at 10:15 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 11 |
+| Validator Results | 10 |
 | ✅ Passed | 8 |
-| ❌ Failed | 3 |
+| ❌ Failed | 2 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 60 (1 critical, 3 high, 3 medium) |
+| Total Issues | 56 (1 high, 2 medium) |
 
 ## Quality Score
 
@@ -42,48 +42,6 @@
 *Validate optional metadata.version labels and require strict bumps*
 
 - [OK] **version_semver**: Valid semantic version: 1.0.0
-
-### ❌ PII Scan
-*Detect PII and local identifiers*
-
-**3 errors, 1 warnings**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [HIGH] HIGH | Non-placeholder email address: john@acme.com | <code>references/tool-use-environment/code-then-execute-pattern.md:30</code> |
-| [MED] MEDIUM | International phone number: +10-30 | <code>references/ux-collaboration/verbose-reasoning-transparency.md:61</code> |
-| [HIGH] HIGH | Non-placeholder email address: john.doe@company.com | <code>references/security-safety/pii-tokenization.md:53</code> |
-| [CRIT] CRITICAL | Social Security Number: 123-45-6789 | <code>references/security-safety/pii-tokenization.md:55</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Non-placeholder email address: john@acme.com**
-- File: `references/tool-use-environment/code-then-execute-pattern.md:30`
-- Check: `emails`
-- Content: `email.write(to="john@acme.com", body=y)`
-- Fix: Remove the address or use a placeholder like user@example.com
-
-**2. International phone number: +10-30**
-- File: `references/ux-collaboration/verbose-reasoning-transparency.md:61`
-- Check: `phone_numbers`
-- Content: `* **Cons:** Adds modest performance overhead (+10-30% tok...`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-**3. Non-placeholder email address: john.doe@company.com**
-- File: `references/security-safety/pii-tokenization.md:53`
-- Check: `emails`
-- Content: `- `john.doe@company.com` → `[EMAIL_1]``
-- Fix: Remove the address or use a placeholder like user@example.com
-
-**4. Social Security Number: 123-45-6789**
-- File: `references/security-safety/pii-tokenization.md:55`
-- Check: `ssn`
-- Content: `- `123-45-6789` → `[SSN_1]``
-- Fix: Remove SSN immediately - use placeholder like XXX-XX-XXXX if needed
-
-</details>
-
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*

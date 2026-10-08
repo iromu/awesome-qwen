@@ -3,14 +3,14 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 12:17 AM UTC
+**Generated:** October 08, 2026 at 10:15 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 11 |
-| ✅ Passed | 10 |
+| Validator Results | 10 |
+| ✅ Passed | 9 |
 | ❌ Failed | 1 |
 | ⚠️ Incomplete | 0 |
 | Total Issues | 10 (1 high, 1 medium) |
@@ -42,12 +42,6 @@
 *Validate optional metadata.version labels and require strict bumps*
 
 - [OK] **version_semver**: Valid semantic version: 0.2.0
-
-### ✅ PII Scan
-*Detect PII and local identifiers*
-
-- [OK] **pii_scan_start**: Scanning 5 files for PII
-- [OK] **pii_detection**: No PII detected in 5 files (emails, SSNs, phone numbers, paths)
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*

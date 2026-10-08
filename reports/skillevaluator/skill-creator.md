@@ -3,17 +3,17 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 07:49 AM UTC
+**Generated:** October 08, 2026 at 10:16 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 11 |
-| ✅ Passed | 10 |
+| Validator Results | 10 |
+| ✅ Passed | 9 |
 | ❌ Failed | 1 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 29 (1 high, 7 medium) |
+| Total Issues | 28 (1 high, 6 medium) |
 
 ## Quality Score
 
@@ -59,29 +59,6 @@
 *Validate optional metadata.version labels and require strict bumps*
 
 - [OK] **version_semver**: Valid semantic version: 1.0.0
-
-### ✅ PII Scan
-*Detect PII and local identifiers*
-
-- [OK] **pii_scan_start**: Scanning 17 files for PII
-
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [MED] MEDIUM | International phone number: +1700 — 2 occurrences (references/schemas.md lines 275, 302) | <code>references/schemas.md:275</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. International phone number: +1700 — 2 occurrences (references/schemas.md lines 275, 302)**
-- File: `references/schemas.md:275`
-- Check: `phone_numbers`
-- Content: `"tokens": "+1700"`
-- Fix: Remove phone number or use placeholder like +1-555-555-5555
-
-</details>
-
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*

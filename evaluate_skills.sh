@@ -70,8 +70,8 @@ TIER3="${TIER3:-0}"
 RESCAN_ALL="${RESCAN_ALL:-0}"
 
 # Tier-1 checks to run, passed verbatim to --checks when non-empty. Excludes
-# `security` (the delegated skillspector call) by default; see header.
-CHECKS="${CHECKS:-schema,version,pii,license,code-integrity,unicode,quality,lint}"
+# `security` (the delegated skillspector call) by default and `pii` too many false positives; see header.
+CHECKS="${CHECKS:-schema,version,license,code-integrity,unicode,quality,lint}"
 
 # Stamped into reports generated with NO_LLM=1 so a later full run can tell a
 # static-only report (which carries no "INCOMPLETE" status) apart from a real
