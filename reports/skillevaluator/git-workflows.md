@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 16 (1 medium) |
+| Total Issues | 15 (1 medium) |
 
 ## Quality Score
 
@@ -30,34 +30,18 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'git-workflows'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/git-workflows/
 - [OK] **naming_convention**: Folder name 'git-workflows' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (252/500)
+- [OK] **line_count**: SKILL.md within line limit (251/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
+- [OK] **optional_files**: Skill directory contains only expected files
 - [OK] **name_consistency**: Directory name matches frontmatter: 'git-workflows'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
-
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>git-workflows/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `git-workflows/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
 
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -97,34 +81,34 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:220</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:221</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:222</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:223</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:225</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:224</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:221`
+- File: `SKILL.md:220`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ `git rebase` rewrites history — only on local, unsha...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **2. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:222`
+- File: `SKILL.md:221`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Large PRs (>400 lines) are hard to review — split in...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **3. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:223`
+- File: `SKILL.md:222`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Don't merge `main` into feature branches frequently ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **4. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:225`
+- File: `SKILL.md:224`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Always pull/rebase before creating a PR to avoid las...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -150,7 +134,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>git-workflows/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>git-workflows/SKILL.md</code> |
 | [LOW] LOW | Description very long (591 chars, recommend 50-150) | <code>git-workflows/SKILL.md</code> |
 | [LOW] LOW | Broad description without negative triggers may cause over-triggering | <code>git-workflows/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>git-workflows/SKILL.md</code> |
@@ -162,10 +146,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `git-workflows/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (591 chars, recommend 50-150)**
 - File: `git-workflows/SKILL.md`

@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 15 (1 medium) |
+| Total Issues | 14 (1 medium) |
 
 ## Quality Score
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'security-audit'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/security-audit/
 - [OK] **naming_convention**: Folder name 'security-audit' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (219/500)
+- [OK] **line_count**: SKILL.md within line limit (218/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -38,27 +38,10 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'security-audit'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>security-audit/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `security-audit/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
-
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -98,41 +81,41 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:191</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:193</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:190</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:192</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:194</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:195</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:196</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:197</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:191`
+- File: `SKILL.md:190`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Dependency scanning only finds **known** CVEs — it w...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **2. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:193`
+- File: `SKILL.md:192`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ SAST tools generate false positives — validate each ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **3. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:195`
+- File: `SKILL.md:194`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Secrets in `.gitignore` are still in git history — u...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **4. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:196`
+- File: `SKILL.md:195`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ `npm audit` and `pip-audit` have different databases...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **5. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:197`
+- File: `SKILL.md:196`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Semgrep `--config=auto` is a starting point — write ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -158,7 +141,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>security-audit/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>security-audit/SKILL.md</code> |
 | [LOW] LOW | Description very long (523 chars, recommend 50-150) | <code>security-audit/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>security-audit/SKILL.md</code> |
 | [LOW] LOW | No prerequisites/requirements documented | <code>security-audit/SKILL.md</code> |
@@ -168,10 +151,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `security-audit/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (523 chars, recommend 50-150)**
 - File: `security-audit/SKILL.md`

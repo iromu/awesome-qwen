@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 12 (2 medium) |
+| Total Issues | 11 (2 medium) |
 
 ## Quality Score
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'htmx'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/htmx/
 - [OK] **naming_convention**: Folder name 'htmx' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (377/500)
+- [OK] **line_count**: SKILL.md within line limit (376/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -38,12 +38,11 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'htmx'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 2**
+**Non-blocking findings: 1**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
 | [LOW] LOW | Unexpected 'templates' in skill root | <code>htmx/templates</code> |
-| [LOW] LOW | Unexpected '-' in skill root | <code>htmx/-</code> |
 
 <details>
 <summary>View Details</summary>
@@ -53,18 +52,13 @@
 - Check: `unexpected_file`
 - Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
-**2. Unexpected '-' in skill root**
-- File: `htmx/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
 </details>
 
 
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.1.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -118,7 +112,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>htmx/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>htmx/SKILL.md</code> |
 | [LOW] LOW | Description very long (889 chars, recommend 50-150) | <code>htmx/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>htmx/SKILL.md</code> |
 | [MED] MEDIUM | Skill name very short: 'htmx' | <code>htmx/SKILL.md</code> |
@@ -129,10 +123,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `htmx/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (889 chars, recommend 50-150)**
 - File: `htmx/SKILL.md`

@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 19 (1 medium) |
+| Total Issues | 18 (1 medium) |
 
 ## Quality Score
 
@@ -30,34 +30,18 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'json-formatting'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/json-formatting/
 - [OK] **naming_convention**: Folder name 'json-formatting' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (461/500)
+- [OK] **line_count**: SKILL.md within line limit (460/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
+- [OK] **optional_files**: Skill directory contains only expected files
 - [OK] **name_consistency**: Directory name matches frontmatter: 'json-formatting'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
-
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>json-formatting/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `json-formatting/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
 
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.1.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -97,62 +81,62 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:215</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:234</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:214</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:233</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:410</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:411</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:412</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:413</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:414</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:415</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:416</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:215`
+- File: `SKILL.md:214`
 - Check: `isolated_invisible_char`
 - Content: `> ⚠️ **Caveat:** JSON → XML with arrays needs a strategy ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **2. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:234`
+- File: `SKILL.md:233`
 - Check: `isolated_invisible_char`
 - Content: `> ⚠️ **Caveat:** Nested objects/arrays become stringified...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **3. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:411`
+- File: `SKILL.md:410`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Large JSON files (>10MB) may need streaming/parsing ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **4. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:412`
+- File: `SKILL.md:411`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Converting JSON → XML with arrays: decide between re...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **5. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:413`
+- File: `SKILL.md:412`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Converting JSON → CSV: nested objects/arrays become ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **6. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:414`
+- File: `SKILL.md:413`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Preserving numeric precision: very large integers ma...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **7. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:415`
+- File: `SKILL.md:414`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ UTF-8 encoding: ensure output is properly encoded, e...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **8. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:416`
+- File: `SKILL.md:415`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ JSON Schema inference from a single example is inher...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -178,7 +162,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>json-formatting/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>json-formatting/SKILL.md</code> |
 | [LOW] LOW | Description very long (537 chars, recommend 50-150) | <code>json-formatting/SKILL.md</code> |
 | [LOW] LOW | Broad description without negative triggers may cause over-triggering | <code>json-formatting/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>json-formatting/SKILL.md</code> |
@@ -189,10 +173,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `json-formatting/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (537 chars, recommend 50-150)**
 - File: `json-formatting/SKILL.md`

@@ -3,7 +3,7 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 10 |
 | ❌ Failed | 1 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 30 (1 high, 7 medium) |
+| Total Issues | 29 (1 high, 7 medium) |
 
 ## Quality Score
 
@@ -38,22 +38,16 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'skill-creator'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 2**
+**Non-blocking findings: 1**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>skill-creator/-</code> |
 | [LOW] LOW | Unexpected 'eval-viewer' in skill root | <code>skill-creator/eval-viewer</code> |
 
 <details>
 <summary>View Details</summary>
 
-**1. Unexpected '-' in skill root**
-- File: `skill-creator/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-**2. Unexpected 'eval-viewer' in skill root**
+**1. Unexpected 'eval-viewer' in skill root**
 - File: `skill-creator/eval-viewer`
 - Check: `unexpected_file`
 - Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
@@ -64,7 +58,7 @@
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*

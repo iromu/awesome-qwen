@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 17 (1 medium) |
+| Total Issues | 16 (1 medium) |
 
 ## Quality Score
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'database-migration'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/database-migration/
 - [OK] **naming_convention**: Folder name 'database-migration' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (219/500)
+- [OK] **line_count**: SKILL.md within line limit (218/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -38,27 +38,10 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'database-migration'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>database-migration/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `database-migration/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
-
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -98,10 +81,10 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:200</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:201</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:202</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:204</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:206</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:203</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:205</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>references/cross-database.md:24</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>references/cross-database.md:26</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>references/cross-database.md:27</code> |
@@ -110,25 +93,25 @@
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:201`
+- File: `SKILL.md:200`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ `ALTER TABLE ... ADD COLUMN ... DEFAULT ...` can loc...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **2. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:202`
+- File: `SKILL.md:201`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Creating indexes on large tables without `CONCURRENT...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **3. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:204`
+- File: `SKILL.md:203`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ SQLite's limited DDL means renames and drops require...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **4. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:206`
+- File: `SKILL.md:205`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Always test rollback before deploying forward migrat...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -172,7 +155,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>database-migration/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>database-migration/SKILL.md</code> |
 | [LOW] LOW | Description very long (655 chars, recommend 50-150) | <code>database-migration/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>database-migration/SKILL.md</code> |
 | [LOW] LOW | No prerequisites/requirements documented | <code>database-migration/SKILL.md</code> |
@@ -182,10 +165,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `database-migration/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (655 chars, recommend 50-150)**
 - File: `database-migration/SKILL.md`

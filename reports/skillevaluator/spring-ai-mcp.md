@@ -3,7 +3,7 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 10 |
 | ❌ Failed | 1 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 14 (1 high, 2 medium) |
+| Total Issues | 13 (1 high, 2 medium) |
 
 ## Quality Score
 
@@ -38,27 +38,10 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'spring-ai-mcp'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>spring-ai-mcp/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `spring-ai-mcp/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
-
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 2.0.1
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -142,7 +125,7 @@
 | [LOW] LOW | No prerequisites/requirements documented | <code>spring-ai-mcp/SKILL.md</code> |
 | [LOW] LOW | No limitations documented | <code>spring-ai-mcp/SKILL.md</code> |
 | [LOW] LOW | No troubleshooting section documented | <code>spring-ai-mcp/SKILL.md</code> |
-| [HIGH] HIGH | Large skill (5488 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>spring-ai-mcp/SKILL.md</code> |
+| [HIGH] HIGH | Large skill (5492 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>spring-ai-mcp/SKILL.md</code> |
 
 <details>
 <summary>View Details</summary>
@@ -182,7 +165,7 @@
 - Check: `quality_reliability`
 - Fix: Add '## Troubleshooting' with Error/Cause/Solution patterns
 
-**8. Large skill (5488 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
+**8. Large skill (5492 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
 - File: `spring-ai-mcp/SKILL.md`
 - Check: `quality_efficiency`
 - Fix: Keep required sections concise; move detailed examples, reference material, and supporting docs to the references/ directory

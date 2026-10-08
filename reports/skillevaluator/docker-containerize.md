@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 15 (1 medium) |
+| Total Issues | 14 (1 medium) |
 
 ## Quality Score
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'docker-containerize'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/docker-containerize/
 - [OK] **naming_convention**: Folder name 'docker-containerize' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (252/500)
+- [OK] **line_count**: SKILL.md within line limit (251/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -38,27 +38,10 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'docker-containerize'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>docker-containerize/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `docker-containerize/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
-
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -98,34 +81,34 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:216</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:218</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:220</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:222</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:215</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:217</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:219</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:221</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:216`
+- File: `SKILL.md:215`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Don't copy `.env` files into images — use secrets or...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **2. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:218`
+- File: `SKILL.md:217`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ `COPY . .` before dependency install breaks layer ca...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **3. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:220`
+- File: `SKILL.md:219`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ ARM/x86 cross-platform builds need `docker buildx` —...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **4. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:222`
+- File: `SKILL.md:221`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Large `.dockerignore` exclusions can cause unexpecte...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -151,7 +134,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>docker-containerize/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>docker-containerize/SKILL.md</code> |
 | [LOW] LOW | Description very long (427 chars, recommend 50-150) | <code>docker-containerize/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>docker-containerize/SKILL.md</code> |
 | [LOW] LOW | No mention of error handling or validation | <code>docker-containerize/SKILL.md</code> |
@@ -162,10 +145,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `docker-containerize/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (427 chars, recommend 50-150)**
 - File: `docker-containerize/SKILL.md`

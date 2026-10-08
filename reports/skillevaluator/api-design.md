@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:06 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 11 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 14 (2 medium) |
+| Total Issues | 13 (2 medium) |
 
 ## Quality Score
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'api-design'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/api-design/
 - [OK] **naming_convention**: Folder name 'api-design' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (118/500)
+- [OK] **line_count**: SKILL.md within line limit (117/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -38,27 +38,10 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'api-design'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>api-design/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `api-design/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
-
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ✅ PII Scan
 *Detect PII and local identifiers*
@@ -98,20 +81,20 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:104</code> |
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:106</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:103</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:105</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:104`
+- File: `SKILL.md:103`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Don't use GET for state-changing operations (not ide...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
 
 **2. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:106`
+- File: `SKILL.md:105`
 - Check: `isolated_invisible_char`
 - Content: `- ⚠️ Version your API: `/v1/users` not `/users``
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -137,7 +120,7 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>api-design/SKILL.md</code> |
+| [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>api-design/SKILL.md</code> |
 | [LOW] LOW | Description very long (627 chars, recommend 50-150) | <code>api-design/SKILL.md</code> |
 | [MED] MEDIUM | Description uses first/second person | <code>api-design/SKILL.md</code> |
 | [LOW] LOW | Broad description without negative triggers may cause over-triggering | <code>api-design/SKILL.md</code> |
@@ -149,10 +132,10 @@
 <details>
 <summary>View Details</summary>
 
-**1. SKILL_SPEC recommended field missing: 'metadata.tags'**
+**1. SKILL_SPEC recommended field missing: 'version'**
 - File: `api-design/SKILL.md`
 - Check: `quality_correctness`
-- Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
+- Fix: Add 'version' to frontmatter — Semantic version (e.g., "1.0.0")
 
 **2. Description very long (627 chars, recommend 50-150)**
 - File: `api-design/SKILL.md`

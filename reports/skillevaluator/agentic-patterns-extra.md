@@ -3,7 +3,7 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 07, 2026 at 10:05 PM UTC
+**Generated:** October 08, 2026 at 12:17 AM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 8 |
 | ❌ Failed | 3 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 61 (1 critical, 3 high, 3 medium) |
+| Total Issues | 60 (1 critical, 3 high, 3 medium) |
 
 ## Quality Score
 
@@ -38,27 +38,10 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'agentic-patterns-extra'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected '-' in skill root | <code>agentic-patterns-extra/-</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected '-' in skill root**
-- File: `agentic-patterns-extra/-`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
-
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_optional**: No semantic version label present; resource will use commit-hash history
+- [OK] **version_semver**: Valid semantic version: 1.0.0
 
 ### ❌ PII Scan
 *Detect PII and local identifiers*
@@ -183,7 +166,7 @@
 | [LOW] LOW | No prerequisites/requirements documented | <code>agentic-patterns-extra/SKILL.md</code> |
 | [LOW] LOW | No limitations documented | <code>agentic-patterns-extra/SKILL.md</code> |
 | [LOW] LOW | No troubleshooting section documented | <code>agentic-patterns-extra/SKILL.md</code> |
-| [HIGH] HIGH | Large skill (12507 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>agentic-patterns-extra/SKILL.md</code> |
+| [HIGH] HIGH | Large skill (12511 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>agentic-patterns-extra/SKILL.md</code> |
 | [LOW] LOW | Uses complex/corporate language | <code>agentic-patterns-extra/SKILL.md</code> |
 
 <details>
@@ -224,7 +207,7 @@
 - Check: `quality_reliability`
 - Fix: Add '## Troubleshooting' with Error/Cause/Solution patterns
 
-**8. Large skill (12507 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
+**8. Large skill (12511 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
 - File: `agentic-patterns-extra/SKILL.md`
 - Check: `quality_efficiency`
 - Fix: Keep required sections concise; move detailed examples, reference material, and supporting docs to the references/ directory
