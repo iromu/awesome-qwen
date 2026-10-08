@@ -3,7 +3,7 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 12:17 AM UTC
+**Generated:** October 08, 2026 at 07:49 AM UTC
 
 ## Summary
 
@@ -13,13 +13,13 @@
 | ✅ Passed | 9 |
 | ❌ Failed | 2 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 14 (1 high, 4 medium) |
+| Total Issues | 15 (1 high, 5 medium) |
 
 ## Quality Score
 
 | Skill | Score | Grade | Type | Correctness | Discoverability | Reliability | Efficiency |
 |-------|-------|-------|------|-------------|-----------------|-------------|------------|
-| embabel-agent | 82.2 | B | script-based | 70.0 | 90.0 | 90.0 | 85.0 |
+| embabel-agent | 80.0 | B | script-based | 70.0 | 90.0 | 90.0 | 70.0 |
 
 ## Results
 
@@ -34,26 +34,9 @@
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
-- [OK] **optional_files**: Found optional supporting files: evals, scripts
+- [OK] **optional_files**: Found optional supporting files: evals, references, scripts
 - [OK] **name_consistency**: Directory name matches frontmatter: 'embabel-agent'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
-
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected 'reference' in skill root | <code>embabel-agent/reference</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected 'reference' in skill root**
-- File: `embabel-agent/reference`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
 
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
@@ -100,16 +83,16 @@
 ### ❌ B QUALITY
 *Skill quality scoring across Correctness (35%), Discoverability (25%), Reliability (25%), and Efficiency (15%)*
 
-**Overall: 82.2/100 (Grade: B)** | Skill Type: script-based
+**Overall: 80.0/100 (Grade: B)** | Skill Type: script-based
 
 | Dimension | Score | Weight |
 |-----------|-------|--------|
 | Correctness | 70.0 | 35% |
 | Discoverability | 90.0 | 25% |
 | Reliability | 90.0 | 25% |
-| Efficiency | 85.0 | 15% |
+| Efficiency | 70.0 | 15% |
 
-**1 errors, 8 warnings**
+**1 errors, 10 warnings**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
@@ -121,7 +104,9 @@
 | [LOW] LOW | No '## Purpose' section | <code>embabel-agent/SKILL.md</code> |
 | [LOW] LOW | No prerequisites/requirements documented | <code>embabel-agent/SKILL.md</code> |
 | [LOW] LOW | No limitations documented | <code>embabel-agent/SKILL.md</code> |
-| [HIGH] HIGH | Large skill (5477 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>embabel-agent/SKILL.md</code> |
+| [HIGH] HIGH | Large skill (5490 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>embabel-agent/SKILL.md</code> |
+| [LOW] LOW | Non-descriptive filename: dsl.md | <code>embabel-agent/SKILL.md</code> |
+| ... | *1 more issues* | |
 
 <details>
 <summary>View Details</summary>
@@ -166,10 +151,17 @@
 - Check: `quality_reliability`
 - Fix: Add '## Limitations' section with known issues/constraints
 
-**9. Large skill (5477 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
+**9. Large skill (5490 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
 - File: `embabel-agent/SKILL.md`
 - Check: `quality_efficiency`
 - Fix: Keep required sections concise; move detailed examples, reference material, and supporting docs to the references/ directory
+
+**10. Non-descriptive filename: dsl.md**
+- File: `embabel-agent/SKILL.md`
+- Check: `quality_efficiency`
+- Fix: Use descriptive names: 'form_validation_rules.md' not 'doc2.md'
+
+*... and 1 more issues*
 
 </details>
 

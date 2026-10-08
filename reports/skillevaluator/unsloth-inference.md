@@ -3,7 +3,7 @@
 **Status:** ❌ FAILED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 12:17 AM UTC
+**Generated:** October 08, 2026 at 07:49 AM UTC
 
 ## Summary
 
@@ -19,7 +19,7 @@
 
 | Skill | Score | Grade | Type | Correctness | Discoverability | Reliability | Efficiency |
 |-------|-------|-------|------|-------------|-----------------|-------------|------------|
-| unsloth-inference | 90.2 | A | guide-only | 90.0 | 90.0 | 85.0 | 100.0 |
+| unsloth-inference | 89.5 | B | guide-only | 90.0 | 90.0 | 85.0 | 95.0 |
 
 ## Results
 
@@ -34,26 +34,9 @@
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
-- [OK] **optional_files**: Found optional supporting files: evals
+- [OK] **optional_files**: Found optional supporting files: evals, references
 - [OK] **name_consistency**: Directory name matches frontmatter: 'unsloth-inference'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
-
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected 'reference' in skill root | <code>unsloth-inference/reference</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected 'reference' in skill root**
-- File: `unsloth-inference/reference`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
 
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
@@ -68,8 +51,8 @@
 | Severity | Issue | Location |
 |----------|-------|----------|
 | [CRIT] CRITICAL | Hardcoded secret/credential in code: api_key="sk-unsloth-xxxxxxxxxxxx" | <code>SKILL.md:127</code> |
-| [CRIT] CRITICAL | Hardcoded secret/credential in code: api_key="sk-no-key-required" — 3 occurrences (reference/vllm.md line 149; reference/llama-server.md lines 60, 141) | <code>reference/vllm.md:149</code> |
-| [CRIT] CRITICAL | Hardcoded secret/credential in code: AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx" | <code>reference/api.md:194</code> |
+| [CRIT] CRITICAL | Hardcoded secret/credential in code: api_key="sk-no-key-required" — 3 occurrences (references/vllm.md line 149; references/llama-server.md lines 60, 141) | <code>references/vllm.md:149</code> |
+| [CRIT] CRITICAL | Hardcoded secret/credential in code: AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx" | <code>references/api.md:194</code> |
 
 <details>
 <summary>View Details</summary>
@@ -80,14 +63,14 @@
 - Content: `client = OpenAI(base_url="http://localhost:8888/v1", api_...`
 - Fix: Use environment variable or secrets manager instead of hardcoded value
 
-**2. Hardcoded secret/credential in code: api_key="sk-no-key-required" — 3 occurrences (reference/vllm.md line 149; reference/llama-server.md lines 60, 141)**
-- File: `reference/vllm.md:149`
+**2. Hardcoded secret/credential in code: api_key="sk-no-key-required" — 3 occurrences (references/vllm.md line 149; references/llama-server.md lines 60, 141)**
+- File: `references/vllm.md:149`
 - Check: `hardcoded_secrets`
 - Content: `openai_client = OpenAI(base_url="http://0.0.0.0:30000/v1"...`
 - Fix: Use environment variable or secrets manager instead of hardcoded value
 
 **3. Hardcoded secret/credential in code: AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx"**
-- File: `reference/api.md:194`
+- File: `references/api.md:194`
 - Check: `hardcoded_secrets`
 - Content: `export ANTHROPIC_AUTH_TOKEN="sk-unsloth-xxxxxxxxxxxx"`
 - Fix: Use environment variable or secrets manager instead of hardcoded value
@@ -123,21 +106,21 @@
 
 - [OK] **unicode_scan**: No invisible Unicode characters detected in 8 file(s)
 
-### ✅ A QUALITY
+### ✅ B QUALITY
 *Skill quality scoring across Correctness (35%), Discoverability (25%), Reliability (25%), and Efficiency (15%)*
 
-**Overall: 90.2/100 (Grade: A)** | Skill Type: guide-only
+**Overall: 89.5/100 (Grade: B)** | Skill Type: guide-only
 
 | Dimension | Score | Weight |
 |-----------|-------|--------|
 | Correctness | 90.0 | 35% |
 | Discoverability | 90.0 | 25% |
 | Reliability | 85.0 | 25% |
-| Efficiency | 100.0 | 15% |
+| Efficiency | 95.0 | 15% |
 
-- [OK] **quality_score**: Score: 90.2/100 (Grade: A)
+- [OK] **quality_score**: Score: 89.5/100 (Grade: B)
 
-**Non-blocking findings: 7**
+**Non-blocking findings: 8**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
@@ -148,6 +131,7 @@
 | [LOW] LOW | No prerequisites/requirements documented | <code>unsloth-inference/SKILL.md</code> |
 | [LOW] LOW | No limitations documented | <code>unsloth-inference/SKILL.md</code> |
 | [LOW] LOW | No troubleshooting section documented | <code>unsloth-inference/SKILL.md</code> |
+| [LOW] LOW | Non-descriptive filename: api.md | <code>unsloth-inference/SKILL.md</code> |
 
 <details>
 <summary>View Details</summary>
@@ -186,6 +170,11 @@
 - File: `unsloth-inference/SKILL.md`
 - Check: `quality_reliability`
 - Fix: Add '## Troubleshooting' with Error/Cause/Solution patterns
+
+**8. Non-descriptive filename: api.md**
+- File: `unsloth-inference/SKILL.md`
+- Check: `quality_efficiency`
+- Fix: Use descriptive names: 'form_validation_rules.md' not 'doc2.md'
 
 </details>
 
