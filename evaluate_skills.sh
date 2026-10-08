@@ -88,6 +88,18 @@ scrub_local_paths() {
     && mv "$tmp" "$report"
 }
 
+# SkillEvaluator runs Gitleaks (the code-integrity check) with the scan root as
+# the working directory and `--report-path -`. This Gitleaks build reads that
+# "-" as a literal filename instead of the stdout convention, so it drops a
+# JSON report named `-` into the skill directory on every run (3 bytes, "[]",
+# when nothing is found). Deleting it after each run keeps the sweep from
+# littering the tree; it is never read back, so the verdict is unaffected.
+scrub_run_artifacts() {
+  local dir="$1"
+  rm -f "$dir/-" "$dir/.pii_results.json" "$dir/.segfault-docker-hosts.md" \
+        "$dir/gitleaks-report.json"
+}
+
 # Decide whether an existing report is still current. Returns 0 (re-run) when
 # the report is missing, incomplete, static-only, or older than SKILL.md; 1
 # (skip) otherwise. On a re-run, RESCAN_REASON explains why.
@@ -208,6 +220,8 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   if ! "${validate_cmd[@]}"; then
     echo "warn  $skill_name: validate exited non-zero (report may be partial)" >&2
   fi
+
+  scrub_run_artifacts "$skill_dir"
 
   latest_md=""
   for md in "$run_dir"/skillevaluator-output-*.md; do

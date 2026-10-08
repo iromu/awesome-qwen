@@ -1,0 +1,65 @@
+/*
+ * SkillEvaluator quality-score panel on the skill detail page.
+ *
+ * Deliberately token-neutral: borders and rules use `currentColor` mixed with
+ * transparency so the panel reads correctly in both light and dark themes
+ * without depending on a specific Primer token name.
+ */
+
+.panel {
+  margin-block-end: var(--base-size-24, 24px);
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-block-end: 12px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.badge {
+  font-variant-numeric: tabular-nums;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+}
+
+.type {
+  opacity: 0.75;
+  font-size: 0.875rem;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  text-align: start;
+  padding: 6px 8px;
+  border-block-end: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  white-space: nowrap;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.reportLink {
+  display: inline-block;
+  margin-block-start: 12px;
+}

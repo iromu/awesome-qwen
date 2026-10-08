@@ -1,0 +1,105 @@
+---
+/**
+ * Base document layout for every page.
+ *
+ * It owns the `<head>` (meta, CSP, theme bootstrap) and renders the page body
+ * from a slot; the visible chrome (nav/footer) comes from the `PageShell`
+ * React component so it matches the design prototype exactly.
+ */
+import "../styles/base.css";
+
+const SITE_DESCRIPTION =
+  "Curated, quality-scored skills for Qwen Code — each one bundles instructions, references, and scripts.";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: string;
+  /** Set false for pages that should not be indexed by search. */
+  pagefind?: boolean;
+  /** Canonical public path when Astro.url is rewritten. */
+  canonicalPath?: string;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  ogType = "website",
+  pagefind = true,
+  canonicalPath,
+} = Astro.props;
+
+const basePath = import.meta.env.BASE_URL;
+const canonicalUrl = new URL(
+  canonicalPath ?? Astro.url.pathname,
+  Astro.site,
+).toString();
+
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "form-action 'none'",
+  "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://raw.githubusercontent.com",
+  "worker-src 'self' blob:",
+  "upgrade-insecure-requests",
+].join("; ");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content={contentSecurityPolicy} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!--
+      `@primer/react-brand`'s `ThemeProvider colorMode="auto"` only resolves the
+      real OS colour-scheme preference inside a `useEffect`, so its first render
+      (and therefore first paint) is always light — a flash of the wrong theme
+      on every load for dark-mode users. This script runs synchronously before
+      any stylesheet-affected paint and stamps the resolved mode onto `<html>`
+      using the same `data-color-mode` attribute Primer Brand's CSS already
+      keys off, so the correct theme is visible immediately. Once React
+      hydrates, `ThemeProvider` sets its own `data-color-mode` on an inner
+      element, which takes precedence via normal cascade/specificity — this
+      script only needs to hold the line until then.
+    -->
+    <script is:inline>
+      (function () {
+        var mode = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        document.documentElement.setAttribute("data-color-mode", mode);
+      })();
+    </script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href={`${basePath}images/favicon.svg`} type="image/svg+xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    {!pagefind && <meta name="robots" content="noindex" />}
+
+    <script is:inline define:vars={{ basePath }}>
+      document.documentElement.dataset.basePath = basePath;
+    </script>
+  </head>
+  <body data-pagefind-body={pagefind ? "" : undefined}>
+    <slot />
+  </body>
+</html>

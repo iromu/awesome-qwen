@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SkillsCatalog } from "../components/brand/SkillsCatalog";
+import { skills, searchIndex } from "../lib/site-data";
+---
+
+<BaseLayout
+  title="Skills | Awesome Qwen"
+  description="Browse community-contributed Qwen Code skills, each validated with a SkillEvaluator quality score."
+>
+  <SkillsCatalog
+    client:load
+    skills={skills as any}
+    searchIndex={searchIndex}
+  />
+</BaseLayout>

@@ -1,0 +1,13 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+.favicon-mark { fill: #24292f; stroke: #24292f; }
+@media (prefers-color-scheme: dark) {
+  .favicon-mark { fill: #ffffff; stroke: #ffffff; }
+}
+</style>
+<!-- A "Q" monogram: open ring + tail, readable at 16px in both themes. -->
+<g class="favicon-mark">
+  <circle cx="44" cy="44" r="32" stroke-width="12" fill="none"/>
+  <rect x="52" y="52" width="14" height="32" rx="7" transform="rotate(45 59 68)"/>
+</g>
+</svg>
