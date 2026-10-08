@@ -6,12 +6,11 @@ description: >
   best practices for container security and performance. Use this skill when the user mentions
   Docker, containerization, Dockerfile optimization, image hardening, or multi-service orchestration,
   even if they don't explicitly say "Docker."
-version: 1.0.0
-category: devops
-tags: [docker, containers, multi-stage, security, buildx, compose]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: devops
+  tags: [docker, containers, multi-stage, security, buildx, compose]
 ---
 
 # Docker Containerization

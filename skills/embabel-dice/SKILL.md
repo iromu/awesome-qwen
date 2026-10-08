@@ -1,12 +1,11 @@
 ---
 name: embabel-dice
 description: Build proposition-based knowledge graphs and agent memory with Embabel DICE (Domain-Integrated Context Engineering), the Kotlin/Apache-2.0 library on the embabel-agent framework. Use when the user mentions Embabel DICE, the dice or dice-mcp-autoconfigure or dice-metamodel Maven modules, proposition extraction or revision, PropositionPipeline, processOnce, PropositionQuery, the Memory facade or MemoryProjector, agentic recall, confidence-weighted facts, entity resolution with EscalatingEntityResolver or LlmCandidateBakeoff, graph or Prolog or memory projection, Drivine or Neo4j proposition storage, exposing dice_recall / dice_list / dice_store / dice_get over MCP, or metamodel versioning with MetamodelVersion, DeclaredSchema and DeclaredSchemaSource. Covers the real module list, property prefixes and configuration defaults.
-version: 0.2.0
-category: ai-agents
-tags: [embabel, dice, knowledge-graph, agent-memory, propositions, mcp, kotlin, java]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 0.2.0
+  category: ai-agents
+  tags: [embabel, dice, knowledge-graph, agent-memory, propositions, mcp, kotlin, java]
 ---
 
 # Embabel DICE - Domain-Integrated Context Engineering

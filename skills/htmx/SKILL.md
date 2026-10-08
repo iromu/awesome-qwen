@@ -12,12 +12,11 @@ description: >
   WebSockets, SSE, or building reactive UIs with server-rendered HTML. Also trigger
   when the user wants to replace React/Vue with a simpler approach, build SPAs with
   htmx, add progressive enhancement to existing pages, or upgrade htmx 2 to htmx 4.
-version: 1.1.0
-category: frontend
-tags: [htmx, hypermedia, ajax, server-side, no-javascript, declarative]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.1.0
+  category: frontend
+  tags: [htmx, hypermedia, ajax, server-side, no-javascript, declarative]
 ---
 
 # htmx — Hypermedia-Driven Web UIs

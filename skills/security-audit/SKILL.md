@@ -7,12 +7,11 @@ description: >
   vulnerability assessment, compliance checklist, OWASP Top 10, or pre-deployment security
   checks. Don't hesitate to suggest this skill when the user is working on shipping code to
   production, adding third-party libraries, or setting up CI/CD security gates.
-version: 1.0.0
-category: security
-tags: [security, owasp, scanning, dependencies, secrets, sast, vulnerabilities]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: security
+  tags: [security, owasp, scanning, dependencies, secrets, sast, vulnerabilities]
 ---
 
 # Security Audit

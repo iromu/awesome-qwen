@@ -1,12 +1,11 @@
 ---
 name: json-formatting
 description: Format, pretty-print, minify, validate, transform, and convert JSON data. Use this skill whenever the user needs to format JSON output, minify JSON, validate JSON structure, convert between JSON and other formats (YAML, XML, CSV, TOML), restructure JSON keys, extract nested values, or generate JSON schemas. Trigger on any request involving JSON formatting, JSON beautification, JSON validation, JSON-to-other-format conversion, or JSON schema generation. Also trigger when the user asks to compact, indent, sort, or reformat JSON data.
-version: 1.1.0
-category: data
-tags: [json, formatting, validation, conversion, schema, transformation, jq]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.1.0
+  category: data
+  tags: [json, formatting, validation, conversion, schema, transformation, jq]
 ---
 
 # JSON Formatting

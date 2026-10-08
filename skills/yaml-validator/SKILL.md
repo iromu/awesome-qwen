@@ -1,12 +1,11 @@
 ---
 name: yaml-validator
 description: Validate, lint, and fix YAML files. Use this skill whenever the user asks to validate YAML, check YAML syntax, find YAML errors, fix YAML formatting, lint YAML files, or verify YAML structure. Also use when the user encounters YAML parse errors, wants to check for common YAML pitfalls (indentation issues, special characters, implicit type coercion), or needs to convert between YAML formats. Trigger on any mention of YAML validation, YAML linting, YAML schema validation, YAML anchors, YAML aliases, or YAML type coercion issues.
-version: 1.0.0
-category: validation
-tags: [yaml, linting, validation, syntax, formatting]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: validation
+  tags: [yaml, linting, validation, syntax, formatting]
 ---
 
 # YAML Validator

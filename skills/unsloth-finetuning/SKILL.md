@@ -17,7 +17,7 @@ description: >-
   unsloth-quantization), or running/serving models (use unsloth-inference).
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
 ---
 
 # Unsloth Fine-tuning

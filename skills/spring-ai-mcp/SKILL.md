@@ -17,7 +17,7 @@ description: >-
   model to external tools via MCP.
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 2.0.1
 ---
 
 # Spring AI MCP

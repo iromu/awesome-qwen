@@ -71,9 +71,11 @@ skills/
 ---
 name: my-skill                    # Must match folder name, max 64 chars
 description: What this skill does # 10-1024 characters
-version: 1.0.0                    # Semantic version
-category: development             # See categories below
-tags: ["tag1", "tag2"]           # Optional categorization
+metadata:
+  author: "Your Name <you@example.com>"
+  version: 1.0.0                  # Semantic version
+  category: development           # See categories below
+  tags: ["tag1", "tag2"]          # Optional categorization
 ---
 
 # Skill Title
@@ -95,6 +97,10 @@ tags: ["tag1", "tag2"]           # Optional categorization
 - [ ] Check 1
 - [ ] Check 2
 ```
+
+Only `name`, `description`, `license`, `allowed-tools`, `compatibility` and `metadata` are legal at the
+top level — `quick_validate.py` rejects anything else. Put `version`, `category` and `tags` (plus
+`author`) under `metadata:` to keep the categorisation data without tripping that check.
 
 ### Quick Create
 ```bash

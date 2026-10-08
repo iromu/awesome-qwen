@@ -9,12 +9,11 @@ description: >
   changes. Don't hesitate to suggest this skill when the user is working on database
   schema evolution, column additions or renames, index management, or migration tooling,
   even if they don't explicitly mention zero-downtime or rollback.
-version: 1.0.0
-category: backend
-tags: [database, migration, sql, schema, postgresql, mysql, sqlite]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: backend
+  tags: [database, migration, sql, schema, postgresql, mysql, sqlite]
 ---
 
 # Database Migration

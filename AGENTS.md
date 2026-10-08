@@ -134,8 +134,8 @@ After improving a skill (or a batch of skills), verify the following:
 - [ ] All skills have trigger phrases in their frontmatter `description`
 - [ ] All skills have a "When NOT to Use" section
 - [ ] No dead references exist (every `reference/*.md` pointer resolves to an actual file)
-- [ ] All frontmatter uses standard fields (`name`, `description`, `version`, `category`, `tags`)
-- [ ] No non-standard fields (e.g., `model: sonnet`)
+- [ ] All frontmatter uses standard fields — `name` and `description` at the top level, `version`, `category` and `tags` nested under `metadata:`
+- [ ] No non-standard top-level fields (e.g., `model: sonnet`); anything that is not `name`, `description`, `license`, `allowed-tools`, `compatibility` or `metadata` belongs under `metadata:`
 - [ ] Progressive disclosure is followed (SKILL.md is the procedural guide; references hold detail)
 - [ ] Skills with objective outputs have `evals/` directories
 

@@ -2,12 +2,11 @@
 name: embabel-chatbot
 description: >-
   Build agentic chatbots with tool-based RAG on the JVM using Embabel. Use when building a conversational agent backed by a long-lived AgentProcess, exposing a Chatbot bean and ChatSession, handling UserMessage/AssistantMessage via @Action(trigger = UserMessage::class), persisting conversations with embabel-chat-store (ConversationStoreType.STORED, ConversationFactoryProvider, AgentProcessChatbot.utilityFromPlatform), or wiring agentic RAG with ToolishRag, SearchOperations, VectorSearch/TextSearch, PropertyFilter/EntityFilter metadata+entity filters, LuceneSearchOperations, TikaHierarchicalContentReader ingestion, AddTitlesChunkTransformer chunking, or persona/objective Jinja prompts (ragbot.jinja). Trigger on: embabel chatbot, embabel rag, ragbot, chatbot with retrieval, ChatSession, conversation store, toolish rag. Do NOT use for the core @Agent/@Action planner framework, MCP publishing, or provider config (see the embabel-agent skill).
-version: 1.5.1
-category: framework
-tags: [embabel, chatbot, rag, kotlin, java, spring]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.5.1
+  category: framework
+  tags: [embabel, chatbot, rag, kotlin, java, spring]
 ---
 
 # Embabel Chatbot Skill (v1.5.1)

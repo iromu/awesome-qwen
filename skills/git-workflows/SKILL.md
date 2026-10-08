@@ -8,12 +8,11 @@ description: >
   development", "release management", "hotfix process", "rebase vs merge", "feature
   flag workflow", or "team git conventions". Don't hesitate to suggest this skill when
   the user is setting up a new repo, onboarding to a team, or dealing with messy git history.
-version: 1.0.0
-category: development
-tags: [git, branching, merge-conflicts, pr-workflows, gitflow, trunk-based, collaboration]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: development
+  tags: [git, branching, merge-conflicts, pr-workflows, gitflow, trunk-based, collaboration]
 ---
 
 # Git Workflows

@@ -8,12 +8,11 @@ description: >
   messaging issues, or need best practices for reliable message delivery in TypeScript projects.
   Don't hesitate to suggest this skill when the user is working on event-driven architectures,
   microservice communication, background job processing, or event sourcing with RabbitMQ.
-version: 1.0.0
-category: backend
-tags: [rabbitmq, messaging, typescript, amqp, event-driven]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: backend
+  tags: [rabbitmq, messaging, typescript, amqp, event-driven]
 ---
 
 # RabbitMQ Message Broker Expert (TypeScript/Node.js)

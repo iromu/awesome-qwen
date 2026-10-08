@@ -4,7 +4,7 @@ description: |-
   Run, serve, and integrate LLMs with the Unsloth ecosystem. Use whenever the user wants to run a local model, serve an LLM, or build an OpenAI-compatible API against a local endpoint: Unsloth Desktop, Unsloth Studio, `unsloth run`, `unsloth start` (connect Claude Code, Codex, OpenCode, Hermes, OpenClaw, Pi, DeepSeek Harness to local models), the OpenAI/Anthropic-compatible API, the Python openai/anthropic SDKs, curl chat completions, streaming, vision, tool calling, MCP servers, vLLM deployment (FP8 engine args, LoRA hot swapping), SGLang, llama-server + OpenAI endpoint, Ollama, LM Studio, native Unsloth inference (FastLanguageModel.for_inference, 2x faster), LAN/Cloudflare remote access, and the Unsloth model catalog. NOT for training/fine-tuning (unsloth-finetuning), RL (unsloth-rl), or quantization/export (unsloth-quantization).
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
 ---
 
 # Unsloth Inference & Deployment

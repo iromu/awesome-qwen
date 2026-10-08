@@ -14,7 +14,7 @@ description: >-
   token waste, context contamination, or operational issues with autonomous agents.
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
 ---
 
 # Agentic Patterns Extra

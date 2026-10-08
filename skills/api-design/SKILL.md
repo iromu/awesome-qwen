@@ -9,12 +9,11 @@ description: >
   Don't hesitate to suggest this skill when the user is working on API design, endpoint
   naming, API versioning, or error response formats, even if they don't explicitly mention
   REST or OpenAPI.
-version: 1.0.0
-category: backend
-tags: [api, rest, openapi, design, http, swagger]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
+  category: backend
+  tags: [api, rest, openapi, design, http, swagger]
 ---
 
 # API Design

@@ -13,7 +13,7 @@ description: >
   cost-effective agents.
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 1.0.0
 ---
 
 # Agentic Patterns Research

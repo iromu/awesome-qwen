@@ -5,12 +5,11 @@ description: >-
   Use when setting up trace export for Embabel Agent, Spring AI, or any OpenTelemetry-instrumented
   Java app to Langfuse or LangSmith. Trigger on: OTLP, trace export, observability, Langfuse config,
   LangSmith config, span enrichment, embabel-only mode, OpenTelemetry exporter setup, agent tracing.
-version: 2.0.0
-category: observability
-tags: [opentelemetry, langfuse, langsmith, embabel, spring-boot, tracing, otel]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 2.0.0
+  category: observability
+  tags: [opentelemetry, langfuse, langsmith, embabel, spring-boot, tracing, otel]
 ---
 
 # OpenTelemetry Exporter for Embabel

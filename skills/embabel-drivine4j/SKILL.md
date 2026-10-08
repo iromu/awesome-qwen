@@ -12,12 +12,11 @@ description: >-
   or drivine4j-codegen-java (APT). Also trigger on mentions of Drivine4j, org.drivine,
   Cypher in Java or Kotlin, graph database client, DatabaseType, HNSW vector index,
   full-text index, or keyset pagination.
-version: 0.0.81
-category: development
-tags: [kotlin, java, graph-database, neo4j, cypher, drivine4j, embabel]
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-
+  version: 0.0.81
+  category: development
+  tags: [kotlin, java, graph-database, neo4j, cypher, drivine4j, embabel]
 ---
 
 # Drivine4j -- Type-Safe Graph Database Client
