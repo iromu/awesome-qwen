@@ -332,7 +332,7 @@ void shouldTestCompleteFluentApiChain() {
 
 Integration testing exercises complete agent workflows with real or mock external services while still avoiding actual LLM calls for predictability and speed.
 
-Embabel integration testing is built on top of [Spring's integration testing support](https://docs.spring.io/spring-framework/reference/testing/integration.html), allowing you to work with real databases. Spring's integration with [Testcontainers](https://docs.spring.io/spring-boot/reference/testing/testcontainers.html) is particularly useful.
+Embabel integration testing is built on top of [Spring's integration testing support](https://docs.spring.io/spring-framework/references/testing/integration.html), allowing you to work with real databases. Spring's integration with [Testcontainers](https://docs.spring.io/spring-boot/references/testing/testcontainers.html) is particularly useful.
 
 ### Running the Repository Integration Test Suite
 
@@ -468,4 +468,4 @@ verifyCreateObjectMatching(
 10. **Building Gen AI applications is no different from building other software** -- test from the outset, not as an afterthought.
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/testing`*
+*Source: Embabel Agent v1.5.1 documentation — `references/testing`*

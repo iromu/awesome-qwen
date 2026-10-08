@@ -1,13 +1,13 @@
 # SkillSpector Security Report
 
 **Skill:** security-audit  
-**Scanned:** 2026-10-07 03:54:56 UTC  
+**Scanned:** 2026-10-08 04:57:09 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 79/100 |
+| Score | 66/100 |
 | Severity | HIGH |
 | Recommendation | DO NOT INSTALL |
 
@@ -15,21 +15,10 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 208 | No |
+| `SKILL.md` | markdown | 218 | No |
 | `references/language-checklists.md` | markdown | 187 | No |
 
 ## Issues (9)
-
-### 🔴 HIGH: SQP-2
-
-**Location:** `SKILL.md:93–120`  
-**Confidence:** 70%  
-
-**Message:** Several recommended commands transmit the user's proprietary source tree and dependency manifests to third-party cloud services by default: `semgrep --config=auto` downloads and executes remote rule packs and can upload analysis context; `snyk code test` (Snyk Code) uploads source code to Snyk's cloud for AST analysis; `sonar-scanner` and `cxscan --source .` exfiltrate the full source tree to their respective servers. The skill presents these as simple one-liner commands with no disclosure that code leaves the local environment, no data-handling caveat, and no confirmation step. If an agent executes these verbatim against a client's codebase, confidential source code, embedded secrets, and internal architecture could be disclosed to external vendors — a real confidentiality/compliance risk (GDPR, HIPAA, SOC 2, ITAR, client NDAs) that is invisible to the operator.
-
-**Remediation:** Add an explicit data-handling warning before these commands: note that Snyk Code, Semgrep (config=auto/cloud rules), SonarCloud, and Checkmarx SaaS transmit source code to third-party services and require a data-processing agreement and explicit operator consent before use on proprietary code. Prefer local/offline-first defaults (semgrep --config=p/default with --disable-version-check and --metrics=off, semgrep --config=local, trivy/gosec/bandit which run locally) and gate any cloud-upload scanner behind an explicit confirmation step. Also add --metrics=off / --disable-version-check to semgrep examples to prevent telemetry and remote rule-pack download.
-
----
 
 ### 🔴 HIGH: PE3
 
@@ -64,20 +53,9 @@
 
 ---
 
-### 🟡 MEDIUM: SQP-1
-
-**Location:** `SKILL.md:8–9`  
-**Confidence:** 55%  
-
-**Message:** Broad activation clause in the description ("Don't hesitate to suggest this skill when the user is working on shipping code to production, adding third-party libraries, or setting up CI/CD security gates") plus the open-ended "or need a security checklist" makes the trigger scope ambiguous and prone to over-invocation.
-
-**Remediation:** Rewrite the description to require an explicit security intent (e.g. "Use only when the user explicitly asks for a security/vulnerability review, dependency CVE audit, or secrets scan"), and add negative examples such as "do not trigger for ordinary feature work, dependency bumps, or general CI/CD pipeline setup that is not security-focused".
-
----
-
 ### 🟡 MEDIUM: RP1
 
-**Location:** `SKILL.md:37`  
+**Location:** `SKILL.md:39`  
 **Confidence:** 70%  
 
 **Message:** MCP server referenced without pinned version: 'npx audit-ci'.
@@ -86,9 +64,20 @@
 
 ---
 
+### 🟡 MEDIUM: SDI-1
+
+**Location:** `SKILL.md:64–67`  
+**Confidence:** 72%  
+
+**Message:** The `|| true` appended to `npm audit --audit-level=high` causes the shell command to always exit with code 0, meaning the CI/CD step can NEVER fail a build regardless of vulnerability count. Presenting this under a heading labeled 'CI/CD integration' with the framing of a 'security gate' creates a false sense of security: teams may believe they have an automated security gate blocking vulnerable dependencies, when in reality the gate is purely decorative. Vulnerable dependencies with known CVEs could deploy to production unimpeded while the team believes the gate is active.
+
+**Remediation:** Remove `|| true` from the example so the step actually fails on high-severity findings (`npm audit --audit-level=high`). If a 'report-only' mode is desired during initial rollout, explicitly label it as such and recommend escalating to a blocking gate after a transition period. Use `continue-on-error: true` in GitHub Actions YAML if non-blocking behavior is intentionally desired, making the trade-off explicit.
+
+---
+
 ### 🟡 MEDIUM: RP1
 
-**Location:** `SKILL.md:65`  
+**Location:** `SKILL.md:67`  
 **Confidence:** 70%  
 
 **Message:** MCP server referenced without pinned version: 'npx @snyk/cli'.
@@ -110,12 +99,23 @@
 
 ### 🟡 MEDIUM: RP1
 
-**Location:** `SKILL.md:109`  
+**Location:** `SKILL.md:111`  
 **Confidence:** 70%  
 
 **Message:** MCP server referenced without pinned version: 'npx eslint'.
 
 **Remediation:** Pin the version: npx @scope/server@1.2.3
+
+---
+
+### 🟡 MEDIUM: SDI-1
+
+**Location:** `SKILL.md:113–114`  
+**Confidence:** 68%  
+
+**Message:** The Bandit invocation `bandit -r . -f json -s B105` skips the B105 rule (hardcoded-password detection) by default. This directly contradicts the skill's own Section 2 (Secrets Detection) and the skill's stated purpose of detecting secrets in code. Users who copy-paste this default command will have a SAST scan that systematically ignores hardcoded passwords and API keys — the exact class of finding the skill promises to catch. While B105 can produce false positives on test fixtures, making it the default skip creates a detection gap that attackers routinely exploit (hardcoded credentials are the #1 cause of cloud data breaches).
+
+**Remediation:** Remove `-s B105` from the default command. Present it as `bandit -r . -f json` and add a separate note: 'If B105 generates excessive false positives in your codebase, you may suppress it with `-s B105` after manual triage, but do not skip this check by default.' This preserves the security guarantee while acknowledging the false-positive concern.
 
 ---
 
@@ -134,8 +134,9 @@
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| reference_missing | `SKILL.md:50-50` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:119-119` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:52-52` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:121-121` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:186-186` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 

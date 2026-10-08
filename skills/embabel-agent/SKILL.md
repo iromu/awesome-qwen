@@ -16,8 +16,8 @@ Build agentic AI on the JVM with **Embabel** — a Spring-based framework for au
 1. Confirm the task belongs on Embabel at all — check "When NOT to Use Embabel" first (plain Spring AI apps, non-planner chatbots, observability config → other skills).
 2. Identify the framework version you're writing against (this guide targets v1.5.1); "New in v1.5.1" lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
 3. For a new agent, follow "Getting Started" → "Agent Authoring" → "Tools"; consult "Domain Objects" for state modeling, "Planning Algorithms"/"Execution Modes"/"States with @State" for multi-step flows, and "DSL Builders (Kotlin/Java)" when the annotations-only style doesn't fit.
-4. For specific APIs — chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `reference/`.
-5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing code, and never assert an API from memory — if a symbol isn't named here or in `reference/`, treat it as unverified.
+4. For specific APIs — chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `references/`.
+5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing code, and never assert an API from memory — if a symbol isn't named here or in `references/`, treat it as unverified.
 
 ## Output Quality
 
@@ -75,22 +75,22 @@ Embabel release binaries are published to **Maven Central** — no snapshot repo
 | MiniMax | `embabel-agent-starter-minimax` | `MINIMAX_API_KEY` |
 | BYOK (user-supplied keys) | `embabel-agent-starter-byok` (Incubating) | _(runtime)_ |
 
-> **Z.ai:** Now uses native `spring-ai-zhipuai` client (not OpenAI-compatible). Supports GLM 5.2, native reasoning/thinking, temperature clamping `(0.0, 1.0]`. See `reference/zai.md`.
+> **Z.ai:** Now uses native `spring-ai-zhipuai` client (not OpenAI-compatible). Supports GLM 5.2, native reasoning/thinking, temperature clamping `(0.0, 1.0]`. See `references/zai.md`.
 >
-> **DashScope:** Alibaba Cloud Qwen 3.7 family (Max/Plus/Flash). OpenAI-compatible with parameter clamping. See `reference/dashscope.md`.
+> **DashScope:** Alibaba Cloud Qwen 3.7 family (Max/Plus/Flash). OpenAI-compatible with parameter clamping. See `references/dashscope.md`.
 >
-> **Atlas Cloud:** OpenAI-compatible endpoint for BYOK deployments — built via `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `reference/customizing.md`.
+> **Atlas Cloud:** OpenAI-compatible endpoint for BYOK deployments — built via `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `references/customizing.md`.
 
-See `reference/configuration.md` for full provider config details.
+See `references/configuration.md` for full provider config details.
 
 ## New in v1.5.1
 
-- **Roles across providers** — `embabel.models.roles` gives each role a provider dimension (BYOK, failover). `RoleResolver` beans decide per user; `ModelSelectionContextHolder` carries the user context across threads. Unsatisfiable roles throw `NoSuitableModelException` — never a silent fallback. See `reference/llm-integration.md`, `reference/configuration.md`.
-- **Embedding-based skill selection** — `EmbeddingSkillSelector` picks up to 2 skills by embedding similarity (frontmatter `metadata: activation: embedding`, default threshold 0.30, fail-open). See `reference/agent-skills.md`.
-- **Atlas Cloud** — built-in OpenAI-compatible factory: `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `reference/customizing.md`.
-- **Streaming scalar types** — `StringResult` wrapper for streaming plain-text scalars. See `reference/streaming.md`.
-- **Thinking tag control** — `Thinking.withIncludedTags(...)` / `withExcludedTags(...)`. See `reference/thinking.md`.
-- **Z.ai native provider** — first-class `embabel-agent-starter-zai` (GLM family, native thinking). See `reference/zai.md`.
+- **Roles across providers** — `embabel.models.roles` gives each role a provider dimension (BYOK, failover). `RoleResolver` beans decide per user; `ModelSelectionContextHolder` carries the user context across threads. Unsatisfiable roles throw `NoSuitableModelException` — never a silent fallback. See `references/llm-integration.md`, `references/configuration.md`.
+- **Embedding-based skill selection** — `EmbeddingSkillSelector` picks up to 2 skills by embedding similarity (frontmatter `metadata: activation: embedding`, default threshold 0.30, fail-open). See `references/agent-skills.md`.
+- **Atlas Cloud** — built-in OpenAI-compatible factory: `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `references/customizing.md`.
+- **Streaming scalar types** — `StringResult` wrapper for streaming plain-text scalars. See `references/streaming.md`.
+- **Thinking tag control** — `Thinking.withIncludedTags(...)` / `withExcludedTags(...)`. See `references/thinking.md`.
+- **Z.ai native provider** — first-class `embabel-agent-starter-zai` (GLM family, native thinking). See `references/zai.md`.
 
 ## Agent Authoring
 
@@ -122,13 +122,13 @@ Use when you want actions but not a full agent. Useful with Utility AI planner.
 
 Annotate with `@Export(remote = true)` on goals to auto-publish them as MCP tools.
 
-> **@Action key attributes:** `pre`/`post` conditions, `canRerun`, `readOnly`, `clearBlackboard`, `cost`/`value`, `outputBinding`, `trigger`. See `reference/annotations.md` for full details.
+> **@Action key attributes:** `pre`/`post` conditions, `canRerun`, `readOnly`, `clearBlackboard`, `cost`/`value`, `outputBinding`, `trigger`. See `references/annotations.md` for full details.
 
 ## Domain Objects
 
 Domain objects carry both data and behavior — they are not anemic DTOs. Expose methods to LLMs with `@Tool` (Spring AI) or `@LlmTool` (Embabel). Unannotated methods are **never** exposed.
 
-See `reference/domain.md` for DICE best practices.
+See `references/domain.md` for DICE best practices.
 
 ## Tools
 
@@ -141,11 +141,11 @@ See `reference/domain.md` for DICE best practices.
 - **Subagent** — Let the LLM invoke other agents as tools (`Subagent.ofClass(...).consuming(...)`)
 - **Agentic Tools** — SimpleAgenticTool, PlaybookTool, StateMachineTool
 - **Tool Groups & Chaining** — Configure in YAML or `@Configuration`; use `withToolGroup()` and `withToolChainingFrom(Class)`
-- **UtilityInvocation** — Lightweight utility workflows without `@Agent` (see `reference/planners.md`)
+- **UtilityInvocation** — Lightweight utility workflows without `@Agent` (see `references/planners.md`)
 
-See `reference/tools.md` for full details.
+See `references/tools.md` for full details.
 
-> **IDE:** The Embabel Agent IntelliJ plugin (ID `31142`) suppresses false "never used" warnings on `@Action`/`@Condition`/`@Cost` methods. See `reference/tooling.md`.
+> **IDE:** The Embabel Agent IntelliJ plugin (ID `31142`) suppresses false "never used" warnings on `@Action`/`@Condition`/`@Cost` methods. See `references/tooling.md`.
 
 ## Planning Algorithms
 
@@ -158,7 +158,7 @@ See `reference/tools.md` for full details.
 
 Set via `@Agent(planner = PlannerType.XXX)`. Choosing: Well-defined goals → GOAP. Deterministic → GOAP or Hybrid. Event-driven → Utility. LLM orchestration → Supervisor.
 
-See `reference/planners.md` for detailed comparison.
+See `references/planners.md` for detailed comparison.
 
 ## States with @State
 
@@ -170,13 +170,13 @@ Annotate classes with `@State` to trigger state transitions. Previous state obje
 - Use Java records or Kotlin top-level classes for state types
 - `@State` annotation is inherited through class hierarchy
 
-See `reference/states.md` for detailed state patterns, inheritance, WaitFor, and parent state interface.
+See `references/states.md` for detailed state patterns, inheritance, WaitFor, and parent state interface.
 
 ## DSL Builders (Kotlin/Java)
 
 Use DSL builders (`SimpleAgentBuilder`, `ScatterGatherBuilder`, `ConsensusBuilder`, `RepeatUntil`, `RepeatUntilAcceptable`) for atomic workflows with multiple steps. Register with Spring via `@Bean` method returning `Agent`.
 
-See `reference/dsl.md` for all builder types.
+See `references/dsl.md` for all builder types.
 
 ## Execution Modes
 
@@ -191,7 +191,7 @@ Set: `embabel.agent.platform.process-type: CONCURRENT`
 
 **Autonomy:** Closed (LLM picks one agent) vs Open (LLM picks goal, assembles from all actions).
 
-See `reference/invoking.md` for confidence thresholds, ProcessOptions, and programmatic invocation.
+See `references/invoking.md` for confidence thresholds, ProcessOptions, and programmatic invocation.
 
 ## Chatbots
 
@@ -229,13 +229,13 @@ public class ChatbotActions {
 }
 ```
 
-For dynamic costs (`@Cost`/`costMethod`), context IDs (pre-populate the session blackboard from a named context for stateful conversations across restarts), and conversation storage (`embabel.agent.platform.conversation-store: STORED`), see `reference/chatbots.md`.
+For dynamic costs (`@Cost`/`costMethod`), context IDs (pre-populate the session blackboard from a named context for stateful conversations across restarts), and conversation storage (`embabel.agent.platform.conversation-store: STORED`), see `references/chatbots.md`.
 
 ### Goals in Chatbots
 
 Typically, chatbot agents **do not need a goal** — the process waits indefinitely. Define a goal only for transactional conversations (e.g., completing a booking).
 
-See `reference/chatbots.md` for full chatbot patterns.
+See `references/chatbots.md` for full chatbot patterns.
 
 ## RAG (Retrieval-Augmented Generation)
 
@@ -255,7 +255,7 @@ LlmReference ragRef = LlmReference.builder()
     .build();
 ```
 
-See `reference/rag.md` for full RAG architecture.
+See `references/rag.md` for full RAG architecture.
 
 ## MCP Server Publishing
 
@@ -280,7 +280,7 @@ For clients requiring Streamable HTTP, use the `mcpo` proxy to bridge SSE:
 uvx mcpo --port 8000 --server-type sse -- http://localhost:8080/sse
 ```
 
-See `reference/integrations.md` for MCP server/client, security, observability, and A2A.
+See `references/integrations.md` for MCP server/client, security, observability, and A2A.
 
 ## Testing
 
@@ -288,7 +288,7 @@ See `reference/integrations.md` for MCP server/client, security, observability, 
 - **Integration tests:** Extend `EmbabelMockitoIntegrationTest`, use `whenCreateObject()` and `verifyCreateObjectMatching()`
 - **Always use `.withId("...")`** on LLM calls for traceability
 
-See `reference/testing.md` for more patterns.
+See `references/testing.md` for more patterns.
 
 ## Deep Dives
 
@@ -296,23 +296,23 @@ For topics not covered in detail above, consult the reference files:
 
 | Topic | Reference |
 |-------|-----------|
-| LLM options, caching, native structured output, custom LLM/EmbeddingService | `reference/llm-integration.md` |
-| AgentProcess lifecycle, blackboard, planning loop | `reference/flow.md` |
-| Core types (`LlmOptions`, `PromptRunner`, `AgentImage`) | `reference/types.md` |
-| Structured prompts (`Persona`, `RoleGoalBackstory`, LlmReference providers) | `reference/structured-prompts.md` |
-| Interceptors & transformers | `reference/interceptors.md` |
-| Thinking, guardrails, cost tracking, streaming | `reference/thinking.md`, `reference/guardrails.md`, `reference/cost-tracking.md`, `reference/streaming.md` |
-| Termination, error handling | `reference/termination.md`, `reference/error-handling.md` |
-| Agent skills, API vs SPI | `reference/agent-skills.md`, `reference/api-spi.md` |
-| DashScope provider (Alibaba Qwen) | `reference/dashscope.md` |
-| Z.ai provider (Zhipu GLM, native client) | `reference/zai.md` |
-| Tooling (IntelliJ IDEA plugin) | `reference/tooling.md` |
+| LLM options, caching, native structured output, custom LLM/EmbeddingService | `references/llm-integration.md` |
+| AgentProcess lifecycle, blackboard, planning loop | `references/flow.md` |
+| Core types (`LlmOptions`, `PromptRunner`, `AgentImage`) | `references/types.md` |
+| Structured prompts (`Persona`, `RoleGoalBackstory`, LlmReference providers) | `references/structured-prompts.md` |
+| Interceptors & transformers | `references/interceptors.md` |
+| Thinking, guardrails, cost tracking, streaming | `references/thinking.md`, `references/guardrails.md`, `references/cost-tracking.md`, `references/streaming.md` |
+| Termination, error handling | `references/termination.md`, `references/error-handling.md` |
+| Agent skills, API vs SPI | `references/agent-skills.md`, `references/api-spi.md` |
+| DashScope provider (Alibaba Qwen) | `references/dashscope.md` |
+| Z.ai provider (Zhipu GLM, native client) | `references/zai.md` |
+| Tooling (IntelliJ IDEA plugin) | `references/tooling.md` |
 
 > **Rule:** Application code uses only `com.embabel.agent.api.*`. SPI (`com.embabel.agent.spi.*`) is for framework extension only and is subject to change.
 
 ## Configuration
 
-Properties live under `embabel:` (models, planner, execution mode, logging, tool loop). See `reference/configuration.md` for the full property reference.
+Properties live under `embabel:` (models, planner, execution mode, logging, tool loop). See `references/configuration.md` for the full property reference.
 
 ## Threading & Async Mode
 
@@ -323,7 +323,7 @@ Enable virtual threads: `spring.threads.virtual.enabled=true`.
 | `threading.override` | `false` | Flip threading model (virtual↔platform) |
 | `threading.shared` | `false` | Share app's executor when models match |
 
-See `reference/async-mode.md` for full behavior matrix.
+See `references/async-mode.md` for full behavior matrix.
 
 ## Error Handling
 
@@ -332,9 +332,9 @@ See `reference/async-mode.md` for full behavior matrix.
 - **Guardrails:** Catch `GuardRailViolationException` for `CRITICAL` blocks
 - **Cost caps:** Use `EarlyTerminationPolicy` for process-level termination
 - **Validation:** Catch `InvalidLlmReturnTypeException` when JSR-380 validation fails after retry
-- **Empty responses:** Configure `toolloop.empty-response.max-retries` for weak models (see `reference/llm-integration.md`)
+- **Empty responses:** Configure `toolloop.empty-response.max-retries` for weak models (see `references/llm-integration.md`)
 
-See `reference/error-handling.md` and `reference/flow.md` for full patterns.
+See `references/error-handling.md` and `references/flow.md` for full patterns.
 
 ## Troubleshooting
 
@@ -347,11 +347,11 @@ See `reference/error-handling.md` and `reference/flow.md` for full patterns.
 | LLM calls failing | Check API keys, model names, timeouts, network connectivity |
 | High costs | Limit `max-iterations`, use cheaper models, enable `BudgetGuardRail` |
 
-See `reference/troubleshooting.md` for detailed steps.
+See `references/troubleshooting.md` for detailed steps.
 
 ## Migration
 
-Migrating from Python AI frameworks? See `reference/migrating.md` for guidance on migrating from CrewAI, Pydantic AI, and LangGraph.
+Migrating from Python AI frameworks? See `references/migrating.md` for guidance on migrating from CrewAI, Pydantic AI, and LangGraph.
 
 ## Examples
 
@@ -363,7 +363,7 @@ Migrating from Python AI frameworks? See `reference/migrating.md` for guidance o
 
 ## Common Pitfalls
 
-A quick checklist of the most frequent issues. See `reference/common-pitfalls.md` for detailed Problem/Impact/Fix treatment.
+A quick checklist of the most frequent issues. See `references/common-pitfalls.md` for detailed Problem/Impact/Fix treatment.
 
 1. **Missing `@Agent`/`@EmbabelComponent`** — Component won't be discovered by Spring
 2. **Missing `@AchievesGoal`** — Planner can't determine completion (uses `@AchievesGoal`, not `@Goal`)
@@ -404,4 +404,4 @@ Explore the [embabel-agent-examples](https://github.com/embabel/embabel-agent-ex
 
 Use multi-stage Dockerfiles and Kubernetes manifests for production. Always use secrets management for API keys and enable guardrails for safety/compliance.
 
-See `reference/production-deployment.md` for Docker, K8s, health checks, security, and production checklist.
+See `references/production-deployment.md` for Docker, K8s, health checks, security, and production checklist.

@@ -1,13 +1,13 @@
 # SkillSpector Security Report
 
 **Skill:** json-formatting  
-**Scanned:** 2026-10-07 03:38:10 UTC  
+**Scanned:** 2026-10-08 04:38:59 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 4/100 |
+| Score | 2/100 |
 | Severity | LOW |
 | Recommendation | CAUTION |
 
@@ -15,29 +15,18 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 450 | No |
+| `SKILL.md` | markdown | 460 | No |
 
-## Issues (2)
+## Issues (1)
 
 ### 🟢 LOW: SQP-1
 
-**Location:** `SKILL.md:3–21`  
-**Confidence:** 50%  
+**Location:** `SKILL.md:3–23`  
+**Confidence:** 55%  
 
-**Message:** Overly broad activation scope in the skill description: it fires on "any request involving JSON formatting ... conversion ... schema generation" and spans ten distinct operations (format, minify, validate, transform, convert, schema, diff, merge, patch, query), including conversion to/from YAML, XML, CSV and TOML and generic "extract nested values"/"sort"/"reformat" actions, with no exclusion conditions or negative examples.
+**Message:** Overly broad activation scope in the skill description: "Trigger on any request involving JSON formatting, JSON beautification, JSON validation, JSON-to-other-format conversion, or JSON schema generation" (and the follow-on "any request to compact, indent, sort, or reformat JSON data") has no upper bound and no exclusion conditions.
 
-**Remediation:** Narrow the trigger clause in the description (L3) to "requests whose input or output artifact is a JSON document" and add an explicit exclusions list, e.g. "Do not use for YAML-only/XML-only/CSV-only file editing, database queries, or general file conversion where JSON is not involved." Mirror those exclusions as negative examples at the end of the "When to Use" section (L11-L21).
-
----
-
-### 🟢 LOW: SQP-2
-
-**Location:** `SKILL.md:325–361`  
-**Confidence:** 45%  
-
-**Message:** Steps 8-10 (Diff/Compare, Merge, Patch) describe operations that mutate or delete user data — deep-merge silently overwrites colliding keys (port 3000 -> 8080), JSON Patch includes a destructive `remove` op, and Merge Patch deletes keys via `null` — yet the skill gives no warning that these are irreversible and no instruction to keep or verify against the original file before overwriting it.
-
-**Remediation:** Add a caveat to Step 9/Step 10 (and a matching Pitfalls bullet) stating that deep-merge overwrites colliding keys and that `remove` ops / `null` values delete data permanently, and instruct the agent to write the result to a new file (or show the diff and obtain user confirmation) before modifying the user's original JSON document.
+**Remediation:** Tighten the description and the "When to Use" section: replace "Trigger on any request involving ..." with an explicit, bounded list of trigger phrases, and add a "When NOT to use" / exclusion list (e.g. non-JSON inputs, whole-file code generation, database/CSV ETL pipelines) so the skill does not fire on generic "sort/reformat/convert" requests that are not JSON-formatting tasks.
 
 ---
 
@@ -57,16 +46,17 @@
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
 | static_parse_limit | `SKILL.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
-| reference_missing | `SKILL.md:51-51` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:81-81` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:110-110` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:139-139` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:180-180` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:184-184` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:203-203` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:237-237` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:241-241` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:428-428` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:53-53` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:83-83` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:112-112` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:141-141` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:182-182` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:186-186` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:205-205` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:239-239` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:243-243` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:397-397` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:438-438` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 

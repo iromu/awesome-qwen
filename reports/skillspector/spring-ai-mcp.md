@@ -1,13 +1,13 @@
 # SkillSpector Security Report
 
 **Skill:** spring-ai-mcp  
-**Scanned:** 2026-10-07 04:23:04 UTC  
+**Scanned:** 2026-10-08 05:24:59 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 3/100 |
+| Score | 11/100 |
 | Severity | LOW |
 | Recommendation | CAUTION |
 
@@ -15,7 +15,7 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 476 | No |
+| `SKILL.md` | markdown | 495 | No |
 | `references/configuration.md` | markdown | 139 | No |
 | `references/mcp-annotations.md` | markdown | 290 | No |
 | `references/mcp-aot-native.md` | markdown | 121 | No |
@@ -25,16 +25,38 @@
 | `references/migration.md` | markdown | 92 | No |
 | `references/security-and-testing.md` | markdown | 394 | No |
 
-## Issues (1)
+## Issues (3)
+
+### 🟡 MEDIUM: SQP-2
+
+**Location:** `SKILL.md:194–198`  
+**Confidence:** 55%  
+
+**Message:** MCP Resource example exposes arbitrary application configuration (`config://{key}` -> `configData.get(key)`) to any connected MCP client, with no warning that resources are readable by every client that completes the handshake, nor any caveat about secret/credential keys.
+
+**Remediation:** Add an explicit warning next to the Resource example: MCP resource URIs are readable by any client that can reach the endpoint, so never template a URI over arbitrary config/secret namespaces; restrict `@McpResource` to non-sensitive, allow-listed keys and require authentication/authorization on the resource read path (see the `mcp-server-security` guidance).
+
+---
+
+### 🟡 MEDIUM: SQP-2
+
+**Location:** `SKILL.md:261–291`  
+**Confidence:** 50%  
+
+**Message:** Client customization and handler examples enable `spec.roots(roots)`, `spec.sampling(...)` forwarding to a local LLM, and a `@McpLogging` handler that prints server-supplied data, with no warning about the data-egress/cost/trust-boundary implications of granting a remote MCP server those capabilities.
+
+**Remediation:** Document that `roots(...)`, `sampling(...)` and `loggingConsumer(...)` grant the remote MCP server capabilities against the local environment, and advise users to (a) restrict `roots` to the narrowest paths, (b) gate or reject server-initiated sampling requests (or require explicit user opt-in per request) since they consume model quota and can exfiltrate context, and (c) avoid printing untrusted server-supplied `notification.data()` verbatim.
+
+---
 
 ### 🟢 LOW: SDI-4
 
-**Location:** `SKILL.md:164–171`  
-**Confidence:** 78%  
+**Location:** `SKILL.md:176–182`  
+**Confidence:** 62%  
 
-**Message:** The `RestrictedToolFilter` example is labelled "Block sensitive tools for unauthenticated connections", but the code never inspects authentication, authorization, or principal identity. `connectionInfo.initializeResult().capabilities().tools()` is only the client's declared *tools capability* from the MCP `initialize` handshake — a protocol feature flag that every normal MCP client sets to true in order to use tools at all. So the branch that hides `admin-*` tools is taken only for clients that cannot call tools anyway, while any client that *does* declare the tools capability falls through to `return true` and receives every tool, including the `admin-` prefixed ones. The filter is therefore a fail-open no-op that reads like an access-control check, which is exactly the kind of code that gets copy-pasted into a production MCP server and trusted as "authorization is handled". The danger is not the example itself but the false assurance it creates: a developer wiring an MCP server to internal services (file/config read tools, admin tools) would believe an authorization gate exists, while in practice any anonymous client that negotiates the tools capability can enumerate and invoke `admin-*` tools.
+**Message:** The example is functionally broken as a security control, not merely mislabelled. `connectionInfo.initializeResult().capabilities().tools()` reports a protocol *capability* flag from the initialize handshake, not an authentication or authorization state. Any client that actually calls tools declares/uses the tools capability, so `!capabilities().tools()` evaluates false for exactly the clients that matter, and the method falls through to `return true` — every `admin-` tool is exposed. A developer who copies this block verbatim ships an authorization filter that silently permits all traffic while appearing to gate on authentication, which is worse than having no filter because it creates a false sense of security and will pass casual review.
 
-**Remediation:** 1) Do not present capability-flag checks as an authentication/authorization mechanism — either delete the example or relabel it as "example only: filters by protocol capability, NOT by identity". 2) Base tool filtering on real identity/authorization data: resolve the caller from the authenticated session (e.g. `SecurityContextHolder`/JWT subject and granted authorities from the Spring Security filter chain, or a per-connection `McpTransportContext` carrying the authenticated principal) and expose an allow/deny decision for `admin-*` tools to that source. 3) Enforce authorization at more than one layer: transport-level `SecurityFilterChain` (`anyRequest().authenticated()` plus role checks on the `/mcp` endpoint) *and* tool-level checks, since `McpToolFilter` only hides tool metadata and does not stop direct tool invocation once the tool is registered. 4) Add a test that asserts an unauthenticated / low-privilege connection cannot invoke `admin-*` tools, so the filter's effectiveness is verified rather than assumed. 5) In the accompanying `references/security-and-testing.md`, state explicitly that `McpToolFilter` is an observability/UX filter and must not be relied on as the authorization boundary.
+**Remediation:** Rewrite the example so the gate is based on real identity/authority: derive the principal from `McpConnectionInfo`/transport context (e.g. the OAuth2 `Authentication` or API key attached to the session/transport context) and check an authority such as `ROLE_ADMIN` before exposing `admin-` tools. State explicitly in the surrounding prose that MCP tool filtering is an *application-level* authorisation seam and is not a substitute for transport authentication, and add a test that asserts an unauthenticated/low-privilege connection cannot list or call `admin-*` tools.
 
 ---
 
@@ -53,21 +75,21 @@
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| reference_missing | `SKILL.md:25-25` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:26-26` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:49-49` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:59-59` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:81-81` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:114-114` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:115-115` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:118-118` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:247-247` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:384-384` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:385-385` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:386-386` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:387-387` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:390-390` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:447-447` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:28-28` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:29-29` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:60-60` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:70-70` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:92-92` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:125-125` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:126-126` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:129-129` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:258-258` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:395-395` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:396-396` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:397-397` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:398-398` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:401-401` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:458-458` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 

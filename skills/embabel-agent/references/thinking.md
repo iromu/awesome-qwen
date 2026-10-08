@@ -111,4 +111,4 @@ Under the hood, provider integrations translate thinking options to provider-spe
 Some providers expose reasoning on the assistant message itself; others expose it through generation metadata. As a result, the presence and shape of extracted thinking blocks may vary by provider and Spring AI integration version.
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/thinking`*
+*Source: Embabel Agent v1.5.1 documentation — `references/thinking`*

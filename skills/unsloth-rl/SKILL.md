@@ -33,7 +33,7 @@ optimization), driven by `FastLanguageModel` / `FastVisionModel` from `unsloth`.
 1. Confirm the task belongs here — SFT/LoRA training goes to `unsloth-finetuning`, export to `unsloth-quantization`, serving to `unsloth-inference` (see "When NOT to Use").
 2. Pick the algorithm in "Choosing a Method" — GRPO/GSPO/DAPO/Dr.GRPO/BNPO for on-policy RL, DPO/ORPO/KTO for preference data.
 3. Design the reward in "Reward Function Design" before anything else; RL runs succeed or fail on the reward function, so treat that section as mandatory reading.
-4. Follow "Core Workflow: GRPO" for a full run; look up arguments in "Key APIs" and the matching `reference/*.md` file (`grpo-basics.md`, `grpo-advanced.md`, `preference.md`, `agents-rl.md`).
+4. Follow "Core Workflow: GRPO" for a full run; look up arguments in "Key APIs" and the matching `references/*.md` file (`grpo-basics.md`, `grpo-advanced.md`, `preference.md`, `agents-rl.md`).
 5. Check "Pitfalls" before running.
 
 ## When to Use
@@ -70,7 +70,7 @@ All methods below run on Unsloth + TRL. Pick by what signal you have about "good
 | **DAPO / Dr.GRPO / BNPO** | `GRPOTrainer` (`loss_type="dapo"/"dr_grpo"/"bnpo"`) | same as GRPO | Loss-normalization variants: `dapo` (default) normalizes by active tokens in the global batch; `dr_grpo` by a global constant; `bnpo` by active tokens in the local batch; `grpo` (length-normalized, has length bias — not recommended). |
 | **DPO** | `DPOTrainer` | chosen/rejected preference pairs | You have explicit preference pairs (e.g. UltraFeedback-style data) and want direct preference optimization without a reward model. |
 | **ORPO** | `ORPOTrainer` | prompt + chosen + rejected | Preference alignment that also learns the SFT objective in one step (odds-ratio penalty on rejected, likelihood on chosen); no separate reference model needed. |
-| **KTO** | `KTOTrainer` (see `reference/preference.md`) | single "good/bad" label per response | You only have binary labels, not pairs. |
+| **KTO** | `KTOTrainer` (see `references/preference.md`) | single "good/bad" label per response | You only have binary labels, not pairs. |
 
 Quick decision path: *Can you write a verifier that scores a fresh generation?*
 Yes → GRPO (or GSPO for sequence-level rewards). *Do you have preference pairs?*
@@ -85,7 +85,7 @@ Canonical code below is from the official `Llama3.1_(8B)-GRPO` notebook.
    notebooks pin `transformers==4.56.2` and `trl==0.22.2` (vision notebooks use
    `transformers==4.57.0` + `trl==0.26.2`) — keep those pins when reproducing.
    Set `UNSLOTH_VLLM_STANDBY=1` before any Unsloth import to enable the memory
-   efficient Standby feature (see `reference/vram-and-hardware.md`).
+   efficient Standby feature (see `references/vram-and-hardware.md`).
 
 ```python
 %%capture
@@ -167,7 +167,7 @@ dataset = get_gsm8k_questions()
 4. **Write reward functions.** Each is a Python function returning a list of floats,
    one per completion. Use a *rubric*: several small verifiable rewards (format,
    integer-ness, correctness) rather than one all-consuming score. See
-   `reference/reward-functions.md` for the full GSM8K set and design guidance.
+   `references/reward-functions.md` for the full GSM8K set and design guidance.
 
 ```python
 def correctness_reward_func(prompts, completions, answer, **kwargs) -> list[float]:
@@ -231,13 +231,13 @@ trainer.train()
    `learning_rate` (~5e-6 is the notebook default), `use_vllm`/`fast_inference`
    (vLLM generation; `vllm_config` / `vllm_sampling_params` to tune sampling), and
    `loss_type` (`"dapo"` default, `"grpo"`, `"dr_grpo"`, `"bnpo"`, `"gspo"`).
-   Full deep dive in `reference/grpo-advanced.md`.
+   Full deep dive in `references/grpo-advanced.md`.
 
 6. **Watch the reward curve.** Expect 0 reward for the first ~100 steps and wait
    for at least **300 steps** before judging — reward vs step should trend up.
    Unsloth logs per-reward-function and aggregated reward columns built in
    (no wandb required). If reward never rises after 300+ steps, the reward
-   function is usually the problem (check `reference/reward-hacking.md` and the
+   function is usually the problem (check `references/reward-hacking.md` and the
    Advanced GRPO notebooks, which use stronger rubrics).
 
 7. **Save and evaluate.** `model.save_lora("grpo_saved_lora")`, then load it back
@@ -286,7 +286,7 @@ output = model.fast_generate(
 - Poorly designed rewards degrade performance — test them on actual model
   generations before training.
 
-Full code: `reference/reward-functions.md`.
+Full code: `references/reward-functions.md`.
 
 ## Key APIs
 
@@ -298,7 +298,7 @@ Full code: `reference/reward-functions.md`.
 | `GRPOConfig(...)` | `trl` | `num_generations` (>2), `max_prompt_length`, `max_completion_length`, `learning_rate`, `loss_type`, `epsilon`/`epsilon_high`/`delta`, `importance_sampling_level`, `scale_rewards`, `mask_truncated_completions`, `vllm_config`/`vllm_sampling_params`, `temperature`, `seed`. |
 | `DPOTrainer(model, ref_model=None, args=DPOConfig(...), beta, train_dataset, tokenizer, max_length, max_prompt_length)` | `trl` | Preference optimization on chosen/rejected pairs. **Call `PatchDPOTrainer()` from `unsloth` first.** |
 | `ORPOTrainer(model, train_dataset, tokenizer, args=ORPOConfig(...))` | `trl` | Single-step odds-ratio preference training (prompt/chosen/rejected columns). |
-| `KTOTrainer` | `trl` | Binary-label preference training (see `reference/preference.md`). |
+| `KTOTrainer` | `trl` | Binary-label preference training (see `references/preference.md`). |
 | `model.save_lora(path)` / `model.load_lora(path)` | `unsloth` | Save/load the RL LoRA for evaluation. |
 | `model.fast_generate(prompt, sampling_params, lora_request)` | `unsloth` | vLLM-powered inference for testing. |
 
@@ -306,29 +306,29 @@ Full code: `reference/reward-functions.md`.
 
 | Topic | File |
 |---|---|
-| RLHF → PPO → GRPO → RLVR history, group relative advantage, how GRPO trains | `reference/grpo-basics.md` |
-| Reward function design: full GSM8K + Advanced notebook code, rubrics | `reference/reward-functions.md` |
-| GRPOConfig deep dive: batching, generations, loss types, clipping, vLLM | `reference/grpo-advanced.md` |
-| DPO / ORPO / KTO walkthroughs with trainer code | `reference/preference.md` |
-| Vision RL: FastVisionModel GRPO/GSPO (Qwen3-VL) | `reference/vision-rl.md` |
-| Agent RL: 2048 game env, custom rewards, ART/RULER | `reference/agents-rl.md` |
-| Reward hacking: signs and counters | `reference/reward-hacking.md` |
-| VRAM rules, Standby, FP8 RL, long-context GRPO (380K/500K), hardware planning | `reference/vram-and-hardware.md` |
+| RLHF → PPO → GRPO → RLVR history, group relative advantage, how GRPO trains | `references/grpo-basics.md` |
+| Reward function design: full GSM8K + Advanced notebook code, rubrics | `references/reward-functions.md` |
+| GRPOConfig deep dive: batching, generations, loss types, clipping, vLLM | `references/grpo-advanced.md` |
+| DPO / ORPO / KTO walkthroughs with trainer code | `references/preference.md` |
+| Vision RL: FastVisionModel GRPO/GSPO (Qwen3-VL) | `references/vision-rl.md` |
+| Agent RL: 2048 game env, custom rewards, ART/RULER | `references/agents-rl.md` |
+| Reward hacking: signs and counters | `references/reward-hacking.md` |
+| VRAM rules, Standby, FP8 RL, long-context GRPO (380K/500K), hardware planning | `references/vram-and-hardware.md` |
 
 ## Examples
 
 **"Make the model explain its reasoning on math problems."** "Choosing a Method" -> GRPO family; write the verifier in "Reward Function Design" (answer equality beats free-form judging) before touching trainer args; "Core Workflow: GRPO" shows the full run.
 
-**"We have 10k chosen/rejected pairs, no reward function."** Preference branch -> DPO/ORPO/KTO via `reference/preference.md`; if the data is really plain SFT pairs, say so - preference training is the wrong tool there.
+**"We have 10k chosen/rejected pairs, no reward function."** Preference branch -> DPO/ORPO/KTO via `references/preference.md`; if the data is really plain SFT pairs, say so - preference training is the wrong tool there.
 
-**"Train an agent that calls tools inside a game."** `reference/agents-rl.md` for tool-use RL recipes and their masking caveats; "Key APIs" for the vLLM rollout-engine config that shares weight memory.
+**"Train an agent that calls tools inside a game."** `references/agents-rl.md` for tool-use RL recipes and their masking caveats; "Key APIs" for the vLLM rollout-engine config that shares weight memory.
 
 ## Pitfalls
 
 - **RL needs probability > 0.** If the base model can never produce the target
   behavior, RL never works. Start from an instruct model that partially follows
   instructions; for base models, pre-fine-tune the format first (see
-  `reference/grpo-basics.md` and the Qwen3 Base GRPO notebook).
+  `references/grpo-basics.md` and the Qwen3 Base GRPO notebook).
 - **Data size:** ~500 rows is ideal; 10 rows can work but expect weaker results.
   Reusing data across epochs is fine — more training generally helps GRPO.
 - **Be patient: 300 steps minimum** before judging; 0 reward for the first ~100
@@ -351,7 +351,7 @@ Full code: `reference/reward-functions.md`.
   current.
 - **Reward hacking:** watch for the model exploiting the verifier (importing
   numpy to dodge code tasks, caching answers, editing the timer). Counters in
-  `reference/reward-hacking.md`.
+  `references/reward-hacking.md`.
 - **gpt-oss:** vLLM does not yet support RL for it — use Unsloth's native
   inference (`fast_inference=False`), keep Flash Attention 3 OFF (wrong losses
   for attention sinks), and save with `save_method="mxfp4"` or `merged_16bit`.

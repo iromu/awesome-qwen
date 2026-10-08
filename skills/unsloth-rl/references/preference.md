@@ -12,7 +12,7 @@ Walkthroughs for preference-based alignment with Unsloth + TRL. DPO, ORPO, KTO
 | **KTO** | single good/bad label per response | no | For binary feedback without paired comparisons. |
 
 If you can instead *verify* fresh generations, prefer GRPO — see
-`reference/grpo-basics.md`.
+`references/grpo-basics.md`.
 
 ## DPO (Zephyr-7B notebook)
 

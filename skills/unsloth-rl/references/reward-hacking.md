@@ -81,7 +81,7 @@ except Exception as e:
 
 ## Wiring it into reward functions
 
-The pattern from the 2048 notebook (see `reference/agents-rl.md`):
+The pattern from the 2048 notebook (see `references/agents-rl.md`):
 
 1. `function_works` — extract the code, run `check_python_modules`, compile with
    `create_locked_down_function`; score +1.0 valid / -0.5 compile error /

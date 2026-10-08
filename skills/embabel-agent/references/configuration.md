@@ -78,7 +78,7 @@ A role reached through a user's own credential is resolved per call against that
 
 To read what a role is *declared* to mean (for a settings screen or diagnostics), use `ModelProvider.configuredOptionsForRole(role)` — it answers against the deployment's own provider, ignoring user keys and application resolvers. Use `resolveLlmOptions` when you need to know what a specific call will really do.
 
-See `reference/llm-integration.md` for `RoleResolver` beans and `CredentialEndpointResolver` for custom providers.
+See `references/llm-integration.md` for `RoleResolver` beans and `CredentialEndpointResolver` for custom providers.
 
 ## Platform Configuration
 
@@ -461,7 +461,7 @@ Separate config prefix for LLM operations that are not agent-platform specific:
 
 ## Empty Response Policy
 
-For weak models that return empty responses after tool calls, configure an `EmptyResponsePolicy` bean or use the `toolloop.empty-response` properties above (see `reference/llm-integration.md` for details).
+For weak models that return empty responses after tool calls, configure an `EmptyResponsePolicy` bean or use the `toolloop.empty-response` properties above (see `references/llm-integration.md` for details).
 
 ## Module Stability
 
@@ -478,4 +478,4 @@ Experimental modules: `embabel-agent-discord`, `embabel-agent-remote`, `embabel-
 
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/configuration`, `reference/llms`, `reference/asynch-mode`*
+*Source: Embabel Agent v1.5.1 documentation — `references/configuration`, `references/llms`, `references/asynch-mode`*

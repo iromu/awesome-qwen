@@ -275,7 +275,7 @@ function (e.g. rule: "If the answer sounds too robotic, deduct 3 points").
 ## Code-execution rewards (agents)
 
 For code/strategy generation, verify by *executing* — see
-`reference/agents-rl.md` for the 2048 game's `function_works`, `no_cheating` and
+`references/agents-rl.md` for the 2048 game's `function_works`, `no_cheating` and
 `strategy_succeeds` rewards, which use `check_python_modules` and
 `create_locked_down_function` to execute generated code safely.
 

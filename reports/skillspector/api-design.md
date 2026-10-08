@@ -1,24 +1,35 @@
 # SkillSpector Security Report
 
 **Skill:** api-design  
-**Scanned:** 2026-10-05 20:54:06 UTC  
+**Scanned:** 2026-10-08 03:42:11 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 12/100 |
-| Severity | LOW |
-| Recommendation | SAFE |
+| Score | 32/100 |
+| Severity | MEDIUM |
+| Recommendation | CAUTION |
 
 ## Components (2)
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 107 | No |
+| `SKILL.md` | markdown | 117 | No |
 | `references/openapi-templates.md` | markdown | 654 | No |
 
-## Issues (2)
+## Issues (3)
+
+### 🔴 HIGH: TM1
+
+**Location:** `SKILL.md:100`  
+**Confidence:** 80%  
+
+**Message:** Tool Parameter Abuse
+
+**Remediation:** Validate all tool parameters against an allowlist. Reject dangerous parameter values (shell=True, --force, -rf /) and use safe defaults.
+
+---
 
 ### 🟡 MEDIUM: E1
 

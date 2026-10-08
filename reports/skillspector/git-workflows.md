@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** git-workflows  
-**Scanned:** 2026-10-07 03:25:17 UTC  
+**Scanned:** 2026-10-08 04:26:18 UTC  
 
 ## Risk Assessment
 
@@ -15,7 +15,7 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 241 | No |
+| `SKILL.md` | markdown | 251 | No |
 
 ## Issues (0)
 
@@ -36,10 +36,10 @@ No security issues detected.
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| reference_missing | `SKILL.md:64-64` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:85-85` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:162-162` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:169-169` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:66-66` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:87-87` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:164-164` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:171-171` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 

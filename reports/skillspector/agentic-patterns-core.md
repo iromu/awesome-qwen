@@ -1,21 +1,22 @@
 # SkillSpector Security Report
 
 **Skill:** agentic-patterns-core  
-**Scanned:** 2026-10-05 21:34:16 UTC  
+**Scanned:** 2026-10-08 00:38:25 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 29/100 |
+| Score | 32/100 |
 | Severity | MEDIUM |
 | Recommendation | CAUTION |
 
-## Components (22)
+## Components (23)
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 194 | No |
+| `-` | other | 1 | No |
+| `SKILL.md` | markdown | 205 | No |
 | `references/advanced/01-planning.md` | markdown | 98 | No |
 | `references/advanced/02-multi-agent-collaboration.md` | markdown | 88 | No |
 | `references/advanced/03-memory-management.md` | markdown | 88 | No |
@@ -38,18 +39,7 @@
 | `references/system/04-knowledge-retrieval-rag.md` | markdown | 93 | No |
 | `references/system/05-inter-agent-communication-a2a.md` | markdown | 101 | No |
 
-## Issues (5)
-
-### 🟡 MEDIUM: SQP-1
-
-**Location:** `SKILL.md:7–12`  
-**Confidence:** 60%  
-
-**Message:** Several listed trigger terms are generic software-engineering vocabulary that overlap with everyday developer speech and could cause unintended skill activation.
-
-**Remediation:** Either (a) prefix each generic term with an agentic qualifier in the trigger list (e.g., "agent routing", "agent planning", "agent memory management", "agent exception handling") to disambiguate from non-agentic usage, or (b) add a short negative-examples clause such as "Do NOT trigger for general software engineering questions about routing, exception handling, or prioritization that do not reference AI agents, LLM workflows, or multi-agent systems."
-
----
+## Issues (9)
 
 ### 🟡 MEDIUM: MP2
 
@@ -59,6 +49,17 @@
 **Message:** Context Window Stuffing
 
 **Remediation:** Implement context-window management that detects and rejects padding or stuffing attempts. Prioritize system instructions over user-injected content.
+
+---
+
+### 🟡 MEDIUM: SQP-2
+
+**Location:** `references/advanced/04-learning-and-adaptation.md:53–91`  
+**Confidence:** 55%  
+
+**Message:** Pattern instructs persistent collection of user inputs/outputs and per-user profiling without any privacy, retention, or deletion warning
+
+**Remediation:** Add a "Privacy & Data Handling" note alongside the Cons section stating that (a) raw user inputs/outputs and feedback must be treated as potentially sensitive and minimised or redacted before logging, (b) retention should be bounded (TTL or size-capped history) with a documented purge/delete path, (c) per-user personalization profiles require explicit user opt-in and disclosure, and (d) any history-clearing / retraining step should be logged and reversible rather than a silent destructive `clear()`. Also note that feedback-driven retraining should be gated behind an evaluation/regression check to back the "Regression risks" caveat at L45.
 
 ---
 
@@ -73,14 +74,14 @@
 
 ---
 
-### 🟡 MEDIUM: SQP-1
+### 🟡 MEDIUM: SQP-2
 
-**Location:** `references/optimization/02-reasoning-techniques.md:17–22`  
-**Confidence:** 60%  
+**Location:** `references/system/01-goal-setting-and-monitoring.md:16–86`  
+**Confidence:** 55%  
 
-**Message:** The 'When to Use' activation conditions (L017–L022) are overly broad and lack negative examples or exclusion constraints. Phrases such as 'Decision making weighing alternatives systematically' (L021), 'Critical analysis needing deep examination of options' (L020), and 'Creative exploration generating diverse solutions' (L022) overlap with common everyday agent tasks and could cause unintended skill invocations on routine requests.
+**Message:** Pattern recommends autonomous self-correcting / auto-action behaviours (auto-escalation, auto-rollback, auto-reorder, "agent works independently toward objectives") with no accompanying warning about human oversight, confirmation gates, or blast-radius limits.
 
-**Remediation:** Tighten the trigger conditions to be more specific (e.g., 'Multi-step mathematical proofs', 'Strategic planning involving 3+ competing objectives with trade-off analysis'). Add a 'Do NOT use when' section with explicit exclusion examples (e.g., 'Do not activate for single-step factual lookups, simple arithmetic, or tasks solvable in one reasoning step').
+**Remediation:** Add a "Safety / Oversight" note to the Cons or Implementation section stating that threshold breaches should raise an alert for human review before an irreversible action (rollback, reorder, spend change) is executed, that all auto-actions must be logged with the triggering metric value, and that a circuit-breaker/kill-switch must exist so a mis-specified KPI cannot drive unbounded autonomous action.
 
 ---
 
@@ -95,6 +96,50 @@
 
 ---
 
+### 🟢 LOW: SQP-2
+
+**Location:** `references/advanced/05-model-context-protocol.md:53–93`  
+**Confidence:** 55%  
+
+**Message:** Pattern description and code example describe executing arbitrary external-resource calls, credential management, and per-call logging of user identity without any caution/warning section about privacy, credential handling, or data-exfiltration risk
+
+**Remediation:** Add a "Cautions / Limitations" section before or after the Implementation block that warns: (1) log calls should redact or truncate request/response payloads and credentials before persistence, (2) dynamic discovery plus role-based filtering must be paired with a default-deny resource allowlist so newly discovered resources are not auto-authorized, and (3) secrets and personally identifiable data must never travel in `params` or in `log_call` output. Also note that `access: "public"` (L66) is an unsafe default and should be documented as requiring explicit opt-in.
+
+---
+
+### 🟢 LOW: SQP-1
+
+**Location:** `references/core/04-reflection.md:14–21`  
+**Confidence:** 45%  
+
+**Message:** "When to Use" activation criteria are too broad and lack exclusion conditions — nearly any task ("quality-critical outputs", "complex reasoning tasks", "error-prone domains", "learning systems that improve over time") satisfies at least one bullet, so the pattern would trigger for virtually every request.
+
+**Remediation:** Tighten the scope: replace the generic bullets with concrete, checkable trigger conditions (e.g. "use when the deliverable is a long-form document > ~1k words, code destined for production, or a compliance/legal artefact with a named standard"), and add an explicit "Do Not Use When" list covering trivial one-shot outputs, latency/budget-constrained flows, and tasks already meeting the quality threshold on first pass.
+
+---
+
+### 🟢 LOW: SQP-1
+
+**Location:** `references/optimization/04-evaluation-and-monitoring.md:16–21`  
+**Confidence:** 40%  
+
+**Message:** The "When to Use" section (L16-L21) lists activation conditions that are too broad to bound skill invocation — e.g. "Quality assurance ensuring consistent performance" and "Continuous improvement through data-driven optimization" would match nearly any engineering task, and there are no negative examples or conditions describing when NOT to use the pattern.
+
+**Remediation:** Narrow the section to concrete, discriminable triggers (e.g. "use when a deployed agent/LLM pipeline needs runtime metric collection, drift detection, or alerting on production traffic") and add exclusion examples such as "not for one-off local scripts or pre-deployment unit-test-only work".
+
+---
+
+### 🟢 LOW: SQP-2
+
+**Location:** `references/optimization/04-evaluation-and-monitoring.md:54–85`  
+**Confidence:** 45%  
+
+**Message:** The monitoring example (L54-L85) collects per-request payload data (collect_metrics(request, response)), writes failure logs (log_failure) and emits outbound alerts (page_oncall / notify_team), but neither the pattern text nor the Cons section warns that request/response content may contain PII, PHI, or credentials that end up in logs, metric stores, and third-party alerting channels.
+
+**Remediation:** Add a "Cautions / Compliance" note next to the Implementation section instructing implementers to strip or hash PII/PHI/credentials and auth tokens before logging metrics or firing alerts, to document alert-channel routing (e.g. PagerDuty/Slack recipients) that may cross data-residency boundaries, and to set explicit log/metric retention windows.
+
+---
+
 ## Inspection Completeness
 
 | Metric | Value |
@@ -102,7 +147,7 @@
 | Execution | successful |
 | Status | complete |
 | Coverage | 100.0% |
-| Fully inspected | 22 |
+| Fully inspected | 23 |
 | Partially inspected | 0 |
 | Entirely uninspected | 0 |
 

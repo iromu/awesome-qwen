@@ -137,7 +137,7 @@ ai.withLlmByRole("best")
 
 ## Roles Across Providers (v1.5.1)
 
-The flat `llms` map above binds each role to one model of one provider. For BYOK applications or provider failover, `embabel.models.roles` gives each role a provider dimension — see `reference/configuration.md` for the YAML shape and startup validation rules. Call sites are unchanged: `ai.withLlmByRole("cheapest")` resolves against whichever provider is active for the call, and an unsatisfiable role throws `NoSuitableModelException` at the point of use (never a silent fallback to `default-llm`).
+The flat `llms` map above binds each role to one model of one provider. For BYOK applications or provider failover, `embabel.models.roles` gives each role a provider dimension — see `references/configuration.md` for the YAML shape and startup validation rules. Call sites are unchanged: `ai.withLlmByRole("cheapest")` resolves against whichever provider is active for the call, and an unsatisfiable role throws `NoSuitableModelException` at the point of use (never a silent fallback to `default-llm`).
 
 ### Resolving Roles in Code
 
@@ -558,4 +558,4 @@ Register as a Spring bean and it will be automatically discovered by the RAG sub
 
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/llms` and `reference/types`*
+*Source: Embabel Agent v1.5.1 documentation — `references/llms` and `references/types`*

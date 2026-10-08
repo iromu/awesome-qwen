@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** embabel-drivine4j  
-**Scanned:** 2026-10-07 03:18:47 UTC  
+**Scanned:** 2026-10-08 04:20:26 UTC  
 
 ## Risk Assessment
 
@@ -15,7 +15,7 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 380 | No |
+| `SKILL.md` | markdown | 398 | No |
 | `evals/evals.json` | json | 176 | No |
 | `references/graph-object-manager.md` | markdown | 336 | No |
 | `references/multi-db.md` | markdown | 282 | No |
@@ -26,7 +26,7 @@
 
 ### 🔴 HIGH: P6
 
-**Location:** `SKILL.md:210`  
+**Location:** `SKILL.md:220`  
 **Confidence:** 85%  
 
 **Message:** Direct Prompt Extraction
@@ -37,7 +37,7 @@
 
 ### 🔴 HIGH: P6
 
-**Location:** `SKILL.md:366`  
+**Location:** `SKILL.md:384`  
 **Confidence:** 85%  
 
 **Message:** Direct Prompt Extraction
@@ -63,35 +63,35 @@
 |--------|-------|
 | Execution | successful |
 | Status | partial |
-| Coverage | 83.3% |
-| Fully inspected | 5 |
-| Partially inspected | 1 |
+| Coverage | 100.0% |
+| Fully inspected | 6 |
+| Partially inspected | 0 |
 | Entirely uninspected | 0 |
 
 ### Ledger Exceptions
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| static_parse_limit | `SKILL.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
-| reference_missing | `SKILL.md:42-42` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:43-43` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:44-44` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:46-46` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:48-48` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:52-52` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:53-53` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | reference_missing | `SKILL.md:54-54` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:72-72` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:73-73` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:88-88` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:130-130` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:145-145` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:150-150` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:153-153` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:159-159` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:326-326` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:327-327` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:339-339` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:56-56` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:58-58` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:64-64` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:82-82` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:83-83` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:98-98` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:140-140` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:155-155` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:160-160` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:163-163` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:169-169` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:336-336` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | reference_missing | `SKILL.md:344-344` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:377-377` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:345-345` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:357-357` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:362-362` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:395-395` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 
@@ -122,12 +122,8 @@
 | completed | `static_patterns_ssrf` |  |
 | completed | `static_patterns_supply_chain` |  |
 | completed | `static_patterns_system_prompt_leakage` |  |
-| degraded | `static_patterns_tool_misuse` |  |
+| completed | `static_patterns_tool_misuse` |  |
 | completed | `static_yara` |  |
-
-### Limitations
-
-- Analyzer static_patterns_tool_misuse status: degraded.
 
 ## Metadata
 

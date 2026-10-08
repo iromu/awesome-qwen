@@ -23,7 +23,7 @@ methods on it (`save_pretrained_gguf`, `push_to_hub_gguf`, `save_pretrained_merg
 1. Confirm the task belongs here — training a LoRA goes back to `unsloth-finetuning`, RL to `unsloth-rl`, and serving an already-quantized model to `unsloth-inference` (see "When NOT to Use").
 2. Pick the export format (Dynamic 2.0/3.0 GGUF, FP8, NVFP4, QAT) in "Choosing a Quant Format"; identify the target hardware (desktop GPU vs phone) early — it usually decides the format.
 3. Follow "Core Workflow: LoRA → GGUF" for the full adapter → quantized-file → metadata pipeline; look up export calls in "Key APIs".
-4. Verify expected accuracy and size trade-offs against `reference/benchmarks.md` (and `reference/speculative-decoding.md` when latency matters) before shipping the artifact.
+4. Verify expected accuracy and size trade-offs against `references/benchmarks.md` (and `references/speculative-decoding.md` when latency matters) before shipping the artifact.
 5. Check "Pitfalls" before running.
 
 ## When to Use
@@ -150,7 +150,7 @@ tokenizer.push_to_hub("HF_USERNAME/llama_lora", token = "YOUR_HF_TOKEN")
 
 | API | Purpose | Key arguments (as documented) |
 |-----|---------|-------------------------------|
-| `model.save_pretrained_gguf(dir, tokenizer, ...)` | Local GGUF export | `quantization_method` (str; default `q8_0`; full list in `reference/gguf-export.md`) |
+| `model.save_pretrained_gguf(dir, tokenizer, ...)` | Local GGUF export | `quantization_method` (str; default `q8_0`; full list in `references/gguf-export.md`) |
 | `model.push_to_hub_gguf(repo, tokenizer, ...)` | GGUF export to HF | `quantization_method` (str **or list** for multi-quant, faster), `token` |
 | `model.save_pretrained_merged(dir, tokenizer, ...)` | Merged safetensors | `save_method`: `"merged_16bit"`, `"merged_4bit"`, or `"lora"` |
 | `model.push_to_hub_merged(repo, tokenizer, ...)` | Merged export to HF | `save_method`, `token` |
@@ -159,28 +159,28 @@ tokenizer.push_to_hub("HF_USERNAME/llama_lora", token = "YOUR_HF_TOKEN")
 | `quantize_(model, QATConfig(step="convert"))` | QAT → inference-ready conversion | run after training, before `save_pretrained_torchao` |
 | `model.save_pretrained(..., maximum_memory_usage=...)` | Crash mitigation | default 0.75 of GPU peak; lower (e.g. 0.5) on OOM during saving |
 
-QAT requires the convert step *before* saving — see `reference/qat.md` for the full loop.
+QAT requires the convert step *before* saving — see `references/qat.md` for the full loop.
 
 ## References
 
 | File | Contents |
 |------|----------|
-| `reference/gguf-export.md` | Full GGUF export API, complete quant method table, multi-quant, manual llama.cpp conversion, Ollama Modelfile flow, troubleshooting |
-| `reference/dynamic-gguf.md` | Unsloth Dynamic GGUF 2.0/3.0: how it works, why KLD is the right metric, benchmark evidence, UD-* naming, 1-bit caveats |
-| `reference/fp8.md` | FP8 export via torchao (PTQ without training), FP8 vs BF16/NVFP4 accuracy context |
-| `reference/nvfp4.md` | Unsloth Dynamic NVFP4 on Blackwell: NVFP4 vs MXFP4, vLLM/SGLang serving, VRAM + accuracy benchmarks, DGX Spark |
-| `reference/qat.md` | QAT end-to-end from the official notebook + Gemma 4 QAT specifics |
-| `reference/speculative-decoding.md` | GGUF draft models for llama.cpp/llama-server, MTP speculative config for vLLM, NEXTN for SGLang |
-| `reference/phone-deployment.md` | Fine-tune → ExecuTorch `.pte` → iPhone/Android, full command flows |
-| `reference/benchmarks.md` | How to read perplexity/KLD tables, calibration caveats, tensor sensitivity, MXFP4, full Qwen3.5 benchmark table |
+| `references/gguf-export.md` | Full GGUF export API, complete quant method table, multi-quant, manual llama.cpp conversion, Ollama Modelfile flow, troubleshooting |
+| `references/dynamic-gguf.md` | Unsloth Dynamic GGUF 2.0/3.0: how it works, why KLD is the right metric, benchmark evidence, UD-* naming, 1-bit caveats |
+| `references/fp8.md` | FP8 export via torchao (PTQ without training), FP8 vs BF16/NVFP4 accuracy context |
+| `references/nvfp4.md` | Unsloth Dynamic NVFP4 on Blackwell: NVFP4 vs MXFP4, vLLM/SGLang serving, VRAM + accuracy benchmarks, DGX Spark |
+| `references/qat.md` | QAT end-to-end from the official notebook + Gemma 4 QAT specifics |
+| `references/speculative-decoding.md` | GGUF draft models for llama.cpp/llama-server, MTP speculative config for vLLM, NEXTN for SGLang |
+| `references/phone-deployment.md` | Fine-tune → ExecuTorch `.pte` → iPhone/Android, full command flows |
+| `references/benchmarks.md` | How to read perplexity/KLD tables, calibration caveats, tensor sensitivity, MXFP4, full Qwen3.5 benchmark table |
 
 ## Examples
 
 **"Convert my LoRA to run on Ollama."** "Core Workflow: LoRA -> GGUF" -> merge the adapter into the base, then `save_pretrained_gguf("q4_k_m", ...)`; verify the chat template renders inside the GGUF before shipping.
 
-**"We need FP8 on a B200."** "Choosing a Quant Format" -> the FP8/NVFP4 Blackwell path (`save_pretrained_torchao`, NVFP4 export); check `reference/benchmarks.md` for the expected accuracy/size trade-off.
+**"We need FP8 on a B200."** "Choosing a Quant Format" -> the FP8/NVFP4 Blackwell path (`save_pretrained_torchao`, NVFP4 export); check `references/benchmarks.md` for the expected accuracy/size trade-off.
 
-**"Halve latency on llama.cpp." / "Run this on a phone."** `reference/speculative-decoding.md` -> draft-model GGUF plus the `--model-draft` flag; `reference/phone-deployment.md` -> ExecuTorch `.pte` export.
+**"Halve latency on llama.cpp." / "Run this on a phone."** `references/speculative-decoding.md` -> draft-model GGUF plus the `--model-draft` flag; `references/phone-deployment.md` -> ExecuTorch `.pte` export.
 
 ## Pitfalls
 
@@ -212,7 +212,7 @@ QAT requires the convert step *before* saving — see `reference/qat.md` for the
   `--moe-backend flashinfer_b12x` or inference degrades.
 - **Perplexity and KLD can mislead.** They are calibration-dependent; a quant with worse PPL on
   Wiki-test can outperform on real workloads (LiveCodeBench, MMLU Pro) — and vice versa. Read
-  `reference/benchmarks.md` before ranking quants by PPL alone.
+  `references/benchmarks.md` before ranking quants by PPL alone.
 - **1-bit quants are not for agentic use.** Below `UD-Q2_K_XL`, 32-token prediction collapses
   (25% → under 8-10%): tool calling breaks, responses loop (use `presence_penalty = 1.5`+), and
   non-thinking modes may output nothing.

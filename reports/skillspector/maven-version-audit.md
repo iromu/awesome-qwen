@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** maven-version-audit  
-**Scanned:** 2026-10-07 03:46:26 UTC  
+**Scanned:** 2026-10-08 04:47:28 UTC  
 
 ## Risk Assessment
 
@@ -15,7 +15,7 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 146 | No |
+| `SKILL.md` | markdown | 165 | No |
 | `evals/evals.json` | json | 49 | No |
 | `evals/trigger.json` | json | 17 | No |
 | `scripts/_va_paths.py` | python | 54 | Yes |
@@ -32,7 +32,7 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:26`  
+**Location:** `SKILL.md:37`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -48,7 +48,7 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:48`  
+**Location:** `SKILL.md:59`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -64,7 +64,7 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:48`  
+**Location:** `SKILL.md:59`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -168,9 +168,9 @@
 **Location:** `SKILL.md:1`  
 **Confidence:** 70%  
 
-**Message:** The skill invokes shell commands (python3 scripts, Maven CLI), reads arbitrary files (POMs, maven-metadata.xml, log files under ~/.m2 and project trees), writes files (audit documents, scratch TSVs/logs), and reads/writes environment variables (VERSION_AUDIT_ROOT, VERSION_AUDIT_TMP, VERSION_AUDIT_DOC, MVN). Without a declared tool scope or 'allowed-tools' restriction, the executing agent has unrestricted shell and file I/O for the duration of the skill. A crafted POM or adversarial Maven coordinate could exploit the unbounded file_read (e.g., path traversal via VERSION_AUDIT_TMP override) or shell (e.g., injection through MVN variable if it falls back to PATH lookup without sanitisation). The breadth of scope is disproportionate to the task: a legitimate version-audit tool only needs to read POMs and write to a known scratch directory, not arbitrary file access.
+**Message:** Skill declares no tool scope ('permissions' or 'allowed-tools') but code capabilities were detected: env, file_read, file_write, shell.
 
-**Remediation:** 1. Add an explicit `allowed-tools` or `permissions` block in the skill metadata restricting tool access to only what is necessary: file_read scoped to pom.xml/maven-metadata.xml/log patterns, file_write scoped to target/version-audit/ and docs/, and shell scoped to python3 and mvn/mvnw invocations only. 2. Validate and sandbox VERSION_AUDIT_TMP and VERSION_AUDIT_DOC paths to prevent path traversal (reject paths containing '..' or absolute paths outside the project root). 3. Sanitise the MVN variable to only allow known command names (mvn, mvn, ./mvnw) and reject values containing shell metacharacters. 4. Consider running the pipeline in a containerized or sandboxed subprocess with read-only filesystem mounts except for the designated scratch directory.
+**Remediation:** Declare the skill's tool scope: for Claude Code / Agent Skills SKILL.md, list the tools the skill may invoke in the 'allowed-tools' frontmatter field; for MCP server manifests, add a 'permissions' list naming the required capabilities.
 
 ---
 
@@ -252,26 +252,28 @@
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| reference_missing | `SKILL.md:15-15` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:37-37` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:40-40` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:60-60` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:63-63` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:64-64` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:67-67` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:70-70` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:73-73` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:77-77` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:80-80` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:83-83` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:95-95` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:96-96` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:97-97` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:100-100` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:101-101` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:118-118` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:119-119` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:120-120` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:18-18` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:48-48` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:51-51` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:71-71` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:74-74` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:75-75` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:78-78` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:81-81` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:84-84` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:88-88` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:91-91` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:94-94` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:106-106` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:107-107` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:108-108` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:111-111` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:112-112` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:130-130` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:132-132` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:137-137` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:138-138` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:139-139` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | excluded_executable_content | `scripts/__pycache__/_va_paths.cpython-314.pyc` | Executable content was inventoried but excluded from content analysis. |
 | excluded_executable_content | `scripts/__pycache__/step3_doc.cpython-314.pyc` | Executable content was inventoried but excluded from content analysis. |
 | static_parse_limit | `scripts/step2_download.py` | A security-relevant expression exceeded a bounded static parser's span limit. |

@@ -111,4 +111,4 @@ Because Embabel uses Spring Reactive Programming, you can compose streams with a
 - Streaming scalar values? Wrap them in `StringResult` — bare `String.class` targets get misclassified as thinking events
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/streaming`*
+*Source: Embabel Agent v1.5.1 documentation — `references/streaming`*

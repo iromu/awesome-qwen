@@ -16,7 +16,7 @@ deployment via vLLM, SGLang, llama-server, Ollama, or LM Studio.
 
 All facts and commands below are distilled from the official Unsloth docs
 (unsloth.ai/docs, harvested 2026-09-26) and the official `unslothai/notebooks` code.
-Detailed recipes live in `reference/`.
+Detailed recipes live in `references/`.
 
 ## Instructions
 
@@ -97,7 +97,7 @@ _ = model.generate(input_ids = inputs, streamer = text_streamer, max_new_tokens 
 
 Loading a saved LoRA adapter is the same `from_pretrained` call with the adapter dir as
 `model_name`. Details, multi-turn conversations, and the `AutoPeftModelForCausalLM` fallback
-in `reference/native-inference.md`.
+in `references/native-inference.md`.
 
 ### 2. OpenAI-compatible API (Unsloth endpoint)
 
@@ -133,7 +133,7 @@ print(resp.choices[0].message.content)
 ```
 
 Full endpoint reference, curl recipes, auth, tool calling, and troubleshooting:
-`reference/api.md`, `reference/python-sdk.md`.
+`references/api.md`, `references/python-sdk.md`.
 
 ### 3. vLLM deployment (production)
 
@@ -162,7 +162,7 @@ vllm serve unsloth/Llama-3.3-70B-Instruct \
 LoRA hot swapping requires `export VLLM_ALLOW_RUNTIME_LORA_UPDATING=True` plus
 `--enable-lora --max-loras N --max-lora-rank R`, then
 `POST /v1/load_lora_adapter` / `/v1/unload_lora_adapter`. Engine-argument reference and
-gotchas: `reference/vllm.md`.
+gotchas: `references/vllm.md`.
 
 ### 4. Ollama / LM Studio (GGUF)
 
@@ -185,7 +185,7 @@ curl http://localhost:11434/api/chat -d '{
 
 LM Studio: export GGUF (`q4_k_m` typical), `lms import /path/to/model.gguf`, then
 `lms load <id> --gpu=auto` + `lms server start --port 1234` for an OpenAI-compatible API at
-`http://localhost:1234/v1`. Details: `reference/ollama-lmstudio.md`.
+`http://localhost:1234/v1`. Details: `references/ollama-lmstudio.md`.
 
 ### 5. Unsloth Desktop / Studio
 
@@ -198,7 +198,7 @@ LM Studio: export GGUF (`q4_k_m` typical), `lms import /path/to/model.gguf`, the
   web search, code execution, MCP servers, model arena, and no-code training with
   Data Recipes (PDF/CSV/JSON → dataset) and one-click export to GGUF/safetensors/LoRA.
 
-Details: `reference/desktop-studio.md`.
+Details: `references/desktop-studio.md`.
 
 ## Model Catalog (Unsloth repos on Hugging Face)
 
@@ -245,7 +245,7 @@ Manual connection (no `unsloth start`): Claude Code via
 `ANTHROPIC_BASE_URL`/`ANTHROPIC_AUTH_TOKEN`/`ANTHROPIC_MODEL`; Codex via a
 `~/.codex/config.toml` provider with `wire_api = "responses"`; MCP servers (Context7, Exa,
 Hugging Face built-in; custom via URL + OAuth/token) and the local-LLM tool-calling loop
-pattern: `reference/api.md` and `reference/llama-server.md`.
+pattern: `references/api.md` and `references/llama-server.md`.
 
 ## Key APIs / CLI
 
@@ -273,13 +273,13 @@ pattern: `reference/api.md` and `reference/llama-server.md`.
 
 | File | Contents |
 |---|---|
-| `reference/desktop-studio.md` | Desktop app + Studio: install, launch, chat features, Data Recipes, export, LAN/Cloudflare remote access |
-| `reference/api.md` | OpenAI/Anthropic-compatible endpoint: auth, curl recipes per endpoint, tool calling, server-side tools, `unsloth start` + manual Claude Code/Codex setup, troubleshooting |
-| `reference/python-sdk.md` | openai/anthropic SDK recipes: streaming, vision, function calling, server-side tools, JSON schema |
-| `reference/vllm.md` | vLLM install, serving, engine arguments, LoRA hot swapping; SGLang serving, FP8 online quant, GGUFs, offline mode, benchmarking |
-| `reference/llama-server.md` | llama.cpp build, llama-server flags, OpenAI endpoint, `--jinja` quirks, tool-calling loop, MCP host |
-| `reference/ollama-lmstudio.md` | GGUF → Ollama (auto Modelfile, serve, chat) and LM Studio (lms CLI, OpenAI API) |
-| `reference/native-inference.md` | `FastLanguageModel.from_pretrained` + `for_inference` + `TextStreamer`, LoRA loading, save hand-offs |
+| `references/desktop-studio.md` | Desktop app + Studio: install, launch, chat features, Data Recipes, export, LAN/Cloudflare remote access |
+| `references/api.md` | OpenAI/Anthropic-compatible endpoint: auth, curl recipes per endpoint, tool calling, server-side tools, `unsloth start` + manual Claude Code/Codex setup, troubleshooting |
+| `references/python-sdk.md` | openai/anthropic SDK recipes: streaming, vision, function calling, server-side tools, JSON schema |
+| `references/vllm.md` | vLLM install, serving, engine arguments, LoRA hot swapping; SGLang serving, FP8 online quant, GGUFs, offline mode, benchmarking |
+| `references/llama-server.md` | llama.cpp build, llama-server flags, OpenAI endpoint, `--jinja` quirks, tool-calling loop, MCP host |
+| `references/ollama-lmstudio.md` | GGUF → Ollama (auto Modelfile, serve, chat) and LM Studio (lms CLI, OpenAI API) |
+| `references/native-inference.md` | `FastLanguageModel.from_pretrained` + `for_inference` + `TextStreamer`, LoRA loading, save hand-offs |
 
 ## Examples
 
@@ -287,7 +287,7 @@ pattern: `reference/api.md` and `reference/llama-server.md`.
 
 **"Serve this GGUF on a 16 GB card."** llama-server/Ollama/LM Studio paths in "Core Workflows"; look the model up in "Model Catalog" for the recommended quantized repo instead of assuming the FP16 checkpoint fits.
 
-**"Make the model act as a calculator tool."** "Agent Integration" for tool-calling and MCP examples; `reference/native-inference.md` and "Key APIs / CLI" for the native `for_inference` path and CLI flags.
+**"Make the model act as a calculator tool."** "Agent Integration" for tool-calling and MCP examples; `references/native-inference.md` and "Key APIs / CLI" for the native `for_inference` path and CLI flags.
 
 ## Pitfalls
 

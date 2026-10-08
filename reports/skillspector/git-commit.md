@@ -1,13 +1,13 @@
 # SkillSpector Security Report
 
 **Skill:** git-commit  
-**Scanned:** 2026-10-07 03:23:33 UTC  
+**Scanned:** 2026-10-08 04:24:30 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 44/100 |
+| Score | 39/100 |
 | Severity | MEDIUM |
 | Recommendation | CAUTION |
 
@@ -15,13 +15,13 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 227 | No |
+| `SKILL.md` | markdown | 237 | No |
 
 ## Issues (5)
 
 ### 🔴 HIGH: PE3
 
-**Location:** `SKILL.md:131`  
+**Location:** `SKILL.md:133`  
 **Confidence:** 70%  
 
 **Message:** Credential Access
@@ -32,7 +32,7 @@
 
 ### 🔴 HIGH: PE3
 
-**Location:** `SKILL.md:151`  
+**Location:** `SKILL.md:153`  
 **Confidence:** 70%  
 
 **Message:** Credential Access
@@ -43,34 +43,34 @@
 
 ### 🔴 HIGH: PE3
 
-**Location:** `SKILL.md:158`  
+**Location:** `SKILL.md:160`  
 **Confidence:** 70%  
 
 **Message:** Credential Access
 
 **Remediation:** Remove references to credential paths. Use environment variables or secrets managers. For docs, use placeholder paths (e.g., /path/to/config). Never load .env or token files in production code paths.
-
----
-
-### 🟡 MEDIUM: SQP-2
-
-**Location:** `SKILL.md:36–41`  
-**Confidence:** 65%  
-
-**Message:** Skill activates for history-rewriting operations (amend, reword, squash, fixup) with no warning about destructive/irreversible history rewriting
-
-**Remediation:** Add a warning block to the Procedure (and mirror it in the front-matter `description`) stating that amend/reword/squash/fixup rewrite commit history, instructing the assistant to first check whether the target commits have been pushed (`git log @{u}..`, `git branch -r --contains <sha>`), to warn the user that rewriting pushed history requires a force-push and may disrupt collaborators, and to require explicit user confirmation before producing any such instruction.
 
 ---
 
 ### 🟡 MEDIUM: SQP-1
 
-**Location:** `SKILL.md:43`  
-**Confidence:** 70%  
+**Location:** `SKILL.md:30–48`  
+**Confidence:** 60%  
 
-**Message:** Trigger-phrase table lists bare single words ("feat / fix / docs / refactor") and the generic keyword "conventional commit" as activation triggers
+**Message:** Overly broad / keyword-substring trigger conditions in the "Common Trigger Phrases" table (L030, L043-L048)
 
-**Remediation:** Restrict the trigger table to phrases that explicitly reference commit messages (e.g. "commit message", "commit these changes", "reword the last commit") and require the type keywords `feat/fix/docs/refactor` to appear in a commit-message context rather than standalone. Add an explicit "Do not use this skill when…" list covering code-fixing/refactoring requests and any request that does not concern commit-message text.
+**Remediation:** Rewrite L030 to require intent, not substring presence ("apply only when the user's request is about authoring, rewriting, or validating a commit message"). Remove or qualify the bare keyword rows in the table (L045-L048) so that "fix", "docs", "BREAKING CHANGE", "Closes #123" etc. only trigger in a commit-message context, and add explicit non-trigger examples (e.g. "fix this bug in the code", "write README docs", "explain what a rebase does").
+
+---
+
+### 🟢 LOW: SQP-2
+
+**Location:** `SKILL.md:164–186`  
+**Confidence:** 50%  
+
+**Message:** No warning about rewriting already-published commit history when advising amend/reword/fixup on an open PR
+
+**Remediation:** Add a caution to Step 5 and to the L186 example: before proposing an amend/reword/fixup, check whether the target commit is already pushed (e.g. `git log origin/HEAD..HEAD` or `git branch -r --contains`), and warn the user that rewriting a published commit requires a force-push that rewrites shared history and re-triggers CI, asking for explicit confirmation before recommending it.
 
 ---
 

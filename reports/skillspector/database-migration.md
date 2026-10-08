@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** database-migration  
-**Scanned:** 2026-10-05 20:56:00 UTC  
+**Scanned:** 2026-10-08 03:43:19 UTC  
 
 ## Risk Assessment
 
@@ -9,13 +9,13 @@
 |--------|-------|
 | Score | 0/100 |
 | Severity | LOW |
-| Recommendation | SAFE |
+| Recommendation | CAUTION |
 
 ## Components (2)
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 208 | No |
+| `SKILL.md` | markdown | 218 | No |
 | `references/cross-database.md` | markdown | 289 | No |
 
 ## Issues (0)
@@ -27,11 +27,17 @@ No security issues detected.
 | Metric | Value |
 |--------|-------|
 | Execution | successful |
-| Status | complete |
+| Status | partial |
 | Coverage | 100.0% |
 | Fully inspected | 2 |
 | Partially inspected | 0 |
 | Entirely uninspected | 0 |
+
+### Ledger Exceptions
+
+| Reason / Status | Location | Details |
+|-----------------|----------|---------|
+| reference_missing | `SKILL.md:191-191` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 

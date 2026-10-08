@@ -127,4 +127,4 @@ java -Djava.util.concurrent.ForkJoinPool.common.parallelism=4 -jar agent.jar
 ```
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/asynch-mode`*
+*Source: Embabel Agent v1.5.1 documentation — `references/asynch-mode`*

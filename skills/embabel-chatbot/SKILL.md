@@ -156,9 +156,9 @@ session.onUserMessage(UserMessage("What does the document say about taxes?"))
 | Full interface surface, message/asset model | `Chatbot`/`ChatSession`/`Conversation`, assets | [01-chatbot-api.md](references/01-chatbot-api.md) |
 | Persistent conversations across restarts | `embabel-chat-store`, `ConversationStoreType.STORED` | [02-conversation-store.md](references/02-conversation-store.md) |
 | Agentic RAG, filters, chunking, stores | `ToolishRag`, `PropertyFilter`/`EntityFilter`, Tika | [03-rag-architecture.md](references/03-rag-architecture.md) |
-| Utility costs, resilient replies, Jinja personas | `@Cost`, `respond(...)`, `ragbot.jinja` | [04-chatbot-patterns.md](references/04-chatbot-patterns.md) |
-| Structured replies via assets | `AssistantMessage(assets=…)`, `AssetTracker` | [05-structured-output.md](references/05-structured-output.md) |
-| End-to-end, step by step | Full copy-paste examples | [06-quickstart.md](references/06-quickstart.md) |
+| Utility costs, resilient replies, Jinja personas | `@Cost`, `respond(...)`, `ragbot.jinja` | [06-chatbot-patterns.md](references/06-chatbot-patterns.md) |
+| Structured replies via assets | `AssistantMessage(assets=…)`, `AssetTracker` | [07-structured-output.md](references/07-structured-output.md) |
+| End-to-end, step by step | Full copy-paste examples | [08-quickstart.md](references/08-quickstart.md) |
 
 ## Examples
 
@@ -194,4 +194,4 @@ session.onUserMessage(UserMessage("What does the document say about taxes?"))
 - [ ] Retrieval scoped with `withMetadataFilter` / `withEntityFilter` where multi-tenant
 - [ ] Persona/objective/guardrails expressed in Jinja (`ragbot.jinja`) if needed
 - [ ] Persistence enabled via `embabel-chat-store` (`ConversationStoreType.STORED`) if needed
-- [ ] Tested end-to-end with real documents and queries (see [06-quickstart.md](references/06-quickstart.md))
+- [ ] Tested end-to-end with real documents and queries (see [08-quickstart.md](references/08-quickstart.md))

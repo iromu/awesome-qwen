@@ -21,7 +21,7 @@ implementation("com.embabel.agent:embabel-agent-bedrock-autoconfigure")
 
 ## AWS Configuration
 
-Configure AWS credentials and region using standard Spring AI Bedrock properties. See the [Spring AI Bedrock documentation](https://docs.spring.io/spring-ai/reference/api/bedrock.html) for credential configuration options.
+Configure AWS credentials and region using standard Spring AI Bedrock properties. See the [Spring AI Bedrock documentation](https://docs.spring.io/spring-ai/references/api/bedrock.html) for credential configuration options.
 
 ## Available Models
 
@@ -111,4 +111,4 @@ Model type must be either `titan` or `cohere`.
 
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/bedrock`*
+*Source: Embabel Agent v1.5.1 documentation — `references/bedrock`*

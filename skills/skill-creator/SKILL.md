@@ -197,7 +197,7 @@ See `references/schemas.md` for the full schema (including the `assertions` fiel
 
 ## Examples
 
-**"Create a skill for our release-checklist flow."** "Creating a skill" -> gather the docs and code the flow actually consults -> distill into `reference/*.md` -> write the SKILL.md that points at them; then draft `evals/evals.json` prompts with assertions and run the loop.
+**"Create a skill for our release-checklist flow."** "Creating a skill" -> gather the docs and code the flow actually consults -> distill into `references/*.md` -> write the SKILL.md that points at them; then draft `evals/evals.json` prompts with assertions and run the loop.
 
 **"Is this skill actually helping?"** "Running and evaluating test cases" -> with-skill and baseline arms on identical prompts, graded through the auto-grader; report in the "Report structure" shape.
 

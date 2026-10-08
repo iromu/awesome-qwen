@@ -132,4 +132,4 @@ public class EmbeddingModelsConfig {
 - Extend `OpenAiCompatibleModelFactory` for custom OpenAI-compatible providers
 - Embedding models use `SpringAiEmbeddingService` with the same pattern
 
-*Source: Embabel Agent v1.5.1 documentation — `reference/customizing`*
+*Source: Embabel Agent v1.5.1 documentation — `references/customizing`*

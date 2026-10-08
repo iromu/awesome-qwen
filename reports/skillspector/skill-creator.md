@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** skill-creator  
-**Scanned:** 2026-10-07 04:17:56 UTC  
+**Scanned:** 2026-10-08 05:19:32 UTC  
 
 ## Risk Assessment
 
@@ -15,7 +15,7 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 458 | No |
+| `SKILL.md` | markdown | 477 | No |
 | `agents/analyzer.md` | markdown | 274 | No |
 | `agents/comparator.md` | markdown | 202 | No |
 | `agents/grader.md` | markdown | 223 | No |
@@ -47,22 +47,22 @@
 | `scripts/__pycache__/run_test.cpython-314.pyc` | other | 0 | Yes |
 | `scripts/__pycache__/utils.cpython-314.pyc` | other | 0 | Yes |
 
-## Issues (52)
+## Issues (54)
 
-### 🔴 HIGH: SQP-1
+### 🔴 HIGH: RA1
 
-**Location:** `SKILL.md:3`  
-**Confidence:** 75%  
+**Location:** `SKILL.md:34`  
+**Confidence:** 85%  
 
-**Message:** Skill description uses an extremely broad activation clause ("automate any repetitive workflow", "build a reusable prompt template", "even if they don't use the word 'skill'") with no negative examples or exclusion conditions
+**Message:** Self-Modification
 
-**Remediation:** Trim the final sentence of the description to the skill-authoring/eval domain (e.g. keep "create, edit, evaluate, or package a skill" and "skill evals/benchmarks"). Add explicit exclusion conditions such as "Do not use for general script or automation authoring, one-off shell pipelines, or agent/tool configuration that is not a skill package."
+**Remediation:** Prevent the skill from modifying its own code, SKILL.md, or configuration files. Treat skill files as read-only at runtime.
 
 ---
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:220`  
+**Location:** `SKILL.md:239`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -78,7 +78,7 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:337`  
+**Location:** `SKILL.md:356`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -94,7 +94,7 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:427`  
+**Location:** `SKILL.md:446`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -645,7 +645,7 @@
 **Location:** `SKILL.md:1`  
 **Confidence:** 70%  
 
-**Message:** Skill declares no tool scope ('permissions' or 'allowed-tools') but code capabilities were detected: env, file_read, file_write, shell.
+**Message:** The skill has no `permissions`/`allowed-tools` frontmatter yet its instructions direct the agent to run shell commands (python -m scripts.run_loop, qwen -p subprocesses), write files to /tmp and the filesystem, and read arbitrary project files. Because the skill is designed to trigger on very broad conditions (any workflow automation, prompt template, etc.), an under-triggered/over-triggered activation can silently carry shell and file-write capability into unrelated sessions. This is a least-privilege/hygiene gap rather than malicious design — the script execution is the skill's legitimate purpose — but the absence of an explicit tool scope means there is no ceiling on what an activated instance can do.
 
 **Remediation:** Declare the skill's tool scope: for Claude Code / Agent Skills SKILL.md, list the tools the skill may invoke in the 'allowed-tools' frontmatter field; for MCP server manifests, add a 'permissions' list naming the required capabilities.
 
@@ -653,23 +653,23 @@
 
 ### 🟡 MEDIUM: SQP-1
 
-**Location:** `SKILL.md:64`  
-**Confidence:** 60%  
+**Location:** `SKILL.md:3`  
+**Confidence:** 70%  
 
-**Message:** Writing guidance actively instructs authors to make descriptions "pushy" and over-broad, with an example that triggers on "any kind of company data" and no guidance on negative examples
+**Message:** Overly broad, vague trigger description in frontmatter
 
-**Remediation:** Pair the "pushy description" advice with a requirement to state scope limits — e.g. "also name the adjacent domains or tools that should NOT route here, and prefer a bounded list of concrete trigger contexts over catch-all phrases like 'any kind of data'." The trigger-eval guidance at L329 already asks for near-miss negative queries; reference it here so the description and the eval set stay consistent.
+**Remediation:** Narrow the trigger to explicit skill-authoring contexts (e.g. "create/write/evaluate a SKILL.md or skill package") and add exclusion examples, e.g. "Do NOT use for one-off scripts, general code refactoring, or prompt tweaks that do not produce a reusable skill file."
 
 ---
 
 ### 🟡 MEDIUM: SQP-2
 
-**Location:** `SKILL.md:189–222`  
-**Confidence:** 55%  
+**Location:** `SKILL.md:208`  
+**Confidence:** 60%  
 
-**Message:** Automated eval loop makes subprocess `qwen -p` model calls using the current session's credentials and transmits conversation-derived data, with no user disclosure or warning
+**Message:** The eval loop executes bundled Python scripts (run_test.py, auto_grader.py) and spawns `qwen -p` subprocesses that inherit the current session's authentication/credentials, with no requirement to disclose this to the user or to scope/review what data crosses that boundary. Eval prompts and attached files may contain sensitive project data that gets shipped to subprocess LLM calls, and the bundled scripts themselves are executed without any review gate — a compromised or tampered skill package shipping modified scripts would gain unattended credentialed code execution. The design intent is legitimate test automation, but the missing consent/disclosure and script-review controls are real gaps.
 
-**Remediation:** Before the loop starts, surface a short confirmation that names (a) the number of model subprocess calls and the parallelism, (b) that they run under the session's own auth/credential and will consume the user's quota, and (c) which workspace file contents and personal details from `evals/evals.json` will be resubmitted. Add a `--dry-run`/cost-estimate note and instruct the author to scrub secrets and PII from eval prompts and `files:` entries before staging them.
+**Remediation:** Review the flagged content for security risks. Ensure no credentials, secrets, or sensitive data are exposed.
 
 ---
 
@@ -796,12 +796,34 @@
 
 ### 🟢 LOW: SDI-4
 
-**Location:** `SKILL.md:19–456`  
+**Location:** `SKILL.md:22`  
 **Confidence:** 55%  
 
-**Message:** Eval-loop documentation contradicts itself: "no interactive viewer, no human feedback needed" vs. mandatory eval viewer + user review
+**Message:** Top-level summary claims "no subagents, no interactive viewer, no human feedback needed" (L022, repeated verbatim at L0416/L208), but the operative instructions later require exactly those things: blind comparison via subagents (L0319), parallel subagent test execution in Cowork (L0441), and mandatory generation of the interactive eval viewer *before* the agent evaluates outputs, with human feedback read back from feedback.json (L0443-L0444, L470).
 
-**Remediation:** Reword L019 and L189 to say the loop does not require *subagents* or *interactive server-based* review, but that a static eval viewer (eval-viewer/generate_review.py) and user sign-off on eval outputs are still expected, so the automation claim and the human-review requirements agree.
+**Remediation:** Reword L022 and L208 to describe the *default* mode accurately, e.g. "the eval loop can run without subagents, an interactive viewer or human feedback (see platform-specific sections for when those are required)", and cross-reference the mandatory eval-viewer/human-review step described at L443-L444 and L470 so the two sections agree.
+
+---
+
+### 🟢 LOW: SQP-1
+
+**Location:** `SKILL.md:75`  
+**Confidence:** 50%  
+
+**Message:** Instruction to write 'pushy' over-broad trigger descriptions without exclusions
+
+**Remediation:** Balance the 'pushy description' advice by requiring a bounded trigger scope: instruct authors to also list contexts where the skill should NOT fire, and cap keyword-based triggers with a specificity constraint (e.g. require an explicit task verb, not mere topic mention).
+
+---
+
+### 🟢 LOW: SDI-4
+
+**Location:** `SKILL.md:416`  
+**Confidence:** 40%  
+
+**Message:** Comment/docstring at L022 ("no subagents") and L0416 ("No subagents means no parallel execution ... Skip it") contradict the manifest description and the Cowork section, which state that subagents and parallel execution are available and should be used (L0441, L0319).
+
+**Remediation:** State the subagent/parallel-execution constraint as harness-conditional in the overview (L022) — e.g. "no subagents required in Qwen Cloud; parallel subagent execution available in Cowork" — so the overview matches the platform-specific sections.
 
 ---
 
@@ -850,12 +872,13 @@
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| reference_missing | `SKILL.md:14-14` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:169-169` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:193-193` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:227-227` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:412-412` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:425-425` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:17-17` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:180-180` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:200-200` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:212-212` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:246-246` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:431-431` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:444-444` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | static_parse_limit | `assets/eval_review.html` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | excluded_executable_content | `eval-viewer/__pycache__/generate_review.cpython-314.pyc` | Executable content was inventoried but excluded from content analysis. |
 | static_parse_limit | `eval-viewer/viewer.html` | A security-relevant expression exceeded a bounded static parser's span limit. |

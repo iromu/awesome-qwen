@@ -32,9 +32,9 @@ export.
 ## Instructions
 
 1. Confirm the task belongs here — RL (GRPO/DPO) goes to `unsloth-rl`, GGUF/FP8/NVFP4 export to `unsloth-quantization`, serving to `unsloth-inference` (see "When NOT to Use").
-2. Pick the training method (QLoRA, 16-bit LoRA, 8-bit, FFT) and budget VRAM in "Choosing a Method"; check card capacity against `reference/requirements-vram.md` before committing to a run.
-3. Locate the model in `reference/model-catalog.md` and its chat template in `reference/chat-templates.md` before training a chat model.
-4. Follow "Core Workflow: QLoRA SFT" for a real run; look up exact calls in "Key APIs" and the matching `reference/*.md` file (datasets, hyperparameters, long-context, multi-GPU, vision, embedding, MoE).
+2. Pick the training method (QLoRA, 16-bit LoRA, 8-bit, FFT) and budget VRAM in "Choosing a Method"; check card capacity against `references/requirements-vram.md` before committing to a run.
+3. Locate the model in `references/model-catalog.md` and its chat template in `references/chat-templates.md` before training a chat model.
+4. Follow "Core Workflow: QLoRA SFT" for a real run; look up exact calls in "Key APIs" and the matching `references/*.md` file (datasets, hyperparameters, long-context, multi-GPU, vision, embedding, MoE).
 5. Check "Pitfalls" before running.
 
 ## When to Use
@@ -91,7 +91,7 @@ Minimum VRAM by model size (absolute minimums — some models need more):
 | 70B | 41 GB | 164 GB |
 
 Rule of thumb: model parameters (B) ≈ GB of VRAM for 16-bit LoRA; ~a quarter
-of that for QLoRA. Full table and OOM tips in `reference/requirements-vram.md`.
+of that for QLoRA. Full table and OOM tips in `references/requirements-vram.md`.
 
 **Model-name suffix conventions** (Unsloth's HF uploads):
 
@@ -110,11 +110,11 @@ models (4x faster downloads, no OOMs).
 ## Core Workflow: QLoRA SFT
 
 Canonical code below is from the official `Llama3.1_(8B)-Alpaca` notebook; the
-full walkthrough lives in `reference/sft-lora.md`.
+full walkthrough lives in `references/sft-lora.md`.
 
 1. **Install.** `pip install unsloth` (Linux, WSL, Windows via WSL — it pulls
    compatible torch/transformers automatically). Colab/Docker/AMD variants in
-   `reference/installation.md`.
+   `references/installation.md`.
 
 2. **Load the model** (and tokenizer):
 
@@ -178,7 +178,7 @@ dataset = dataset.map(formatting_prompts_func, batched = True,)
    For conversational (instruct) data, apply a chat template instead —
    `get_chat_template` + `standardize_sharegpt` — and wrap the trainer with
    `train_on_responses_only(trainer)` so only assistant completions are
-   trained. Details in `reference/chat-templates.md` and `reference/datasets.md`.
+   trained. Details in `references/chat-templates.md` and `references/datasets.md`.
 
 5. **Train** with `SFTTrainer`/`SFTConfig`:
 
@@ -213,7 +213,7 @@ trainer_stats = trainer.train()
 
    For a full run set `num_train_epochs = 1` (1–3 epochs recommended) and drop
    `max_steps`. Loss around 0.5–1.0 is a good sign; loss going to 0 suggests
-   overfitting. Hyperparameter rationale in `reference/hyperparameters.md`.
+   overfitting. Hyperparameter rationale in `references/hyperparameters.md`.
 
 6. **Infer** — always call `for_inference` first (Unsloth's native inference is
    2x faster):
@@ -257,34 +257,34 @@ if False: model.save_pretrained_gguf("llama_finetune", tokenizer, quantization_m
 | `FastLanguageModel.for_inference(model)` | `unsloth` | Enable native 2x faster inference before `model.generate`. |
 | `model.save_pretrained` / `save_pretrained_merged(..., save_method="merged_16bit"\|"merged_4bit")` / `save_pretrained_gguf(..., quantization_method=...)` / `push_to_hub_*` | `unsloth` | Save LoRA, merged model, or GGUF (local + HF hub). |
 | `get_chat_template` / `standardize_sharegpt` / `standardize_data_formats` / `train_on_responses_only` / `add_new_tokens` | `unsloth.chat_templates` / `unsloth` | Template application, ShareGPT conversion, response-only masking, new special tokens (call `add_new_tokens` BEFORE `get_peft_model`). |
-| `FastVisionModel.from_pretrained/get_peft_model/for_inference/for_training` + `UnslothVisionDataCollator` | `unsloth` | Vision/multimodal SFT — returns `(model, processor)`; the collator is mandatory (see `reference/vision.md`). |
-| `FastSentenceTransformer.from_pretrained(..., for_inference=...)`, `save_pretrained_merged`, `push_to_hub_merged` | `unsloth` | Embedding/BERT/reranker fine-tuning (LoRA/QLoRA/FFT) (see `reference/embedding.md`). |
-| `UnslothTrainer` / `UnslothTrainingArguments(embedding_learning_rate)` | `unsloth` | Continued pretraining: `embedding_learning_rate` 2–10x smaller than `learning_rate` (see `reference/pretraining.md`). |
+| `FastVisionModel.from_pretrained/get_peft_model/for_inference/for_training` + `UnslothVisionDataCollator` | `unsloth` | Vision/multimodal SFT — returns `(model, processor)`; the collator is mandatory (see `references/vision.md`). |
+| `FastSentenceTransformer.from_pretrained(..., for_inference=...)`, `save_pretrained_merged`, `push_to_hub_merged` | `unsloth` | Embedding/BERT/reranker fine-tuning (LoRA/QLoRA/FFT) (see `references/embedding.md`). |
+| `UnslothTrainer` / `UnslothTrainingArguments(embedding_learning_rate)` | `unsloth` | Continued pretraining: `embedding_learning_rate` 2–10x smaller than `learning_rate` (see `references/pretraining.md`). |
 
 ## References
 
 | Topic | File |
 |---|---|
-| Canonical SFT+LoRA loop: install → load → LoRA → data → train → infer → save (all three notebook variants) | `reference/sft-lora.md` |
-| LoRA rank/alpha/dropout/target_modules, SFTConfig values, overfitting vs underfitting | `reference/hyperparameters.md` |
-| Dataset formats (Alpaca/ShareGPT/ChatML/raw), size guidance, synthetic data, validation | `reference/datasets.md` |
-| Install: pip/uv, Colab, Docker (NVIDIA/AMD), ROCm specifics | `reference/installation.md` |
-| VRAM minimums per model size, platform support, OOM tips | `reference/requirements-vram.md` |
-| Vision/multimodal SFT with FastVisionModel + UnslothVisionDataCollator | `reference/vision.md` |
-| Embedding/BERT/reranker fine-tuning with FastSentenceTransformer | `reference/embedding.md` |
-| MoE fine-tuning: backends, target modules, supported families | `reference/moe.md` |
-| Multi-GPU: DDP via torchrun/accelerate, model splitting, CLI | `reference/multi-gpu.md` |
-| Chat templates: supported list, ShareGPT conversion, custom templates, add_new_tokens | `reference/chat-templates.md` |
-| Continued pretraining (CPT) setup + resuming from checkpoints | `reference/pretraining.md` |
-| Packing (3-5x faster), padding-free default, 500K long-context, tiled MLP | `reference/long-context.md` |
-| Environment flags, OOM, broken finetunes, early stopping | `reference/troubleshooting.md` |
-| Unsloth's HF model catalog: families, sizes, MoE/vision flags | `reference/model-catalog.md` |
+| Canonical SFT+LoRA loop: install → load → LoRA → data → train → infer → save (all three notebook variants) | `references/sft-lora.md` |
+| LoRA rank/alpha/dropout/target_modules, SFTConfig values, overfitting vs underfitting | `references/hyperparameters.md` |
+| Dataset formats (Alpaca/ShareGPT/ChatML/raw), size guidance, synthetic data, validation | `references/datasets.md` |
+| Install: pip/uv, Colab, Docker (NVIDIA/AMD), ROCm specifics | `references/installation.md` |
+| VRAM minimums per model size, platform support, OOM tips | `references/requirements-vram.md` |
+| Vision/multimodal SFT with FastVisionModel + UnslothVisionDataCollator | `references/vision.md` |
+| Embedding/BERT/reranker fine-tuning with FastSentenceTransformer | `references/embedding.md` |
+| MoE fine-tuning: backends, target modules, supported families | `references/moe.md` |
+| Multi-GPU: DDP via torchrun/accelerate, model splitting, CLI | `references/multi-gpu.md` |
+| Chat templates: supported list, ShareGPT conversion, custom templates, add_new_tokens | `references/chat-templates.md` |
+| Continued pretraining (CPT) setup + resuming from checkpoints | `references/pretraining.md` |
+| Packing (3-5x faster), padding-free default, 500K long-context, tiled MLP | `references/long-context.md` |
+| Environment flags, OOM, broken finetunes, early stopping | `references/troubleshooting.md` |
+| Unsloth's HF model catalog: families, sizes, MoE/vision flags | `references/model-catalog.md` |
 
 ## Examples
 
-**"Fine-tune Qwen3-8B on 2k QA pairs with a 24 GB card."** Method selection -> QLoRA (8B needs ~6 GB at 4-bit, so the card has headroom); follow "Core Workflow: QLoRA SFT"; mask prompts with `train_on_responses_only` (see `reference/datasets.md` and `reference/chat-templates.md`).
+**"Fine-tune Qwen3-8B on 2k QA pairs with a 24 GB card."** Method selection -> QLoRA (8B needs ~6 GB at 4-bit, so the card has headroom); follow "Core Workflow: QLoRA SFT"; mask prompts with `train_on_responses_only` (see `references/datasets.md` and `references/chat-templates.md`).
 
-**"Full fine-tune this model, LoRA didn't reach quality."** FFT is the escalation path, not the default - verify VRAM against the "Choosing a Method" table first, then `full_finetuning=True` with a reduced LR (`reference/hyperparameters.md`).
+**"Full fine-tune this model, LoRA didn't reach quality."** FFT is the escalation path, not the default - verify VRAM against the "Choosing a Method" table first, then `full_finetuning=True` with a reduced LR (`references/hyperparameters.md`).
 
 **"Serve the adapter I trained yesterday."** Out of scope here -> `unsloth-inference` (and export/quantizing goes to `unsloth-quantization`).
 
@@ -323,7 +323,7 @@ if False: model.save_pretrained_gguf("llama_finetune", tokenizer, quantization_m
 - **All labels `-100` (loss = 0):** `train_on_responses_only` used the wrong
   instruction/response markers for that model family. Use the per-family
   markers (Llama 3.x `<|start_header_id|>...`, Gemma 2/3 `<start_of_turn>...`)
-  — see `reference/troubleshooting.md`.
+  — see `references/troubleshooting.md`.
 - **`add_new_tokens` must run BEFORE `get_peft_model`** — adding special
   tokens after the LoRA is attached misses them.
 - **MoE:** set `fast_inference = False` (vLLM not supported for MoE yet) and
