@@ -92,4 +92,4 @@ Practical defaults:
 * [Tree-of-Thoughts (Yao et al. 2023): Tree-based reasoning with evaluation mechanisms](https://arxiv.org/abs/2305.10601)
 * [Labruno (GitHub): Parallel sandboxes + LLM judge selects best implementation](https://github.com/nibzard/labruno-agent)
 * [Daytona RLM Guide: Recursive delegation with sandboxed execution](https://www.daytona.io/docs/en/recursive-language-models/)
-* Related patterns: [Sub-Agent Spawning](sub-agent-spawning.md), [Swarm Migration Pattern](swarm-migration-pattern.md), [Self-Critique / Evaluator loops](self-critique-evaluator-loop.md)
+* Related patterns: [Sub-Agent Spawning](sub-agent-spawning.md), [Swarm Migration Pattern](swarm-migration-pattern.md), [Self-Critique / Evaluator loops](../feedback-loops/self-critique-evaluator-loop.md)

@@ -1280,15 +1280,15 @@ The spec-as-test pattern integrates with:
 ## 11. References
 
 ### Pattern Sources
-- [Spec-as-Test Feedback Loop](/home/agent/awesome-agentic-patterns/patterns/spec-as-test-feedback-loop.md)
-- [Specification-Driven Agent Development](/home/agent/awesome-agentic-patterns/patterns/specification-driven-agent-development.md)
-- [Feature List as Immutable Contract](/home/agent/awesome-agentic-patterns/patterns/feature-list-as-immutable-contract.md)
+- [Spec-as-Test Feedback Loop](spec-as-test-feedback-loop-report.md)
+- [Specification-Driven Agent Development](specification-driven-agent-development-report.md)
+- [Feature List as Immutable Contract](feature-list-as-immutable-contract-report.md)
 
 ### Related Research Reports
-- [Coding Agent CI Feedback Loop](/home/agent/awesome-agentic-patterns/research/coding-agent-ci-feedback-loop-report.md)
-- [Incident-to-Eval Synthesis](/home/agent/awesome-agentic-patterns/research/incident-to-eval-synthesis-report.md)
-- [Reflection Loop Pattern](/home/agent/awesome-agentic-patterns/research/reflection-report.md)
-- [Anti-Reward-Hacking Grader Design](/home/agent/awesome-agentic-patterns/research/anti-reward-hacking-grader-design-report.md)
+- [Coding Agent CI Feedback Loop](coding-agent-ci-feedback-loop-report.md)
+- [Incident-to-Eval Synthesis](incident-to-eval-synthesis-report.md)
+- [Reflection Loop Pattern](reflection-report.md)
+- [Anti-Reward-Hacking Grader Design](anti-reward-hacking-grader-design-report.md)
 
 ### External Resources
 - Jory Pestorious: [AI Engineer Spec](http://jorypestorious.com/blog/ai-engineer-spec/)

@@ -1,25 +1,25 @@
 # SkillEvaluator Validation Report
 
-**Status:** ❌ FAILED
+**Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 10:15 PM UTC
+**Generated:** October 09, 2026 at 02:12 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 10 |
-| ✅ Passed | 8 |
-| ❌ Failed | 2 |
+| Validator Results | 9 |
+| ✅ Passed | 9 |
+| ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 15 (1 high, 5 medium) |
+| Total Issues | 12 (5 medium) |
 
 ## Quality Score
 
 | Skill | Score | Grade | Type | Correctness | Discoverability | Reliability | Efficiency |
 |-------|-------|-------|------|-------------|-----------------|-------------|------------|
-| embabel-agent | 80.0 | B | script-based | 70.0 | 90.0 | 90.0 | 70.0 |
+| embabel-agent | 82.2 | B | script-based | 70.0 | 90.0 | 90.0 | 85.0 |
 
 ## Results
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'embabel-agent'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/embabel-agent/
 - [OK] **naming_convention**: Folder name 'embabel-agent' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (407/500)
+- [OK] **line_count**: SKILL.md within line limit (366/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -59,34 +59,34 @@
 
 - No secrets detected by Gitleaks
 
-### ❌ Code Integrity & Hygiene
+### ✅ Code Integrity & Hygiene
 *Validate dead links, dependencies, and static Python test-file discovery*
 
-**1 errors, 1 warnings**
-
-**Errors:**
-
-- ❌ Dead link in termination.md: ../cost-tracking.md
-
+- [OK] **dead_links_scan**: Checking 39 markdown files for dead links
+- [OK] **dead_links**: All relative links valid in 39 markdown file(s)
+- [OK] **dependencies**: No dependency files found (requirements.txt, pyproject.toml)
+- [OK] **test_discovery**: No standard Python test-file candidates found; target tests were not executed and coverage was not measured. Consider adding tests.
 
 ### ✅ Unicode Smuggling Detection
 *Detect invisible Unicode characters and ASCII smuggling*
 
-- [OK] **unicode_scan**: No invisible Unicode characters detected in 39 file(s)
+- [OK] **unicode_scan**: No invisible Unicode characters detected in 40 file(s)
 
-### ❌ B QUALITY
+### ✅ B QUALITY
 *Skill quality scoring across Correctness (35%), Discoverability (25%), Reliability (25%), and Efficiency (15%)*
 
-**Overall: 80.0/100 (Grade: B)** | Skill Type: script-based
+**Overall: 82.2/100 (Grade: B)** | Skill Type: script-based
 
 | Dimension | Score | Weight |
 |-----------|-------|--------|
 | Correctness | 70.0 | 35% |
 | Discoverability | 90.0 | 25% |
 | Reliability | 90.0 | 25% |
-| Efficiency | 70.0 | 15% |
+| Efficiency | 85.0 | 15% |
 
-**1 errors, 10 warnings**
+- [OK] **quality_score**: Score: 82.2/100 (Grade: B)
+
+**Non-blocking findings: 10**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
@@ -98,9 +98,8 @@
 | [LOW] LOW | No '## Purpose' section | <code>embabel-agent/SKILL.md</code> |
 | [LOW] LOW | No prerequisites/requirements documented | <code>embabel-agent/SKILL.md</code> |
 | [LOW] LOW | No limitations documented | <code>embabel-agent/SKILL.md</code> |
-| [HIGH] HIGH | Large skill (5490 tokens, recommended max &lt;5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy | <code>embabel-agent/SKILL.md</code> |
 | [LOW] LOW | Non-descriptive filename: dsl.md | <code>embabel-agent/SKILL.md</code> |
-| ... | *1 more issues* | |
+| [MED] MEDIUM | Deeply nested references in termination.md | <code>embabel-agent/SKILL.md</code> |
 
 <details>
 <summary>View Details</summary>
@@ -145,17 +144,15 @@
 - Check: `quality_reliability`
 - Fix: Add '## Limitations' section with known issues/constraints
 
-**9. Large skill (5490 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy**
-- File: `embabel-agent/SKILL.md`
-- Check: `quality_efficiency`
-- Fix: Keep required sections concise; move detailed examples, reference material, and supporting docs to the references/ directory
-
-**10. Non-descriptive filename: dsl.md**
+**9. Non-descriptive filename: dsl.md**
 - File: `embabel-agent/SKILL.md`
 - Check: `quality_efficiency`
 - Fix: Use descriptive names: 'form_validation_rules.md' not 'doc2.md'
 
-*... and 1 more issues*
+**10. Deeply nested references in termination.md**
+- File: `embabel-agent/SKILL.md`
+- Check: `quality_efficiency`
+- Fix: Keep references one level deep from SKILL.md
 
 </details>
 
@@ -164,11 +161,6 @@
 *AST-based code quality checks for skill scripts*
 
 - [OK] **lint**: No Python scripts found in scripts/ or tools/
-
-### ✅ Tier 2 Deduplication
-*Embedding-based duplicate detection*
-
-- All checks passed
 
 ---
 *Generated by SkillEvaluator*

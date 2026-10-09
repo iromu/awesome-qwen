@@ -1047,7 +1047,7 @@ subjects = [subject.next() for _ in range(3)]
 
 ### Primary Pattern Documentation
 
-- [Subject Hygiene for Task Delegation Pattern](/home/agent/awesome-agentic-patterns/patterns/subject-hygiene.md)
+- [Subject Hygiene for Task Delegation Pattern](subject-hygiene-report.md)
 - [SKILLS-AGENTIC-LESSONS.md](https://github.com/nibzard/SKILLS-AGENTIC-LESSONS) - Analysis of 88 Claude conversation sessions
 
 ---
@@ -1098,17 +1098,17 @@ subjects = [subject.next() for _ in range(3)]
 
 ### Related Pattern Documentation
 
-- [Sub-Agent Spawning](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md)
-- [Factory Over Assistant](/home/agent/awesome-agentic-patterns/patterns/factory-over-assistant.md)
-- [Planner-Worker Separation](/home/agent/awesome-agentic-patterns/patterns/planner-worker-separation-for-long-running-agents.md)
+- [Sub-Agent Spawning](sub-agent-spawning-report.md)
+- [Factory Over Assistant](factory-over-assistant-report.md)
+- [Planner-Worker Separation](planner-worker-separation-for-long-running-agents-report.md)
 
 ---
 
 ### Related Research Reports
 
-- [Sub-Agent Spawning Research Report](/home/agent/awesome-agentic-patterns/research/sub-agent-spawning-report.md)
-- [Sub-Agent Spawning Technical Analysis](/home/agent/awesome-agentic-patterns/research/sub-agent-spawning-technical-analysis-report.md)
-- [Factory Over Assistant Industry Implementations](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-industry-implementations-report.md)
+- [Sub-Agent Spawning Research Report](sub-agent-spawning-report.md)
+- [Sub-Agent Spawning Technical Analysis](sub-agent-spawning-technical-analysis-report.md)
+- [Factory Over Assistant Industry Implementations](factory-over-assistant-industry-implementations-report.md)
 
 ---
 

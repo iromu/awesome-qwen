@@ -359,18 +359,18 @@ From the pattern file:
 * [AI & I Podcast: How to Use Claude Code Like the People Who Built It](https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it) - Cat Wu (Anthropic), Dan Shipper (Every)
 
 ### Related Patterns in Codebase
-* [Compounding Engineering Pattern](/home/agent/awesome-agentic-patterns/patterns/compounding-engineering-pattern.md)
-* [Dogfooding with Rapid Iteration](/home/agent/awesome-agentic-patterns/patterns/dogfooding-with-rapid-iteration-for-agent-improvement.md)
-* [Coding Agent CI Feedback Loop](/home/agent/awesome-agentic-patterns/patterns/coding-agent-ci-feedback-loop.md)
-* [LLM Observability](/home/agent/awesome-agentic-patterns/patterns/llm-observability.md)
-* [CLI-First Skill Design](/home/agent/awesome-agentic-patterns/patterns/cli-first-skill-design.md)
+* [Compounding Engineering Pattern](compounding-engineering-pattern-report.md)
+* [Dogfooding with Rapid Iteration](dogfooding-with-rapid-iteration-for-agent-improvement-report.md)
+* [Coding Agent CI Feedback Loop](coding-agent-ci-feedback-loop-report.md)
+* [LLM Observability](llm-observability-report.md)
+* [CLI-First Skill Design](cli-first-skill-design-report.md)
 
 ### Related Research Reports
-* [Compounding Engineering Pattern Research](/home/agent/awesome-agentic-patterns/research/compounding-engineering-pattern-report.md)
-* [Dogfooding with Rapid Iteration Research](/home/agent/awesome-agentic-patterns/research/dogfooding-with-rapid-iteration-for-agent-improvement-report.md)
-* [Coding Agent CI Feedback Loop Industry Report](/home/agent/awesome-agentic-patterns/research/coding-agent-ci-feedback-loop-industry-report.md)
-* [Iterative Prompt & Skill Refinement Industry Implementations](/home/agent/awesome-agentic-patterns/research/iterative-prompt-skill-refinement-industry-implementations-report.md)
-* [Iterative Prompt & Skill Refinement Academic Sources](/home/agent/awesome-agentic-patterns/research/iterative-prompt-skill-refinement-academic-sources-report.md)
+* [Compounding Engineering Pattern Research](compounding-engineering-pattern-report.md)
+* [Dogfooding with Rapid Iteration Research](dogfooding-with-rapid-iteration-for-agent-improvement-report.md)
+* [Coding Agent CI Feedback Loop Industry Report](coding-agent-ci-feedback-loop-industry-report.md)
+* [Iterative Prompt & Skill Refinement Industry Implementations](iterative-prompt-skill-refinement-industry-implementations-report.md)
+* [Iterative Prompt & Skill Refinement Academic Sources](iterative-prompt-skill-refinement-academic-sources-report.md)
 
 ---
 

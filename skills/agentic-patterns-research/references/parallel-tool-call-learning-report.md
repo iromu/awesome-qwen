@@ -273,37 +273,37 @@ async def investigate_feature(feature_name: str):
 
 **Directly Related:**
 
-- **[Parallel Tool Execution](../patterns/parallel-tool-execution.md)** - The foundational pattern for conditional parallel execution. Parallel Tool Call Learning builds on this by adding RL-based learning to optimize when and how to parallelize.
+- **[Parallel Tool Execution](parallel-tool-execution-report.md)** - The foundational pattern for conditional parallel execution. Parallel Tool Call Learning builds on this by adding RL-based learning to optimize when and how to parallelize.
 
-- **[Agent Reinforcement Fine-Tuning (Agent RFT)](../patterns/agent-reinforcement-fine-tuning.md)** - The training mechanism that enables parallel tool call learning. Agent RFT provides the infrastructure for tools, graders, and exploration where parallelization emerges naturally.
+- **[Agent Reinforcement Fine-Tuning (Agent RFT)](agent-reinforcement-fine-tuning-report.md)** - The training mechanism that enables parallel tool call learning. Agent RFT provides the infrastructure for tools, graders, and exploration where parallelization emerges naturally.
 
-- **[Tool Use Incentivization via Reward Shaping](../patterns/tool-use-incentivization-via-reward-shaping.md)** - Complementary pattern for encouraging tool use through dense rewards. Can be combined with latency-aware rewards to incentivize parallel tool invocation.
+- **Tool Use Incentivization via Reward Shaping** - Complementary pattern for encouraging tool use through dense rewards. Can be combined with latency-aware rewards to incentivize parallel tool invocation.
 
 **Architectural Complements:**
 
-- **[Asynchronous Coding Agent Pipeline](../patterns/asynchronous-coding-agent-pipeline.md)** - Provides infrastructure for decoupling inference, tool execution, and learning into parallel components, enabling the bursty traffic patterns from parallel tool calls.
+- **[Asynchronous Coding Agent Pipeline](asynchronous-coding-agent-pipeline-report.md)** - Provides infrastructure for decoupling inference, tool execution, and learning into parallel components, enabling the bursty traffic patterns from parallel tool calls.
 
-- **[Distributed Execution with Cloud Workers](../patterns/distributed-execution-cloud-workers.md)** - Scales parallel tool execution across multiple agents using git worktrees, enabling team-level parallelization.
+- **[Distributed Execution with Cloud Workers](distributed-execution-cloud-workers-report.md)** - Scales parallel tool execution across multiple agents using git worktrees, enabling team-level parallelization.
 
-- **[LLM Map-Reduce Pattern](../patterns/llm-map-reduce-pattern.md)** - Similar parallel execution philosophy but applied to document processing with sandboxed workers.
+- **[LLM Map-Reduce Pattern](llm-map-reduce-pattern-report.md)** - Similar parallel execution philosophy but applied to document processing with sandboxed workers.
 
 **Coordination Patterns:**
 
-- **[Factory over Assistant](../patterns/factory-over-assistant.md)** - Orchestrational mindset that embraces spawning multiple parallel agents rather than watching one work, synergizing with learned parallelization.
+- **Factory over Assistant** - Orchestrational mindset that embraces spawning multiple parallel agents rather than watching one work, synergizing with learned parallelization.
 
-- **[Planner-Worker Separation for Long-Running Agents](../patterns/planner-worker-separation-for-long-running-agents.md)** - Hierarchical structure where workers can apply parallel tool execution patterns independently.
+- **[Planner-Worker Separation for Long-Running Agents](planner-worker-separation-for-long-running-agents-report.md)** - Hierarchical structure where workers can apply parallel tool execution patterns independently.
 
-- **[Action-Selector Pattern](../patterns/action-selector-pattern.md)** - Constrains action selection to allowlists, which can include parallel tool batch actions.
+- **[Action-Selector Pattern](action-selector-pattern-report.md)** - Constrains action selection to allowlists, which can include parallel tool batch actions.
 
 **Tool Selection & Steering:**
 
-- **[Tool Selection Guide](../patterns/tool-selection-guide.md)** - Data-driven patterns for optimal tool selection, including preference for parallel delegation over sequential.
+- **Tool Selection Guide** - Data-driven patterns for optimal tool selection, including preference for parallel delegation over sequential.
 
-- **[Patch Steering via Prompted Tool Selection](../patterns/patch-steering-via-prompted-tool-selection.md)** - Prompt-based techniques to guide tool selection, which can encourage parallel tool use patterns.
+- **[Patch Steering via Prompted Tool Selection](patch-steering-via-prompted-tool-selection-report.md)** - Prompt-based techniques to guide tool selection, which can encourage parallel tool use patterns.
 
 **Memory & Learning:**
 
-- **[Memory Synthesis from Execution Logs](../patterns/memory-synthesis-from-execution-logs.md)** - Post-hoc analysis that can identify successful parallel tool patterns from execution traces for future application.
+- **[Memory Synthesis from Execution Logs](memory-synthesis-from-execution-logs-report.md)** - Post-hoc analysis that can identify successful parallel tool patterns from execution traces for future application.
 
 ---
 

@@ -32,7 +32,7 @@ on_outbound_request(req):
     return ALLOW
 ```
 
-This is complementary to [Egress Lockdown (No-Exfiltration Channel)](egress-lockdown-no-exfiltration-channel.md): that pattern controls *where* an agent may send data at the network layer, while this one verifies that *what* the agent is sending is true before it goes.
+This is complementary to [Egress Lockdown (No-Exfiltration Channel)](../tool-use-environment/egress-lockdown-no-exfiltration-channel.md): that pattern controls *where* an agent may send data at the network layer, while this one verifies that *what* the agent is sending is true before it goes.
 
 ## Evidence
 
@@ -65,5 +65,5 @@ An existing implementation of this pattern is [SourceryKit](https://github.com/P
 - [Goldwasser, Micali & Rackoff: The Knowledge Complexity of Interactive Proof Systems (SIAM J. Comput., 1989)](https://doi.org/10.1137/0218012)
 - [A Survey on Agentic Security (arXiv:2510.06445)](https://arxiv.org/abs/2510.06445)
 - [OWASP GenAI Security Project: Agentic AI - Threats and Mitigations](https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/)
-- [Egress Lockdown (No-Exfiltration Channel)](egress-lockdown-no-exfiltration-channel.md)
+- [Egress Lockdown (No-Exfiltration Channel)](../tool-use-environment/egress-lockdown-no-exfiltration-channel.md)
 - [SourceryKit](https://github.com/ProvablyAI/sourcerykit) (implementation)

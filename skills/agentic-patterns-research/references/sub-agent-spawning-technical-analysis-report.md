@@ -1018,15 +1018,15 @@ agent2 = spawn_subagent(task="...", context=result1)
 ## References
 
 ### Primary Pattern Documentation
-- [Sub-Agent Spawning Pattern](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md)
+- [Sub-Agent Spawning Pattern](sub-agent-spawning-report.md)
 
 ### Related Research Reports
-- [Factory over Assistant](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-report.md)
-- [Planner-Worker Separation](/home/agent/awesome-agentic-patterns/research/planner-worker-separation-for-long-running-agents-report.md)
-- [Distributed Execution with Cloud Workers](/home/agent/awesome-agentic-patterns/research/distributed-execution-cloud-workers-report.md)
-- [Custom Sandboxed Background Agent](/home/agent/awesome-agentic-patterns/research/custom-sandboxed-background-agent-report.md)
-- [Autonomous Workflow Agent Architecture](/home/agent/awesome-agentic-patterns/research/autonomous-workflow-agent-architecture-report.md)
-- [Asynchronous Coding Agent Pipeline](/home/agent/awesome-agentic-patterns/research/asynchronous-coding-agent-pipeline-report.md)
+- [Factory over Assistant](factory-over-assistant-report.md)
+- [Planner-Worker Separation](planner-worker-separation-for-long-running-agents-report.md)
+- [Distributed Execution with Cloud Workers](distributed-execution-cloud-workers-report.md)
+- [Custom Sandboxed Background Agent](custom-sandboxed-background-agent-report.md)
+- [Autonomous Workflow Agent Architecture](autonomous-workflow-agent-architecture-report.md)
+- [Asynchronous Coding Agent Pipeline](asynchronous-coding-agent-pipeline-report.md)
 
 ### Industry Sources
 - [Claude Code](https://claude.ai/code)

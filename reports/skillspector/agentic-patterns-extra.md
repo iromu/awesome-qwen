@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** agentic-patterns-extra  
-**Scanned:** 2026-10-08 22:24:44 UTC  
+**Scanned:** 2026-10-09 07:50:20 UTC  
 
 ## Risk Assessment
 
@@ -15,7 +15,7 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 369 | No |
+| `SKILL.md` | markdown | 119 | No |
 | `evals/evals.json` | json | 106 | No |
 | `references/INDEX.md` | markdown | 273 | No |
 | `references/context-memory/agent-powered-codebase-qa-onboarding.md` | markdown | 48 | No |
@@ -213,135 +213,7 @@
 | `references/ux-collaboration/team-shared-agent-configuration.md` | markdown | 166 | No |
 | `references/ux-collaboration/verbose-reasoning-transparency.md` | markdown | 69 | No |
 
-## Issues (52)
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:104`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/learning-adaptation/variance-based-rl-sample-selection.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:126`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/orchestration-control/dual-llm-pattern.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:177`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/reliability-eval/failover-aware-model-fallback.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:187`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/reliability-eval/schema-validation-retry-cross-step-learning.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:216`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/security-safety/sandboxed-tool-authorization.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:236`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/tool-use-environment/code-first-tool-interface-pattern.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:244`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/tool-use-environment/intelligent-bash-tool-execution.md`
-
----
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:247`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/tool-use-environment/multi-platform-communication-aggregation.md`
-
----
+## Issues (44)
 
 ### 🔴 HIGH: EA5
 
@@ -848,7 +720,7 @@
 
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
-| reference_missing | `SKILL.md:353-353` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:118-118` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | static_parse_limit | `references/learning-adaptation/variance-based-rl-sample-selection.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | static_parse_limit | `references/orchestration-control/dual-llm-pattern.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | static_parse_limit | `references/reliability-eval/failover-aware-model-fallback.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
@@ -871,7 +743,6 @@
 | completed | `mcp_rug_pull` |  |
 | completed | `mcp_tool_poisoning` |  |
 | disabled_by_configuration | `meta_analyzer` | Analyzer was disabled by the requested configuration. |
-| completed | `reference_coverage` |  |
 | disabled_by_configuration | `semantic_developer_intent` | Analyzer was disabled by the requested configuration. |
 | disabled_by_configuration | `semantic_quality_policy` | Analyzer was disabled by the requested configuration. |
 | disabled_by_configuration | `semantic_security_discovery` | Analyzer was disabled by the requested configuration. |

@@ -678,7 +678,7 @@ review_criteria:
 
 ### Primary Sources
 
-- [Inversion of Control Pattern](/home/agent/awesome-agentic-patterns/patterns/inversion-of-control.md)
+- [Inversion of Control Pattern](inversion-of-control-report.md)
 - [What Sourcegraph learned building AI coding agents](https://www.nibzard.com/ampcode)
 - [Raising An Agent Podcast](https://www.youtube.com/watch?v=2wjnV6F2arc) - Episode 9: "The Assistant is Dead, Long Live the Factory"
 
@@ -707,19 +707,19 @@ review_criteria:
 
 ### Related Pattern Documentation
 
-- [Background Agent CI](/home/agent/awesome-agentic-patterns/patterns/background-agent-ci.md) - Validated in production
-- [Sub-Agent Spawning](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md) - Validated in production
-- [Planner-Worker Separation](/home/agent/awesome-agentic-patterns/patterns/planner-worker-separation-for-long-running-agents.md) - Emerging
-- [Spectrum of Control](/home/agent/awesome-agentic-patterns/patterns/spectrum-of-control-blended-initiative.md) - Validated in production
-- [Hook-Based Safety Guard Rails](/home/agent/awesome-agentic-patterns/patterns/hook-based-safety-guard-rails.md) - Validated in production
-- [Human-in-the-Loop Approval Framework](/home/agent/awesome-agentic-patterns/patterns/human-in-loop-approval-framework.md) - Validated in production
+- [Background Agent CI](background-agent-ci-report.md) - Validated in production
+- [Sub-Agent Spawning](sub-agent-spawning-report.md) - Validated in production
+- [Planner-Worker Separation](planner-worker-separation-for-long-running-agents-report.md) - Emerging
+- [Spectrum of Control](spectrum-of-control-blended-initiative-report.md) - Validated in production
+- [Hook-Based Safety Guard Rails](hook-based-safety-guard-rails-report.md) - Validated in production
+- [Human-in-the-Loop Approval Framework](human-in-loop-approval-framework-report.md) - Validated in production
 
 ### Related Research Reports
 
-- [Factory Over Assistant Industry Implementations](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-industry-implementations-report.md)
-- [Background Agent CI Research](/home/agent/awesome-agentic-patterns/research/background-agent-ci-report.md)
-- [Human-in-the-Loop Approval Framework Research](/home/agent/awesome-agentic-patterns/research/human-in-loop-approval-framework-report.md)
-- [Hook-Based Safety Guard Rails Research](/home/agent/awesome-agentic-patterns/research/hook-based-safety-guard-rails-report.md)
+- [Factory Over Assistant Industry Implementations](factory-over-assistant-industry-implementations-report.md)
+- [Background Agent CI Research](background-agent-ci-report.md)
+- [Human-in-the-Loop Approval Framework Research](human-in-loop-approval-framework-report.md)
+- [Hook-Based Safety Guard Rails Research](hook-based-safety-guard-rails-report.md)
 
 ---
 

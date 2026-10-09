@@ -168,9 +168,9 @@ STATE_TEMPLATE = {
 1. [Cognition AI: Rebuilding Devin for Claude Sonnet 4.5: Lessons and Challenges](https://cognition.ai/blog/devin-sonnet-4-5-lessons-and-challenges) - September 29, 2025
 
 ### Pattern Documentation
-- [Proactive Agent State Externalization Pattern](/home/agent/awesome-agentic-patterns/patterns/proactive-agent-state-externalization.md)
-- [Context Window Anxiety Management Pattern](/home/agent/awesome-agentic-patterns/patterns/context-window-anxiety-management.md)
+- [Proactive Agent State Externalization Pattern](proactive-agent-state-externalization-report.md)
+- [Context Window Anxiety Management Pattern](context-window-anxiety-management-report.md)
 
 ### Related
-- [Episodic Memory Retrieval & Injection Pattern](/home/agent/awesome-agentic-patterns/patterns/episodic-memory-retrieval-injection.md)
-- [Sub-Agent Spawning Pattern](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md)
+- [Episodic Memory Retrieval & Injection Pattern](episodic-memory-retrieval-injection-report.md)
+- [Sub-Agent Spawning Pattern](sub-agent-spawning-report.md)

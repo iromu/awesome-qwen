@@ -931,16 +931,16 @@ When properly implemented with appropriate safety measures, the pattern can acce
 
 ### Safety and Anti-Patterns
 
-- [Action-Selector Pattern Research Report](/research/action-selector-pattern-report.md) - Control-flow vulnerabilities and action allowlists
+- [Action-Selector Pattern Research Report](action-selector-pattern-report.md) - Control-flow vulnerabilities and action allowlists
 
 - AI Safety Design Patterns (various sources, 2025-2026) - "The God Agent" anti-pattern, prompt injection risks
 
 ### Related Patterns in This Repository
 
-- [Action Selector Pattern](/patterns/action-selector-pattern.md) - Hard allowlists for preventing untrusted control flow
-- [Soulbound Identity Verification](/patterns/soulbound-identity-verification.md) - Non-transferable identity credentials with state continuity
-- [Canary Rollout and Automatic Rollback](/patterns/canary-rollout-and-automatic-rollback-for-agent-policy-changes.md) - Progressive deployment with auto-rollback
-- [Autonomous Workflow Agent Architecture](/patterns/autonomous-workflow-agent-architecture.md) - Long-running workflow management
+- [Action Selector Pattern](action-selector-pattern-report.md) - Hard allowlists for preventing untrusted control flow
+- [Soulbound Identity Verification](soulbound-identity-verification-report.md) - Non-transferable identity credentials with state continuity
+- [Canary Rollout and Automatic Rollback](canary-rollout-and-automatic-rollback-for-agent-policy-changes-report.md) - Progressive deployment with auto-rollback
+- [Autonomous Workflow Agent Architecture](autonomous-workflow-agent-architecture-report.md) - Long-running workflow management
 
 ### Economic Commitment
 

@@ -55,7 +55,7 @@ Implement a distributed execution framework that runs multiple Claude Code sessi
 
 **Human oversight integration:**
 
-- Approval gates for risky operations (see [Human-in-the-Loop Approval Framework](human-in-loop-approval-framework.md))
+- Approval gates for risky operations (see [Human-in-the-Loop Approval Framework](../ux-collaboration/human-in-loop-approval-framework.md))
 - Centralized monitoring dashboard
 - Team notification channels (Slack, email)
 
@@ -171,4 +171,4 @@ Extends [Sub-Agent Spawning](sub-agent-spawning.md) and [Swarm Migration Pattern
 - [HumanLayer Documentation](https://docs.humanlayer.dev/) - Framework for human-in-the-loop agent coordination
 - Stone, P., & Veloso, M. (2000). Multiagent systems: A survey from a machine learning perspective. *Autonomous Robots*, 8(3), 345-383. DOI: 10.1023/A:1008930228068
 - Weiss, G. (Ed.). (2013). *Multiagent systems: a modern approach to distributed artificial intelligence*. MIT Press.
-- Related patterns: [Sub-Agent Spawning](sub-agent-spawning.md), [Swarm Migration Pattern](swarm-migration-pattern.md), [Human-in-the-Loop Approval Framework](human-in-loop-approval-framework.md)
+- Related patterns: [Sub-Agent Spawning](sub-agent-spawning.md), [Swarm Migration Pattern](swarm-migration-pattern.md), [Human-in-the-Loop Approval Framework](../ux-collaboration/human-in-loop-approval-framework.md)

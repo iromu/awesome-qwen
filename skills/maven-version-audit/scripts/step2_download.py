@@ -13,7 +13,7 @@ import os
 import re
 import subprocess
 import sys
-import xml.etree.ElementTree as ET
+import _va_xml as vx
 
 import _va_paths as va
 
@@ -98,8 +98,8 @@ def content_matches(path, group, artifact):
     if not is_metadata(path):
         return False
     try:
-        root = ET.parse(path).getroot()
-    except ET.ParseError:
+        root = vx.root(path).getroot()
+    except vx.ParseError:
         return False
     got_group = root.findtext("groupId")
     got_artifact = root.findtext("artifactId")

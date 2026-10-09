@@ -57,7 +57,7 @@ flowchart TD
 -   **Cons/Considerations:**
     -   If a batch of tools contains mostly read-only operations but includes a single state-modifying operation early in the sequence, the entire batch might still be executed sequentially, limiting potential parallelism.
     -   The effectiveness relies on the accurate classification of tools as read-only or state-modifying. An incorrectly classified tool could lead to safety issues or missed optimization opportunities.
-    -   **Context Consumption:** Parallel execution burns through context windows faster as multiple results return simultaneously, which may contribute to [context anxiety](context-window-anxiety-management.md) in context-aware models.
+    -   **Context Consumption:** Parallel execution burns through context windows faster as multiple results return simultaneously, which may contribute to [context anxiety](../context-memory/context-window-anxiety-management.md) in context-aware models.
 
 ## References
 

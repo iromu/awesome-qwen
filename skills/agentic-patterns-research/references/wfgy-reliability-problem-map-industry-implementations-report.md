@@ -607,8 +607,8 @@ Teams should adopt WFGY as their **triage methodology** while leveraging industr
 - [Traccia](https://github.com/traccia-ai/traccia-py) - OpenTelemetry-based tracing
 
 ### Related Patterns
-- [LLM Observability](/home/agent/awesome-agentic-patterns/patterns/llm-observability.md) - Span-level tracing for agent debugging
-- [Incident-to-Eval Synthesis](/home/agent/awesome-agentic-patterns/patterns/incident-to-eval-synthesis.md) - Converting incidents to regression tests
+- [LLM Observability](llm-observability-report.md) - Span-level tracing for agent debugging
+- [Incident-to-Eval Synthesis](incident-to-eval-synthesis-report.md) - Converting incidents to regression tests
 
 ### Source Material
 - [WFGY Problem Map](https://github.com/onestardao/WFGY/blob/main/ProblemMap/README.md) - Original pattern source

@@ -10,8 +10,9 @@
 #   OUTPUT_DIR  where per-skill reports are written (default: ./reports/skillspector)
 #   extra args  forwarded verbatim to `skillspector scan` (e.g. --baseline f.yaml)
 #
-#   NO_LLM=1    static analysis only (no LLM, no API key required)
-#   RESCAN_ALL=1 force a full re-scan even when reports look current
+#   NO_LLM=1    static analysis only — this is the DEFAULT (no LLM, no API key)
+#   NO_LLM=0    opt in to the LLM stage (OpenAI-compatible endpoint; see below)
+#   RESCAN_ALL=1 force a re-scan of every skill even when reports look current
 #
 # The script is incremental: a skill is re-scanned only when its report is
 # missing, carries a "Degraded scan" banner, was generated with NO_LLM=1
@@ -98,8 +99,13 @@ PY
 SKILLS_DIR="${1:-./skills}"
 OUTPUT_DIR="${2:-./reports/skillspector}"
 
-# NO_LLM=1 runs static analysis only (no LLM, no API key needed).
-NO_LLM="${NO_LLM:-0}"
+# Positional args after the two directories are forwarded verbatim to every
+# `skillspector scan` call (e.g. ./scan_skills.sh ./skills ./out --baseline f.yaml).
+EXTRA_SCAN_ARGS=("${@:3}")
+
+# Static analysis only by default (no LLM, no API key needed). Set NO_LLM=0 to
+# include the LLM stage in the scan.
+NO_LLM="${NO_LLM:-1}"
 
 # RESCAN_ALL=1 bypasses the staleness check below and re-scans every skill.
 RESCAN_ALL="${RESCAN_ALL:-0}"

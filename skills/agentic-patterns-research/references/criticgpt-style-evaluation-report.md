@@ -394,11 +394,11 @@ Based on the "Lethal Trifecta" threat model:
 
 ### Related Patterns
 
-12. **[Awesome Agentic Patterns - RLAIF](/home/agent/awesome-agentic-patterns/patterns/rlaif-reinforcement-learning-from-ai-feedback.md)** - AI feedback pattern
+12. **[Awesome Agentic Patterns - RLAIF](rlaif-reinforcement-learning-from-ai-feedback-report.md)** - AI feedback pattern
 
-13. **[Awesome Agentic Patterns - Self-Critique Evaluator Loop](/home/agent/awesome-agentic-patterns/patterns/self-critique-evaluator-loop.md)** - Self-critique pattern
+13. **[Awesome Agentic Patterns - Self-Critique Evaluator Loop](self-critique-evaluator-loop-report.md)** - Self-critique pattern
 
-14. **[AI-Assisted Code Review & Verification Research Report](/home/agent/awesome-agentic-patterns/research/ai-assisted-code-review-verification-report.md)** - Implementation patterns
+14. **[AI-Assisted Code Review & Verification Research Report](ai-assisted-code-review-verification-report.md)** - Implementation patterns
 
 ---
 

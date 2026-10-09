@@ -137,4 +137,4 @@ sequenceDiagram
 - [Effectively Controlling Reasoning Models through Thinking Intervention](https://arxiv.org/pdf/2503.24370) (Princeton et al., March 2025) - "Thinking intervention" for strategically inserting/modifying thinking tokens during generation
 - [Dynamic Early Exit in Reasoning Models](https://arxiv.org/abs/2504.15895) (arXiv:2504.15895, April 2025) - Confidence-based early stopping; ~75% of samples contain early exit opportunities
 - [OpenTelemetry GenAI Semantic Conventions](https://opentelemetry.io/) - Standard attributes for AI agent tracing
-- Related patterns: [Spectrum of Control / Blended Initiative](spectrum-of-control.md), [Verbose Reasoning Transparency](verbose-reasoning-transparency.md)
+- Related patterns: [Spectrum of Control / Blended Initiative](spectrum-of-control-blended-initiative.md), [Verbose Reasoning Transparency](verbose-reasoning-transparency.md)

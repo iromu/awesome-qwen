@@ -1123,9 +1123,9 @@ jobs:
 - [HiveMind-Actions](https://github.com/BUZASLAN128/HiveMind-Actions) - Serverless swarm AI
 
 ### Related Patterns in Codebase
-- [Background Agent CI](/home/agent/awesome-agentic-patterns/patterns/background-agent-ci.md) - Validated in production
-- [Asynchronous Coding Agent Pipeline](/home/agent/awesome-agentic-patterns/patterns/asynchronous-coding-agent-pipeline.md) - Proposed
-- [Coding Agent CI Feedback Loop](/home/agent/awesome-agentic-patterns/patterns/coding-agent-ci-feedback-loop.md) - Best practice
+- [Background Agent CI](background-agent-ci-report.md) - Validated in production
+- [Asynchronous Coding Agent Pipeline](asynchronous-coding-agent-pipeline-report.md) - Proposed
+- [Coding Agent CI Feedback Loop](coding-agent-ci-feedback-loop-report.md) - Best practice
 
 ### Articles and Resources
 - [Raising An Agent - Episode 6: Background agents](https://ampcode.com/manual#background) - Original pattern source

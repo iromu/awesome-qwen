@@ -103,7 +103,7 @@ The pattern addresses a common problem: RAG pipelines and agent systems fail in 
 
 ## 4. Industry Implementations
 
-See dedicated report: [WFGY Reliability Problem Map - Industry Implementations Report](/home/agent/awesome-agentic-patterns/research/wfgy-reliability-problem-map-industry-implementations-report.md)
+See dedicated report: [WFGY Reliability Problem Map - Industry Implementations Report](wfgy-reliability-problem-map-industry-implementations-report.md)
 
 **Key Findings Summary:**
 
@@ -341,8 +341,8 @@ The WFGY Reliability Problem Map pattern serves as a **foundational triage syste
 ## References
 
 ### Research Reports
-- [WFGY Reliability Problem Map - Industry Implementations Report](/home/agent/awesome-agentic-patterns/research/wfgy-reliability-problem-map-industry-implementations-report.md) - Comprehensive analysis of industry tools and platforms
-- [WFGY Reliability Problem Map - Academic Sources Report](/home/agent/awesome-agentic-patterns/research/wfgy-reliability-problem-map-academic-sources-report.md) - Academic literature review
+- [WFGY Reliability Problem Map - Industry Implementations Report](wfgy-reliability-problem-map-industry-implementations-report.md) - Comprehensive analysis of industry tools and platforms
+- [WFGY Reliability Problem Map - Academic Sources Report](wfgy-reliability-problem-map-academic-sources-report.md) - Academic literature review
 
 ### Pattern Source
 - [WFGY Problem Map README](https://github.com/onestardao/WFGY/blob/main/ProblemMap/README.md) - Original pattern documentation
@@ -351,22 +351,22 @@ The WFGY Reliability Problem Map pattern serves as a **foundational triage syste
 ### Related Patterns in This Repository
 
 **Complementary:**
-- [Incident-to-Eval Synthesis](/home/agent/awesome-agentic-patterns/patterns/incident-to-eval-synthesis.md) - Converting incidents to regression tests
-- [CriticGPT-Style Evaluation](/home/agent/awesome-agentic-patterns/patterns/criticgpt-style-evaluation.md) - Multi-criteria evaluation for code
-- [Canary Rollout and Automatic Rollback](/home/agent/awesome-agentic-patterns/patterns/canary-rollout-and-automatic-rollback-for-agent-policy-changes.md) - Safe deployment strategy
-- [Rich Feedback Loops](/home/agent/awesome-agentic-patterns/patterns/rich-feedback-loops.md) - Iterative feedback mechanisms
-- [Failover-Aware Model Fallback](/home/agent/awesome-agentic-patterns/patterns/failover-aware-model-fallback.md) - Semantic error classification
+- [Incident-to-Eval Synthesis](incident-to-eval-synthesis-report.md) - Converting incidents to regression tests
+- [CriticGPT-Style Evaluation](criticgpt-style-evaluation-report.md) - Multi-criteria evaluation for code
+- [Canary Rollout and Automatic Rollback](canary-rollout-and-automatic-rollback-for-agent-policy-changes-report.md) - Safe deployment strategy
+- [Rich Feedback Loops](rich-feedback-loops-report.md) - Iterative feedback mechanisms
+- [Failover-Aware Model Fallback](failover-aware-model-fallback-report.md) - Semantic error classification
 
 **Extending:**
-- [Anti-Reward-Hacking Grader Design](/home/agent/awesome-agentic-patterns/patterns/anti-reward-hacking-grader-design.md) - Robust evaluation methods
-- [Schema Validation Retry with Cross-Step Learning](/home/agent/awesome-agentic-patterns/patterns/schema-validation-retry-cross-step-learning.md) - Schema failure handling
-- [RLAIF Reinforcement Learning from AI Feedback](/home/agent/awesome-agentic-patterns/patterns/rlaif-reinforcement-learning-from-ai-feedback.md) - Continuous improvement
+- [Anti-Reward-Hacking Grader Design](anti-reward-hacking-grader-design-report.md) - Robust evaluation methods
+- [Schema Validation Retry with Cross-Step Learning](schema-validation-retry-cross-step-learning-report.md) - Schema failure handling
+- [RLAIF Reinforcement Learning from AI Feedback](rlaif-reinforcement-learning-from-ai-feedback-report.md) - Continuous improvement
 
 **Competing:**
-- [Agentic Search Over Vector Embeddings](/home/agent/awesome-agentic-patterns/patterns/agentic-search-over-vector-embeddings.md) - Alternative to pre-indexed RAG
+- [Agentic Search Over Vector Embeddings](agentic-search-over-vector-embeddings-report.md) - Alternative to pre-indexed RAG
 
 **Preventive:**
-- [Structured Output Specification](/home/agent/awesome-agentic-patterns/patterns/structured-output-specification.md) - Prevents output issues
+- [Structured Output Specification](structured-output-specification-report.md) - Prevents output issues
 
 ### Academic References
 - "Agentic Retrieval-Augmented Generation: A Survey" (arXiv:2501.09136, 2025)

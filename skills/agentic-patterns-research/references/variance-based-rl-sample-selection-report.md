@@ -378,30 +378,30 @@ Where N=3-5, K=5-10, P=20-100, B=10-100, T=time per forward pass.
 
 #### Direct Dependencies
 
-1. **[Agent Reinforcement Fine-Tuning (Agent RFT)](agent-reinforcement-fine-tuning.md)**
+1. **[Agent Reinforcement Fine-Tuning (Agent RFT)](agent-reinforcement-fine-tuning-report.md)**
    - **Relationship**: Variance-based selection is a preprocessing step for Agent RFT
    - **Connection**: Variance analysis identifies which samples are worth using in Agent RFT training
    - **Flow**: Variance analysis → determine which samples to include → run Agent RFT
 
-2. **[Memory Reinforcement Learning (MemRL)](memory-reinforcement-learning-memrl.md)**
+2. **[Memory Reinforcement Learning (MemRL)](memory-reinforcement-learning-memrl-report.md)**
    - **Relationship**: Both use utility/value scoring for selection
    - **Connection**: Variance-based uses statistical variance; MemRL uses learned utility scores
    - **Difference**: MemRL operates at runtime without weight updates
 
 #### Complementary Patterns
 
-3. **[Inference-Time Scaling](inference-time-scaling.md)**
+3. **[Inference-Time Scaling](inference-time-scaling-report.md)**
    - **Shared philosophy**: Trading compute for better outcomes via multiple attempts
    - **Connection**: Both leverage "multiple attempts" (3-5 for variance vs. multiple candidates)
 
-4. **[Recursive Best-of-N Delegation](recursive-best-of-n-delegation.md)**
+4. **Recursive Best-of-N Delegation**
    - **Similar approach**: Best-of-N selection at different levels
    - **Difference**: Variance-based works on dataset level; Recursive Best-of-N on task decomposition
 
-5. **[Action Caching & Replay](action-caching-replay.md)**
+5. **[Action Caching & Replay](action-caching-replay-report.md)**
    - **Complementary**: Variance optimizes which samples; action caching optimizes how to replay
 
-6. **[Explicit Posterior Sampling Planner](explicit-posterior-sampling-planner.md)**
+6. **Explicit Posterior Sampling Planner**
    - **Shared concept**: Both use sampling-based exploration of uncertainty
 
 ### Pattern Combinations

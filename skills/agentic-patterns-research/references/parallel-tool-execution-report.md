@@ -728,7 +728,7 @@ class AdaptiveExecutor:
 **Context Window Implications:**
 
 - **Rapid token consumption**: Parallel tools return results simultaneously
-- **Context anxiety risk**: Multiple large responses may trigger premature summarization (see [Context Window Anxiety Management](../patterns/context-window-anxiety-management.md))
+- **Context anxiety risk**: Multiple large responses may trigger premature summarization (see Context Window Anxiety Management)
 - **Mitigation**: Result summarization, selective context injection
 
 **Debugging Challenges:**
@@ -775,7 +775,7 @@ async def execute_with_tracing(tool: ToolCall, trace_id: str):
 
 ### Directly Related Patterns
 
-**1. Parallel Tool Call Learning** ([`patterns/parallel-tool-call-learning.md`](../patterns/parallel-tool-call-learning.md))
+**1. Parallel Tool Call Learning** ([`patterns/parallel-tool-call-learning.md`](parallel-tool-call-learning-report.md))
 
 - **Relationship**: Complementary approaches to parallelization
 - **Key difference**: Conditional Parallel Tool Execution is an **orchestration pattern** (infrastructure-level), while Parallel Tool Call Learning is a **training pattern** (model-level)
@@ -785,14 +785,14 @@ async def execute_with_tracing(tool: ToolCall, trace_id: str):
   - Combined: A well-trained model can issue parallel read-only calls that the orchestrator executes concurrently
 - **Reference from pattern**: "Infrastructure must support parallel tool execution... Tool server must handle concurrent requests"
 
-**2. Asynchronous Coding Agent Pipeline** ([`patterns/asynchronous-coding-agent-pipeline.md`](../patterns/asynchronous-coding-agent-pipeline.md))
+**2. Asynchronous Coding Agent Pipeline** ([`patterns/asynchronous-coding-agent-pipeline.md`](asynchronous-coding-agent-pipeline-report.md))
 
 - **Relationship**: Infrastructure pattern enabling the execution model
 - **Key insight**: Async pipelines decouple inference, tool execution, and learning
 - **Connection**: Parallel tool execution requires async infrastructure to avoid blocking
 - **Quote from pattern**: "Decouple the inference, tool execution, and learning into parallel, asynchronous components, communicating via message queues"
 
-**3. Lane-Based Execution Queueing** ([`patterns/lane-based-execution-queueing.md`](../patterns/lane-based-execution-queueing.md))
+**3. Lane-Based Execution Queueing** ([`patterns/lane-based-execution-queueing.md`](lane-based-execution-queueing-report.md))
 
 - **Relationship**: Queue-level isolation pattern for parallel execution
 - **Key concept**: Isolated execution lanes prevent interleaving hazards
@@ -800,7 +800,7 @@ async def execute_with_tracing(tool: ToolCall, trace_id: str):
 - **Quote from pattern**: "Traditional agent systems serialize all operations through a single execution queue... Concurrent execution is desirable but risky"
 - **Implementation relationship**: Can combine lane-based queuing with per-batch parallelism
 
-**4. LLM Map-Reduce Pattern** ([`patterns/llm-map-reduce-pattern.md`](../patterns/llm-map-reduce-pattern.md))
+**4. LLM Map-Reduce Pattern** ([`patterns/llm-map-reduce-pattern.md`](llm-map-reduce-pattern-report.md))
 
 - **Relationship**: Parallel processing pattern for independent data chunks
 - **Key insight**: Map phase spawns sandboxed LLMs for parallel processing
@@ -810,21 +810,21 @@ async def execute_with_tracing(tool: ToolCall, trace_id: str):
 
 ### Orchestration & Control Patterns
 
-**5. Action-Selector Pattern** ([`patterns/action-selector-pattern.md`](../patterns/action-selector-pattern.md))
+**5. Action-Selector Pattern** ([`patterns/action-selector-pattern.md`](action-selector-pattern-report.md))
 
 - **Relationship**: Safety pattern for controlled execution
 - **Connection**: Both patterns address safety in tool execution
 - **Key insight**: Action-selector uses allowlists to prevent prompt injection; parallel tool execution uses classification to prevent race conditions
 - **Complementary use**: Can combine—parallel execution of validated action-selector calls
 
-**6. Multi-Model Orchestration for Complex Edits** ([`patterns/multi-model-orchestration-for-complex-edits.md`](../patterns/multi-model-orchestration-for-complex-edits.md))
+**6. Multi-Model Orchestration for Complex Edits** ([`patterns/multi-model-orchestration-for-complex-edits.md`](multi-model-orchestration-for-complex-edits-report.md))
 
 - **Relationship**: Pipeline orchestration pattern
 - **Connection**: Both involve coordinating multiple operations
 - **Difference**: Multi-model orchestrates across model types; parallel tool execution orchestrates across tool calls
 - **Potential synergy**: Parallel tool calls could feed into multi-model pipeline
 
-**7. Distributed Execution with Cloud Workers** ([`patterns/distributed-execution-cloud-workers.md`](../patterns/distributed-execution-cloud-workers.md))
+**7. Distributed Execution with Cloud Workers** ([`patterns/distributed-execution-cloud-workers.md`](distributed-execution-cloud-workers-report.md))
 
 - **Relationship**: System-level parallelism pattern
 - **Connection**: Extends parallel tool execution across multiple agent sessions
@@ -835,7 +835,7 @@ async def execute_with_tracing(tool: ToolCall, trace_id: str):
 
 ### Context & Memory Patterns
 
-**8. Context Window Anxiety Management** ([`patterns/context-window-anxiety-management.md`](../patterns/context-window-anxiety-management.md))
+**8. Context Window Anxiety Management** (`patterns/context-window-anxiety-management.md`)
 
 - **Relationship**: Addresses a side effect of parallel tool execution
 - **Problem identified**: "Parallel execution burns through context windows faster as multiple results return simultaneously"
@@ -845,21 +845,21 @@ async def execute_with_tracing(tool: ToolCall, trace_id: str):
 
 ### Tool Use & Environment Patterns
 
-**9. Code-First Tool Interface Pattern** ([`patterns/code-first-tool-interface-pattern.md`](../patterns/code-first-tool-interface-pattern.md))
+**9. Code-First Tool Interface Pattern** ([`patterns/code-first-tool-interface-pattern.md`](code-first-tool-interface-pattern-report.md))
 
 - **Relationship**: Alternative orchestration approach
 - **Key difference**: Code Mode writes code to orchestrate tools; parallel tool execution orchestrates tools directly
 - **Trade-off**: Code Mode better for complex workflows; parallel tool execution better for independent reads
 - **Quote from pattern**: "LLMs are better at writing code to orchestrate MCP tools than calling MCP tools directly"
 
-**10. Dual-Use Tool Design** ([`patterns/dual-use-tool-design.md`](../patterns/dual-use-tool-design.md))
+**10. Dual-Use Tool Design** ([`patterns/dual-use-tool-design.md`](dual-use-tool-design-report.md))
 
 - **Relationship**: Tool design philosophy relevant to classification
 - **Connection**: Dual-use tools need clear classification for parallel execution
 - **Quote from pattern**: "Design all tools to be dual-use—equally accessible and useful to both humans and AI agents"
 - **Implementation note**: Dual-use tools should declare their read/write nature for both human and agent consumers
 
-**11. Intelligent Bash Tool Execution** ([`patterns/intelligent-bash-tool-execution.md`](../patterns/intelligent-bash-tool-execution.md))
+**11. Intelligent Bash Tool Execution** ([`patterns/intelligent-bash-tool-execution.md`](intelligent-bash-tool-execution-report.md))
 
 - **Relationship**: Tool-specific execution pattern
 - **Challenge identified**: Bash tool is dual-nature (can read or write)

@@ -176,6 +176,6 @@ If you wait to see what happens before acting, you'll miss the window. The front
 
 * [Raising an Agent Episode 10: The Assistant is Dead, Long Live the Factory](https://www.youtube.com/watch?v=4rx36wc9ugw) - AMP (Thorsten Ball, Quinn Slack, 2025)
 * [Controlled Experiments on the Web: Survey and Practical Guide](https://doi.org/10.1007/s10618-007-0061-3) - Kohavi, Henne, Sommerfield (2007)
-* Related: [Burn the Boats](burn-the-boats.md), [Disposable Scaffolding Over Durable Features](disposable-scaffolding-over-durable-features.md), [Dogfooding with Rapid Iteration for Agent Improvement](dogfooding-with-rapid-iteration-for-agent-improvement.md)
+* Related: [Burn the Boats](../orchestration-control/burn-the-boats.md), [Disposable Scaffolding Over Durable Features](../orchestration-control/disposable-scaffolding-over-durable-features.md), [Dogfooding with Rapid Iteration for Agent Improvement](../feedback-loops/dogfooding-with-rapid-iteration-for-agent-improvement.md)
 
 ---

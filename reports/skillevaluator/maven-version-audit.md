@@ -1,19 +1,19 @@
 # SkillEvaluator Validation Report
 
-**Status:** ❌ FAILED
+**Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 08, 2026 at 10:16 PM UTC
+**Generated:** October 09, 2026 at 02:12 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 10 |
+| Validator Results | 9 |
 | ✅ Passed | 9 |
-| ❌ Failed | 1 |
+| ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 37 (10 medium) |
+| Total Issues | 32 (4 medium) |
 
 ## Quality Score
 
@@ -38,6 +38,23 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'maven-version-audit'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
+**Non-blocking findings: 1**
+
+| Severity | Issue | Location |
+|----------|-------|----------|
+| [LOW] LOW | Unexpected 'requirements.txt' in skill root | <code>maven-version-audit/requirements.txt</code> |
+
+<details>
+<summary>View Details</summary>
+
+**1. Unexpected 'requirements.txt' in skill root**
+- File: `maven-version-audit/requirements.txt`
+- Check: `unexpected_file`
+- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+
+</details>
+
+
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
@@ -48,55 +65,12 @@
 
 - No license detected in any tier
 
-### ❌ Code Risk Analysis
+### ✅ Code Risk Analysis
 *Static code analysis using Bandit and packaged Semgrep rules*
 
-**6 errors, 0 warnings**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [MED] MEDIUM | Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20) | <code>maven-version-audit/scripts/step1_coords.py:37</code> |
-| [MED] MEDIUM | Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20) | <code>maven-version-audit/scripts/step2_download.py:101</code> |
-| [MED] MEDIUM | Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20) | <code>maven-version-audit/scripts/step3_doc.py:126</code> |
-| [MED] MEDIUM | Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20) | <code>maven-version-audit/scripts/step3_doc.py:187</code> |
-| [MED] MEDIUM | Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20) | <code>maven-version-audit/scripts/verify_ordering.py:36</code> |
-| [MED] MEDIUM | Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20) | <code>maven-version-audit/scripts/verify_ordering.py:52</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20)**
-- File: `maven-version-audit/scripts/step1_coords.py:37`
-- Check: `B314:blacklist`
-- Fix: Review blacklist (B314) (CWE-20)
-
-**2. Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20)**
-- File: `maven-version-audit/scripts/step2_download.py:101`
-- Check: `B314:blacklist`
-- Fix: Review blacklist (B314) (CWE-20)
-
-**3. Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20)**
-- File: `maven-version-audit/scripts/step3_doc.py:126`
-- Check: `B314:blacklist`
-- Fix: Review blacklist (B314) (CWE-20)
-
-**4. Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20)**
-- File: `maven-version-audit/scripts/step3_doc.py:187`
-- Check: `B314:blacklist`
-- Fix: Review blacklist (B314) (CWE-20)
-
-**5. Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20)**
-- File: `maven-version-audit/scripts/verify_ordering.py:36`
-- Check: `B314:blacklist`
-- Fix: Review blacklist (B314) (CWE-20)
-
-**6. Using xml.etree.ElementTree.parse to parse untrusted XML data is known to be vulnerable to XML attacks. Replace xml.etree.ElementTree.parse with its defusedxml equivalent function or make sure defusedxml.defuse_stdlib() is called (CWE-20)**
-- File: `maven-version-audit/scripts/verify_ordering.py:52`
-- Check: `B314:blacklist`
-- Fix: Review blacklist (B314) (CWE-20)
-
-</details>
-
+- Found 8 Python, 0 Shell, 0 JavaScript/TypeScript files
+- Bandit: No security issues found
+- Semgrep: No security issues found
 
 ### ✅ Secrets Detection
 *Detect hardcoded secrets, API keys, and credentials using Gitleaks*
@@ -108,13 +82,14 @@
 
 - [OK] **dead_links_scan**: Checking 1 markdown files for dead links
 - [OK] **dead_links**: All relative links valid in 1 markdown file(s)
-- [OK] **dependencies**: No dependency files found (requirements.txt, pyproject.toml)
+- [OK] **dependency_audit**: Auditing requirements.txt
+- [OK] **dependency_audit**: requirements.txt passed dependency audit
 - [OK] **test_discovery**: No standard Python test-file candidates found; target tests were not executed and coverage was not measured. Consider adding tests.
 
 ### ✅ Unicode Smuggling Detection
 *Detect invisible Unicode characters and ASCII smuggling*
 
-- [OK] **unicode_scan**: No invisible Unicode characters detected in 8 file(s)
+- [OK] **unicode_scan**: No invisible Unicode characters detected in 10 file(s)
 
 ### ✅ B QUALITY
 *Skill quality scoring across Correctness (35%), Discoverability (25%), Reliability (25%), and Efficiency (15%)*
@@ -206,12 +181,13 @@
 
 - All checks passed
 
-**Non-blocking findings: 18**
+**Non-blocking findings: 19**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
 | [LOW] LOW | _va_paths.py missing shebang line | <code>maven-version-audit/scripts/_va_paths.py</code> |
 | [LOW] LOW | _va_paths.py may lack input validation | <code>maven-version-audit/scripts/_va_paths.py</code> |
+| [LOW] LOW | _va_xml.py missing shebang line | <code>maven-version-audit/scripts/_va_xml.py</code> |
 | [LOW] LOW | crosscheck.py contains magic numbers | <code>maven-version-audit/scripts/crosscheck.py</code> |
 | [LOW] LOW | crosscheck.py missing shebang line | <code>maven-version-audit/scripts/crosscheck.py</code> |
 | [LOW] LOW | crosscheck.py may lack input validation | <code>maven-version-audit/scripts/crosscheck.py</code> |
@@ -219,8 +195,7 @@
 | [LOW] LOW | qa_doc.py missing shebang line | <code>maven-version-audit/scripts/qa_doc.py</code> |
 | [LOW] LOW | qa_doc.py may lack input validation | <code>maven-version-audit/scripts/qa_doc.py</code> |
 | [LOW] LOW | step1_coords.py missing shebang line | <code>maven-version-audit/scripts/step1_coords.py</code> |
-| [LOW] LOW | step1_coords.py may lack input validation | <code>maven-version-audit/scripts/step1_coords.py</code> |
-| ... | *8 more issues* | |
+| ... | *9 more issues* | |
 
 <details>
 <summary>View Details</summary>
@@ -235,55 +210,50 @@
 - Check: `no_input_validation`
 - Fix: Add argument checks and raise descriptive errors
 
-**3. crosscheck.py contains magic numbers**
+**3. _va_xml.py missing shebang line**
+- File: `maven-version-audit/scripts/_va_xml.py`
+- Check: `missing_shebang`
+- Fix: Add: #!/usr/bin/env python3
+
+**4. crosscheck.py contains magic numbers**
 - File: `maven-version-audit/scripts/crosscheck.py`
 - Check: `magic_numbers`
 - Fix: Extract magic numbers to named constants
 
-**4. crosscheck.py missing shebang line**
+**5. crosscheck.py missing shebang line**
 - File: `maven-version-audit/scripts/crosscheck.py`
 - Check: `missing_shebang`
 - Fix: Add: #!/usr/bin/env python3
 
-**5. crosscheck.py may lack input validation**
+**6. crosscheck.py may lack input validation**
 - File: `maven-version-audit/scripts/crosscheck.py`
 - Check: `no_input_validation`
 - Fix: Add argument checks and raise descriptive errors
 
-**6. qa_doc.py contains magic numbers**
+**7. qa_doc.py contains magic numbers**
 - File: `maven-version-audit/scripts/qa_doc.py`
 - Check: `magic_numbers`
 - Fix: Extract magic numbers to named constants
 
-**7. qa_doc.py missing shebang line**
+**8. qa_doc.py missing shebang line**
 - File: `maven-version-audit/scripts/qa_doc.py`
 - Check: `missing_shebang`
 - Fix: Add: #!/usr/bin/env python3
 
-**8. qa_doc.py may lack input validation**
+**9. qa_doc.py may lack input validation**
 - File: `maven-version-audit/scripts/qa_doc.py`
 - Check: `no_input_validation`
 - Fix: Add argument checks and raise descriptive errors
 
-**9. step1_coords.py missing shebang line**
+**10. step1_coords.py missing shebang line**
 - File: `maven-version-audit/scripts/step1_coords.py`
 - Check: `missing_shebang`
 - Fix: Add: #!/usr/bin/env python3
 
-**10. step1_coords.py may lack input validation**
-- File: `maven-version-audit/scripts/step1_coords.py`
-- Check: `no_input_validation`
-- Fix: Add argument checks and raise descriptive errors
-
-*... and 8 more issues*
+*... and 9 more issues*
 
 </details>
 
-
-### ✅ Tier 2 Deduplication
-*Embedding-based duplicate detection*
-
-- All checks passed
 
 ---
 *Generated by SkillEvaluator*

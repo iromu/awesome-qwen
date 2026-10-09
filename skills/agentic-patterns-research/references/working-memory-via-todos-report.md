@@ -480,7 +480,7 @@ function validateTaskState(tasks: Task[]): ValidationResult {
 
 ### Primary Sources
 - [SKILLS-AGENTIC-LESSONS.md](https://github.com/nibzard/SKILLS-AGENTIC-LESSONS) - Skills based on lessons learned from analyzing 88 real-world Claude conversation sessions
-- [Proactive Agent State Externalization](../patterns/proactive-agent-state-externalization.md)
+- [Proactive Agent State Externalization](proactive-agent-state-externalization-report.md)
 - [Task List Pattern](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/task-lists)
 
 ### Academic Sources
@@ -499,11 +499,11 @@ function validateTaskState(tasks: Task[]): ValidationResult {
 - [LangGraph](https://github.com/langchain-ai/langgraph) - 30K+ stars, state checkpointing
 
 ### Related Pattern Documentation
-- [Working Memory via TodoWrite Pattern](../patterns/working-memory-via-todos.md)
-- [Continuous Autonomous Task Loop Pattern](../patterns/continuous-autonomous-task-loop-pattern.md)
-- [Proactive Agent State Externalization](../patterns/proactive-agent-state-externalization.md)
-- [Sub-Agent Spawning](../patterns/sub-agent-spawning.md)
-- [Filesystem-Based Agent State](../patterns/filesystem-based-agent-state.md)
+- Working Memory via TodoWrite Pattern
+- [Continuous Autonomous Task Loop Pattern](continuous-autonomous-task-loop-pattern-report.md)
+- [Proactive Agent State Externalization](proactive-agent-state-externalization-report.md)
+- Sub-Agent Spawning
+- [Filesystem-Based Agent State](filesystem-based-agent-state-report.md)
 
 ---
 

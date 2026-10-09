@@ -180,4 +180,4 @@ mv memories/.consensus.tmp memories/consensus.md
 - [BabyAGI](https://github.com/yoheinakajima/babyagi) — early task-loop example with persistent task artifacts
 - Related: [Filesystem-Based Agent State](filesystem-based-agent-state.md) — for checkpointing within a single cycle
 - Related: [Proactive Agent State Externalization](proactive-agent-state-externalization.md) — for agents that self-initiate state writes
-- Related: [Initializer-Maintainer Dual Agent Architecture](initializer-maintainer-dual-agent.md) — for session handoff artifacts across repeated work cycles
+- Related: [Initializer-Maintainer Dual Agent Architecture](../orchestration-control/initializer-maintainer-dual-agent.md) — for session handoff artifacts across repeated work cycles

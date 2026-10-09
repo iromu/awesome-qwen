@@ -6,16 +6,39 @@
 #
 # Usage:
 #   ./evaluate_skills.sh [SKILLS_DIR] [OUTPUT_DIR] [extra skillevaluator validate args...]
+#   ./evaluate_skills.sh --skill <name|glob|path> [--skill ...] [extra validate args...]
 #
 #   SKILLS_DIR  directory containing one subdir per skill (default: ./skills)
 #   OUTPUT_DIR  where per-skill reports are written (default: ./reports/skillevaluator)
 #   extra args  forwarded verbatim to `skillevaluator validate`
 #
-#   NO_LLM=1    static analysis only (--no-llm --no-dedup --tiers 1; no
-#               LLM provider or API key required)
+#   --skill, -s <list>  Validate only these skills. Repeatable, and accepts a
+#                       comma-separated list. An entry may be a bare skill name
+#                       (docker-containerize), a glob (embabel-*), or a path to
+#                       the skill directory (skills/docker-containerize). A path
+#                       also sets the scan root, so `--skill skills/foo` needs
+#                       no separate SKILLS_DIR argument. Naming skills this way
+#                       forces them (see --force) and a name that matches no
+#                       skill is an error rather than a silent no-op.
+#   --force, -f         Re-validate even when the existing report still looks
+#                       current. Without it a skill whose report is fresh,
+#                       complete, and newer than its SKILL.md is skipped.
+#
+#   NO_LLM=1    static analysis only (adds --no-llm; no LLM provider or API
+#               key required)
+#   DEDUP=1     also run the Tier 2 semantic-deduplication check, which is off
+#               by default — see the note below
 #   TIER3=1     also run Tier 3 live agent evaluation (needs Docker + a
 #               provider; each skill takes ~10 min or more — off by default)
-#   RESCAN_ALL=1 force a full re-run even when reports look current
+#   RESCAN_ALL=1 force a re-run of every skill; same effect as --force
+#
+# Tier 2 deduplication is OFF by default, which is the one place this script
+# deliberately narrows what SkillEvaluator would otherwise run. It embeds every
+# chunk of a skill and compares them, so it needs an embedding model: the
+# endpoint configured below serves chat models only, and a run that requests
+# Tier 2 therefore finds nothing to report and still ends as "⚠️ INCOMPLETE"
+# (or, for the large skills, trips the 512-chunk cap first). Set DEDUP=1 once
+# SKILL_EVAL_LLM_BASE_URL points at a real embedding model.
 #
 # By default the `security` Tier-1 check is excluded via --checks. That check
 # delegates to the skillspector CLI, which scan_skills.sh already runs
@@ -30,6 +53,9 @@
 # missing, carries an "INCOMPLETE" status (a degraded run whose LLM or eval
 # stage failed), was generated with NO_LLM=1 (static-only reports are stamped
 # with a marker), or its "Generated:" timestamp predates the skill's SKILL.md.
+# Because that last test only watches SKILL.md, an edit confined to
+# references/ or scripts/ leaves the report looking current — pass --skill (or
+# --force) when re-checking a skill after that kind of change.
 #
 # LLM-backed checks use an OpenAI-compatible endpoint. The non-secret
 # settings are set below; the API key is read from the environment or from a
@@ -54,20 +80,104 @@ if [ -z "${SKILL_EVAL_LLM_API_KEY:-}" ] && [ -f "$SCRIPT_DIR/.skillevaluator.env
   source "$SCRIPT_DIR/.skillevaluator.env"
 fi
 
-SKILLS_DIR="${1:-./skills}"
-shift || true
-OUTPUT_DIR="${1:-./reports/skillevaluator}"
-shift || true
-EXTRA_ARGS=("$@")
+# --- argument parsing ------------------------------------------------------
+# Wrapper flags (-s/--skill/--only, -f/--force) are recognised anywhere on the
+# command line. Anything else beginning with a dash is forwarded verbatim to
+# `skillevaluator validate`; the first two remaining arguments are still the
+# SKILLS_DIR and OUTPUT_DIR positionals. That keeps the older call forms intact
+# — `./evaluate_skills.sh ./skills ./reports --fail-fast` parses as before.
+SKILLS_DIR=""
+OUTPUT_DIR=""
+FORCE="${RESCAN_ALL:-0}"
+POSITIONALS=()
+EXTRA_ARGS=()
+SELECTIONS=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -s | --skill | --only)
+      if [ $# -lt 2 ]; then
+        echo "error: $1 needs a skill name, glob, or path" >&2
+        exit 1
+      fi
+      read -ra picked <<< "${2//,/ }"
+      SELECTIONS+=("${picked[@]}")
+      shift 2
+      ;;
+    --skill=* | --only=*)
+      list="${1#*=}"
+      read -ra picked <<< "${list//,/ }"
+      SELECTIONS+=("${picked[@]}")
+      shift
+      ;;
+    -f | --force)
+      FORCE=1
+      shift
+      ;;
+    -*)
+      EXTRA_ARGS+=("$1")
+      shift
+      ;;
+    *)
+      POSITIONALS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [ "${#POSITIONALS[@]}" -gt 0 ]; then
+  SKILLS_DIR="${POSITIONALS[0]}"
+  if [ "${#POSITIONALS[@]}" -gt 1 ]; then
+    OUTPUT_DIR="${POSITIONALS[1]}"
+  fi
+fi
+
+# Resolve the selection list. An entry that is an existing directory holding a
+# SKILL.md is a path rather than a name: its basename becomes the filter and its
+# parent becomes the scan root, so `--skill skills/foo` needs no separate
+# SKILLS_DIR. Anything else is matched as a name or glob inside the root.
+SELECTED=()
+for selection in ${SELECTIONS[@]+"${SELECTIONS[@]}"}; do
+  if [ -f "$selection/SKILL.md" ]; then
+    if [ -z "$SKILLS_DIR" ]; then
+      SKILLS_DIR="$(dirname "$selection")"
+    fi
+    SELECTED+=("$(basename "$selection")")
+  else
+    SELECTED+=("$selection")
+  fi
+done
+
+SKILLS_DIR="${SKILLS_DIR:-./skills}"
+OUTPUT_DIR="${OUTPUT_DIR:-./reports/skillevaluator}"
+
+# Naming skills explicitly means you want their current verdict, so it forces
+# them. The staleness test below only compares against SKILL.md, so without
+# this a fix confined to references/ or scripts/ would skip straight through.
+if [ "${#SELECTED[@]}" -gt 0 ]; then
+  FORCE=1
+fi
+
+# True when $1 matches one of the --skill entries. The right-hand operand of the
+# comparison is deliberately unquoted so globs such as 'embabel-*' still expand.
+is_selected() {
+  local name="$1" pattern
+  for pattern in "${SELECTED[@]}"; do
+    # shellcheck disable=SC2254
+    [[ "$name" == $pattern ]] && return 0
+  done
+  return 1
+}
 
 # NO_LLM=1 runs static analysis only (no LLM, no provider key needed).
 NO_LLM="${NO_LLM:-0}"
 
+# DEDUP=1 re-enables the Tier 2 deduplication check. Off unless asked for.
+DEDUP="${DEDUP:-0}"
+
 # TIER3=1 adds the Tier 3 live agent evaluation (Docker, very slow).
 TIER3="${TIER3:-0}"
 
-# RESCAN_ALL=1 bypasses the staleness check below and re-validates every skill.
-RESCAN_ALL="${RESCAN_ALL:-0}"
 
 # Tier-1 checks to run, passed verbatim to --checks when non-empty. Excludes
 # `security` (the delegated skillspector call) by default and `pii` too many false positives; see header.
@@ -168,10 +278,36 @@ fi
   exit 1
 }
 
+# A --skill entry that is a literal name or path has to match something, or the
+# run would validate nothing and still exit 0. Globs are allowed to match
+# nothing; a plain name is not.
+for selection in ${SELECTED[@]+"${SELECTED[@]}"}; do
+  case "$selection" in
+    *'*'*) continue ;;
+  esac
+  matched=0
+  for candidate in "$SKILLS_DIR"/*/; do
+    if [ "$(basename "$candidate")" = "$selection" ]; then
+      matched=1
+      break
+    fi
+  done
+  if [ "$matched" != "1" ]; then
+    echo "error: no skill named '$selection' under '$SKILLS_DIR'" >&2
+    echo "       (a --skill entry must be a skill directory, a glob, or a path" >&2
+    echo "        to one; nothing was validated)" >&2
+    exit 1
+  fi
+done
+
 # Absolute form of $SKILLS_DIR, used to scrub local paths from reports.
 SKILLS_DIR_ABS="$(cd "$SKILLS_DIR" && pwd)"
 
 mkdir -p "$OUTPUT_DIR"
+
+if [ "${#SELECTED[@]}" -gt 0 ]; then
+  echo "targeting: ${SELECTED[*]}"
+fi
 
 scanned=0
 up_to_date=0
@@ -181,6 +317,12 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   [ -d "$skill_dir" ] || continue
   skill_dir="${skill_dir%/}"
   skill_name="$(basename "$skill_dir")"
+
+  # --skill narrows the sweep to the named skills; anything else is passed over
+  # silently, since listing 25 "skip" lines would only bury the one that ran.
+  if [ "${#SELECTED[@]}" -gt 0 ] && ! is_selected "$skill_name"; then
+    continue
+  fi
 
   # Only validate directories that actually define a skill.
   if [ ! -f "$skill_dir/SKILL.md" ]; then
@@ -192,14 +334,14 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   report="$OUTPUT_DIR/${skill_name}.md"
 
   # Incremental: keep the existing report unless it is stale or untrustworthy.
-  if [ "$RESCAN_ALL" != "1" ] && ! needs_rescan "$report" "$skill_dir/SKILL.md"; then
+  if [ "$FORCE" != "1" ] && ! needs_rescan "$report" "$skill_dir/SKILL.md"; then
     echo "skip  $skill_name (report current)"
     up_to_date=$((up_to_date + 1))
     continue
   fi
 
   echo "eval  $skill_name -> $(basename "$report")"
-  [ "$RESCAN_ALL" = "1" ] || echo "      reason: $RESCAN_REASON"
+  [ "$FORCE" = "1" ] || echo "      reason: $RESCAN_REASON"
 
   # Each run writes skillevaluator-output-<timestamp>.{md,json} plus a
   # BENCHMARK.md into its --output-dir; run in a temp dir and keep only the
@@ -209,14 +351,30 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   if [ -n "$CHECKS" ]; then
     validate_cmd+=(--checks "$CHECKS")
   fi
-  if [ "$NO_LLM" = "1" ]; then
-    validate_cmd+=(--no-llm --no-dedup --tiers 1)
-  elif [ "$TIER3" = "1" ]; then
-    validate_cmd+=(--llm --tiers 1,2,3)
-  else
-    validate_cmd+=(--llm --tiers 1,2)
+  # Tier 1 always runs. Tier 2 and Tier 3 are opt-in here even though
+  # SkillEvaluator defaults Tier 2 to on, and the tier list has to say so:
+  # omitting --tiers would leave Tier 3 running for every skill, and --no-dedup
+  # on its own still leaves Tier 2 inside the requested tier set.
+  tiers="1"
+  if [ "$DEDUP" = "1" ]; then
+    tiers="$tiers,2"
   fi
-  validate_cmd+=("${EXTRA_ARGS[@]}")
+  if [ "$TIER3" = "1" ]; then
+    tiers="$tiers,3"
+  fi
+
+  if [ "$NO_LLM" = "1" ]; then
+    validate_cmd+=(--no-llm)
+  else
+    validate_cmd+=(--llm)
+  fi
+  if [ "$DEDUP" = "1" ]; then
+    validate_cmd+=(--dedup)
+  else
+    validate_cmd+=(--no-dedup)
+  fi
+  validate_cmd+=(--tiers "$tiers")
+  validate_cmd+=(${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"})
   if ! "${validate_cmd[@]}"; then
     echo "warn  $skill_name: validate exited non-zero (report may be partial)" >&2
   fi

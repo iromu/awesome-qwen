@@ -870,7 +870,7 @@ for task in get_tasks():
 ## 7. Sources & References
 
 ### Primary Pattern Sources
-- [Working Memory via TodoWrite Pattern](/home/agent/awesome-agentic-patterns/patterns/working-memory-via-todos.md)
+- [Working Memory via TodoWrite Pattern](working-memory-via-todos-report.md)
 - [SKILLS-AGENTIC-LESSONS.md](https://github.com/nibzard/SKILLS-AGENTIC-LESSONS) - Analysis of 88 Claude conversation sessions
 - [Anthropic Task List Pattern Documentation](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/task-lists)
 
@@ -885,11 +885,11 @@ for task in get_tasks():
 - [LangGraph](https://langchain-ai.github.io/langgraph/)
 
 ### Related Research Reports
-- [Proactive Agent State Externalization Report](/home/agent/awesome-agentic-patterns/research/proactive-agent-state-externalization-report.md)
-- [Continuous Autonomous Task Loop Report](/home/agent/awesome-agentic-patterns/research/continuous-autonomous-task-loop-pattern-report.md)
-- [Factory Over Assistant Industry Implementations](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-industry-implementations-report.md)
-- [Plan-Then-Execute Pattern Report](/home/agent/awesome-agentic-patterns/research/plan-then-execute-pattern-report.md)
-- [Reflection Industry Implementations Report](/home/agent/awesome-agentic-patterns/research/reflection-industry-implementations-report.md)
+- [Proactive Agent State Externalization Report](proactive-agent-state-externalization-report.md)
+- [Continuous Autonomous Task Loop Report](continuous-autonomous-task-loop-pattern-report.md)
+- [Factory Over Assistant Industry Implementations](factory-over-assistant-industry-implementations-report.md)
+- [Plan-Then-Execute Pattern Report](plan-then-execute-pattern-report.md)
+- [Reflection Industry Implementations Report](reflection-industry-implementations-report.md)
 
 ### Academic Foundations
 - [ReAct: Synergizing Reasoning and Acting](https://arxiv.org/abs/2210.03629) - ICLR 2023

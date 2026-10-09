@@ -813,8 +813,8 @@ try {
 
 ### Related Research Reports
 
-19. [Context-Minimization Industry Implementations Report](/home/agent/awesome-agentic-patterns/research/context-minimization-industry-implementations-report.md)
-20. [Context Window Anxiety Management Industry Implementations](/home/agent/awesome-agentic-patterns/research/context-window-anxiety-management-industry-implementations-report.md)
+19. [Context-Minimization Industry Implementations Report](context-minimization-industry-implementations-report.md)
+20. [Context Window Anxiety Management Industry Implementations](context-window-anxiety-management-industry-implementations-report.md)
 
 ---
 

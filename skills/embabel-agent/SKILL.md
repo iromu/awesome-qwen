@@ -42,55 +42,13 @@ Build agentic AI on the JVM with **Embabel** — a Spring-based framework for au
 
 ## Getting Started
 
-### Setup (Maven/Gradle)
+Add the platform starter (`embabel-agent-starter`, plus `-shell` for a CLI or
+`-mcpserver` for an MCP server) and the starter for each model provider you call.
+Release binaries are on **Maven Central**; no snapshot repository is needed.
 
-Add the appropriate starter:
-
-| Starter | Use Case |
-|---------|----------|
-| `embabel-agent-starter` | Basic agent platform (web/console/microservice) |
-| `embabel-agent-starter-shell` | Interactive CLI shell |
-| `embabel-agent-starter-mcpserver` | MCP server (SSE, Streamable-HTTP) |
-
-Embabel release binaries are published to **Maven Central** — no snapshot repository needed for stable releases.
-
-### LLM Providers
-
-| Provider | Starter | Key Env Var |
-|----------|---------|-------------|
-| OpenAI | `embabel-agent-starter-openai` | `OPENAI_API_KEY` |
-| OpenAI Custom (Groq, OpenRouter) | `embabel-agent-starter-openai-custom` | `OPENAI_CUSTOM_API_KEY` |
-| Anthropic | `embabel-agent-starter-anthropic` | `ANTHROPIC_API_KEY` |
-| Google Gemini (OpenAI-compatible) | `embabel-agent-starter-gemini` | `GEMINI_API_KEY` |
-| Google GenAI (Native, Gemini 3.x) | `embabel-agent-starter-google-genai` | `GOOGLE_API_KEY` |
-| DeepSeek | `embabel-agent-starter-deepseek` | `DEEPSEEK_API_KEY` |
-| OCI Generative AI | `embabel-agent-starter-oci-genai` | `~/.oci/config` |
-| Mistral AI | `embabel-agent-starter-mistral-ai` | `MISTRAL_API_KEY` |
-| LM Studio | `embabel-agent-starter-lmstudio` | _(none)_ |
-| Ollama | `embabel-agent-starter-ollama` | _(none)_ |
-| AWS Bedrock | `embabel-agent-starter-bedrock` | AWS credentials (standard Spring AI Bedrock) |
-| Z.ai (Zhipu GLM, native client) | `embabel-agent-starter-zai` | `ZAI_API_KEY` |
-| DashScope (Alibaba Qwen) | `embabel-agent-starter-dashscope` | `DASHSCOPE_API_KEY` |
-| Docker Models | `embabel-agent-starter-dockermodels` | _(none)_ |
-| MiniMax | `embabel-agent-starter-minimax` | `MINIMAX_API_KEY` |
-| BYOK (user-supplied keys) | `embabel-agent-starter-byok` (Incubating) | _(runtime)_ |
-
-> **Z.ai:** Now uses native `spring-ai-zhipuai` client (not OpenAI-compatible). Supports GLM 5.2, native reasoning/thinking, temperature clamping `(0.0, 1.0]`. See `references/zai.md`.
->
-> **DashScope:** Alibaba Cloud Qwen 3.7 family (Max/Plus/Flash). OpenAI-compatible with parameter clamping. See `references/dashscope.md`.
->
-> **Atlas Cloud:** OpenAI-compatible endpoint for BYOK deployments — built via `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `references/customizing.md`.
-
-See `references/configuration.md` for full provider config details.
-
-## New in v1.5.1
-
-- **Roles across providers** — `embabel.models.roles` gives each role a provider dimension (BYOK, failover). `RoleResolver` beans decide per user; `ModelSelectionContextHolder` carries the user context across threads. Unsatisfiable roles throw `NoSuitableModelException` — never a silent fallback. See `references/llm-integration.md`, `references/configuration.md`.
-- **Embedding-based skill selection** — `EmbeddingSkillSelector` picks up to 2 skills by embedding similarity (frontmatter `metadata: activation: embedding`, default threshold 0.30, fail-open). See `references/agent-skills.md`.
-- **Atlas Cloud** — built-in OpenAI-compatible factory: `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `references/customizing.md`.
-- **Streaming scalar types** — `StringResult` wrapper for streaming plain-text scalars. See `references/streaming.md`.
-- **Thinking tag control** — `Thinking.withIncludedTags(...)` / `withExcludedTags(...)`. See `references/thinking.md`.
-- **Z.ai native provider** — first-class `embabel-agent-starter-zai` (GLM family, native thinking). See `references/zai.md`.
+The full starter/provider matrix (artifact and required key or config per provider,
+plus the v1.5.1 change list) lives in `references/providers.md` — read it before
+adding a dependency or asserting that something is new in v1.5.1.
 
 ## Agent Authoring
 
@@ -307,6 +265,7 @@ For topics not covered in detail above, consult the reference files:
 | DashScope provider (Alibaba Qwen) | `references/dashscope.md` |
 | Z.ai provider (Zhipu GLM, native client) | `references/zai.md` |
 | Tooling (IntelliJ IDEA plugin) | `references/tooling.md` |
+| Starter artifacts, provider keys, v1.5.1 change list | `references/providers.md` |
 
 > **Rule:** Application code uses only `com.embabel.agent.api.*`. SPI (`com.embabel.agent.spi.*`) is for framework extension only and is subject to change.
 

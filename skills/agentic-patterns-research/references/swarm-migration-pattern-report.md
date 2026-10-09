@@ -381,7 +381,7 @@ The Swarm Migration Pattern is **well-founded** in academic research with strong
    - Performance characteristics and Amdahl's Law analysis
    - When to use vs. avoid the pattern
 
-2. **Pattern File:** [patterns/swarm-migration-pattern.md](../patterns/swarm-migration-pattern.md)
+2. **Pattern File:** patterns/swarm-migration-pattern.md
    - Production-validated status
    - Real-world usage at Anthropic
    - Map-reduce workflow diagram

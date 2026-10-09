@@ -140,5 +140,5 @@ The agent has full autonomy within the workflow scope but cannot exceed it — a
 
 - [Event-Driven Architecture (Martin Fowler)](https://martinfowler.com/articles/201701-event-driven.html)
 - [SOAR Playbook Activation (Gartner)](https://www.gartner.com/en/information-technology/glossary/security-orchestration-automation-response-soar)
-- [CLI-First Skill Design (this catalogue)](cli-first-skill-design.md)
-- [CLI-Native Agent Orchestration (this catalogue)](cli-native-agent-orchestration.md)
+- [CLI-First Skill Design (this catalogue)](../tool-use-environment/cli-first-skill-design.md)
+- [CLI-Native Agent Orchestration (this catalogue)](../tool-use-environment/cli-native-agent-orchestration.md)

@@ -43,7 +43,7 @@ graph TD
     D --> E[Per-topology accuracy / leakage report]
 ```
 
-This is deliberately orthogonal to [Workflow Evals with Mocked Tools](workflow-evals-with-mocked-tools.md) (scores whether the right *tools* get called) and to [Declarative Multi-Agent Topology Definition](declarative-multi-agent-topology-definition.md) (specifies the agent graph but not whether prompts populate it correctly). It is closer to a unit test for the hand-off step itself.
+This is deliberately orthogonal to [Workflow Evals with Mocked Tools](workflow-evals-with-mocked-tools.md) (scores whether the right *tools* get called) and to [Declarative Multi-Agent Topology Definition](../orchestration-control/declarative-multi-agent-topology-definition.md) (specifies the agent graph but not whether prompts populate it correctly). It is closer to a unit test for the hand-off step itself.
 
 ## Evidence
 
@@ -76,8 +76,8 @@ This is deliberately orthogonal to [Workflow Evals with Mocked Tools](workflow-e
 ## References
 
 - Sun, Y. et al. *PerspectiveGap: A Benchmark for Multi-Agent Orchestration Prompting*. arXiv:2606.08878. Code: https://github.com/WhymustIhaveaname/PerspectiveGap.
-- Related: [Declarative Multi-Agent Topology Definition](declarative-multi-agent-topology-definition.md) — defines the agent graph this pattern tests prompt hand-offs against.
-- Related: [Subject Hygiene for Task Delegation](subject-hygiene.md) — traceability of task subjects; this pattern instead tests information-content correctness of the delegation itself.
+- Related: [Declarative Multi-Agent Topology Definition](../orchestration-control/declarative-multi-agent-topology-definition.md) — defines the agent graph this pattern tests prompt hand-offs against.
+- Related: [Subject Hygiene for Task Delegation](../orchestration-control/subject-hygiene.md) — traceability of task subjects; this pattern instead tests information-content correctness of the delegation itself.
 - Related: [Workflow Evals with Mocked Tools](workflow-evals-with-mocked-tools.md) — complementary eval angle (tool-call correctness vs. delegation-prompt correctness).
-- Related: [Sub-Agent Spawning](sub-agent-spawning.md) — describes how the main agent creates the sub-agent invocations this pattern scores; this pattern checks whether those invocations actually carry the right information.
+- Related: [Sub-Agent Spawning](../orchestration-control/sub-agent-spawning.md) — describes how the main agent creates the sub-agent invocations this pattern scores; this pattern checks whether those invocations actually carry the right information.
 - FIPA. "FIPA ACL Communicative Act Library Specification." 2002 — theoretical foundation for structured inter-agent communication that this benchmark operationalizes as a measurable score.

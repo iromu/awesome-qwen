@@ -122,5 +122,5 @@ sequenceDiagram
 
 * [Anthropic Engineering: Effective Harnesses for Long-Running Agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 * [Cursor: Scaling long-running autonomous coding](https://cursor.com/blog/scaling-agents)
-* Related: [Filesystem-Based Agent State](filesystem-based-agent-state.md)
-* Related: [Proactive Agent State Externalization](proactive-agent-state-externalization.md)
+* Related: [Filesystem-Based Agent State](../context-memory/filesystem-based-agent-state.md)
+* Related: [Proactive Agent State Externalization](../context-memory/proactive-agent-state-externalization.md)

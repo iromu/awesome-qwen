@@ -256,7 +256,7 @@ The article notes evals are "not nearly as well as I had hoped" due to non-deter
 * Sierra platform: Simulations approach for agent testing
 * [LangSmith Evaluation Platform](https://smith.langchain.com/) - Tool tracking and custom evaluators
 * [Promptfoo](https://github.com/promptfoo/promptfoo) - Mock API responses and assertion-based testing
-* Related: [Stop Hook Auto-Continue Pattern](stop-hook-auto-continue-pattern.md) - Post-execution testing
-* Related: [Agent Reinforcement Fine-Tuning](agent-reinforcement-fine-tuning.md) - Training on agent workflows
+* Related: [Stop Hook Auto-Continue Pattern](../orchestration-control/stop-hook-auto-continue-pattern.md) - Post-execution testing
+* Related: [Agent Reinforcement Fine-Tuning](../learning-adaptation/agent-reinforcement-fine-tuning.md) - Training on agent workflows
 
 ---

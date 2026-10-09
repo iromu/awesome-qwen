@@ -126,6 +126,6 @@ flowchart TD
 ## References
 
 * [SKILLS-AGENTIC-LESSONS.md](https://github.com/nibzard/SKILLS-AGENTIC-LESSONS) - Skills based on lessons learned from analyzing 88 real-world Claude conversation sessions
-* Related patterns: [Sub-Agent Spawning](sub-agent-spawning.md), [Discrete Phase Separation](discrete-phase-separation.md), [Subject Hygiene](subject-hygiene.md)
+* Related patterns: [Sub-Agent Spawning](../orchestration-control/sub-agent-spawning.md), [Discrete Phase Separation](../orchestration-control/discrete-phase-separation.md), [Subject Hygiene](../orchestration-control/subject-hygiene.md)
 * ToolFormer: [Language Models Can Teach Themselves to Use Tools](https://arxiv.org/abs/2302.04761) (Schick et al., 2023)
 * ReAct: [Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) (Yao et al., 2022)

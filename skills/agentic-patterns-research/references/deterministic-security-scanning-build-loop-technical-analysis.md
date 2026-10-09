@@ -849,13 +849,13 @@ The pattern is particularly valuable because it recognizes a fundamental truth: 
 - [SonarQube Documentation](https://docs.sonarqube.org/)
 
 ### Related Patterns
-- [Coding Agent CI Feedback Loop](/home/agent/awesome-agentic-patterns/patterns/coding-agent-ci-feedback-loop.md)
-- [Code-Then-Execute Pattern](/home/agent/awesome-agentic-patterns/patterns/code-then-execute-pattern.md)
-- [Anti-Reward-Hacking Grader Design](/home/agent/awesome-agentic-patterns/patterns/anti-reward-hacking-grader-design.md)
+- [Coding Agent CI Feedback Loop](coding-agent-ci-feedback-loop-report.md)
+- [Code-Then-Execute Pattern](code-then-execute-pattern-report.md)
+- [Anti-Reward-Hacking Grader Design](anti-reward-hacking-grader-design-report.md)
 
 ### Research Reports
-- [Codebase Optimization for Agents: Tools Report](/home/agent/awesome-agentic-patterns/research/codebase-optimization-for-agents-tools-report.md)
-- [Abstracted Code Representation: Technical Analysis](/home/agent/awesome-agentic-patterns/research/abstracted-code-representation-technical-analysis.md)
+- [Codebase Optimization for Agents: Tools Report](codebase-optimization-for-agents-tools-report.md)
+- [Abstracted Code Representation: Technical Analysis](abstracted-code-representation-technical-analysis.md)
 
 ---
 

@@ -35,7 +35,7 @@ Then after the skill is done (but again, the order is flexible), you can also ru
 2. When evaluating, run both arms — with-skill and baseline — and use "Advanced: Blind comparison" when a fair A/B verdict is needed; keep the eval harness's tooling flags consistent across arms so the delta measures the skill, not the harness.
 3. Report results using "Report structure" (Executive summary → Key findings → Recommendations) and write commit messages per "Commit message format".
 4. Tune trigger accuracy with "Description Optimization" before concluding a skill's content is the problem.
-5. Consult "Reference files" for source material and platform-specific sections ("Qwen Cloud-specific instructions", "Cowork-Specific Instructions") when the target harness differs from this one.
+5. Consult "Reference files" for source material and the harness-specific sections ("Qwen Cloud-specific instructions", "Cowork-Specific Instructions") when the target harness differs from this one.
 
 ## Communicating with the user
 
@@ -203,78 +203,9 @@ See `references/schemas.md` for the full schema (including the `assertions` fiel
 
 **"The skill fires on the wrong prompts."** "Description Optimization" -> run the description loop against trigger-eval prompts before concluding the body is the problem.
 
-## Running and evaluating test cases
+The eval loop is fully automated (no subagents, viewer, or human feedback needed) and runs through `qwen -p` subprocess calls, capped at 4 parallel processes by default.
 
-The skill-creator uses a fully automated eval loop — no subagents, no interactive viewer, no human feedback needed. Everything runs via `qwen -p` subprocess calls using the same auth as the current session. Parallel LLM processes are limited to 4 by default.
-
-### Step 1: Write eval set with assertions
-
-Create or update `evals/evals.json` with test cases and assertions:
-
-```json
-{
-  "skill_name": "example-skill",
-  "evals": [
-    {
-      "id": 1,
-      "prompt": "User's task prompt",
-      "expected_output": "Description of expected result",
-      "files": [],
-      "assertions": [
-        "The output contains a valid JSON array",
-        "Each item has a 'name' field",
-        "The array has at least 3 items"
-      ]
-    }
-  ]
-}
-```
-
-Good assertions are objectively verifiable and have descriptive names. Subjective skills (writing style, design quality) are better evaluated qualitatively — don't force assertions onto things that need human judgment.
-
-### Step 2: Run the automated eval loop
-
-Run the full loop in the background. It will:
-1. Execute test cases via `run_test.py` (subprocess-based, with-skill + baseline)
-2. Auto-grade outputs via `auto_grader.py` (Qwen subprocess calls)
-3. Aggregate benchmark stats via `aggregate_benchmark.py`
-4. Improve the description via `improve_description.py` (trigger optimization)
-5. Loop until all pass or max iterations reached
-
-```bash
-python -m scripts.run_loop \\
-  --eval-set evals/evals.json \\
-  --skill-path <path-to-skill> \\
-  --model <model-id> \\
-  --max-iterations 5 \\
-  --verbose
-```
-
-**Parameters:**
-- `--num-workers`: Max parallel LLM processes (default: 4). Keep this low to avoid overwhelming the model.
-- `--timeout`: Timeout per query in seconds (default: 30 for trigger eval, 120 for test runs).
-- `--max-iterations`: Max improvement iterations (default: 5).
-- `--runs-per-query`: Number of runs per query for trigger eval (default: 3).
-- `--holdout`: Fraction of eval set to hold out for testing (default: 0.4). Prevents overfitting.
-- `--results-dir`: Save all outputs to a timestamped subdirectory.
-
-The loop produces:
-- **HTML report** at a temp path (auto-refreshes every 5s during the loop)
-- **results.json** with full history of descriptions and scores
-- **benchmark.json** with aggregate pass rates, timing, and token usage
-- **grader logs** in the results directory
-
-### Step 3: Review results
-
-When the loop completes, check:
-- **Best score**: The highest train/test score achieved
-- **Exit reason**: Either `all_passed` or `max_iterations`
-- **HTML report**: Open the temp file to see per-query results across iterations
-- **Grading results**: Check `average_pass_rate` from the grader output
-
-If the loop hit `max_iterations` without passing, improve the skill manually (see below) and run the loop again.
-
----
+Read `references/eval-harness.md` before running a loop: it holds the `evals/evals.json` assertion schema, the `python -m scripts.run_loop` invocation with every flag, and what `results.json`, `benchmark.json` and the grader logs contain.
 
 ## Improving the skill
 
@@ -322,131 +253,13 @@ This is optional, requires subagents, and most users won't need it. The human re
 
 ---
 
-## Description Optimization
+The frontmatter `description` is the primary triggering mechanism, so tune it with `scripts/run_loop.py` before concluding that a skill's content is the problem.
 
-The description field in SKILL.md frontmatter is the primary mechanism that determines whether Qwen invokes a skill. After creating or improving a skill, offer to optimize the description for better triggering accuracy.
+Read `references/description-optimization.md` for the whole procedure: writing the 20 trigger-eval queries (what makes a near-miss negative case worth keeping), the `assets/eval_review.html` review template and its placeholders, how skill triggering actually resolves, and how to apply `best_description` back to the frontmatter.
 
-### Step 1: Generate trigger eval queries
+Qwen Cloud (web) and Cowork change some mechanics — no subagents or shell on web, no browser or display in Cowork — which changes how you run test cases, review results, and package the skill.
 
-Create 20 eval queries — a mix of should-trigger and should-not-trigger. Save as JSON:
-
-```json
-[
-  {"query": "the user prompt", "should_trigger": true},
-  {"query": "another prompt", "should_trigger": false}
-]
-```
-
-The queries must be realistic and something a Qwen Code or Qwen Cloud user would actually type. Not abstract requests, but requests that are concrete and specific and have a good amount of detail. For instance, file paths, personal context about the user's job or situation, column names and values, company names, URLs. A little bit of backstory. Some might be in lowercase or contain abbreviations or typos or casual speech. Use a mix of different lengths, and focus on edge cases rather than making them clear-cut (the user will get a chance to sign off on them).
-
-Bad: `"Format this data"`, `"Extract text from PDF"`, `"Create a chart"`
-
-Good: `"ok so my boss just sent me this xlsx file (its in my downloads, called something like 'Q4 sales final FINAL v2.xlsx') and she wants me to add a column that shows the profit margin as a percentage. The revenue is in column C and costs are in column D i think"`
-
-For the **should-trigger** queries (8-10), think about coverage. You want different phrasings of the same intent — some formal, some casual. Include cases where the user doesn't explicitly name the skill or file type but clearly needs it. Throw in some uncommon use cases and cases where this skill competes with another but should win.
-
-For the **should-not-trigger** queries (8-10), the most valuable ones are the near-misses — queries that share keywords or concepts with the skill but actually need something different. Think adjacent domains, ambiguous phrasing where a naive keyword match would trigger but shouldn't, and cases where the query touches on something the skill does but in a context where another tool is more appropriate.
-
-The key thing to avoid: don't make should-not-trigger queries obviously irrelevant. "Write a fibonacci function" as a negative test for a PDF skill is too easy — it doesn't test anything. The negative cases should be genuinely tricky.
-
-### Step 2: Review with user
-
-Present the eval set to the user for review using the HTML template:
-
-1. Read the template from `assets/eval_review.html`
-2. Replace the placeholders:
-   - `__EVAL_DATA_PLACEHOLDER__` → the JSON array of eval items (no quotes around it — it's a JS variable assignment)
-   - `__SKILL_NAME_PLACEHOLDER__` → the skill's name
-   - `__SKILL_DESCRIPTION_PLACEHOLDER__` → the skill's current description
-3. Write to a temp file (e.g., `/tmp/eval_review_<skill-name>.html`) and open it in your browser: `open /tmp/eval_review_<skill-name>.html`
-4. The user can edit queries, toggle should-trigger, add/remove entries, then click "Export Eval Set"
-5. The file downloads to `~/Downloads/eval_set.json` — check the Downloads folder for the most recent version in case there are multiple (e.g., `eval_set (1).json`)
-
-This step matters — bad eval queries lead to bad descriptions.
-
-### Step 3: Run the optimization loop
-
-Tell the user: "This will take some time — I'll run the optimization loop in the background and check on it periodically."
-
-Save the eval set to the workspace, then run in the background:
-
-```bash
-python -m scripts.run_loop \
-  --eval-set <path-to-trigger-eval.json> \
-  --skill-path <path-to-skill> \
-  --model <model-id-powering-this-session> \
-  --max-iterations 5 \
-  --verbose
-```
-
-Use the model ID from your system prompt (the one powering the current session) so the triggering test matches what the user actually experiences.
-
-While it runs, periodically tail the output to give the user updates on which iteration it's on and what the scores look like.
-
-This handles the full optimization loop automatically. It splits the eval set into 60% train and 40% held-out test, evaluates the current description (running each query 3 times to get a reliable trigger rate), then calls Qwen to propose improvements based on what failed. It re-evaluates each new description on both train and test, iterating up to 5 times. When it's done, it opens an HTML report in the browser showing the results per iteration and returns JSON with `best_description` — selected by test score rather than train score to avoid overfitting.
-
-### How skill triggering works
-
-Understanding the triggering mechanism helps design better eval queries. Skills appear in Qwen's `available_skills` list with their name + description, and Qwen decides whether to consult a skill based on that description. The important thing to know is that Qwen only consults skills for tasks it can't easily handle on its own — simple, one-step queries like "read this PDF" may not trigger a skill even if the description matches perfectly, because Qwen can handle them directly with basic tools. Complex, multi-step, or specialized queries reliably trigger skills when the description matches.
-
-This means your eval queries should be substantive enough that Qwen would actually benefit from consulting a skill. Simple queries like "read file X" are poor test cases — they won't trigger skills regardless of description quality.
-
-### Step 4: Apply the result
-
-Take `best_description` from the JSON output and update the skill's SKILL.md frontmatter. Show the user before/after and report the scores.
-
----
-
-### Package and Present (only if `present_files` tool is available)
-
-Check whether you have access to the `present_files` tool. If you don't, skip this step. If you do, package the skill and present the .skill file to the user:
-
-```bash
-python -m scripts.package_skill <path/to/skill-folder>
-```
-
-After packaging, direct the user to the resulting `.skill` file path so they can install it.
-
----
-
-## Qwen Cloud-specific instructions
-
-In Qwen Cloud (web), the core workflow is the same (draft → test → review → improve → repeat), but some mechanics change because the web version doesn't have subagents or the ability to run shell commands.
-
-**Running test cases**: No subagents means no parallel execution. For each test case, read the skill's SKILL.md, then follow its instructions to accomplish the test prompt yourself. Do them one at a time. This is less rigorous than independent subagents (you wrote the skill and you're also running it, so you have full context), but it's a useful sanity check — and the automated grading step compensates.
-
-**Reviewing results**: Present results directly in the conversation. For each test case, show the prompt and the output. If the output is a file the user needs to see (like a .docx or .xlsx), save it to the filesystem and tell them where it is so they can download and inspect it. Ask for feedback inline: "How does this look? Anything you'd change?"
-
-**Benchmarking**: Skip the quantitative benchmarking — it relies on baseline comparisons which aren't meaningful without subagents. Focus on qualitative feedback from the user.
-
-**The iteration loop**: Same as before — improve the skill, rerun the test cases, ask for feedback — just without the browser reviewer in the middle. You can still organize results into iteration directories on the filesystem if you have one.
-
-**Description optimization**: This section requires the `qwen` CLI tool (specifically `qwen -p`) which is only available in Qwen Code. Skip it if you're on Qwen Cloud.
-
-**Blind comparison**: Requires subagents. Skip it.
-
-**Packaging**: The `package_skill.py` script works anywhere with Python and a filesystem. On Qwen Cloud, you can run it and the user can download the resulting `.skill` file.
-
-**Updating an existing skill**: The user might be asking you to update an existing skill, not create a new one. In this case:
-- **Preserve the original name.** Note the skill's directory name and `name` frontmatter field -- use them unchanged. E.g., if the installed skill is `research-helper`, output `research-helper.skill` (not `research-helper-v2`).
-- **Copy to a writeable location before editing.** The installed skill path may be read-only. Copy to `/tmp/skill-name/`, edit there, and package from the copy.
-- **If packaging manually, stage in `/tmp/` first**, then copy to the output directory -- direct writes may fail due to permissions.
-
----
-
-## Cowork-Specific Instructions
-
-If you're in Cowork, the main things to know are:
-
-- You have subagents, so the main workflow (spawn test cases in parallel, run baselines, grade, etc.) all works. (However, if you run into severe problems with timeouts, it's OK to run the test prompts in series rather than parallel.)
-- You don't have a browser or display, so when generating the eval viewer, use `--static <output_path>` to write a standalone HTML file instead of starting a server. Then proffer a link that the user can click to open the HTML in their browser.
-- For whatever reason, the Cowork setup seems to disincline Qwen from generating the eval viewer after running the tests, so just to reiterate: whether you're in Cowork or in Qwen Code, after running tests, you should always generate the eval viewer for the human to look at examples before revising the skill yourself and trying to make corrections, using `generate_review.py` (not writing your own boutique html code). Sorry in advance but I'm gonna go all caps here: GENERATE THE EVAL VIEWER *BEFORE* evaluating inputs yourself. You want to get them in front of the human ASAP!
-- Feedback works differently: since there's no running server, the viewer's "Submit All Reviews" button will download `feedback.json` as a file. You can then read it from there (you may have to request access first).
-- Packaging works — `package_skill.py` just needs Python and a filesystem.
-- Description optimization (`run_loop.py` / `run_eval.py`) should work in Cowork just fine since it uses `qwen -p` via subprocess, not a browser, but please save it until you've fully finished making the skill and the user agrees it's in good shape.
-- **Updating an existing skill**: The user might be asking you to update an existing skill, not create a new one. Follow the update guidance in the Qwen Cloud section above.
-
----
+Read `references/harness-notes.md` when the target harness is not Qwen Code.
 
 ## Reference files
 

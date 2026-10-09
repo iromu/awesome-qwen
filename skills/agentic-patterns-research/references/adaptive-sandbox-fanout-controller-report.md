@@ -464,14 +464,14 @@ class AdaptiveFanoutController:
 - Microsoft Agent Framework (launched Sept 2025) - Fan-out/fan-in support
 
 ### Related Patterns in This Catalog
-- [Swarm Migration Pattern](swarm-migration-pattern.md)
-- [Sub-Agent Spawning](sub-agent-spawning.md)
-- [Isolated VM per RL Rollout](isolated-vm-per-rl-rollout.md)
-- [Variance-Based RL Sample Selection](variance-based-rl-sample-selection.md)
-- [Budget-Aware Model Routing with Hard Cost Caps](budget-aware-model-routing-with-hard-cost-caps.md)
-- [Lane-Based Execution Queueing](lane-based-execution-queueing.md)
-- [Self-Critique Evaluator Loop](self-critique-evaluator-loop.md)
-- [Progressive Complexity Escalation](progressive-complexity-escalation.md)
+- Swarm Migration Pattern
+- Sub-Agent Spawning
+- [Isolated VM per RL Rollout](isolated-vm-per-rl-rollout-report.md)
+- [Variance-Based RL Sample Selection](variance-based-rl-sample-selection-report.md)
+- [Budget-Aware Model Routing with Hard Cost Caps](budget-aware-model-routing-with-hard-cost-caps-report.md)
+- [Lane-Based Execution Queueing](lane-based-execution-queueing-report.md)
+- [Self-Critique Evaluator Loop](self-critique-evaluator-loop-report.md)
+- Progressive Complexity Escalation
 
 ---
 

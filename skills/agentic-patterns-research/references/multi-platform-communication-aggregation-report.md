@@ -54,7 +54,7 @@
 
 ## Academic Sources
 
-*See: [Multi-Platform Communication Aggregation - Academic Sources Report](/home/agent/awesome-agentic-patterns/research/multi-platform-communication-aggregation-academic-sources-report.md)*
+*See: [Multi-Platform Communication Aggregation - Academic Sources Report](multi-platform-communication-aggregation-academic-sources-report.md)*
 
 **Key Academic Terminology:**
 - **Federated Search** - Information retrieval discipline term for querying multiple heterogeneous sources
@@ -457,7 +457,7 @@ if (platform.supports.reactions) {
 ## References
 
 ### Academic Sources Report
-- [Multi-Platform Communication Aggregation - Academic Sources Report](/home/agent/awesome-agentic-patterns/research/multi-platform-communication-aggregation-academic-sources-report.md) - Comprehensive academic literature review
+- [Multi-Platform Communication Aggregation - Academic Sources Report](multi-platform-communication-aggregation-academic-sources-report.md) - Comprehensive academic literature review
 
 ### Primary Academic Sources
 - Callan, J. (2020). *Federated Search: From Theory to Practice*. Morgan & Claypool Publishers.

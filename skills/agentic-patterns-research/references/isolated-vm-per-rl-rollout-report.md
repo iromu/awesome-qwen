@@ -546,11 +546,11 @@ Layer 4: Auditability
 
 ### Related Patterns
 
-- [Agent Reinforcement Fine-Tuning](/home/agent/awesome-agentic-patterns/patterns/agent-reinforcement-fine-tuning.md)
-- [Custom Sandboxed Background Agent](/home/agent/awesome-agentic-patterns/patterns/custom-sandboxed-background-agent.md)
-- [Adaptive Sandbox Fanout Controller](/home/agent/awesome-agentic-patterns/patterns/adaptive-sandbox-fanout-controller.md)
-- [Sandboxed Tool Authorization](/home/agent/awesome-agentic-patterns/patterns/sandboxed-tool-authorization.md)
-- [Egress Lockdown (No-Exfiltration Channel)](/home/agent/awesome-agentic-patterns/patterns/egress-lockdown-no-exfiltration-channel.md)
+- [Agent Reinforcement Fine-Tuning](agent-reinforcement-fine-tuning-report.md)
+- [Custom Sandboxed Background Agent](custom-sandboxed-background-agent-report.md)
+- [Adaptive Sandbox Fanout Controller](adaptive-sandbox-fanout-controller-report.md)
+- [Sandboxed Tool Authorization](sandboxed-tool-authorization-report.md)
+- [Egress Lockdown (No-Exfiltration Channel)](egress-lockdown-no-exfiltration-channel-report.md)
 
 ---
 

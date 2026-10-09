@@ -670,7 +670,7 @@ Swarm migration prioritizes speed over cost:
 
 ### Primary Sources (Pattern Definition)
 
-- [Swarm Migration Pattern](/home/agent/awesome-agentic-patterns/patterns/swarm-migration-pattern.md) - Main pattern documentation
+- [Swarm Migration Pattern](swarm-migration-pattern-report.md) - Main pattern documentation
 - [AI & I Podcast: How to Use Claude Code](https://every.to/podcast/transcript-how-to-use-claude-code-like-the-people-who-built-it) - Boris Cherny (Anthropic)
 
 ---
@@ -708,20 +708,20 @@ Swarm migration prioritizes speed over cost:
 
 ### Related Pattern Documentation
 
-- [Sub-Agent Spawning](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md) - Foundation for swarm
-- [Factory Over Assistant](/home/agent/awesome-agentic-patterns/patterns/factory-over-assistant.md) - Philosophy behind swarm
-- [LLM Map-Reduce Pattern](/home/agent/awesome-agentic-patterns/patterns/llm-map-reduce-pattern.md) - Theoretical foundation
-- [Background Agent CI](/home/agent/awesome-agentic-patterns/patterns/background-agent-ci.md) - Execution environment
-- [Parallel Tool Execution](/home/agent/awesome-agentic-patterns/patterns/parallel-tool-execution.md) - Performance optimization
+- [Sub-Agent Spawning](sub-agent-spawning-report.md) - Foundation for swarm
+- [Factory Over Assistant](factory-over-assistant-report.md) - Philosophy behind swarm
+- [LLM Map-Reduce Pattern](llm-map-reduce-pattern-report.md) - Theoretical foundation
+- [Background Agent CI](background-agent-ci-report.md) - Execution environment
+- [Parallel Tool Execution](parallel-tool-execution-report.md) - Performance optimization
 
 ---
 
 ### Related Research Reports
 
-- [Sub-Agent Spawning Research](/home/agent/awesome-agentic-patterns/research/sub-agent-spawning-report.md)
-- [Factory Over Assistant Industry Report](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-industry-implementations-report.md)
-- [LLM Map-Reduce Industry Report](/home/agent/awesome-agentic-patterns/research/llm-map-reduce-industry-implementations-report.md)
-- [Parallel Tool Execution Research](/home/agent/awesome-agentic-patterns/research/parallel-tool-execution-report.md)
+- [Sub-Agent Spawning Research](sub-agent-spawning-report.md)
+- [Factory Over Assistant Industry Report](factory-over-assistant-industry-implementations-report.md)
+- [LLM Map-Reduce Industry Report](llm-map-reduce-industry-implementations-report.md)
+- [Parallel Tool Execution Research](parallel-tool-execution-report.md)
 
 ---
 

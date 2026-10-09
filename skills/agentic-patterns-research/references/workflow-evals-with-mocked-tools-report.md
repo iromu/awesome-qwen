@@ -730,9 +730,9 @@ jobs:
 - [GitHub Agentic Workflows](https://github.blog/ai-and-ml/automate-repository-tasks-with-github-agentic-workflows/)
 
 **Related Patterns:**
-- [Coding Agent CI Feedback Loop](/home/agent/awesome-agentic-patterns/patterns/coding-agent-ci-feedback-loop.md) - Asynchronous testing feedback
-- [Background Agent with CI](/home/agent/awesome-agentic-patterns/patterns/background-agent-ci.md) - CI integration patterns
-- [Self-Critique Evaluator Loop](/home/agent/awesome-agentic-patterns/patterns/self-critique-evaluator-loop.md) - Agent self-evaluation
+- [Coding Agent CI Feedback Loop](coding-agent-ci-feedback-loop-report.md) - Asynchronous testing feedback
+- [Background Agent with CI](background-agent-ci-report.md) - CI integration patterns
+- [Self-Critique Evaluator Loop](self-critique-evaluator-loop-report.md) - Agent self-evaluation
 
 ---
 
@@ -1111,53 +1111,53 @@ class ToolCallTracker:
 
 ### 5.1 Directly Related Patterns (Linked in Source)
 
-**[Stop Hook Auto-Continue Pattern](../patterns/stop-hook-auto-continue-pattern.md)** - *Orchestration & Control*
+**[Stop Hook Auto-Continue Pattern](stop-hook-auto-continue-pattern-report.md)** - *Orchestration & Control*
 - **Relationship**: Post-execution testing automation
 - **How it complements**: After workflow evals determine failures, stop hooks automatically continue agent execution with corrective prompts
 - **Key synergy**: Creates "deterministic outcomes from non-deterministic processes" by looping until success criteria are met
 
-**[Agent Reinforcement Fine-Tuning](../patterns/agent-reinforcement-fine-tuning.md)** - *Learning & Adaptation*
+**[Agent Reinforcement Fine-Tuning](agent-reinforcement-fine-tuning-report.md)** - *Learning & Adaptation*
 - **Relationship**: Training on agent workflows using eval data
 - **How it complements**: Workflow evals provide training data; Agent RFT uses this to optimize model weights for better tool use and reasoning
 - **Key synergy**: Eval results feed into reward signals for fine-tuning, improving performance on similar workflows
 
 ### 5.2 Complementary Patterns (Work Well Together)
 
-**[Coding Agent CI Feedback Loop](../patterns/coding-agent-ci-feedback-loop.md)** - *Feedback Loops*
+**Coding Agent CI Feedback Loop** - *Feedback Loops*
 - **Relationship**: Asynchronous testing integration
 - **How it complements**: While workflow evals test with mocked tools, this pattern tests with real CI systems
 - **Combined workflow**:
   1. Use mocked evals for rapid validation during development
   2. Use CI feedback loops for integration testing before PRs
 
-**[Background Agent with CI](../patterns/background-agent-ci.md)** - *Feedback Loops*
+**[Background Agent with CI](background-agent-ci-report.md)** - *Feedback Loops*
 - **Relationship**: CI as objective feedback channel
 - **How it complements**: Extends the workflow eval concept to real CI systems with branch-per-task isolation
 - **Key synergy**: Both use external systems (mocks/CI) as validation sources
 
-**[Rich Feedback Loops > Perfect Prompts](../patterns/rich-feedback-loops.md)** - *Feedback Loops*
+**[Rich Feedback Loops > Perfect Prompts](rich-feedback-loops-report.md)** - *Feedback Loops*
 - **Relationship**: Iterative machine-readable feedback
 - **How it complements**: Workflow evals provide structured feedback; rich feedback loops teach agents to respond to corrections
 - **Key insight**: Projects with more positive feedback had better outcomes (80% vs 17% success rate)
 
-**[CriticGPT-Style Code Review](../patterns/criticgpt-style-evaluation.md)** - *Reliability & Eval*
+**[CriticGPT-Style Code Review](criticgpt-style-evaluation-report.md)** - *Reliability & Eval*
 - **Relationship**: Automated code quality evaluation
 - **How it complements**: While workflow evals test tool usage, CriticGPT evaluates code quality
 - **Combined approach**: Test both workflow behavior and code output quality
 
 ### 5.3 Alternative Patterns (Solve Similar Problems Differently)
 
-**[Spec-As-Test Feedback Loop](../patterns/spec-as-test-feedback-loop.md)** - *Feedback Loops*
+**Spec-As-Test Feedback Loop** - *Feedback Loops*
 - **Alternative approach**: Tests spec vs implementation drift
 - **Instead of**: Mock-based workflow testing
 - **Focus**: Keeping specifications and implementations synchronized
 
-**[Inference-Healed Code Review Reward](../patterns/inference-healed-code-review-reward.md)** - *Feedback Loops*
+**[Inference-Healed Code Review Reward](inference-healed-code-review-reward-report.md)** - *Feedback Loops*
 - **Alternative approach**: Multi-criteria code quality evaluation
 - **Instead of**: Binary pass/fail workflow evals
 - **Focus**: Detailed subscores for correctness, style, performance, security
 
-**[Deterministic Security Scanning Build Loop](../patterns/deterministic-security-scanning-build-loop.md)** - *Security & Safety*
+**Deterministic Security Scanning Build Loop** - *Security & Safety*
 - **Alternative approach**: Deterministic validation via build tools
 - **Instead of**: Mock-based security testing
 - **Focus**: Real security tools with backpressure mechanism

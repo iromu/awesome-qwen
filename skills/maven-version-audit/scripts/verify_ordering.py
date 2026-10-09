@@ -8,7 +8,7 @@ assumptions of step3's comparator:
 import os
 import re
 import sys
-import xml.etree.ElementTree as ET
+import _va_xml as vx
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import _va_paths as va
@@ -33,7 +33,7 @@ def naive_max_plain(versions):
 
 
 def all_versions(path):
-    root = ET.parse(path).getroot()
+    root = vx.root(path).getroot()
     ver = root.find("versioning")
     if ver is None:
         return []
@@ -49,8 +49,8 @@ for name in sorted(os.listdir(META)):
         continue
     path = os.path.join(META, name)
     try:
-        root = ET.parse(path).getroot()
-    except ET.ParseError:
+        root = vx.root(path).getroot()
+    except vx.ParseError:
         continue
     g, a = root.findtext("groupId"), root.findtext("artifactId")
     versions = all_versions(path)

@@ -1014,24 +1014,24 @@ Measuring multi-model system performance requires multi-dimensional metrics:
 
 ### Directly Related Patterns
 
-1. **[Oracle and Worker Multi-Model](../patterns/oracle-and-worker-multi-model.md)**
+1. **[Oracle and Worker Multi-Model](oracle-and-worker-multi-model-report.md)**
    - Two-tier specialization with worker (Sonnet) handling routine tasks and oracle (o3/Gemini 2.5 Pro) for complex reasoning
    - Complements sequential pipeline with conditional escalation logic
    - Key distinction: On-demand consultation vs. fixed pipeline sequence
 
-2. **[Discrete Phase Separation](../patterns/discrete-phase-separation.md)**
+2. **[Discrete Phase Separation](discrete-phase-separation-report.md)**
    - Time-separated phases (Research → Planning → Implementation) with fresh contexts
    - Extends multi-model orchestration to prevent context contamination
    - Uses different models per phase: Opus for reasoning, Sonnet for execution
    - Critical practice: Pass only distilled conclusions, not full history
 
-3. **[Budget-Aware Model Routing](../patterns/budget-aware-model-routing-with-hard-cost-caps.md)**
+3. **[Budget-Aware Model Routing](budget-aware-model-routing-with-hard-cost-caps-report.md)**
    - Tiered model catalog with policy-based selection
    - Hard cost caps prevent runaway spending
    - Quality gates before escalation to more expensive models
    - Enables predictable multi-model cost management
 
-4. **[Failover-Aware Model Fallback](../patterns/failover-aware-model-fallback.md)**
+4. **[Failover-Aware Model Fallback](failover-aware-model-fallback-report.md)**
    - Semantic error classification with intelligent fallback chains
    - Distinguishes transient (retry) vs. semantic (fail-fast) errors
    - Multi-provider fallback with capability-based allowlists
@@ -1039,22 +1039,22 @@ Measuring multi-model system performance requires multi-dimensional metrics:
 
 ### Supporting Patterns
 
-5. **[LLM Map-Reduce Pattern](../patterns/llm-map-reduce-pattern.md)**
+5. **[LLM Map-Reduce Pattern](llm-map-reduce-pattern-report.md)**
    - Parallel processing with isolated map workers and reducer aggregation
    - Architecture pattern for scaling multi-model systems horizontally
    - Prevents cross-contamination between untrusted inputs
 
-6. **[Context Minimization Pattern](../patterns/context-minimization-pattern.md)**
+6. **[Context Minimization Pattern](context-minimization-pattern-report.md)**
    - Aggressive context cleanup between model phases
    - Remove untrusted input after transformation to trusted intermediate
    - Critical practice for multi-model pipelines to prevent prompt injection propagation
 
-7. **[Asynchronous Coding Agent Pipeline](../patterns/asynchronous-coding-agent-pipeline.md)**
+7. **[Asynchronous Coding Agent Pipeline](asynchronous-coding-agent-pipeline-report.md)**
    - Decouples inference, tool execution, and learning into parallel components
    - Architecture pattern for scaling multi-model systems
    - Relevant for compute-intensive multi-model workflows
 
-8. **[Dynamic Context Injection](../patterns/dynamic-context-injection.md)**
+8. **Dynamic Context Injection**
    - At-mentions and slash commands for on-demand context loading
    - Complements multi-model orchestration with just-in-time context
    - Reduces need for large context windows passed between models*
@@ -1304,8 +1304,8 @@ This pattern is actively used in production by:
 15. Ma, X., et al. (2025). [Agentic Large Language Models - A Comprehensive Survey](https://arxiv.org/abs/2503.23037). arXiv:2503.23037
 
 ### Related Patterns
-- [Discrete Phase Separation](../patterns/discrete-phase-separation.md) - Extends multi-model orchestration to separate conversation phases
-- [Oracle and Worker Multi-Model](../patterns/oracle-and-worker-multi-model.md) - Related multi-model pattern
+- [Discrete Phase Separation](discrete-phase-separation-report.md) - Extends multi-model orchestration to separate conversation phases
+- [Oracle and Worker Multi-Model](oracle-and-worker-multi-model-report.md) - Related multi-model pattern
 
 ---
 

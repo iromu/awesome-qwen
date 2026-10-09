@@ -66,4 +66,4 @@ graph TD
 - [Model Context Protocol Specification](https://modelcontextprotocol.io) — Anthropic's protocol for LLM-tool integration
 - [agents.txt Specification](https://agentsprotocol.ai) — Convention for advertising agent capabilities
 - [Google A2A Protocol](https://github.com/google/A2A) — Agent-to-Agent communication protocol
-- Related catalogue patterns: [Tool Search Lazy Loading](tool-search-lazy-loading.md), [Progressive Tool Discovery](progressive-tool-discovery.md), [Static Service Manifest for Agents](static-service-manifest-for-agents.md)
+- Related catalogue patterns: [Tool Search Lazy Loading](../context-memory/tool-search-lazy-loading.md), [Progressive Tool Discovery](progressive-tool-discovery.md), [Static Service Manifest for Agents](static-service-manifest-for-agents.md)

@@ -1144,15 +1144,15 @@ tools = [
 - Modal: https://modal.com (Serverless execution)
 
 ### Related Patterns in Catalog
-- [Sub-Agent Spawning](../patterns/sub-agent-spawning.md) - Delegation patterns
-- [Discrete Phase Separation](../patterns/discrete-phase-separation.md) - Exploration vs modification phases
-- [Subject Hygiene](../patterns/subject-hygiene.md) - Clear task descriptions
-- [Progressive Tool Discovery](../patterns/progressive-tool-discovery.md) - Learning available tools
-- [Action Selector Pattern](../patterns/action-selector-pattern.md) - Agent action selection
-- [Code-Over-API Pattern](../patterns/code-over-api-pattern.md) - Token-efficient execution
-- [Plan-Then-Execute Pattern](../patterns/plan-then-execute-pattern.md) - Planning before tool use
-- [Parallel Tool Execution](../patterns/parallel-tool-execution.md) - Concurrent tool calls
-- [Intelligent Bash Tool Execution](../patterns/intelligent-bash-tool-execution.md) - Shell command selection
+- Sub-Agent Spawning - Delegation patterns
+- [Discrete Phase Separation](discrete-phase-separation-report.md) - Exploration vs modification phases
+- Subject Hygiene - Clear task descriptions
+- [Progressive Tool Discovery](progressive-tool-discovery-report.md) - Learning available tools
+- [Action Selector Pattern](action-selector-pattern-report.md) - Agent action selection
+- [Code-Over-API Pattern](code-over-api-pattern-report.md) - Token-efficient execution
+- Plan-Then-Execute Pattern - Planning before tool use
+- [Parallel Tool Execution](parallel-tool-execution-report.md) - Concurrent tool calls
+- [Intelligent Bash Tool Execution](intelligent-bash-tool-execution-report.md) - Shell command selection
 
 ### Research Reports
 - Action Selector Industry Implementations: `/research/action-selector-industry-implementations-report.md`

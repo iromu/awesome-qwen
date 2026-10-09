@@ -593,7 +593,7 @@ state_efficiency = (1 - redundancy) × density × compression
 ## 9. Sources and References
 
 ### Primary Sources
-1. [Discrete Phase Separation Pattern](/home/agent/awesome-agentic-patterns/patterns/discrete-phase-separation.md)
+1. [Discrete Phase Separation Pattern](discrete-phase-separation-report.md)
 2. [Building Companies with Claude Code](https://claude.com/blog/building-companies-with-claude-code) - Sam Stettner (Ambral)
 
 ### Academic Papers
@@ -610,9 +610,9 @@ state_efficiency = (1 - redundancy) × density × compression
 5. [OpenAI Swarm](https://github.com/openai/swarm)
 
 ### Related Patterns
-1. [Plan-Then-Execute Pattern](/home/agent/awesome-agentic-patterns/patterns/plan-then-execute-pattern.md)
-2. [Sub-Agent Spawning Pattern](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md)
-3. [Context-Minimization Pattern](/home/agent/awesome-agentic-patterns/patterns/context-minimization-pattern.md)
+1. [Plan-Then-Execute Pattern](plan-then-execute-pattern-report.md)
+2. [Sub-Agent Spawning Pattern](sub-agent-spawning-report.md)
+3. [Context-Minimization Pattern](context-minimization-pattern-report.md)
 
 ---
 

@@ -150,4 +150,4 @@ The fundamental challenge: Different modes require fundamentally different user 
 * [Raising an Agent Episode 10: The Assistant is Dead, Long Live the Factory](https://www.youtube.com/watch?v=4rx36wc9ugw) - AMP (Thorsten Ball, Quinn Slack, 2025)
 * [Anthropic: Building Effective Agents](https://www.anthropic.com/research/building-effective-agents) - System prompt patterns and persona configuration (2024)
 * [OpenAI: Prompt Engineering Best Practices](https://platform.openai.com/docs/guides/prompt-engineering) - System prompts and personality modes (2024)
-* Related: [Oracle and Worker Multi-Model Approach](oracle-and-worker-multi-model.md), [Progressive Autonomy with Model Evolution](progressive-autonomy-with-model-evolution.md)
+* Related: [Oracle and Worker Multi-Model Approach](../orchestration-control/oracle-and-worker-multi-model.md), [Progressive Autonomy with Model Evolution](../orchestration-control/progressive-autonomy-with-model-evolution.md)

@@ -1255,12 +1255,12 @@ class PatchSelectionPolicy:
 
 ### Technical Sources
 
-- [Code-First Tool Interface Pattern Research Report](/home/agent/awesome-agentic-patterns/research/code-first-tool-interface-pattern-report.md) - Comprehensive analysis of code execution patterns
-- [Intelligent Bash Tool Execution Report](/home/agent/awesome-agentic-patterns/research/intelligent-bash-tool-execution-report.md) - Tool execution patterns
-- [Codebase Optimization for Agents: Tools Report](/home/agent/awesome-agentic-patterns/research/codebase-optimization-for-agents-tools-report.md) - Agent-optimized tooling
-- [Dual-Use Tool Design Research Report](/home/agent/awesome-agentic-patterns/research/dual-use-tool-design-report.md) - Tool interface design patterns
-- [Tool Selection Guide Pattern](/home/agent/awesome-agentic-patterns/patterns/tool-selection-guide.md) - Data-driven tool selection
-- [Tool Use Steering via Prompting](/home/agent/awesome-agentic-patterns/patterns/tool-use-steering-via-prompting.md) - Prompt engineering for tool guidance
+- [Code-First Tool Interface Pattern Research Report](code-first-tool-interface-pattern-report.md) - Comprehensive analysis of code execution patterns
+- [Intelligent Bash Tool Execution Report](intelligent-bash-tool-execution-report.md) - Tool execution patterns
+- [Codebase Optimization for Agents: Tools Report](codebase-optimization-for-agents-tools-report.md) - Agent-optimized tooling
+- [Dual-Use Tool Design Research Report](dual-use-tool-design-report.md) - Tool interface design patterns
+- [Tool Selection Guide Pattern](tool-selection-guide-report.md) - Data-driven tool selection
+- [Tool Use Steering via Prompting](tool-use-steering-via-prompting-report.md) - Prompt engineering for tool guidance
 
 ### Implementation Examples
 

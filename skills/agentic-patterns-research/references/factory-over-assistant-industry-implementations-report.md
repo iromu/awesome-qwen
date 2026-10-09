@@ -621,7 +621,7 @@ graph LR
 
 ### Primary Sources (Pattern Definition)
 
-- [Factory Over Assistant Pattern](/home/agent/awesome-agentic-patterns/patterns/factory-over-assistant.md) - Main pattern documentation
+- [Factory Over Assistant Pattern](factory-over-assistant-report.md) - Main pattern documentation
 - [Raising an Agent Episode 9](https://www.youtube.com/watch?v=2wjnV6F2arc) - AMP (Thorsten Ball, Quinn Slack, 2025)
 - [Raising an Agent Episode 10](https://www.youtube.com/watch?v=4rx36wc9ugw) - AMP (Thorsten Ball, Quinn Slack, 2025)
 
@@ -667,23 +667,23 @@ graph LR
 
 ### Related Pattern Documentation
 
-- [Background Agent CI](/home/agent/awesome-agentic-patterns/patterns/background-agent-ci.md) - Validated in production
-- [Sub-Agent Spawning](/home/agent/awesome-agentic-patterns/patterns/sub-agent-spawning.md) - Validated in production
-- [CLI-Native Agent Orchestration](/home/agent/awesome-agentic-patterns/patterns/cli-native-agent-orchestration.md) - Proposed
-- [Distributed Execution Cloud Workers](/home/agent/awesome-agentic-patterns/patterns/distributed-execution-cloud-workers.md) - Emerging
-- [Planner-Worker Separation](/home/agent/awesome-agentic-patterns/patterns/planner-worker-separation-for-long-running-agents.md) - Emerging
-- [Asynchronous Coding Agent Pipeline](/home/agent/awesome-agentic-patterns/patterns/asynchronous-coding-agent-pipeline.md) - Proposed
-- [Coding Agent CI Feedback Loop](/home/agent/awesome-agentic-patterns/patterns/coding-agent-ci-feedback-loop.md) - Best practice
-- [Continuous Autonomous Task Loop](/home/agent/awesome-agentic-patterns/patterns/continuous-autonomous-task-loop-pattern.md) - Established
+- [Background Agent CI](background-agent-ci-report.md) - Validated in production
+- [Sub-Agent Spawning](sub-agent-spawning-report.md) - Validated in production
+- [CLI-Native Agent Orchestration](cli-native-agent-orchestration-report.md) - Proposed
+- [Distributed Execution Cloud Workers](distributed-execution-cloud-workers-report.md) - Emerging
+- [Planner-Worker Separation](planner-worker-separation-for-long-running-agents-report.md) - Emerging
+- [Asynchronous Coding Agent Pipeline](asynchronous-coding-agent-pipeline-report.md) - Proposed
+- [Coding Agent CI Feedback Loop](coding-agent-ci-feedback-loop-report.md) - Best practice
+- [Continuous Autonomous Task Loop](continuous-autonomous-task-loop-pattern-report.md) - Established
 
 ---
 
 ### Research Reports
 
-- [Background Agent CI Research](/home/agent/awesome-agentic-patterns/research/background-agent-ci-report.md)
-- [CLI-Native Agent Orchestration Research](/home/agent/awesome-agentic-patterns/research/cli-native-agent-orchestration-report.md)
-- [Distributed Execution Cloud Workers Research](/home/agent/awesome-agentic-patterns/research/distributed-execution-cloud-workers-report.md)
-- [Coding Agent CI Feedback Loop Industry Report](/home/agent/awesome-agentic-patterns/research/coding-agent-ci-feedback-loop-industry-report.md)
+- [Background Agent CI Research](background-agent-ci-report.md)
+- [CLI-Native Agent Orchestration Research](cli-native-agent-orchestration-report.md)
+- [Distributed Execution Cloud Workers Research](distributed-execution-cloud-workers-report.md)
+- [Coding Agent CI Feedback Loop Industry Report](coding-agent-ci-feedback-loop-industry-report.md)
 
 ---
 

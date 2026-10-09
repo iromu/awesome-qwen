@@ -125,6 +125,6 @@ itself must be tested without touching a live system.
 ## References
 
 - [Reflexion: Language Agents with Verbal Reinforcement Learning](https://arxiv.org/abs/2303.11366) — episodic feedback and memory for later decisions.
-- [Memory Synthesis from Execution Logs](memory-synthesis-from-execution-logs.md) — related batch synthesis of reusable lessons.
-- [Workflow Evals with Mocked Tools](workflow-evals-with-mocked-tools.md) — related safe validation of complete agent workflows.
+- [Memory Synthesis from Execution Logs](../context-memory/memory-synthesis-from-execution-logs.md) — related batch synthesis of reusable lessons.
+- [Workflow Evals with Mocked Tools](../reliability-eval/workflow-evals-with-mocked-tools.md) — related safe validation of complete agent workflows.
 - [Vostride Agent QA](https://github.com/vostride/agent-qa) — contributor-affiliated implementation of persistent memory in a software-testing agent.

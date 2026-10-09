@@ -839,7 +839,7 @@ engine.register_policy(
 ## References
 
 ### Pattern Documentation
-- [Human-in-the-Loop Approval Framework Pattern](../patterns/human-in-loop-approval-framework.md)
+- [Human-in-the-Loop Approval Framework Pattern](human-in-loop-approval-framework-report.md)
 
 ### Commercial Platforms
 - [HumanLayer Documentation](https://docs.humanlayer.dev/)

@@ -1176,13 +1176,13 @@ def should_use_swarm_migration(migration_task):
 ## References
 
 ### Primary Pattern Documentation
-- [Swarm Migration Pattern](/home/agent/awesome-agentic-patterns/patterns/swarm-migration-pattern.md)
+- [Swarm Migration Pattern](swarm-migration-pattern-report.md)
 
 ### Related Research Reports
-- [Sub-Agent Spawning Technical Analysis](/home/agent/awesome-agentic-patterns/research/sub-agent-spawning-technical-analysis-report.md)
-- [Planner-Worker Separation](/home/agent/awesome-agentic-patterns/research/planner-worker-separation-for-long-running-agents-report.md)
-- [Distributed Execution with Cloud Workers](/home/agent/awesome-agentic-patterns/research/distributed-execution-cloud-workers-report.md)
-- [Factory Over Assistant](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-report.md)
+- [Sub-Agent Spawning Technical Analysis](sub-agent-spawning-technical-analysis-report.md)
+- [Planner-Worker Separation](planner-worker-separation-for-long-running-agents-report.md)
+- [Distributed Execution with Cloud Workers](distributed-execution-cloud-workers-report.md)
+- [Factory Over Assistant](factory-over-assistant-report.md)
 
 ### Industry Sources
 - Boris Cherny (Anthropic): AI & I Podcast transcript

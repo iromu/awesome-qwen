@@ -706,13 +706,13 @@ keep_warm=2  # Maintain warm pool for next burst
 
 ### Related Patterns in This Repository
 
-- [Virtual Machine Operator Agent Pattern](/home/agent/awesome-agentic-patterns/patterns/virtual-machine-operator-agent.md)
-- [Isolated VM per RL Rollout](/home/agent/awesome-agentic-patterns/patterns/isolated-vm-per-rl-rollout.md)
-- [Custom Sandboxed Background Agent](/home/agent/awesome-agentic-patterns/patterns/custom-sandboxed-background-agent.md)
-- [Adaptive Sandbox Fanout Controller](/home/agent/awesome-agentic-patterns/patterns/adaptive-sandbox-fanout-controller.md)
-- [Agent Reinforcement Fine-Tuning](/home/agent/awesome-agentic-patterns/patterns/agent-reinforcement-fine-tuning.md)
-- [Sandboxed Tool Authorization](/home/agent/awesome-agentic-patterns/patterns/sandboxed-tool-authorization.md)
-- [Egress Lockdown (No-Exfiltration Channel)](/home/agent/awesome-agentic-patterns/patterns/egress-lockdown-no-exfiltration-channel.md)
+- [Virtual Machine Operator Agent Pattern](virtual-machine-operator-agent-report.md)
+- [Isolated VM per RL Rollout](isolated-vm-per-rl-rollout-report.md)
+- [Custom Sandboxed Background Agent](custom-sandboxed-background-agent-report.md)
+- [Adaptive Sandbox Fanout Controller](adaptive-sandbox-fanout-controller-report.md)
+- [Agent Reinforcement Fine-Tuning](agent-reinforcement-fine-tuning-report.md)
+- [Sandboxed Tool Authorization](sandboxed-tool-authorization-report.md)
+- [Egress Lockdown (No-Exfiltration Channel)](egress-lockdown-no-exfiltration-channel-report.md)
 
 ---
 

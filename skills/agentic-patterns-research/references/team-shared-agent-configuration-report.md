@@ -448,36 +448,36 @@ Based on a comprehensive analysis of the awesome-agentic-patterns repository, th
 
 ### 5.1 Directly Complementary Patterns
 
-**[Layered Configuration Context](/home/agent/awesome-agentic-patterns/patterns/layered-configuration-context.md)** (Status: **established**)
+**[Layered Configuration Context](layered-configuration-context-report.md)** (Status: **established**)
 - **Relationship**: Extends team-shared configuration with hierarchical context loading
 - **How it relates**: While team-shared agent configuration provides a single shared settings file, layered configuration context implements a multi-layer hierarchy (enterprise → user → project → local) that merges automatically. The patterns can be combined: the team-shared `settings.json` sits at the project layer, while `CLAUDE.local.md` provides individual overrides
 - **Integration point**: The `.claude/settings.json` (team) and `.claude/settings.local.json` (personal) pattern mentioned in team-shared configuration is an implementation of layered configuration context
 
-**[Hook-Based Safety Guard Rails](/home/agent/awesome-agentic-patterns/patterns/hook-based-safety-guard-rails.md)** (Status: **validated-in-production**)
+**[Hook-Based Safety Guard Rails](hook-based-safety-guard-rails-report.md)** (Status: **validated-in-production**)
 - **Relationship**: Team-shared configuration specifies *what* hooks to run; this pattern defines *how* to implement them
 - **How it relates**: Team-shared configuration includes a `hooks` field for standardized automation triggers. Hook-based safety guard rails provides concrete implementations (dangerous command blocker, syntax checker, context window monitor) that teams can reference in their shared configuration
 
 ### 5.2 Security and Permission Patterns
 
-**[Sandboxed Tool Authorization](/home/agent/awesome-agentic-patterns/patterns/sandboxed-tool-authorization.md)** (Status: **validated-in-production**)
+**[Sandboxed Tool Authorization](sandboxed-tool-authorization-report.md)** (Status: **validated-in-production**)
 - **Relationship**: Advanced pattern-matching permissions that can be versioned in team-shared configuration
 - **How it relates**: Team-shared configuration uses simple `pre_allowed` and `blocked_paths` lists. Sandboxed tool authorization provides sophisticated pattern matching (wildcards, regex, groups), deny-by-default semantics, and hierarchical inheritance for subagents
 
-**[Egress Lockdown (No-Exfiltration Channel)](layered-configuration-context)** (Status: **established**)
+**[Egress Lockdown (No-Exfiltration Channel)](egress-lockdown-no-exfiltration-channel-report.md)** (Status: **established**)
 - **Relationship**: Network-level security complement to file-level permissions in team config
 - **How it relates**: Team-shared configuration blocks local files (`.env`, `secrets/`). Egress lockdown prevents data exfiltration via network calls. Together they provide defense-in-depth
 
-**[Intelligent Bash Tool Execution](layered-configuration-context)** (Status: **validated-in-production**)
+**[Intelligent Bash Tool Execution](intelligent-bash-tool-execution-report.md)** (Status: **validated-in-production**)
 - **Relationship**: Runtime security checks that complement static allowlists in team config
 - **How it relates**: Team config pre-approves commands. This pattern adds adaptive security modes (deny/allowlist/full) with approval workflows at runtime
 
 ### 5.3 Collaboration and Onboarding Patterns
 
-**[Agent-Powered Codebase Q&A / Onboarding](layered-configuration-context)** (Status: **validated-in-production**)
+**[Agent-Powered Codebase Q&A / Onboarding](agent-powered-codebase-qa-onboarding-report.md)** (Status: **validated-in-production**)
 - **Relationship**: Team config reduces onboarding friction; this pattern accelerates codebase understanding
 - **How it relates**: Team-shared configuration handles agent setup and permissions. Agent-powered Q&A handles codebase knowledge acquisition. Together they form a complete onboarding solution
 
-**[Human-in-the-Loop Approval Framework](layered-configuration-context)** (Status: **validated-in-production**)
+**[Human-in-the-Loop Approval Framework](human-in-loop-approval-framework-report.md)** (Status: **validated-in-production**)
 - **Relationship**: Runtime approval gates complement pre-approved commands in team config
 - **How it relates**: Team config pre-approves safe commands. This pattern provides approval workflows for high-risk operations that cannot be pre-approved
 
@@ -743,9 +743,9 @@ cd repo
 - [Continue.dev](https://github.com/continuedev/continue) - Open-source AI assistant
 
 ### Related Documentation
-- [Layered Configuration Context Pattern](/home/agent/awesome-agentic-patterns/patterns/layered-configuration-context.md)
-- [Hook-Based Safety Guard Rails Pattern](/home/agent/awesome-agentic-patterns/patterns/hook-based-safety-guard-rails.md)
-- [Sandboxed Tool Authorization Pattern](/home/agent/awesome-agentic-patterns/patterns/sandboxed-tool-authorization.md)
+- [Layered Configuration Context Pattern](layered-configuration-context-report.md)
+- [Hook-Based Safety Guard Rails Pattern](hook-based-safety-guard-rails-report.md)
+- [Sandboxed Tool Authorization Pattern](sandboxed-tool-authorization-report.md)
 
 ---
 

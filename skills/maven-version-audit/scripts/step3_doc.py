@@ -20,7 +20,7 @@ import os
 import re
 import subprocess
 import sys
-import xml.etree.ElementTree as ET
+import _va_xml as vx
 
 import _va_paths as va
 
@@ -123,8 +123,8 @@ def load_meta(path, group, artifact):
     if not os.path.isfile(path):
         return None
     try:
-        root = ET.parse(path).getroot()
-    except ET.ParseError:
+        root = vx.root(path).getroot()
+    except vx.ParseError:
         return None
     if root.findtext("groupId") != group or root.findtext("artifactId") != artifact:
         return None
@@ -184,7 +184,7 @@ def parents_and_boms():
         if "pom.xml" not in files:
             continue
         rel = os.path.relpath(os.path.join(dirpath, "pom.xml"), ROOT)
-        root = ET.parse(os.path.join(dirpath, "pom.xml")).getroot()
+        root = vx.root(os.path.join(dirpath, "pom.xml")).getroot()
         p = root.find("m:parent", namespaces=POMNS)
         if p is not None:
             out.append(("parent", rel, pom_txt(p, "m:groupId"),

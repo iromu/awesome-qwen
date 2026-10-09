@@ -755,10 +755,10 @@ For teams deploying AI agents with custom tools or specific workflows, prompt-ba
 - Vercel AI SDK: https://github.com/vercel/ai (11K+ stars)
 
 ### Related Patterns in Catalog
-- [Tool Selection Guide](../patterns/tool-selection-guide.md) - Data-driven patterns for optimal tool choice
-- [Patch Steering via Prompted Tool Selection](../patterns/patch-steering-via-prompted-tool-selection.md) - Specialized for code patching
-- [Action Selector Pattern](../patterns/action-selector-pattern.md) - Security-focused action restriction
-- [Progressive Tool Discovery](../patterns/progressive-tool-discovery.md) - Hierarchical tool loading
+- Tool Selection Guide - Data-driven patterns for optimal tool choice
+- [Patch Steering via Prompted Tool Selection](patch-steering-via-prompted-tool-selection-report.md) - Specialized for code patching
+- [Action Selector Pattern](action-selector-pattern-report.md) - Security-focused action restriction
+- [Progressive Tool Discovery](progressive-tool-discovery-report.md) - Hierarchical tool loading
 
 ---
 

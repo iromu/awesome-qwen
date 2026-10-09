@@ -139,6 +139,6 @@ When everything is in flux—the models, the software, how we write it—optimiz
 * Kaplan et al. (2020). [Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361). NeurIPS 2020.
 * Wei et al. (2022). [Emergent Abilities of Large Language Models](https://arxiv.org/abs/2206.07682). TMLR 2022.
 * Wang et al. (2023). [The Lifecycle of AI](https://arxiv.org/abs/2304.06425). CHI 2023.
-* Related: [Disposable Scaffolding Over Durable Features](disposable-scaffolding-over-durable-features.md), [Agent Modes by Model Personality](agent-modes-by-model-personality.md)
+* Related: [Disposable Scaffolding Over Durable Features](../orchestration-control/disposable-scaffolding-over-durable-features.md), [Agent Modes by Model Personality](../ux-collaboration/agent-modes-by-model-personality.md)
 
 ---

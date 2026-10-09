@@ -331,117 +331,14 @@ tool-level security, and authorization flows.
 
 ## Testing MCP Applications
 
-### Unit Testing Tools
+There is no MCP test-slice annotation upstream — no `@McpServerTest` or
+`@McpClientTest`. A server is published as an ordinary `@Bean`, so a plain JUnit 5
+`@SpringBootTest` reaches it, and `io.modelcontextprotocol.sdk:mcp-test` ships base
+classes that drive start, stop, and assertions when you do not want the whole
+application context.
 
-Test annotated tool methods directly as plain Spring beans — no MCP server needed:
-
-```java
-@SpringBootTest
-class WeatherServiceTest {
-
-    @Autowired
-    private WeatherService weatherService;
-
-    @Test
-    void getWeather_returnsExpectedFormat() {
-        var result = weatherService.getWeather("Paris", "celsius");
-        assertTrue(result.contains("Paris"));
-        assertTrue(result.contains("°C"));
-    }
-}
-```
-
-### Integration Testing
-
-There is **no** MCP test-slice annotation — no `@McpServerTest` or `@McpClientTest`
-exists upstream, so do not reach for one. `McpServerAutoConfiguration` publishes the
-server as an ordinary `@Bean`, so a plain JUnit 5 `@SpringBootTest` injects it:
-
-```java
-@SpringBootTest
-class McpServerIntegrationTest {
-
-    @Autowired
-    private McpSyncServer mcpServer;
-
-    @Test
-    void serverExposesExpectedTools() {
-        var tools = mcpServer.listTools(null).tools();
-        assertThat(tools).extracting(McpSchema.Tool::name)
-            .contains("get-weather", "get-forecast");
-    }
-}
-```
-
-### Base classes from the published `mcp-test` module
-
-For a server or client test that does not need the whole application context, extend
-the bases shipped in `io.modelcontextprotocol.sdk:mcp-test`. You supply the
-transport/builder and the base class drives start, stop and the assertions:
-
-```java
-@Timeout(15)
-class WeatherServerTests extends AbstractMcpSyncServerTests {   // io.modelcontextprotocol.server
-
-    @Override
-    protected McpServer.SyncSpecification<?> prepareSyncServerBuilder() {
-        return McpServer.sync(new StdioServerTransportProvider(JSON_MAPPER));
-    }
-}
-```
-
-| Base class | Package | Override you must provide |
-|---|---|---|
-| `AbstractMcpSyncServerTests` | `io.modelcontextprotocol.server` | `prepareSyncServerBuilder()` |
-| `AbstractMcpAsyncServerTests` | `io.modelcontextprotocol.server` | `prepareAsyncServerBuilder()` |
-| `AbstractMcpSyncClientTests` | `io.modelcontextprotocol.client` | `createMcpTransport()` |
-| `AbstractMcpAsyncClientTests` | `io.modelcontextprotocol.client` | `createMcpTransport()` |
-| `AbstractMcpClientServerIntegrationTests` | `io.modelcontextprotocol` (root, not `.server`) | both server builders + `getMcpClientBuilder()` |
-
-Bind to a free port with `TestUtil.findAvailablePort()` (`io.modelcontextprotocol.server`)
-rather than a fixed one, so parallel runs do not collide.
-
-### Driving a client against a server
-
-Build the client from a real transport — `McpClient.sync(...)` takes an
-`McpClientTransport` and its `SyncSpec.build()` already yields an `McpSyncClient`,
-so there is no extra `.sync()` call to chain:
-
-```java
-@Test
-void testClientAgainstServer() {
-    McpClientTransport transport = HttpClientStreamableHttpTransport
-        .builder("http://localhost:" + TestUtil.findAvailablePort())
-        .endpoint("/mcp")
-        .connectTimeout(Duration.ofSeconds(5))
-        .build();
-
-    try (McpSyncClient client = McpClient.sync(transport)
-            .requestTimeout(Duration.ofSeconds(5))
-            .build()) {
-
-        client.initialize(new InitializeRequest(...));
-        var tools = client.listTools(null);
-        assertThat(tools.tools()).hasSize(3);
-    }
-}
-```
-
-`HttpClientStreamableHttpTransport` has no public constructor for you to call — go
-through `static Builder builder(String baseUri)`. The base URI is the builder
-argument; the path is `.endpoint(...)`. Other setters on that builder are
-`clientBuilder`, `customizeClient`, `requestBuilder`, `jsonMapper(McpJsonMapper)`,
-`resumableStreams(boolean)`, `openConnectionOnStartup(boolean)`,
-`httpRequestCustomizer`, `asyncHttpRequestCustomizer`, `authorizationErrorHandler`,
-`supportedProtocolVersions(List<String>)` and `maxResponseSize` — note there is no
-`url(...)`, no `resumable(...)` and no `protocolVersion(String)` on it.
-
-The `MockMcpClientTransport` / `MockMcpServerTransport` classes you may see in the
-SDK are under `src/test`, so they are **not** on a consumer's classpath and are not
-a supported mocking seam — prefer the base classes above or the real transports.
-
-See `references/security-and-testing.md` for additional patterns: MockMVC testing,
-Testcontainers with external MCP servers, annotation scanning, and security tests.
+`references/security-and-testing.md` holds the worked server-security and
+unit/integration test recipes, including the `mcp-test` base classes.
 
 ## GraalVM Native Image Support
 

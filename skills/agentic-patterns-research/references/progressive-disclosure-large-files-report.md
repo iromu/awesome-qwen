@@ -811,11 +811,11 @@ def safe_extract_file(file_path, file_id):
 
 ### Related Patterns in This Repository
 
-* [Progressive Tool Discovery](/home/agent/awesome-agentic-patterns/patterns/progressive-tool-discovery.md) - Similar lazy-loading concept for tools
-* [Context-Minimization Pattern](/home/agent/awesome-agentic-patterns/patterns/context-minimization-pattern.md) - Complementary pattern for reducing context bloat
-* [LLM Map-Reduce Pattern](/home/agent/awesome-agentic-patterns/patterns/llm-map-reduce-pattern.md) - Processing large documents by chunks
-* [Dynamic Context Injection](/home/agent/awesome-agentic-patterns/patterns/dynamic-context-injection-report.md) - User-driven lazy loading
-* [Filesystem-Based Agent State](/home/agent/awesome-agentic-patterns/patterns/filesystem-based-agent-state.md) - Foundation for caching
+* [Progressive Tool Discovery](progressive-tool-discovery-report.md) - Similar lazy-loading concept for tools
+* [Context-Minimization Pattern](context-minimization-pattern-report.md) - Complementary pattern for reducing context bloat
+* [LLM Map-Reduce Pattern](llm-map-reduce-pattern-report.md) - Processing large documents by chunks
+* [Dynamic Context Injection](dynamic-context-injection-report.md) - User-driven lazy loading
+* [Filesystem-Based Agent State](filesystem-based-agent-state-report.md) - Foundation for caching
 
 ---
 

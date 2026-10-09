@@ -935,11 +935,11 @@ Active research areas include:
 
 ### Related Patterns in This Repository
 
-1. [Tree-of-Thought Reasoning](/home/agent/awesome-agentic-patterns/patterns/tree-of-thought-reasoning.md)
-2. [Graph-of-Thoughts](/home/agent/awesome-agentic-patterns/patterns/graph-of-thoughts.md)
-3. [Reflection Loop](/home/agent/awesome-agentic-patterns/patterns/reflection-loop.md)
-4. [ReAct Pattern](/home/agent/awesome-agentic-patterns/patterns/react-pattern.md)
-5. [Explicit Posterior Sampling Planner](/home/agent/awesome-agentic-patterns/patterns/explicit-posterior-sampling-planner.md)
+1. [Tree-of-Thought Reasoning](tree-of-thought-reasoning-report.md)
+2. [Graph-of-Thoughts](graph-of-thoughts-report.md)
+3. Reflection Loop
+4. ReAct Pattern
+5. [Explicit Posterior Sampling Planner](explicit-posterior-sampling-planner-report.md)
 
 ---
 

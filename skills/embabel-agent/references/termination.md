@@ -98,7 +98,7 @@ var processOptions = ProcessOptions.builder()
     .build();
 ```
 
-Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a safety net. See [Cost Tracking](../cost-tracking.md) for the `Budget Guardrail` complement.
+Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a safety net. See [Cost Tracking](cost-tracking.md) for the `Budget Guardrail` complement.
 
 ## Decision Matrix
 

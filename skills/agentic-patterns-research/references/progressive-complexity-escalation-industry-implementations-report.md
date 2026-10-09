@@ -724,12 +724,12 @@ The **Progressive Complexity Escalation** pattern is widely implemented across t
 
 ### Related Research Reports
 
-- [Progressive Autonomy with Model Evolution](/home/agent/awesome-agentic-patterns/research/progressive-autonomy-with-model-evolution-report.md)
-- [Factory Over Assistant Industry Implementations](/home/agent/awesome-agentic-patterns/research/factory-over-assistant-industry-implementations-report.md)
-- [Budget-Aware Model Routing Industry Implementations](/home/agent/awesome-agentic-patterns/research/budget-aware-model-routing-industry-implementations-report.md)
-- [LLM Map-Reduce Industry Implementations](/home/agent/awesome-agentic-patterns/research/llm-map-reduce-industry-implementations-report.md)
-- [Action Selector Industry Implementations](/home/agent/awesome-agentic-patterns/research/action-selector-industry-implementations-report.md)
-- [Iterative Multi-Agent Brainstorming Industry Implementations](/home/agent/awesome-agentic-patterns/research/iterative-multi-agent-brainstorming-industry-implementations.md)
+- [Progressive Autonomy with Model Evolution](progressive-autonomy-with-model-evolution-report.md)
+- [Factory Over Assistant Industry Implementations](factory-over-assistant-industry-implementations-report.md)
+- [Budget-Aware Model Routing Industry Implementations](budget-aware-model-routing-industry-implementations-report.md)
+- [LLM Map-Reduce Industry Implementations](llm-map-reduce-industry-implementations-report.md)
+- [Action Selector Industry Implementations](action-selector-industry-implementations-report.md)
+- [Iterative Multi-Agent Brainstorming Industry Implementations](iterative-multi-agent-brainstorming-industry-implementations.md)
 
 ---
 

@@ -5,7 +5,7 @@ columns: kind  group  artifact  version  scope  module  via
 """
 import os
 import sys
-import xml.etree.ElementTree as ET
+import _va_xml as vx
 
 import _va_paths as va
 
@@ -34,7 +34,7 @@ def rows():
     out = []
     for path in sorted(poms()):
         rel = os.path.relpath(path, ROOT)
-        root = ET.parse(path).getroot()
+        root = vx.root(path).getroot()
         props = root.find("m:properties", NS)
         if props is not None:
             for child in props:

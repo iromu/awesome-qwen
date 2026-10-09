@@ -25,69 +25,14 @@ Source -> PropositionPipeline -> Propositions (system of record) -> Projections
 3. Use only the two annotations in "Annotation Surface - only two DICE annotations exist" and the property prefixes in "Configuration - real prefixes only" — anything else is invented.
 4. Before finalizing, cross-check "Common Pitfalls" and the "Verification Checklist", and confirm scope against "When NOT to Use".
 
-## Upstream State (verify against this, not against the README)
+## Upstream state
 
-| Fact | Value | Authority |
-|------|-------|-----------|
-| Repository | `https://github.com/embabel/dice` | `pom.xml:16`, `<scm>` `:18-22` |
-| Reference used | `main` @ `870b9ab`, `pushed_at 2026-09-10` | GitHub API |
-| Build | **Maven** (`pom.xml`, `mvnw`, `.mvn/`) - there is **no** `build.gradle` | `pom.xml` |
-| Coordinates | `com.embabel.dice:dice-parent:0.2.0-SNAPSHOT` | `pom.xml:10-12` |
-| Tags / releases | **none** - `tags` and `releases` both return `[]` | GitHub API |
-| CHANGELOG | one section only: `## Unreleased` | `CHANGELOG.md:9` |
-| Neighbours | `embabel-agent 1.5.0-SNAPSHOT`, `drivine 0.0.79`, `tuprolog 1.0.4` | `pom.xml` properties |
+The verified upstream drift notes moved to `references/upstream-state.md`. Check the pinned upstream docs before trusting an API name.
 
-- **Never write "pin `v0.2.0`".** No tag and no release object exists. Say "build against `main`" or
-  depend on the `-SNAPSHOT` version and resolve from Embabel's Artifactory.
-- **The README's install block is wrong twice over.** `README.md:2630-2632` says
-  `com.embabel:dice:0.1.1-SNAPSHOT`; the poms say groupId `com.embabel.dice` and version
-  `0.2.0-SNAPSHOT`. The poms win - do not copy the README snippet.
-- Metamodel versioning and the stamping DSL are labelled **EXPERIMENTAL (shape may change before
-  1.0)** by upstream. Carry that caveat; do not present the DSL as settled API.
 
-## Modules - the real list
+## Modules and configuration
 
-`pom.xml:25-35` declares exactly nine modules. The six `embabel-dice-*` artifactIds (`-core`,
-`-neo4j`, `-prolog`, `-vector`, `-agent`, `-rest`) that older guidance listed are **fabricated** and
-occur zero times upstream.
-
-| artifactId (`com.embabel.dice`) | What it is |
-|------|------|
-| `dice` | Core: pipeline, propositions, resolvers, projections, agent `Memory`, `DiceMcpTools` |
-| `dice-storage` | The **one** Drivine-parameterised store (Neo4j / FalkorDB / Memgraph) + `DrivineMetamodelVersionStore` |
-| `dice-storage-autoconfigure` | Spring Boot autoconfig: `DiceStorageAutoConfiguration`, `DiceStoreProperties`, `CollectorProperties` |
-| `dice-report` | `ReportProjector`, `StructuredReportProjector`, `RationaleProjector`, `SemanticLinkDiscoverer` |
-| `dice-ingestion` | `TextIngestionHandler`, `IngestionLedger` - dedup ledger in front of the pipeline |
-| `dice-metamodel` | Schema versioning: `MetamodelVersion`, `DeclaredSchema`, `MetamodelVersionStore` |
-| `dice-mcp-autoconfigure` | Exports the DICE MCP tools |
-| `dice-integration-tests` | Tests only |
-| `dice-user-guide` | The AsciiDoc guide |
-
-There is **no per-backend projection module**: vector, graph and Prolog are *features*, not
-artifacts. Graph is one `dice-storage` module switched by `embabel.dice.store.type`. `Memory` is not
-a separate module either - it is `dice/src/main/kotlin/com/embabel/dice/agent/Memory.kt`.
-
-DICE publishes no aggregator starter. The quickstart uses two coordinates -
-`dice-storage-autoconfigure` (pulls `dice` + `dice-storage`) plus `dice-report` - and an
-embabel-agent runtime, because DICE declares `embabel-agent-api` and `embabel-agent-rag-core` as
-`provided`.
-
-```xml
-<!-- Version comes from the aggregator's dependencyManagement when you build inside the reactor. -->
-<dependency>
-    <groupId>com.embabel.dice</groupId>
-    <artifactId>dice-storage-autoconfigure</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
-</dependency>
-<repositories>
-    <repository>
-        <id>embabel-snapshots</id>
-        <url>https://repo.embabel.com/artifactory/libs-snapshot</url>
-        <releases><enabled>false</enabled></releases>
-        <snapshots><enabled>true</enabled></snapshots>
-    </repository>
-</repositories>
-```
+The full module list moved to `references/modules.md`.
 
 ## Configuration - real prefixes only
 
@@ -322,86 +267,11 @@ under `com.embabel.dice.operations.consolidation`.
 
 ## Step 9 - Expose DICE over MCP
 
-`dice-mcp-autoconfigure` is real, registered and current (HEAD is a merged MCP PR). It is **not**
-aspirational: `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`
-contains exactly `com.embabel.dice.mcp.autoconfigure.DiceMcpAutoConfiguration`.
-
-```xml
-<dependency>
-    <groupId>com.embabel.dice</groupId>
-    <artifactId>dice-mcp-autoconfigure</artifactId>
-</dependency>
-<!-- UNRESOLVED: pick the MCP-server starter after checking embabel/embabel-agent; both candidate
-     artifactIds are named above and neither is confirmed by the DICE corpus. -->
-<dependency>
-    <groupId>com.embabel.agent</groupId>
-    <artifactId>embabel-agent-starter-mcpserver</artifactId>   <!-- or embabel-agent-mcpserver -->
-</dependency>
-```
-
-```yaml
-embabel:
-  dice:
-    mcp:
-      enabled: true          # the gate; off means no beans at all
-      writes-enabled: true   # second, separate switch for dice_store
-```
-
-The four `@LlmTool` tools live in `dice/src/main/kotlin/com/embabel/dice/mcp/DiceMcpTools.kt`:
-
-| Tool name | Kotlin function | Behaviour |
-|-----------|-----------------|-----------|
-| `dice_recall` | `recall(contextId, query?, limit?)` | hybrid semantic + keyword; omit `query` to list by confidence |
-| `dice_list` | `listMemories(contextId, limit?)` | active propositions ordered by effective confidence |
-| `dice_store` | `storeMemory(contextId, text, confidence?)` | writes without extraction; gated by `writes-enabled` |
-| `dice_get` | `getProposition(contextId, propositionId)` | one by id, includes status so a stale fact does not read as active |
-
-Gates on the autoconfiguration: `@AutoConfiguration(afterName =
-["com.embabel.dice.storage.autoconfigure.DiceStorageAutoConfiguration"])`,
-`@ConditionalOnClass(McpToolExport::class)`, `@ConditionalOnProperty(prefix = "embabel.dice.mcp",
-name = ["enabled"], havingValue = "true")`, `@EnableConfigurationProperties(DiceMcpProperties::class)`.
-Beans: `diceMcpTools(...)` (needs a `PropositionRepository` bean) and `diceMcpToolExport(...)`, which
-filters out `DiceMcpTools.STORE` unless `writesEnabled`. `limit` is clamped to `MAX_LIMIT` (100) at
-call time, but a `default-limit` outside `1..100` **fails startup** rather than being clamped.
-
-Two security properties to state to users: `contextId` on every call is a **scope, not a credential**
-(authorization is the host MCP server's job), and `dice_store` writes with empty mentions and no
-provenance, so such facts are reachable by vector/keyword only - never by entity expansion or graph
-projection. Use the ingestion pipeline when a fact must be wired into the graph.
+Step 9 (expose DICE over MCP: dice_recall / dice_list / dice_store / dice_get, transport and endpoint details) moved to `references/mcp-exposure.md`.
 
 ## Step 10 - Metamodel versioning (EXPERIMENTAL)
 
-Shape may change before 1.0. `DeclaredSchema` is declared in **`DeclaredSchemaSource.kt:47`**, not in
-a `DeclaredSchema.kt` - a filename search for it returns nothing and wrongly reads as absence.
-
-```kotlin
-val version = MetamodelVersion(dictionary) {
-    governedBy("Person", "Company")
-    aliases {
-        type("Organisation", formerly = setOf("Company"))
-        property("Person", "emailAddress", formerly = setOf("email"))
-    }
-}
-val declared = DeclaredSchema(dictionary) { governedBy("Person", "Company") }
-
-// Java / chain form
-val v = MetamodelVersion.stamping(dictionary)
-    .governedBy(setOf("Person", "Company"))
-    .withAliases(aliases)
-    .stamp()          // or .declare()
-```
-
-Both DSL entries are `@JvmSynthetic operator fun invoke` on the companion, so Java sees only the
-chain (`MetamodelVersion.from(dictionary[, selector[, aliases]])`, `DeclaredSchema.from(...)`).
-Governance is per type and opt-in: adding or reshaping an **un**governed type leaves `contentHash`
-untouched, so exploratory types churn without polluting version history.
-`hasSameContentAs(other)` compares the hash and ignores `schemaName`; `equals` compares both.
-Persist stamps through `MetamodelVersionStore` (`saveVersion` / `latestVersion` / `versionHistory`,
-keyed `(schemaName, contentHash)`, upsert), with `InMemoryMetamodelVersionStore` for tests and
-`dice-storage/DrivineMetamodelVersionStore.kt` for the graph backend.
-Supporting types: `SchemaAliases` (`SchemaAliases.NONE`), `TypeIdentity`, `GovernedTypeSelector`
-(`GovernedTypeSelector.ALL`), `MetamodelStamping`, `MetamodelDsl`, `PropertySignature`,
-`ObservedSchema` / `ObservedSchemaSource`, `DriftReport` / `DriftCheckRunner`, `MetamodelDiffer`.
+Step 10 (metamodel versioning: `MetamodelVersion`, `DeclaredSchema`, `DeclaredSchemaSource`) moved to `references/metamodel.md`.
 
 ## Annotation Surface - only two DICE annotations exist
 

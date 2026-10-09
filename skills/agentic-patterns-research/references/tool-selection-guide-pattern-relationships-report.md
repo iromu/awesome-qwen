@@ -905,14 +905,14 @@ The most effective implementations combine these patterns thoughtfully, matching
 
 ## References
 
-- [Tool Selection Guide Pattern](/patterns/tool-selection-guide.md)
+- [Tool Selection Guide Pattern](tool-selection-guide-report.md)
 - [SKILLS-AGENTIC-LESSONS.md](https://github.com/nibzard/SKILLS-AGENTIC-LESSONS) - Analysis of 88 Claude conversation sessions
-- [Subject Hygiene Pattern](/patterns/subject-hygiene.md)
-- [Sub-Agent Spawning Pattern](/patterns/sub-agent-spawning.md)
-- [Discrete Phase Separation Pattern](/patterns/discrete-phase-separation.md)
-- [Progressive Tool Discovery Pattern](/patterns/progressive-tool-discovery.md)
-- [Action Selector Pattern](/patterns/action-selector-pattern.md)
-- [Agent-Friendly Workflow Design Pattern](/patterns/agent-friendly-workflow-design.md)
-- [Tool Capability Compartmentalization Research](/research/tool-capability-compartmentalization-report.md)
-- [Sandboxed Tool Authorization Research](/research/sandboxed-tool-authorization-report.md)
-- [Action Selector Pattern Research](/research/action-selector-pattern-report.md)
+- [Subject Hygiene Pattern](subject-hygiene-report.md)
+- [Sub-Agent Spawning Pattern](sub-agent-spawning-report.md)
+- [Discrete Phase Separation Pattern](discrete-phase-separation-report.md)
+- [Progressive Tool Discovery Pattern](progressive-tool-discovery-report.md)
+- [Action Selector Pattern](action-selector-pattern-report.md)
+- [Agent-Friendly Workflow Design Pattern](agent-friendly-workflow-design-report.md)
+- [Tool Capability Compartmentalization Research](tool-capability-compartmentalization-report.md)
+- [Sandboxed Tool Authorization Research](sandboxed-tool-authorization-report.md)
+- [Action Selector Pattern Research](action-selector-pattern-report.md)
