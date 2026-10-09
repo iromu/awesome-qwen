@@ -33,7 +33,7 @@ def naive_max_plain(versions):
 
 
 def all_versions(path):
-    root = vx.root(path).getroot()
+    root = vx.root(path)
     ver = root.find("versioning")
     if ver is None:
         return []
@@ -49,7 +49,7 @@ for name in sorted(os.listdir(META)):
         continue
     path = os.path.join(META, name)
     try:
-        root = vx.root(path).getroot()
+        root = vx.root(path)
     except vx.ParseError:
         continue
     g, a = root.findtext("groupId"), root.findtext("artifactId")

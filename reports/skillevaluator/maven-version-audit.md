@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 09, 2026 at 02:12 PM UTC
+**Generated:** October 09, 2026 at 02:17 PM UTC
 
 ## Summary
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'maven-version-audit'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/maven-version-audit/
 - [OK] **naming_convention**: Folder name 'maven-version-audit' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (165/500)
+- [OK] **line_count**: SKILL.md within line limit (172/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'

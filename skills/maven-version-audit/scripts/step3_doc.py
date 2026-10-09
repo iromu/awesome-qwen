@@ -123,7 +123,7 @@ def load_meta(path, group, artifact):
     if not os.path.isfile(path):
         return None
     try:
-        root = vx.root(path).getroot()
+        root = vx.root(path)
     except vx.ParseError:
         return None
     if root.findtext("groupId") != group or root.findtext("artifactId") != artifact:
@@ -184,7 +184,7 @@ def parents_and_boms():
         if "pom.xml" not in files:
             continue
         rel = os.path.relpath(os.path.join(dirpath, "pom.xml"), ROOT)
-        root = vx.root(os.path.join(dirpath, "pom.xml")).getroot()
+        root = vx.root(os.path.join(dirpath, "pom.xml"))
         p = root.find("m:parent", namespaces=POMNS)
         if p is not None:
             out.append(("parent", rel, pom_txt(p, "m:groupId"),

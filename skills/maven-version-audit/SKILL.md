@@ -57,9 +57,16 @@ skill is installed - do not hardcode the skill's install path.
 
 The pipeline ships with this skill in its `scripts/` directory: `step1_coords.py`,
 `step2_download.py`, `step3_doc.py`, the three self-checks `verify_ordering.py`, `crosscheck.py`,
-`qa_doc.py`, and the shared `scripts/_va_paths.py` they all import. Set `SK` to that directory -
+`qa_doc.py`, and the shared `scripts/_va_paths.py` and `scripts/_va_xml.py` they all import. Set
+`SK` to that directory -
 it is this skill's base directory (handed to you when the skill is invoked) joined with
 `scripts/`. Invoke the scripts by that path; they read every other location from the table above.
+
+`_va_xml.py` parses POM and metadata XML as untrusted input and refuses any document that
+carries a DTD or entity declaration, so it needs `defusedxml` and deliberately has no stdlib
+fallback - a missing `defusedxml` fails at import rather than quietly downgrading the parser.
+Install it with `pip install -r requirements.txt` from this skill's base directory before
+running any step.
 
 ## The canonical pipeline
 

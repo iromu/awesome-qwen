@@ -98,7 +98,7 @@ def content_matches(path, group, artifact):
     if not is_metadata(path):
         return False
     try:
-        root = vx.root(path).getroot()
+        root = vx.root(path)
     except vx.ParseError:
         return False
     got_group = root.findtext("groupId")

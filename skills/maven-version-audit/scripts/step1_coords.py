@@ -34,7 +34,7 @@ def rows():
     out = []
     for path in sorted(poms()):
         rel = os.path.relpath(path, ROOT)
-        root = vx.root(path).getroot()
+        root = vx.root(path)
         props = root.find("m:properties", NS)
         if props is not None:
             for child in props:
