@@ -111,14 +111,15 @@
   max-inline-size: 100%;
   block-size: var(--base-size-32);
   padding-inline: var(--base-size-12);
-  border: var(--brand-borderWidth-thin) solid var(--brand-color-border-muted);
+  border: 0;
   border-radius: var(--brand-borderRadius-medium);
-  background-color: var(--brand-color-canvas-default);
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-press);
   color: var(--brand-color-text-muted);
   overflow: hidden;
   transform-origin: right center;
   animation: searchFieldExpand 0.18s ease;
-  transition: border-color 0.2s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 @keyframes searchFieldExpand {
@@ -139,7 +140,8 @@
 }
 
 .searchField:focus-within {
-  border-color: var(--brand-color-focus);
+  box-shadow: var(--clay-press),
+    inset 0 0 0 var(--brand-borderWidth-thick) var(--brand-color-focus);
 }
 
 .searchInput {
@@ -228,7 +230,7 @@
 
 .subNavLink:hover {
   color: var(--brand-color-text-default);
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-well);
 }
 
 .subNavLink:focus-visible {
@@ -350,6 +352,25 @@
   width: 100%;
 }
 
+/* The section label and its caption sit above a full-width card row, so they
+   centre like the hero above them instead of hanging off the left edge. Scoped
+   to the Stack's two text children: `Heading-module__Heading` and
+   `Text-module__Text` are shared with Card.Heading, the score Token and
+   Card.Description, so a descendant selector here would centre the card bodies
+   too. The caption's measure is capped and the box centred — left full-bleed it
+   ran ~150 characters across the band at 13px, past the measure that reads
+   comfortably. Same shape as the Hero heading rule further down. */
+.sectionHead > :global(h2) {
+  text-align: center;
+}
+
+.sectionHead > :global(span[class*="Text-module"]) {
+  display: block;
+  max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
 .cardGridColumn {
   display: flex;
 }
@@ -365,16 +386,18 @@
     var(--brand-color-border-muted);
 }
 
-/* Subtle hover/focus fill covers the full cell rectangle, out to the gridlines,
-   like Primer Brand's Card surface. The rounded focus ring below sits inset
-   within it (see the ::before layer). */
+/* Hover/focus feedback for a card cell. It used to be a fill (canvas-subtle on
+   a canvas-default cell); with every surface on one sand a fill can no longer
+   say "this cell is live", so the cell lifts on the paired shadow instead and
+   the state stays legible without a colour step. The rounded focus ring below
+   sits inset within the same rectangle. */
 .cardGridColumnArrowHover .cardGridItem {
-  transition: background-color var(--brand-animation-duration-extended)
+  transition: box-shadow var(--brand-animation-duration-extended)
     var(--brand-animation-easing-default);
 }
 
 .cardGridColumnArrowHover .cardGridItem:is(:hover, :focus-within) {
-  background-color: var(--brand-color-canvas-subtle);
+  box-shadow: var(--clay-raise-sm);
 }
 
 /* Ring layer: inset from the gridline boundary by the cell padding, so a gutter
@@ -476,22 +499,14 @@
   }
 }
 
-/* Dark-mode override for the Hero secondary CTA ("Become a contributor"): use
- * the requested solid #202020 fill instead of the default translucent white.
- * Not a token: --brand-button-secondary-bgColor-rest resolves to a
- * translucent overlay (rgba(255,255,255,0.12) in dark mode), which would
- * visually regress from the prototype's opaque fill — this hex is a
- * deliberate, verbatim match to the approved design, not an oversight. */
-:global([data-color-mode="dark"]) .heroFrameInner
-  :global([class*="Button--secondary"]) {
-  background-color: #202020;
-}
-
-/* Light-mode override for the Hero secondary CTA: requested solid #F0F0F0
- * fill, same rationale as above. */
-:global([data-color-mode="light"]) .heroFrameInner
-  :global([class*="Button--secondary"]) {
-  background-color: #f0f0f0;
+/* The Hero secondary CTA ("Become a contributor") gets an opaque fill instead of
+ * the translucent one that --brand-button-secondary-bgColor-rest resolves to
+ * (rgba(255,255,255,0.12) in dark mode), which reads as a smear on sand. Both
+ * modes now take --clay-well, the one deliberately darker-than-the-page step, so
+ * the button is a dent in the sheet rather than a grey plate on it. The custom
+ * property is declared per colour mode, which is why one rule covers both. */
+.heroFrameInner :global([class*="Button--secondary"]) {
+  background-color: var(--clay-well);
 }
 
 /*

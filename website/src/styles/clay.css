@@ -1,0 +1,330 @@
+/*
+ * Clay art direction — the site's colour and depth system.
+ *
+ * Loaded after `base.css` (and therefore after Primer Brand's own stylesheet,
+ * which it remaps) so these declarations win the cascade. It exists because the
+ * prototype was drawn as a *flat, shadow-driven* surface rather than a bordered
+ * one, and three things about that could not be expressed by editing the
+ * component stylesheets in place:
+ *
+ *   1. Every surface is the same warm sand colour as the page background, so
+ *      nothing reads as a separate object. Separation has to come from
+ *      somewhere other than fill colour.
+ *   2. Nothing has a border. The prototype drew its structure with 1px
+ *      "gridlines" (`--brand-color-border-*`) and this removes them.
+ *   3. Nothing is pure white or pure black — including the two scale steps
+ *      (`base-color-scale-white-0` / `-black-0`) that Primer resolves several of
+ *      its semantic tokens to, and that the page stylesheets reference directly.
+ *
+ * Depth is instead carried by a paired shadow: a soft warm-dark shadow offset
+ * down-right, a warm near-white highlight offset up-left, and inset versions of
+ * the same pair that "press" an element into the material.
+ *
+ * Why a token layer instead of per-component edits: the page stylesheets
+ * reference `--brand-color-border-*` 102 times, `--brand-borderWidth-thin` 122
+ * times, and `--brand-SubNav-shadow` 8 times. Remapping the tokens retires all
+ * of those rules at once, and leaves `--brand-borderWidth-thin` itself at 1px —
+ * deliberately, because it is load-bearing twice over: it sizes keyboard focus
+ * outlines (`outline: var(--brand-borderWidth-thin) solid …`) and it is
+ * subtracted inside layout `calc()`s (the detail-page sidebar width, the
+ * mobile wordmark inset, the mobile search-panel breakout). Zeroing it would
+ * both hide every focus ring and shift those three layouts by a pixel.
+ */
+
+/* ---------------------------------------------------------------------------
+ * Light mode: warm sand.
+ *
+ * `--clay-sand` is the page background and every surface on it, which is the
+ * point — a card must not read as a plate sitting on a table. `--clay-well` is
+ * the one deliberately darker step, reserved for elements that are *pressed
+ * into* the material (search fields, code blocks) rather than resting on it.
+ * ------------------------------------------------------------------------- */
+
+/* The doubled attribute selector is not a typo. The bundle carries Primer's
+   stylesheet twice — once from the @import in base.css, once pulled in through
+   the @primer/react-brand JS entrypoint — and the second copy lands *after* this
+   file, so a plain `[data-color-mode="light"]` here would tie with Primer's own
+   selector on specificity and lose on source order, silently handing the page
+   back its white canvas and black text. Two attribute selectors score (0,2,0)
+   against Primer's (0,1,0) and win wherever the attribute appears: on <html>,
+   and on the inner element that ThemeProvider tags after hydration. */
+
+:root,
+[data-color-mode="light"][data-color-mode] {
+  --clay-sand: #e7e2d8;
+  --clay-tint: #ded7ca;
+  --clay-well: #d3ccbd;
+  --clay-ink: #3a342b;
+  --clay-ink-muted: #6b6153;
+  --clay-terracotta: #c9784f;
+  /* Text-weight terracotta, not fill-weight. #c9784f is the right hue for a
+     button but measured 3.40:1 as 16px/400 body text on sand, under the 4.5:1
+     floor. This is the same hue pushed until it clears; the lighter value
+     stays available as `--clay-terracotta` for fills. */
+  --clay-terracotta-deep: #8a4a26;
+  --clay-sage: #8aa39b;
+  --clay-clay-red: #b4483d;
+
+  /* Paired shadow. Down-right = the soft dark half; up-left = the highlight.
+     Both are tinted (umber, warm cream) rather than neutral grey and white, so
+     the pair reads as light falling on clay instead of a grey drop shadow. */
+  --clay-lo: rgba(58, 52, 43, 0.22);
+  --clay-hi: rgba(255, 251, 240, 0.85);
+  --clay-raise: 8px 8px 18px var(--clay-lo), -8px -8px 18px var(--clay-hi);
+  --clay-raise-sm: 4px 4px 9px var(--clay-lo),
+    -4px -4px 9px var(--clay-hi);
+  --clay-press: inset 5px 5px 11px var(--clay-lo),
+    inset -5px -5px 11px var(--clay-hi);
+
+  /* Surfaces: one flat sand, everywhere. */
+  --brand-color-canvas-default: var(--clay-sand);
+  --brand-color-canvas-subtle: var(--clay-sand);
+  --brand-color-canvas-inset: var(--clay-sand);
+  --brand-color-canvas-overlay: var(--clay-sand);
+  --brand-color-canvas-muted: var(--clay-sand);
+  --brand-color-canvas-invert: var(--clay-ink);
+
+  /* Nothing borders. `transparent` rather than a 0-width token keeps the 1px
+     border box in the layout, so the gridline gutters and the `calc()`s that
+     subtract a border width keep resolving exactly as drawn. */
+  --brand-color-border-default: transparent;
+  --brand-color-border-muted: transparent;
+  --brand-color-border-subtle: transparent;
+
+  /* Type and accent. */
+  --brand-color-text-default: var(--clay-ink);
+  --brand-color-text-muted: var(--clay-ink-muted);
+  --brand-color-text-subtle: var(--clay-ink-muted);
+  --brand-color-text-onEmphasis: var(--clay-sand);
+  --brand-color-text-emphasized: var(--clay-terracotta-deep);
+  --brand-color-text-link-rest: var(--clay-terracotta-deep);
+  --brand-color-text-link-pressed: var(--clay-terracotta);
+  --brand-color-text-danger: var(--clay-clay-red);
+  --brand-color-text-error: var(--clay-clay-red);
+
+  /* Accent doubled as a *text* token: the code-block `.token.variable` /
+     `.parameter` / `.placeholder` rules and EyebrowText--variant-accent all
+     resolve their `color` through this token, and the fill-weight #c9784f
+     measured 3.40:1 at 14px on sand. Its other consumers are the Card torch
+     (blurred 180px, opacity 0) and two small indicator bars, so the darker
+     text-safe value serves all of them. Dark mode keeps the lighter value —
+     light-on-umber has the headroom and audited clean. */
+  --brand-color-accent-primary: var(--clay-terracotta-deep);
+  --brand-color-accent-secondary: var(--clay-sage);
+  --brand-color-success-fg: var(--clay-sage);
+  --brand-color-success-emphasis: #5d7369;
+  --brand-color-success-subtle: rgba(138, 163, 155, 0.35);
+  --brand-color-success-muted: rgba(138, 163, 155, 0.45);
+  --brand-color-danger-fg: var(--clay-clay-red);
+  --brand-color-danger-emphasis: var(--clay-clay-red);
+  --brand-color-neutral-emphasisPlus: #55483a;
+  --brand-color-neutral-emphasis: #7a6d5c;
+  --brand-color-neutral-muted: rgba(220, 213, 200, 0.95);
+  --brand-color-neutral-subtle: rgba(231, 226, 216, 0.95);
+
+  --brand-color-focus: var(--clay-terracotta);
+  --brand-Link-color-accent: var(--clay-terracotta-deep);
+  --brand-Link-color-accent-pressed: var(--clay-terracotta);
+  --brand-control-color-focus: var(--clay-terracotta-deep);
+
+  /* Links written as a bare <a> inside prose, and the Primer link slots that
+     resolve through this token instead of `--brand-color-text-link-rest`.
+     Without them an unstyled anchor falls back to the browser default blue —
+     the only cold hue left on a warm page once the surfaces are handled. */
+  --brand-InlineLink-color-rest: var(--clay-terracotta-deep);
+  --brand-InlineLink-color-pressed: var(--clay-terracotta);
+
+  /* The primary button read as brown in light mode and sage in dark: its fill
+     resolves through `--base-color-scale-green-5`, whose stock value is a cool
+     green, so the two themes drifted to different hues. Pinned to fired clay in
+     both, dark enough to keep the cream label above 4.5:1. */
+  --brand-button-primary-bgColor-rest: #7a3f24;
+  --brand-button-primary-bgColor-hover: #6a3520;
+  --brand-button-primary-bgColor-active: #5f2f1d;
+
+  /* The one shadow token the page stylesheets reach for directly (8 uses: the
+     nav and sort dropdowns, the mobile menu panel, the search results popover,
+     the copy toast). Its stock value is a six-layer stack that falls straight
+     down — no highlight half, so on a sand canvas it smudged instead of
+     lifting. */
+  --brand-SubNav-shadow: var(--clay-raise);
+  --brand-SubNav-color-link-bgColor: var(--clay-well);
+  --brand-River-visual-shadow: var(--clay-raise);
+  --brand-ActionMenu-color-item-hover: var(--clay-well);
+  --button-secondary-bgColor-rest: #ded7ca;
+
+  /* Scale steps referenced directly by the page stylesheets. */
+  --base-color-scale-white-0: #fdfaf3;
+  --base-color-scale-black-0: #241f19;
+  --base-color-scale-gray-1: var(--clay-well);
+  --base-color-scale-gray-6: #4a4235;
+  --base-color-scale-green-3: var(--clay-sage);
+  --base-color-scale-green-4: var(--clay-terracotta);
+  --base-color-scale-green-5: #7a3f24;
+  --base-color-scale-green-6: #7a3f24;
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark mode: the same clay, fired darker.
+ *
+ * Kept warm on purpose. The stock dark palette is a cool grey-green family, and
+ * dropping a warm sand into a cool grey system reads as two sites stitched
+ * together. `--clay-hi` is far weaker here than in light mode — that is not an
+ * oversight: a cream highlight on umber clay has to be faint or the material
+ * stops reading as the same material.
+ * ------------------------------------------------------------------------- */
+
+[data-color-mode="dark"][data-color-mode] {
+  --clay-sand: #2e2822;
+  --clay-tint: #3a332b;
+  --clay-well: #241f19;
+  --clay-ink: #e7e2d8;
+  --clay-ink-muted: #a89e8d;
+  --clay-terracotta: #d98a63;
+  --clay-terracotta-deep: #c9784f;
+  --clay-sage: #93b0a6;
+  --clay-clay-red: #e07a6d;
+
+  --clay-lo: rgba(12, 8, 4, 0.62);
+  --clay-hi: rgba(255, 251, 240, 0.07);
+  --clay-raise: 8px 8px 18px var(--clay-lo), -8px -8px 18px var(--clay-hi);
+  --clay-raise-sm: 4px 4px 9px var(--clay-lo),
+    -4px -4px 9px var(--clay-hi);
+  --clay-press: inset 5px 5px 11px var(--clay-lo),
+    inset -5px -5px 11px var(--clay-hi);
+
+  --brand-color-canvas-default: var(--clay-sand);
+  --brand-color-canvas-subtle: var(--clay-sand);
+  --brand-color-canvas-inset: var(--clay-sand);
+  --brand-color-canvas-overlay: var(--clay-sand);
+  --brand-color-canvas-muted: var(--clay-sand);
+  --brand-color-canvas-invert: var(--clay-ink);
+
+  --brand-color-border-default: transparent;
+  --brand-color-border-muted: transparent;
+  --brand-color-border-subtle: transparent;
+
+  --brand-color-text-default: var(--clay-ink);
+  --brand-color-text-muted: var(--clay-ink-muted);
+  --brand-color-text-subtle: var(--clay-ink-muted);
+  /* Dark on emphasis, not light. Sage and terracotta are both light-valued, so
+     a cream label on them measured 2.23:1 (4.5:1 required). The same rule the
+     light block follows, in the other direction. */
+  --brand-color-text-onEmphasis: #241f19;
+  --brand-color-text-emphasized: var(--clay-terracotta);
+  --brand-color-text-link-rest: var(--clay-terracotta);
+  --brand-color-text-link-pressed: var(--clay-terracotta-deep);
+  --brand-color-text-danger: var(--clay-clay-red);
+  --brand-color-text-error: var(--clay-clay-red);
+
+  --brand-color-accent-primary: var(--clay-terracotta);
+  --brand-color-accent-secondary: var(--clay-sage);
+  --brand-color-success-fg: var(--clay-sage);
+  --brand-color-success-emphasis: #5d7369;
+  --brand-color-success-subtle: rgba(147, 176, 166, 0.35);
+  --brand-color-success-muted: rgba(147, 176, 166, 0.45);
+  --brand-color-danger-fg: var(--clay-clay-red);
+  --brand-color-danger-emphasis: var(--clay-clay-red);
+  --brand-color-neutral-emphasisPlus: #d6cfc2;
+  --brand-color-neutral-emphasis: #b5aa97;
+  --brand-color-neutral-muted: rgba(46, 40, 34, 0.95);
+  --brand-color-neutral-subtle: rgba(46, 40, 34, 0.95);
+
+  --brand-color-focus: var(--clay-terracotta);
+  --brand-Link-color-accent: var(--clay-terracotta);
+  --brand-Link-color-accent-pressed: var(--clay-terracotta-deep);
+  --brand-control-color-focus: var(--clay-terracotta);
+
+  --brand-InlineLink-color-rest: var(--clay-terracotta);
+  --brand-InlineLink-color-pressed: var(--clay-terracotta-deep);
+
+  /* Same fired clay as light mode, lightened for the umber canvas so the
+     primary action stays the same hue in both themes (6.06:1 against the
+     cream label). */
+  --brand-button-primary-bgColor-rest: #8f4f2f;
+  --brand-button-primary-bgColor-hover: #9c5734;
+  --brand-button-primary-bgColor-active: #a86039;
+
+  --brand-SubNav-shadow: var(--clay-raise);
+  --brand-SubNav-color-link-bgColor: var(--clay-well);
+  --brand-River-visual-shadow: var(--clay-raise);
+  --brand-ActionMenu-color-item-hover: var(--clay-well);
+  --button-secondary-bgColor-rest: #3a332b;
+
+  --base-color-scale-white-0: #fdfaf3;
+  --base-color-scale-black-0: #1b1712;
+  --base-color-scale-gray-1: var(--clay-well);
+  --base-color-scale-gray-6: #4d4539;
+  --base-color-scale-green-3: var(--clay-sage);
+  --base-color-scale-green-4: #8f4f2f;
+  --base-color-scale-green-5: #5d7369;
+  --base-color-scale-green-6: #8f4f2f;
+}
+
+/* --------------------------------------------------------------------------
+ * Structural overrides.
+ *
+ * Things a token swap cannot reach: rules whose whole job was to make a region
+ * read as a separate object, and the focus affordances that have to survive the
+ * borderless pass with their contrast intact.
+ * -------------------------------------------------------------------------- */
+
+/* The code-block surface. Its 1px border and its slightly-lighter-than-page
+   fill were doing the same job twice, so both go and the paired shadow takes
+   over. Pressed rather than raised: a code block sits *in* the page, not on it
+   — which is also why the inset pair is used here and nowhere else. */
+pre,
+code[class*="astro-code"],
+pre[class*="astro-code"] {
+  border: 0;
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-press);
+}
+
+/* Floating layers genuinely do float above the page, so these keep a shadow —
+   but the pressed pair, which reads as a dent in the clay and stays inside the
+   element's own box. A border here would draw the panel's outline back. */
+[class*="SubNav__container"],
+[class*="ActionMenu__menu"] {
+  border: 0;
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-raise);
+}
+
+/* Text inputs sit in a channel pressed into the page. The wrapper around them
+   keeps its own pressed pair (see the module stylesheets), so the field and its
+   channel read as one recess instead of a box inside a box. */
+input[type="search"],
+input[type="text"] {
+  border: 0;
+  background-color: transparent;
+}
+
+/* Press = recessed. A control sits proud of the page at rest and is pushed
+   into it while held, which is the only place the two halves of the pair
+   change places. Primer declares `--brand-button-primary-shadow-active` for
+   this and hard-codes it to `none`, and nothing consumes that token anyway, so
+   the treatment has to be written out here rather than rerouted through it. */
+:where(button, summary, [role="button"], a[class*="Button"]):active {
+  box-shadow: var(--clay-press);
+}
+
+/* Unstyled anchors. A bare `<a>` with no class — the inline "Browse all
+   skills" link, the footer wordmark — matched no rule here or in Primer, so it
+   painted in the browser's default link blue: the one cold, off-palette hue
+   sitting in the middle of a warm page. `:where()` keeps the selector at zero
+   specificity, so it only reaches anchors that declare no colour of their own
+   (Card__link and friends still win their own fights). */
+:where(a) {
+  color: var(--brand-color-text-link-rest);
+}
+
+/* Keyboard focus, which survives the borderless pass on purpose. Primer paints
+   most of its focus rings with `box-shadow: 0 0 0 <w>px <color>` rather than
+   `outline`, and that shadow would otherwise sit on top of the pressed pair.
+   The inset ring keeps the affordance without drawing an outer contour. */
+:where(a, button, summary, [tabindex]):focus-visible {
+  outline: var(--brand-borderWidth-thick) solid var(--brand-color-focus);
+  outline-offset: var(--base-size-2);
+  box-shadow: inset 0 0 0 var(--base-size-2) var(--brand-color-focus);
+}

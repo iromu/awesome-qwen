@@ -578,8 +578,9 @@
   padding: var(--base-size-20);
   overflow-x: auto;
   border-radius: var(--brand-borderRadius-medium);
-  border: var(--brand-borderWidth-thin) solid var(--brand-color-border-muted);
-  background-color: var(--brand-color-canvas-subtle);
+  border: 0;
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-press);
   color: var(--brand-color-text-default);
   font-family: var(--brand-fontStack-monospace);
   font-size: var(--brand-text-size-100);
@@ -670,7 +671,7 @@
 .articleSection :global(:not(pre) > code) {
   padding: var(--base-size-2) var(--base-size-4);
   border-radius: var(--brand-borderRadius-small);
-  background-color: var(--brand-color-border-muted);
+  background-color: var(--clay-tint);
   color: var(--brand-color-text-default);
   font-family: var(--brand-fontStack-monospace);
   font-size: 0.9em;
@@ -697,7 +698,7 @@
 }
 
 .articleSection :global(th) {
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-tint);
   font-weight: var(--brand-text-weight-semibold);
   white-space: nowrap;
 }
@@ -724,7 +725,7 @@
   block-size: var(--base-size-28);
   padding-inline: var(--base-size-8);
   border-radius: var(--brand-borderRadius-medium);
-  background-color: var(--brand-color-border-muted);
+  background-color: var(--clay-tint);
   color: var(--brand-color-text-default);
   font-family: var(--brand-fontStack-monospace);
   font-size: var(--brand-text-size-100);
@@ -737,7 +738,7 @@
 .inlineCode {
   padding: var(--base-size-2) var(--base-size-4);
   border-radius: var(--brand-borderRadius-small);
-  background-color: var(--brand-color-border-muted);
+  background-color: var(--clay-tint);
   color: var(--brand-color-text-default);
   font-family: var(--brand-fontStack-monospace);
   font-size: 0.9em;
@@ -804,7 +805,7 @@
 
 .proTipClose:hover {
   color: var(--brand-color-text-default);
-  background-color: var(--brand-color-border-muted);
+  background-color: var(--clay-tint);
 }
 
 .proTipBody {
@@ -892,12 +893,14 @@
   padding-inline-end: var(--base-size-48);
   overflow-x: auto;
   border-radius: var(--brand-borderRadius-medium);
-  border: var(--brand-borderWidth-thin) solid var(--brand-color-border-muted);
-  /* Markdown/code surface uses canvas/subtle, which resolves to the primitive
-     grey-08 in dark mode so the block lifts off the black page, and
-     to a light subtle surface in light mode (raw grey-08 would be an unreadable
-     dark box behind dark text there). */
-  background-color: var(--brand-color-canvas-subtle);
+  border: 0;
+  /* Code sits on the page's own sand and is pressed into it. It used to sit on
+     canvas/subtle, which existed so the block lifted off a black page in dark
+     mode and stayed light in light mode; with one flat sand that distinction is
+     gone, so the inset pair carries the separation instead — otherwise a fenced
+     block and the prose around it are one unbroken field of sand. */
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-press);
   color: var(--brand-color-text-default);
   font-family: var(--brand-fontStack-monospace);
   font-size: var(--brand-text-size-100);
@@ -991,8 +994,9 @@
   block-size: var(--base-size-32);
   padding: 0;
   border-radius: var(--brand-borderRadius-small);
-  border: var(--brand-borderWidth-thin) solid var(--brand-color-border-muted);
-  background-color: var(--brand-color-canvas-subtle);
+  border: 0;
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-press);
   color: var(--brand-color-text-muted);
   cursor: pointer;
   transition:
@@ -1025,7 +1029,8 @@
   border-inline-start: var(--base-size-4) solid
     var(--brand-color-accent-primary);
   border-radius: var(--brand-borderRadius-small);
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-sand);
+  box-shadow: var(--clay-press);
   color: var(--brand-color-text-default);
   font-family: var(--brand-fontStack-monospace);
   font-size: var(--brand-text-size-100);
@@ -1082,10 +1087,10 @@
   inline-size: var(--base-size-16);
   block-size: var(--base-size-16);
   margin-block-start: 0.15em;
-  border: var(--brand-borderWidth-thin) solid
-    var(--brand-color-border-default);
+  border: 0;
   border-radius: var(--brand-borderRadius-small);
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-well);
+  box-shadow: var(--clay-press);
 }
 
 /* The sidebar stays below the visible pinned hero while the article scrolls. */
@@ -1107,7 +1112,7 @@
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--brand-color-border-muted) transparent;
+  scrollbar-color: var(--clay-ink-muted) transparent;
 }
 
 .sidebarSticky::-webkit-scrollbar {
@@ -1119,7 +1124,7 @@
 }
 
 .sidebarSticky::-webkit-scrollbar-thumb {
-  background-color: var(--brand-color-border-muted);
+  background-color: var(--clay-tint);
   border-radius: var(--brand-borderRadius-medium, 6px);
 }
 

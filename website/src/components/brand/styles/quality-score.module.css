@@ -1,16 +1,22 @@
 /*
  * SkillEvaluator quality-score panel on the skill detail page.
  *
- * Deliberately token-neutral: borders and rules use `currentColor` mixed with
- * transparency so the panel reads correctly in both light and dark themes
- * without depending on a specific Primer token name.
+ * This panel used to draw its own 1px rules with `currentColor` mixed with
+ * transparency, because that is theme-agnostic in a way a named Primer token is
+ * not. Under the clay direction a rule is not a valid way to separate two
+ * regions, so the panel now sits on the page's own sand and is pressed into it:
+ * one inset pair, dark down-right and warm cream up-left, which also keeps the
+ * 14px table text off a competing outline. The custom properties resolve on the
+ * page element, so both colour modes are covered by the same three declarations.
  */
 
 .panel {
   margin-block-end: var(--base-size-24, 24px);
-  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border: 0;
   border-radius: 8px;
   padding: 16px 20px;
+  background-color: var(--clay-sand, #e7e2d8);
+  box-shadow: var(--clay-press);
 }
 
 .header {
@@ -29,7 +35,8 @@
   font-variant-numeric: tabular-nums;
   padding: 2px 8px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border: 0;
+  background-color: var(--clay-well, #dcd5c8);
 }
 
 .type {
@@ -47,11 +54,14 @@
   font-size: 0.9rem;
 }
 
+/* Row separation is carried by the 6px cell padding. A rule between two rows of
+   a table is a divider rather than a surface edge, so there is nothing to press
+   here — the padding was already doing the separating. */
 .table th,
 .table td {
   text-align: start;
   padding: 6px 8px;
-  border-block-end: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  border-block-end: 0;
   white-space: nowrap;
 }
 

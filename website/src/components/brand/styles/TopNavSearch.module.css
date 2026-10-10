@@ -101,7 +101,7 @@
 }
 
 .resultActive {
-  background-color: var(--brand-color-canvas-default);
+  background-color: var(--clay-tint);
 }
 
 .empty {

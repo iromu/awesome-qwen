@@ -9,7 +9,6 @@ import { readSkillMarkdown, formatLastUpdated } from "../../lib/detail-page";
 const GITHUB_TREE_BASE = "https://github.com/iromu/awesome-qwen/tree/main";
 const GITHUB_BLOB_BASE = "https://github.com/iromu/awesome-qwen/blob/main";
 const RAW_BASE = "https://raw.githubusercontent.com/iromu/awesome-qwen/main";
-const CLONE_URL = "https://github.com/iromu/awesome-qwen.git";
 
 interface SkillFile {
   path: string;
@@ -72,7 +71,10 @@ const lastUpdated = formatLastUpdated(item.lastUpdated);
 const { html } = buildDetailToc(markdownHtml);
 
 const githubUrl = `${GITHUB_TREE_BASE}/${item.path}`;
-const installCommand = `git clone ${CLONE_URL} && cp -r awesome-qwen/${item.path} .qwen/skills/`;
+// `--agent qwen-code` is spelled out rather than left to the picker: it pins
+// the install to the project-scope `.qwen/skills/` directory, which is where
+// Qwen Code discovers skills, and keeps the copied command single-purpose.
+const installCommand = `npx skills add iromu/awesome-qwen --skill ${item.id} --agent qwen-code`;
 
 const base = import.meta.env.BASE_URL ?? "/";
 const detailHref = (id: string) =>

@@ -202,7 +202,7 @@
 
 .subNavLink:hover {
   color: var(--brand-color-text-default);
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-tint);
 }
 
 .subNavLink:focus-visible {
@@ -290,7 +290,7 @@
 
 .moreLink:hover {
   color: var(--brand-color-text-default);
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-tint);
 }
 
 .moreLink:focus-visible {
@@ -398,7 +398,7 @@
    like Primer Brand's Card surface. The rounded focus ring (see ::before) sits
    inset within it. */
 .itemHover:is(:hover, :focus-within) {
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-tint);
 }
 
 /* Ring layer: inset from the gridline boundary so a gutter sits between the ring
@@ -610,7 +610,7 @@
 
 .sortOption:hover {
   color: var(--brand-color-text-default);
-  background-color: var(--brand-color-canvas-subtle);
+  background-color: var(--clay-tint);
 }
 
 .sortOptionActive {
@@ -790,7 +790,7 @@
   /* Matches the muted, low-contrast scrollbar used by the article sidebar so
      the filter list does not read as a heavy chrome element. */
   scrollbar-width: thin;
-  scrollbar-color: var(--brand-color-border-muted) transparent;
+  scrollbar-color: var(--clay-ink-muted) transparent;
 }
 
 .filterOptions::-webkit-scrollbar {
@@ -802,7 +802,7 @@
 }
 
 .filterOptions::-webkit-scrollbar-thumb {
-  background-color: var(--brand-color-border-muted);
+  background-color: var(--clay-ink-muted);
   border-radius: var(--brand-borderRadius-medium, 6px);
 }
 

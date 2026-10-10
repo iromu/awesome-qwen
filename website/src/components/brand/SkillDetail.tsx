@@ -73,7 +73,7 @@ export type SkillDetailProps = {
   githubBlobBase: string;
   /** `https://raw.githubusercontent.com/.../main` — lazy file fetches. */
   rawBase: string;
-  /** `gh skills install …` — skills have no VS Code install URI. */
+  /** `npx skills add …` — skills have no VS Code install URI. */
   installCommand: string;
   rawMarkdown: string;
   lastUpdated?: string | null;

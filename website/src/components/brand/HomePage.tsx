@@ -117,7 +117,12 @@ export function HomePage({
           marginBlockEnd={{ narrow: 24, wide: 80 }}
         >
           <Box className={styles.cardGridContent}>
-            <Stack direction="vertical" gap="condensed" padding="none">
+            <Stack
+              direction="vertical"
+              gap="condensed"
+              padding="none"
+              className={styles.sectionHead}
+            >
               <Heading as="h2" size="3">
                 Featured skills
               </Heading>
@@ -176,9 +181,14 @@ export function HomePage({
                 Not sure where to start?
               </CTABanner.Heading>
               <CTABanner.Description>
-                Install Qwen Code, copy any skill folder from this library into
-                your project&rsquo;s <code>.qwen/skills/</code> directory, and
-                Qwen picks it up automatically.
+                Install Qwen Code, then run{" "}
+                <code>
+                  npx skills add iromu/awesome-qwen --skill &lt;skill&gt;
+                  --agent qwen-code
+                </code>{" "}
+                from your project root, or copy a skill folder into your
+                project&rsquo;s <code>.qwen/skills/</code> directory by hand.
+                Either way, Qwen picks it up automatically.
               </CTABanner.Description>
               <CTABanner.ButtonGroup>
                 <Button

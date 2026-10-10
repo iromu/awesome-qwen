@@ -56,7 +56,7 @@ const skillSourceUrl = (skill: SkillItem) =>
   `https://github.com/iromu/awesome-qwen/tree/main/skills/${skill.id}`;
 
 const installCommand = (skill: SkillItem) =>
-  `git clone https://github.com/iromu/awesome-qwen.git && cp -r awesome-qwen/skills/${skill.id} .qwen/skills/`;
+  `npx skills add iromu/awesome-qwen --skill ${skill.id} --agent qwen-code`;
 
 const downloadUrl = (skill: SkillItem) =>
   `https://raw.githubusercontent.com/iromu/awesome-qwen/main/skills/${skill.id}/SKILL.md`;

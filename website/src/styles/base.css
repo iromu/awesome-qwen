@@ -1,14 +1,18 @@
 /*
  * Global base styles.
  *
- * Primer Brand supplies all design tokens and component styling; this file only
- * covers the document-level basics and the small number of utilities the ported
- * prototype markup relies on. Page-specific styling lives in the CSS modules
- * under src/components/brand/styles/, exactly as the prototype authored them.
+ * Primer Brand supplies the design-token *names* and the component styling that
+ * reads them; `clay.css`, imported below, supplies the site's own values for
+ * those names. Page-specific styling lives in the CSS modules under
+ * src/components/brand/styles/, exactly as the prototype authored them.
  */
 
 @import "@primer/react-brand/lib/css/main.css";
 @import "@primer/react-brand/fonts/fonts.css";
+
+/* Must stay below the two imports above: it remaps the tokens they declare, so
+   it has to win the cascade against them. */
+@import "./clay.css";
 
 *,
 *::before,

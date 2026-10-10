@@ -1,8 +1,8 @@
 <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
 <style>
-.favicon-mark { fill: #24292f; stroke: #24292f; }
+.favicon-mark { fill: #3a342b; stroke: #3a342b; }
 @media (prefers-color-scheme: dark) {
-  .favicon-mark { fill: #ffffff; stroke: #ffffff; }
+  .favicon-mark { fill: #e7e2d8; stroke: #e7e2d8; }
 }
 </style>
 <!-- A "Q" monogram: open ring + tail, readable at 16px in both themes. -->
