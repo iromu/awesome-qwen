@@ -73,6 +73,17 @@ export SKILL_EVAL_LLM_PROVIDER="${SKILL_EVAL_LLM_PROVIDER:-openai-compatible}"
 export SKILL_EVAL_LLM_BASE_URL="${SKILL_EVAL_LLM_BASE_URL:-http://spark.local:4000/v1}"
 export SKILL_EVAL_LLM_MODEL="${SKILL_EVAL_LLM_MODEL:-Qwen3.8-Flash-Next}"
 
+# --- skill-root layout configuration ---------------------------------------
+# The governance skill cards (skills/<name>/<name>-card.md) sit in the skill
+# root next to SKILL.md. The schema check's unexpected_file test is an
+# exact-name membership test, so this whitelist takes literal filenames, not
+# globs -- a "*.md" entry here would match nothing, and the variable name is
+# about directories only by history. Without the names listed below every card
+# earns its report one LOW "Unexpected ... in skill root" advisory. A card
+# added for a new skill has to be named here too, or written as plain
+# "skill-card.md", which the validator already excludes.
+export SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS="${SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS:-agentic-patterns-core-card.md agentic-patterns-extra-card.md agentic-patterns-research-card.md api-design-card.md database-migration-card.md docker-containerize-card.md embabel-agent-card.md embabel-chatbot-card.md embabel-dice-card.md embabel-drivine4j-card.md embabel-otel-card.md git-commit-card.md git-workflows-card.md htmx-card.md json-formatting-card.md maven-version-audit-card.md rabbitmq-typescript-card.md security-audit-card.md self-learning-card.md skill-creator-card.md spring-ai-mcp-card.md unsloth-finetuning-card.md unsloth-inference-card.md unsloth-quantization-card.md unsloth-rl-card.md yaml-validator-card.md}"
+
 # Pick up the API key from a local env file if one exists (kept out of git;
 # *.env is gitignored).
 if [ -z "${SKILL_EVAL_LLM_API_KEY:-}" ] && [ -f "$SCRIPT_DIR/.skillevaluator.env" ]; then
