@@ -76,6 +76,14 @@
   --clay-press: inset 5px 5px 11px var(--clay-lo),
     inset -5px -5px 11px var(--clay-hi);
 
+  /* Hero vignette: the pressed-glass halo behind the centred headline. On light
+     sand the depression is *lighter* than the ground at its centre, so the
+     halo is cream and the enclosing hairlines are ink. */
+  --clay-hero-glow: rgba(255, 251, 240, 0.55);
+  --clay-hero-glow-mid: rgba(255, 251, 240, 0.32);
+  --clay-hero-ring: rgba(58, 52, 43, 0.05);
+  --clay-hero-ring-mid: rgba(58, 52, 43, 0.035);
+
   /* Surfaces: one flat sand, everywhere. */
   --brand-color-canvas-default: var(--clay-sand);
   --brand-color-canvas-subtle: var(--clay-sand);
@@ -193,7 +201,17 @@
   --clay-press: inset 5px 5px 11px var(--clay-lo),
     inset -5px -5px 11px var(--clay-hi);
 
+  /* Reversed against light mode on purpose: on umber clay a pressed area is
+     *darker* in the middle and its edge catches light, so the halo darkens and
+     the rings lighten. Reusing the light values here painted a cream blob that
+     read as a light leak rather than a depression. */
+  --clay-hero-glow: rgba(12, 8, 4, 0.42);
+  --clay-hero-glow-mid: rgba(12, 8, 4, 0.24);
+  --clay-hero-ring: rgba(255, 251, 240, 0.07);
+  --clay-hero-ring-mid: rgba(255, 251, 240, 0.05);
+
   --brand-color-canvas-default: var(--clay-sand);
+
   --brand-color-canvas-subtle: var(--clay-sand);
   --brand-color-canvas-inset: var(--clay-sand);
   --brand-color-canvas-overlay: var(--clay-sand);
@@ -310,13 +328,31 @@ input[type="text"] {
 }
 
 /* Unstyled anchors. A bare `<a>` with no class — the inline "Browse all
-   skills" link, the footer wordmark — matched no rule here or in Primer, so it
-   painted in the browser's default link blue: the one cold, off-palette hue
-   sitting in the middle of a warm page. `:where()` keeps the selector at zero
-   specificity, so it only reaches anchors that declare no colour of their own
-   (Card__link and friends still win their own fights). */
+   skills" link, say — matched no rule here or in Primer, so it painted in the
+   browser's default link blue: the one cold, off-palette hue sitting in the
+   middle of a warm page. `:where()` keeps the selector at zero specificity, so
+   it only reaches anchors that declare no colour of their own (Card__link and
+   friends still win their own fights). */
 :where(a) {
   color: var(--brand-color-text-link-rest);
+}
+
+/* MinimalFooter ships a GitHub wordmark (aria-label "GitHub", linking to
+   logoHref) and a `© <year> GitHub. All rights reserved.` line, and offers no
+   slot for either: `copyrightStatement` is the only escape hatch and an empty
+   string still falls through to the GitHub default, so both come out here. The
+   hooks survive the CSS-module hash (`Footer__logomarks___Sak80` in the built
+   bundle), which is why a substring selector is the only handle available — and
+   why this pair is the fragile part of the file: a Primer Brand bump that
+   renames those hooks would silently restore the GitHub credit.
+
+   Scoped under `footer` deliberately. A bare `[class*="Footer__copyright"]`
+   scores (0,1,0), which ties Primer's single-class rules and loses on source
+   order — the copyright line survived the first attempt for exactly that
+   reason. Element + attribute scores (0,1,1) and wins regardless of order. */
+footer [class*="Footer__logomarks"],
+footer [class*="Footer__copyright"] {
+  display: none;
 }
 
 /* Keyboard focus, which survives the borderless pass on purpose. Primer paints

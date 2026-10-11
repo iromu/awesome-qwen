@@ -35,6 +35,16 @@ const canonicalUrl = new URL(
   Astro.site,
 ).toString();
 
+/**
+ * Scrapers resolve og:image against nothing — a root-relative path is dropped
+ * rather than fetched — so this has to be absolute, including the /awesome-qwen
+ * base path this repo is deployed under.
+ */
+const ogImageUrl = new URL(
+  `${basePath}images/og-card.png`,
+  Astro.site,
+).toString();
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -88,10 +98,16 @@ const contentSecurityPolicy = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-    <meta name="twitter:card" content="summary" />
+    {/* `summary` is the 90x90 square variant; a 1200x630 card needs the wide
+        card or the preview is cropped to a thumbnail. */}
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     {!pagefind && <meta name="robots" content="noindex" />}
 

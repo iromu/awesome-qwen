@@ -448,9 +448,40 @@
 
 .heroFrameInner {
   background-color: var(--brand-color-canvas-subtle);
-  border-inline: var(--brand-borderWidth-thin) solid
-    var(--brand-color-border-muted);
+  border-inline: 0;
   padding-block: var(--base-size-80);
+  position: relative;
+  isolation: isolate;
+}
+
+/* The hero sits in a shallow depression pressed into the page rather than on a
+   blank rectangle. Kept lighter than the sand at the centre and darkening only
+   in the outermost ring: the headline is warm ink on a light ground, so any
+   darkening *behind* it would push #3a342b toward the background instead of
+   away from it. `z-index: -1` with `isolate` on the parent keeps the whole
+   treatment behind the type and out of the pointer path. */
+.heroFrameInner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      closest-side circle at 50% 44%,
+      var(--clay-hero-glow) 0%,
+      var(--clay-hero-glow-mid) 52%,
+      var(--clay-hero-ring) 82%,
+      rgba(58, 52, 43, 0) 100%
+    ),
+    radial-gradient(
+      closest-side circle at 50% 44%,
+      rgba(58, 52, 43, 0) 0 38%,
+      var(--clay-hero-ring) 38% 39.2%,
+      rgba(58, 52, 43, 0) 39.2% 47%,
+      var(--clay-hero-ring-mid) 47% 48.2%,
+      rgba(58, 52, 43, 0) 48.2% 100%
+    );
 }
 
 /* Zero the Hero's native block padding so the 60px frame padding above sets the
@@ -692,8 +723,9 @@
     border-inline-end: 0;
   }
 
-  /* Keep the GitHub mark on the wordmark at every viewport so the page still
-     reads as official; it stays fixed while the title text ellipsizes. */
+  /* Keep the dial mark on the wordmark at every viewport; it stays fixed while
+     the title text ellipsizes. Targets `svg` rather than the octicon it was
+     written for, so it still holds now that the wordmark carries a drawn mark. */
   .subNavTitle svg {
     flex-shrink: 0;
   }

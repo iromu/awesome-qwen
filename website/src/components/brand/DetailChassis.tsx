@@ -161,7 +161,7 @@ export function DetailChassis({
             data-burst={heroBurst ? "true" : undefined}
             aria-hidden="true"
           >
-            <span className={styles.progressDuck} />
+            <span className={styles.progressDial} />
             <span className={styles.confetti}>
               {Array.from({ length: 14 }).map((_, i) => (
                 <i key={i} className={styles.confettiPiece} />

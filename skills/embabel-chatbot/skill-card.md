@@ -7,7 +7,7 @@ This skill is ready for commercial/non-commercial use. <br>
 <span style="color:#d73a49">This skill is not owned or developed by NVIDIA. This skill has been developed and built to a third-party's requirements for this application and use case; see link to Non-NVIDIA [Iván Rodríguez Murillo Agent Card](https://github.com/iromu/awesome-qwen).</span> <!-- VERIFY: The author e-mail in the frontmatter is a personal, non-NVIDIA address and the repository is a third-party awesome list; the card_link is the source repo because no separate vendor card exists. --> <br>
 
 ### License/Terms of Use: <br>
-<span style="color:#d73a49">MIT</span> <!-- VERIFY: No LICENSE or NOTICE file exists anywhere in the repository; MIT comes only from a 'License: MIT' badge in the root README, so the actual terms must be confirmed before submission. --> <br>
+<span style="color:#d73a49">CC BY 4.0</span> <!-- The collection is licensed CC BY 4.0; see the root LICENSE. That licence grants no patent rights and does not relicense documentation this skill quotes or summarises from upstream projects, which stays under its own terms -- verify those terms before redistributing. --> <br>
 ## Use Case: <br>
 Developers and engineers building a conversational assistant on the JVM that must answer over their own documents: wiring the Chatbot/ChatSession/Conversation surface and an @Action(trigger = UserMessage) handler, attaching agentic ToolishRag retrieval with metadata/entity filters, ingesting and chunking documents, and persisting conversation history in a Spring Boot service. <br>
 

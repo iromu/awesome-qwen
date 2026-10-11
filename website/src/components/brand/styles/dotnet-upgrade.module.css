@@ -1535,7 +1535,7 @@
   transition: inset-inline-start 0.08s linear;
 }
 
-.progressDuck {
+.progressDial {
   position: absolute;
   inset-block-end: 0;
   inset-inline-start: 0;
@@ -1547,17 +1547,24 @@
      remaps per color mode, so green-4 (not green-5) resolves to Green/05 here,
      matching the progress line exactly. */
   background-color: var(--base-color-scale-green-4);
-  -webkit-mask: url("/media/duck-progress.svg") no-repeat center / contain;
-  mask: url("/media/duck-progress.svg") no-repeat center / contain;
+  /* Inlined rather than fetched. A root-relative url() resolves against the
+     origin root and so skips the `/awesome-qwen` base path, while a relative
+     one is left verbatim by the bundler and resolves against the emitted
+     `/assets/` dir — both 404, and a failed mask leaves the element fully
+     transparent, so the dial painted nothing. Three circles, no palette
+     coupling: the mask reads alpha, not colour. */
+  --dial-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Ccircle cx='11.5' cy='12' r='9' stroke='%23000' stroke-width='1.6'/%3E%3Ccircle cx='11.5' cy='12' r='4.75' fill='%23000'/%3E%3Ccircle cx='20.5' cy='4.5' r='2.1' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask: var(--dial-mask) no-repeat center / contain;
+  mask: var(--dial-mask) no-repeat center / contain;
   transition: opacity 0.18s ease-out, transform 0.24s ease-out;
 }
 
-.page[data-mode="light"] .progressDuck {
+.page[data-mode="light"] .progressDial {
   background-color: var(--base-color-scale-green-6);
 }
 
 /* When the reader reaches the bottom the duck pops out and the confetti fires. */
-.progressRider[data-burst="true"] .progressDuck {
+.progressRider[data-burst="true"] .progressDial {
   opacity: 0;
   transform: translateX(-50%) scale(0.2) rotate(18deg);
 }
@@ -1733,13 +1740,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .progressRider,
-  .progressDuck {
+  .progressDial {
     transition: none;
   }
   .progressRider[data-burst="true"] .confettiPiece {
     animation: none;
   }
-  .progressRider[data-burst="true"] .progressDuck {
+  .progressRider[data-burst="true"] .progressDial {
     opacity: 1;
     transform: translateX(-50%);
   }

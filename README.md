@@ -3,7 +3,7 @@
 > A curated collection of extensions, skills, agents, and workflows for [Qwen Code](https://github.com/QwenLM/Qwen).
 
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-blue.svg)](LICENSE)
 
 ---
 

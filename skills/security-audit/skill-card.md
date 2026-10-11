@@ -7,7 +7,7 @@ This skill is ready for commercial/non-commercial use. <br>
 <span style="color:#d73a49">This skill is not owned or developed by NVIDIA. This skill has been developed and built to a third-party's requirements for this application and use case; see link to Non-NVIDIA [Iván Rodríguez Murillo Agent Card](https://github.com/iromu/awesome-qwen).</span> <!-- VERIFY: Author email in the frontmatter is a personal non-NVIDIA address and the repo is a third-party awesome list; card_link is the source repo because no separate vendor card exists. --> <br>
 
 ### License/Terms of Use: <br>
-<span style="color:#d73a49">MIT</span> <!-- VERIFY: There is no LICENSE file anywhere in the repository; MIT comes only from a 'License: MIT' badge in the root README, so the terms must be confirmed before submission. --> <br>
+<span style="color:#d73a49">CC BY 4.0</span> <!-- The collection is licensed CC BY 4.0; see the root LICENSE. That licence grants no patent rights and does not relicense documentation this skill quotes or summarises from upstream projects, which stays under its own terms -- verify those terms before redistributing. --> <br>
 ## Use Case: <br>
 Developers and security reviewers who need a pre-deployment or CI/CD security pass over code they already have: sweeping dependencies for known CVEs, detecting hardcoded credentials, running SAST and language-specific analyzers, and checking OWASP Top 10 categories, security headers and exposed ports before a release. <br>
 

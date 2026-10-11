@@ -1,7 +1,7 @@
-import { MarkGithubIcon } from "@primer/octicons-react";
 import { Box, Button, ThemeProvider, useTheme } from "@primer/react-brand";
 import type { ReactNode } from "react";
 
+import { ClayMark } from "./ClayMark";
 import { LargeFooter } from "./LargeFooter";
 import { SkipLink } from "./SkipLink";
 import { TopNav } from "./TopNav";
@@ -83,7 +83,7 @@ function PageShellBody({
       <header className={styles.topBar}>
         <nav className={styles.topBarInner} aria-label="Primary">
           <a href={pageHref()} className={styles.subNavTitle}>
-            <MarkGithubIcon size={24} />
+            <ClayMark size={24} />
             Awesome Qwen
           </a>
           <TopNav

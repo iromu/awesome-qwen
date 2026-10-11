@@ -7,7 +7,7 @@ This skill is ready for commercial/non-commercial use. <br>
 <span style="color:#d73a49">This skill is not owned or developed by NVIDIA. This skill has been developed and built to a third-party's requirements for this application and use case; see link to Non-NVIDIA [Iván Rodríguez Murillo Agent Card](https://github.com/iromu/awesome-qwen).</span> <!-- VERIFY: The author e-mail in the frontmatter is a personal, non-NVIDIA address and the repository is a third-party awesome list; the card_link is the source repo because no separate vendor card exists. --> <br>
 
 ### License/Terms of Use: <br>
-<span style="color:#d73a49">MIT</span> <!-- VERIFY: No LICENSE or NOTICE file exists anywhere in the repository; MIT comes only from a 'License: MIT' badge in the root README, so the actual terms must be confirmed before submission. Note the DICE library this skill documents is itself Apache-2.0 per the skill body — the skill file and the library it describes may carry different terms. --> <br>
+<span style="color:#d73a49">CC BY 4.0</span> <!-- The collection is licensed CC BY 4.0; see the root LICENSE. That licence grants no patent rights and does not relicense documentation this skill quotes or summarises from upstream projects, which stays under its own terms -- verify those terms before redistributing. --> <br>
 ## Use Case: <br>
 Developers and engineers adding a proposition-based memory and knowledge-graph layer beneath an Embabel agent: choosing the real DICE Maven modules and property prefixes, wiring PropositionPipeline, entity resolution and proposition queries, attaching the Memory facade to an agent call, and exposing the recall tools over MCP. <br>
 
