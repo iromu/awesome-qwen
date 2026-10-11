@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 09, 2026 at 02:17 PM UTC
+**Generated:** October 11, 2026 at 08:31 PM UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@
 | ✅ Passed | 9 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 32 (4 medium) |
+| Total Issues | 31 (4 medium) |
 
 ## Quality Score
 
@@ -37,23 +37,6 @@
 - [OK] **optional_files**: Found optional supporting files: evals, scripts
 - [OK] **name_consistency**: Directory name matches frontmatter: 'maven-version-audit'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
-
-**Non-blocking findings: 1**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [LOW] LOW | Unexpected 'requirements.txt' in skill root | <code>maven-version-audit/requirements.txt</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. Unexpected 'requirements.txt' in skill root**
-- File: `maven-version-audit/requirements.txt`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-</details>
-
 
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
@@ -82,14 +65,13 @@
 
 - [OK] **dead_links_scan**: Checking 1 markdown files for dead links
 - [OK] **dead_links**: All relative links valid in 1 markdown file(s)
-- [OK] **dependency_audit**: Auditing requirements.txt
-- [OK] **dependency_audit**: requirements.txt passed dependency audit
+- [OK] **dependencies**: No dependency files found (requirements.txt, pyproject.toml)
 - [OK] **test_discovery**: No standard Python test-file candidates found; target tests were not executed and coverage was not measured. Consider adding tests.
 
 ### ✅ Unicode Smuggling Detection
 *Detect invisible Unicode characters and ASCII smuggling*
 
-- [OK] **unicode_scan**: No invisible Unicode characters detected in 10 file(s)
+- [OK] **unicode_scan**: No invisible Unicode characters detected in 9 file(s)
 
 ### ✅ B QUALITY
 *Skill quality scoring across Correctness (35%), Discoverability (25%), Reliability (25%), and Efficiency (15%)*

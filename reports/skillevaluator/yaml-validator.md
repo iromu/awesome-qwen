@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 09, 2026 at 02:12 PM UTC
+**Generated:** October 11, 2026 at 08:31 PM UTC
 
 ## Summary
 
@@ -34,7 +34,7 @@
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
-- [OK] **optional_files**: Found optional supporting files: references
+- [OK] **optional_files**: Found optional supporting files: evals, references
 - [OK] **name_consistency**: Directory name matches frontmatter: 'yaml-validator'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 

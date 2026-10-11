@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 09, 2026 at 02:12 PM UTC
+**Generated:** October 11, 2026 at 08:31 PM UTC
 
 ## Summary
 
@@ -50,7 +50,7 @@
 **1. Unexpected 'templates' in skill root**
 - File: `htmx/templates`
 - Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+- Fix: Consider moving to one of: agentic-patterns-core-card.md/, agentic-patterns-extra-card.md/, agentic-patterns-research-card.md/, agents/, api-design-card.md/, assets/, config/, database-migration-card.md/, docker-containerize-card.md/, embabel-agent-card.md/, embabel-chatbot-card.md/, embabel-dice-card.md/, embabel-drivine4j-card.md/, embabel-otel-card.md/, evals/, git-commit-card.md/, git-workflows-card.md/, htmx-card.md/, json-formatting-card.md/, maven-version-audit-card.md/, rabbitmq-typescript-card.md/, references/, scripts/, security-audit-card.md/, self-learning-card.md/, skill-creator-card.md/, spring-ai-mcp-card.md/, tests/, tools/, unsloth-finetuning-card.md/, unsloth-inference-card.md/, unsloth-quantization-card.md/, unsloth-rl-card.md/, yaml-validator-card.md/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
 </details>
 
