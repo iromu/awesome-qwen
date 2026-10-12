@@ -8,6 +8,9 @@ source: "https://github.com/nibzard/SKILLS-AGENTIC-LESSONS"
 tags: [tools, workflow, best-practices, efficiency, patterns, exploration, modification]
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/tool-selection-guide.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 AI agents often struggle to select the optimal tool for a given task, leading to inefficient workflows. Common anti-patterns include:

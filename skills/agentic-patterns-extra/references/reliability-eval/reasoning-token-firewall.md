@@ -16,6 +16,9 @@ related: ["chain-of-thought-monitoring-interruption", "verbose-reasoning-transpa
 updated_at: "2026-08-11"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/reasoning-token-firewall.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Reasoning models emit two kinds of tokens in one response: private chain-of-thought and the final answer. When a harness builds its "result" from the whole stream and then tries to remove the reasoning afterward with string heuristics, it eventually leaks. Reasoning has no stable delimiter, the shape differs per model and per version, and a single missed case commits raw chain-of-thought into a file, a memory store, a notification, or the context of the next agent in the chain.

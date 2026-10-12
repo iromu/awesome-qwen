@@ -20,6 +20,9 @@ domains: ["coding", "research", "operations"]
 updated_at: "2026-06-15"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/commitment-ledger-reality-gated-credit.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Agents often write memories or update heuristics immediately after generating an answer. That creates weak learning signals:

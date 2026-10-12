@@ -22,6 +22,9 @@ summary: >-
 updated_at: '2026-01-05'
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/chain-of-thought-monitoring-interruption.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 AI agents can pursue misguided reasoning paths for extended periods before producing final outputs. By the time developers realize the approach is wrong, significant time and tokens have been wasted on a fundamentally flawed direction. Traditional "fire and forget" agent execution provides no opportunity for early course correction.

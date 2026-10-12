@@ -16,6 +16,9 @@ anti_signals: ["The change is entirely non-visual", "No rendered or interactive 
 updated_at: "2026-08-21"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/rendered-ui-finish-gate.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Coding agents can produce frontend code that compiles and passes unit tests while still shipping generic, incomplete, or misleading interfaces. Common failures include missing loading and error states, controls that look interactive but do nothing, token drift, inaccessible focus behavior, and responsive layouts that were never rendered at their target widths. A source-only review cannot reliably detect all of these problems.

@@ -14,6 +14,9 @@ anti_signals: ["The quality attribute genuinely requires semantic judgement (fac
 updated_at: "2026-08-21"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/deterministic-grader-in-the-loop.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 An agent that produces text is routinely asked to judge that text before shipping it: *is this argument sound, is this copy generic, does this read as machine-written?* The default move is to ask a model — LLM-as-judge, or an off-the-shelf classifier.

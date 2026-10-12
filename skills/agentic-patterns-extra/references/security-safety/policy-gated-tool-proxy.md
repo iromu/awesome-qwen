@@ -23,6 +23,9 @@ summary: >-
   immutable audit trail of all decisions.
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/policy-gated-tool-proxy.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 AI agents call external tools (databases, APIs, file systems) through protocols like MCP. Once an agent has access to a tool server, it can invoke any tool with any arguments. There is no enforcement layer between "the agent decided to call this tool" and "the tool executed." This creates three gaps:

@@ -12,6 +12,9 @@ last_updated: "2026-07-28"
 updated_at: "2026-08-21"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/evidence-layered-evaluation-for-interactive-agents.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Interactive agents can reach the wrong outcome for many different reasons: a bad plan, an incorrect click, a transient site response, or an evaluator that cannot observe the relevant state. A single success/failure score hides these causes and makes regressions difficult to reproduce, especially when tasks run on live websites or desktop applications.

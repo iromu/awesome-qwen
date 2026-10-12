@@ -18,6 +18,9 @@ domains: ["coding", "research", "ops", "documentation"]
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/markdown-polis-coordination.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 When agents from different vendors (Claude Code, Codex, Gemini CLI, Cursor, local Ollama, etc.) work on the same long-lived project, they have no native channel for "who's good at what," "what did we already try," or "what does this team consider done." Each session starts cold. Hardcoded handoff prompts grow stale. The cheap-but-fragile alternative — declarative `AGENTS.md` rules — captures intent but never learns from outcomes.

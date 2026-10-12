@@ -10,6 +10,9 @@ summary: "Aggregate agent metadata across fragmented registries and protocols in
 updated_at: "2026-05-07"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/cross-protocol-agent-discovery.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 The AI agent ecosystem is fragmented across multiple incompatible discovery protocols:

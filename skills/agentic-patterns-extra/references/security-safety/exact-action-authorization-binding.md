@@ -27,6 +27,9 @@ domains: ["ops", "coding", "fintech"]
 updated_at: "2026-08-21"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/exact-action-authorization-binding.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Approval systems often ask a person or policy service to approve a proposed tool call, then execute it later. Between those steps, the request can be reconstructed, transformed, retried, delegated, or resumed from stored state. A seemingly valid approval may therefore be applied to a materially different action: another recipient, target, operation, payload, actor, acting surface, or policy version.

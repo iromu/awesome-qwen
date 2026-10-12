@@ -8,6 +8,9 @@ source: "https://github.com/nibzard/SKILLS-AGENTIC-LESSONS"
 tags: [subagents, delegation, traceability, naming, clarity, anti-pattern]
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/subject-hygiene.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 When delegating work to subagents via the Task tool, empty or generic task subjects make conversations:

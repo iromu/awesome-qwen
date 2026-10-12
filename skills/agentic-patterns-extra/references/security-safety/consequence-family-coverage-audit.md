@@ -20,6 +20,9 @@ domains: ["ops", "security", "fintech"]
 updated_at: "2026-08-13"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/consequence-family-coverage-audit.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 An agent gate has two halves. There is an **enforcement point** that decides

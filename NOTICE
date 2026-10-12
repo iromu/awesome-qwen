@@ -21,15 +21,28 @@ verbatim or near-verbatim copies rather than paraphrase.
 Per-directory provenance, including the upstream revision each batch was taken
 from, is recorded in the accompanying `raw/*-docs/INDEX.md` files:
 
-| Destination | Files that are substantially copies | Source attribution present? |
+| Destination | Files that are substantially copies | Origin disclosed before 2026-10-11? |
 |---|---|---|
-| `skills/agentic-patterns-research/references/` | 233 of 234 | yes, 221 of 234 carry a `Source:` line |
-| `skills/agentic-patterns-extra/references/` | 171 of 195 | **no** -- none carry a `Source:` line |
+| `skills/agentic-patterns-research/references/` | 233 of 234 | yes -- 221 carry a `Source:` line |
+| `skills/agentic-patterns-extra/references/` | ~168 of 195 | **ambiguously** -- see below |
 
-Anyone redistributing either skill, or this repository as a whole, should treat
-that second row as unresolved: those files carry copied text with no attribution
-and no licence notice, so the provenance has to be established before they are
-passed on.
+The second row needs care because a `source:` key there does **not** mean
+"copied from". In that corpus `source:` names the *subject* a document
+discusses -- a YouTube explainer, a blog post, a product page -- so a file that
+reproduces upstream documentation verbatim looked identical in shape to one
+written here. A redistributer scanning for `source:` would have found a YouTube
+link and concluded the text was original.
+
+That is why 168 of those files now carry a `Derived from:` line instead: the
+wording is deliberately different from `source:`, because reusing the same word
+would have rebuilt the ambiguity. It sits **below** the YAML frontmatter block
+for the same reason -- at line 1 a `---` block would stop parsing.
+
+Files with no provable upstream origin were left alone: `INDEX.md`,
+`code-then-execute.md`, `budget-aware-model-routing.md` and
+`adaptive-sandbox-fan-out-controller.md`. Roughly 20 more are partial
+rewritings (8-58% line overlap with their source) rather than copies, and were
+also left unmarked rather than labelled on suspicion alone.
 
 ## Vendored tooling
 

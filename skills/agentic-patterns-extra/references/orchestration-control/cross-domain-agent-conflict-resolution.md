@@ -10,6 +10,9 @@ summary: "A coordination layer that cross-references recommendations from indepe
 updated_at: '2026-08-21'
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/cross-domain-agent-conflict-resolution.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Teams increasingly run several independent, domain-specific agents against the

@@ -10,6 +10,9 @@ last_updated: "2026-06-10"
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/dead-mans-switch-for-scheduled-agent-jobs.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 An agent workspace accumulates scheduled jobs: a morning digest, a background task manager, a weekly self-audit, a memory consolidation pass. These fail silently. A scheduler misconfiguration, an expired OAuth token, or a permission regression doesn't throw an error anywhere a human looks — the job's logs simply stop appearing. Nothing watches for absence, so a broken daily job can stay broken for weeks before anyone notices the output is missing.

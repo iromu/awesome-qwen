@@ -9,6 +9,9 @@ tags: [distributed-memory, knowledge-sharing, git-based, swarm-memory, lessons-l
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/cross-agent-lesson-sharing.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 AI agents working in isolation waste hours debugging issues that other agents have already solved. ChromaDB crashes on NTFS, pip install fails on WSL encoding, Feishu webhook URLs get committed to git — each agent discovers these independently. There is no mechanism for one agent's debugging session to benefit the entire fleet.

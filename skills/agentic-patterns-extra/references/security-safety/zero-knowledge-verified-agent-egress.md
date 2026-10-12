@@ -9,6 +9,9 @@ tags: [egress, zero-knowledge-proof, source-of-truth, allow-list, mcp, outbound-
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/zero-knowledge-verified-agent-egress.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 An agent can be tricked into making an outbound request that looks fine at the network layer but carries a false claim: a payment to the wrong recipient, an API call with tampered parameters, a tool call whose arguments do not match what the user approved. A domain allow-list or egress firewall lets the call through because the destination is allowed; it never checks whether the *content* of the request is truthful. In regulated or high-value flows, teams need each outbound call to prove it matches a trusted source of truth before it leaves, without exposing that source of truth to the agent or the destination.

@@ -23,6 +23,9 @@ prerequisites:
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/local-first-credential-broker.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 AI agents increasingly need to call authenticated third-party APIs: post a Slack message, create a Linear issue, charge a Stripe customer, write to a GitHub repo. The dominant pattern today is to hand the agent raw credentials through environment variables, `.env` files, or per-tool config blocks. That breaks in several ways:

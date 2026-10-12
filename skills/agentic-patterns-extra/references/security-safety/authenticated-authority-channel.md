@@ -27,6 +27,9 @@ domains: ["ops", "research", "coding"]
 updated_at: "2026-08-08"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/authenticated-authority-channel.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Tool-using agents often place operator instructions, standing policy, retrieved documents, webpages, messages, tool output, summaries, and delegated reports in the same model context. Untrusted content can then contain imperative language that resembles a legitimate command. If the runtime does not preserve where each instruction-like statement came from, source content can be mistaken for authorization, persisted as policy, or used to redirect a consequential action.

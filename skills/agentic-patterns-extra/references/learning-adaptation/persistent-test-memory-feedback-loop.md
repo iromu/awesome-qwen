@@ -43,6 +43,9 @@ domains:
 updated_at: '2026-08-16'
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/persistent-test-memory-feedback-loop.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 An agent that executes end-to-end tests without durable memory starts each run from

@@ -8,6 +8,9 @@ source: "https://www.youtube.com/watch?v=4rx36wc9ugw"
 tags: [model-personality, interaction-modes, multi-model, ux-design, agent-behavior, opus, gpt-52]
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/agent-modes-by-model-personality.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Different AI models have fundamentally different personalities and working styles. Treating all models the same—expecting them to work identically—leads to suboptimal outcomes. Users expect a consistent interface, but models like Opus 4.5 are "trigger happy" and want to run commands immediately, while models like GPT-5.2 are "lazy" and prefer thorough research before acting.

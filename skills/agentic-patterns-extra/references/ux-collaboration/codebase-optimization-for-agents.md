@@ -9,6 +9,9 @@ source: "https://www.youtube.com/watch?v=2wjnV6F2arc"
 tags: [agent-first, human-dx, regression, optimization, tooling, codebase-design, trade-offs, agent-native, feedback-loops]
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/codebase-optimization-for-agents.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 When introducing AI agents to a codebase, there's a natural tendency to preserve the human developer experience (DX). However, this limits agent effectiveness because the codebase remains optimized for humans, not for the AI workers who will increasingly operate autonomously.

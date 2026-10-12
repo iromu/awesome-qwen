@@ -8,6 +8,9 @@ source: "https://github.com/NikitaDmitrieff/auto-co-meta"
 tags: [multi-agent, state-management, persistence, long-running-tasks, orchestration, autonomous-loops]
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/cross-cycle-consensus-relay.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Autonomous multi-agent loops that run across many cycles (minutes, hours, or days) need a way to reliably transfer context, decisions, and next actions between cycles. In-memory state is lost on crash or restart. Generic checkpoint files don't encode the *structured reasoning* — what was decided, why, and what comes next — that agents need to make good decisions in subsequent cycles.

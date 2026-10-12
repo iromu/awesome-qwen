@@ -29,6 +29,9 @@ impact: high
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/board-mediated-inter-agent-coordination.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Agents running in separate sessions cannot communicate without a human routing messages between them.  Shared context windows do not survive session boundaries.  The standard workarounds -- a human copy-pasting between terminals, shared files, or a dedicated message queue -- all have failure modes: human bottleneck, no delivery guarantee, or a coordination system that is decoupled from the work being coordinated.

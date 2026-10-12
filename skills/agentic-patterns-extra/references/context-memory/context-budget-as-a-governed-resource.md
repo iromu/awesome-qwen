@@ -10,6 +10,9 @@ last_updated: "2026-06-11"
 updated_at: "2026-07-23"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/context-budget-as-a-governed-resource.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Always-loaded context accretes silently. Instruction files, memory indexes, skill descriptions, and hook configuration each add "ghost tokens" the agent pays on every turn of every session. No single addition is big; the aggregate grows a few percent a week. Quality degrades, costs climb, and nothing fails loudly enough to notice. Unattended agents make it worse: scheduled jobs spend tokens with nobody watching, so one job's appetite regression can run for weeks.

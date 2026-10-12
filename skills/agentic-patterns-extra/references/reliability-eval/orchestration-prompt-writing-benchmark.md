@@ -18,6 +18,9 @@ domains: ["multi-agent-systems", "evaluation", "orchestration"]
 updated_at: "2026-07-17"
 ---
 
+<!-- Derived from: https://github.com/nibzard/awesome-agentic-patterns/tree/main/patterns/orchestration-prompt-writing-benchmark.md (Apache-2.0). The text below is reproduced from that
+     source and is not original to this repository; keep this notice with any copy. -->
+
 ## Problem
 
 Multi-agent systems depend on an orchestrator correctly splitting a task's information among sub-agent roles: which fragment goes to which role, what each sub-agent is and is not told, and how that translates into the literal prompt text each sub-agent receives. End-to-end evals (execution success, tool-call correctness) and topology definitions (who talks to whom) both assume this hand-off step is done correctly, but neither tests it directly. A sub-agent can still stumble through a task with an incomplete or wrongly-scoped prompt, masking an orchestration bug until the system is scaled to harder tasks or unfamiliar topologies, where mis-assigned information becomes the dominant failure mode.
