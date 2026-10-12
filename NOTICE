@@ -1,0 +1,53 @@
+# Third-party notices
+
+This repository's own material is Apache-2.0 (see `LICENSE`). The items below
+are **not** original to this repository and are **not** relicensed by it. They
+are redistributed under their own terms, and Section 4(b) of Apache-2.0 requires
+that these notices travel with any copy of the material they describe.
+
+## Documentation reproduced from awesome-agentic-patterns
+
+- **Upstream:** [awesome-agentic-patterns](https://github.com/nibzard/awesome-agentic-patterns)
+- **Upstream licence:** Apache License 2.0 (confirmed against the repository's
+  own `LICENSE` file and its GitHub licence metadata, 2026-10-11)
+- **Copyright:** the respective authors of that collection, not the authors of
+  this repository
+
+Reproduced under `skills/agentic-patterns-research/references/` and
+`skills/agentic-patterns-extra/references/` -- approximately 400 files,
+measured by line-level comparison against the fetched corpus. Most are
+verbatim or near-verbatim copies rather than paraphrase.
+
+Per-directory provenance, including the upstream revision each batch was taken
+from, is recorded in the accompanying `raw/*-docs/INDEX.md` files:
+
+| Destination | Files that are substantially copies | Source attribution present? |
+|---|---|---|
+| `skills/agentic-patterns-research/references/` | 233 of 234 | yes, 221 of 234 carry a `Source:` line |
+| `skills/agentic-patterns-extra/references/` | 171 of 195 | **no** -- none carry a `Source:` line |
+
+Anyone redistributing either skill, or this repository as a whole, should treat
+that second row as unresolved: those files carry copied text with no attribution
+and no licence notice, so the provenance has to be established before they are
+passed on.
+
+## Vendored tooling
+
+`.agents/skills/skill-card-generator/` as a whole is **not** written by this
+repository's author. Its `Skill Card Generator License` file carries
+`SPDX-FileCopyrightText: Copyright (c) <year> NVIDIA CORPORATION & AFFILIATES`
+and `SPDX-License-Identifier: CC-BY-4.0 AND Apache-2.0`, stating that
+documentation and skills are CC-BY-4.0 while source code is Apache-2.0. The
+`license:` key in that skill's `SKILL.md` records that upstream position and is
+correct as written -- it is not a claim about this repository's own licence and
+must not be "aligned" to Apache-2.0.
+
+The three scripts under `scripts/` carry per-file
+`SPDX-License-Identifier: Apache-2.0` headers. Anyone redistributing this skill
+takes NVIDIA's terms with it, in both halves.
+
+## Why this file exists
+
+Not because a licence requires a `NOTICE` file, but because without it the
+distinction that matters -- *what the author here could license, versus what
+they merely gathered* -- would be invisible to the next reader.

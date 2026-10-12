@@ -7,7 +7,7 @@ This skill is ready for commercial/non-commercial use. <br>
 <span style="color:#d73a49">This skill is not owned or developed by NVIDIA. This skill has been developed and built to a third-party's requirements for this application and use case; see link to Non-NVIDIA [Iván Rodríguez Murillo Agent Card](https://github.com/iromu/awesome-qwen).</span> <!-- VERIFY: Author email in the frontmatter is a personal non-NVIDIA address and the repo is a third-party awesome list; card_link is the source repo because no separate vendor card exists. --> <br>
 
 ### License/Terms of Use: <br>
-<span style="color:#d73a49">CC BY 4.0</span> <!-- The collection is licensed CC BY 4.0; see the root LICENSE. That licence grants no patent rights and does not relicense documentation this skill quotes or summarises from upstream projects, which stays under its own terms -- verify those terms before redistributing. --> <br>
+Apache 2.0 <br>
 ## Use Case: <br>
 Backend engineers designing a new HTTP API or auditing an existing one: settling resource and URL naming, choosing between GET/PUT/PATCH and the right 2xx/4xx/5xx code, capping collection responses with cursor or offset pagination, versioning the surface, and writing or checking an OpenAPI 3.x spec for Swagger UI or Redoc. <br>
 

@@ -7,7 +7,7 @@ This skill is ready for commercial/non-commercial use. <br>
 <span style="color:#d73a49">This skill is not owned or developed by NVIDIA. This skill has been developed and built to a third-party's requirements for this application and use case; see link to Non-NVIDIA [Iván Rodríguez Murillo Agent Card](https://github.com/iromu/awesome-qwen).</span> <!-- VERIFY: Personal, non-NVIDIA author email in the SKILL.md frontmatter and the skill lives in a third-party awesome list; card_link is the source repository because no separate vendor card exists. The distilled content itself comes from the third-party nibzard/awesome-agentic-patterns catalogue. --> <br>
 
 ### License/Terms of Use: <br>
-<span style="color:#d73a49">CC BY 4.0</span> <!-- The collection is licensed CC BY 4.0; see the root LICENSE. That licence grants no patent rights and does not relicense documentation this skill quotes or summarises from upstream projects, which stays under its own terms -- verify those terms before redistributing. --> <br>
+Apache 2.0 <br>
 ## Use Case: <br>
 Developers and engineers building or operating autonomous agents in production. They use it as an index into `references/` to find which documented pattern fits an agent design problem (context contamination, token waste, runaway loops, missing verification), to compare candidate approaches with their trade-offs, and to check a pattern's maturity label — it recommends patterns rather than writing or refactoring application code. <br>
 
