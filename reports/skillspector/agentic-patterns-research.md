@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** agentic-patterns-research  
-**Scanned:** 2026-10-08 22:47:26 UTC  
+**Scanned:** 2026-10-26 18:12:14 UTC  
 
 ## Risk Assessment
 
@@ -11,7 +11,7 @@
 | Severity | CRITICAL |
 | Recommendation | DO NOT INSTALL |
 
-## Components (236)
+## Components (237)
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
@@ -251,6 +251,7 @@
 | `references/working-memory-via-todos-report.md` | markdown | 510 | No |
 | `references/workspace-native-multi-agent-orchestration-report.md` | markdown | 389 | No |
 | `references/zero-trust-agent-mesh-report.md` | markdown | 731 | No |
+| `skill-card.md` | markdown | 75 | No |
 
 ## Issues (339)
 
@@ -4032,8 +4033,8 @@
 |--------|-------|
 | Execution | successful |
 | Status | partial |
-| Coverage | 75.0% |
-| Fully inspected | 177 |
+| Coverage | 75.1% |
+| Fully inspected | 178 |
 | Partially inspected | 59 |
 | Entirely uninspected | 0 |
 
@@ -4062,7 +4063,6 @@
 | static_parse_limit | `references/graph-of-thoughts-report.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | obfuscated_instruction_text | `references/hook-based-safety-guard-rails-report.md` | Obfuscated instruction text could not be fully evaluated by the deterministic layer. |
 | static_parse_limit | `references/hook-based-safety-guard-rails-report.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
-| obfuscated_instruction_text | `references/human-in-loop-approval-framework-report.md` | Obfuscated instruction text could not be fully evaluated by the deterministic layer. |
 | static_parse_limit | `references/human-in-loop-approval-framework-report.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | static_parse_limit | `references/hybrid-llm-code-workflow-coordinator-report.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | static_parse_limit | `references/initializer-maintainer-dual-agent-report.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
