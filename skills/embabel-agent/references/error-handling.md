@@ -119,4 +119,4 @@ while (true) {
 - Use `.withId()` on every LLM call for traceability
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*

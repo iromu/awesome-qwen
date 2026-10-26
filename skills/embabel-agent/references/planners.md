@@ -346,4 +346,4 @@ UtilityInvocation.on(agentPlatform)
 - When you need a named, discoverable agent in the platform
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*

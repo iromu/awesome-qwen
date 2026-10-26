@@ -112,4 +112,4 @@ embabel:
           backoff-max-interval: 60000              # Max backoff ms (default: 60000)
 ```
 
-*Source: Embabel Agent v1.5.1 documentation — `references/zai`*
+*Source: Embabel Agent v1.5.3 documentation — `references/zai`*

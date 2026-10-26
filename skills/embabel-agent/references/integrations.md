@@ -16,6 +16,7 @@ spring:
     mcp:
       server:
         type: SYNC  # SYNC (default) or ASYNC
+        protocol: STREAMABLE  # default (v1.5.3); STATELESS is also supported
 ```
 
 | **SYNC** (default) | Blocking ops in reactive streams. Simple, good error handling. |
@@ -23,13 +24,9 @@ spring:
 
 ### Transport Protocol
 
-Uses **SSE transport** at `http://localhost:8080/sse`. For clients requiring Streamable HTTP (e.g., OpenWebUI), use the `mcpo` proxy:
+Embabel Agent uses **Streamable HTTP transport** by default (v1.5.3, Spring AI 2.0+), exposing the MCP server at `http://localhost:8080/mcp`. This is compatible with Claude Desktop, MCP Inspector, Cursor, OpenWebUI, and all MCP clients that support the Streamable HTTP protocol.
 
-```bash
-uvx mcpo --port 8000 --server-type sse -- http://localhost:8080/sse
-```
-
-Then connect to `http://localhost:8000`.
+**SSE transport (deprecated):** SSE (`protocol: SSE`, endpoint `http://localhost:8080/sse`) is still accepted but `WebMvcSseServerTransportProvider` is `@Deprecated(forRemoval=true)` in Spring AI 2.0 and will be removed in a future release. SSE clients continue to work during normal operation, but on server shutdown connections are closed abruptly rather than gracefully (Tomcat waits up to 30 seconds before force-closing them) — a known upstream issue (Spring AI #4002, MCP Java SDK #635). Migrate to `protocol: STREAMABLE` to stay compatible with future Spring AI releases.
 
 ---
 
@@ -407,4 +404,4 @@ MCP tools are discovered at startup and registered as `Tool` beans. Use `McpTool
 A2A enables agents to communicate across process boundaries. Configure A2A cards and task definitions for inter-agent workflows.
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*

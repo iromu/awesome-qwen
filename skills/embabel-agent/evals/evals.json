@@ -161,8 +161,8 @@
         "The output shows ModelSelectionContextHolder.with(...) with a user id",
         "The output mentions NoSuitableModelException or that there is no silent fallback to default-llm"
       ],
-      "prompt": "My Embabel app is BYOK \u2014 users bring their own OpenAI or Anthropic keys. How do I configure roles so 'cheapest' and 'best' resolve to different models per provider, and let a resolver pick the user's key?",
-      "query": "My Embabel app is BYOK \u2014 users bring their own OpenAI or Anthropic keys. How do I configure roles so 'cheapest' and 'best' resolve to different models per provider, and let a resolver pick the user's key?"
+      "prompt": "My Embabel app is BYOK — users bring their own OpenAI or Anthropic keys. How do I configure roles so 'cheapest' and 'best' resolve to different models per provider, and let a resolver pick the user's key?",
+      "query": "My Embabel app is BYOK — users bring their own OpenAI or Anthropic keys. How do I configure roles so 'cheapest' and 'best' resolve to different models per provider, and let a resolver pick the user's key?"
     },
     {
       "id": 12,
@@ -207,6 +207,49 @@
       ],
       "prompt": "Add Z.ai (Zhipu GLM) support to my Embabel agent. Which starter do I use, which models are available, and are there any quirks with temperature or reasoning?",
       "query": "Add Z.ai (Zhipu GLM) support to my Embabel agent. Which starter do I use, which models are available, and are there any quirks with temperature or reasoning?"
+    },
+    {
+      "id": 15,
+      "expected_output": "Configuration for durable agent process persistence: embabel-agent-starter-jdbc dependency, standard Spring Boot DataSource properties, embabel.agent.platform.persistence.provider=jdbc, the agent_process_snapshots DDL, checkpoint policy choice (WAITING vs LIFECYCLE), and an explanation of when persistence activates (presence of an AgentProcessSnapshotStore bean).",
+      "files": [],
+      "should_trigger": true,
+      "assertions": [
+        "The output shows embabel-agent-starter-jdbc dependency",
+        "The output sets embabel.agent.platform.persistence.provider=jdbc",
+        "The output includes the agent_process_snapshots table DDL",
+        "The output mentions checkpoint policies (WAITING or LIFECYCLE)",
+        "The output explains that persistence activates when an AgentProcessSnapshotStore bean is present"
+      ],
+      "prompt": "My Embabel HITL agent parks processes waiting for user approval, and a pod restart loses them. How do I make agent process state durable so a restarted pod can resume the same process?",
+      "query": "My Embabel HITL agent parks processes waiting for user approval, and a pod restart loses them. How do I make agent process state durable so a restarted pod can resume the same process?"
+    },
+    {
+      "id": 16,
+      "expected_output": "MCP server configuration using Streamable HTTP transport: protocol: STREAMABLE (default) with endpoint /mcp, and a note that SSE transport is deprecated for removal in Spring AI 2.0 with abrupt shutdown behavior.",
+      "files": [],
+      "should_trigger": true,
+      "assertions": [
+        "The output configures the MCP server with protocol: STREAMABLE (or notes it is the default)",
+        "The output names the /mcp endpoint for Streamable HTTP",
+        "The output states SSE transport is deprecated (forRemoval) in Spring AI 2.0",
+        "The output mentions the abrupt-connection-closure shutdown issue for SSE or recommends migrating to STREAMABLE"
+      ],
+      "prompt": "I'm exposing my Embabel agent as an MCP server for OpenWebUI. The old docs tell me to use SSE and an mcpo proxy - is that still the way to do it in the current release?",
+      "query": "I'm exposing my Embabel agent as an MCP server for OpenWebUI. The old docs tell me to use SSE and an mcpo proxy - is that still the way to do it in the current release?"
+    },
+    {
+      "id": 17,
+      "expected_output": "A role-named deployment default: embabel.models.default-llm set to a role from embabel.models.roles, an explanation that a role default is resolved per call (so a BYOK key arriving at runtime makes the default work without a restart), and contrast with a model-name default which is resolved once at startup.",
+      "files": [],
+      "should_trigger": true,
+      "assertions": [
+        "The output sets embabel.models.default-llm to a role name (not a model name)",
+        "The output defines the role under embabel.models.roles with per-provider models",
+        "The output explains the role default is resolved per call through the resolver chain",
+        "The output mentions the BYOK / key-arrives-at-runtime scenario or no-restart benefit"
+      ],
+      "prompt": "My Embabel deployment is BYOK - users bring their own provider keys at runtime, so nothing is registered at startup. How do I set the deployment default LLM so it works once the first key arrives, without a restart?",
+      "query": "My Embabel deployment is BYOK - users bring their own provider keys at runtime, so nothing is registered at startup. How do I set the deployment default LLM so it works once the first key arrives, without a restart?"
     }
   ]
 }

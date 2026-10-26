@@ -1,5 +1,5 @@
 ## Description: <br>
-Author agentic Java/Kotlin services on the JVM with the Embabel v1.5.1 Spring-based framework, which mixes LLM calls with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor) across agent authoring, tools, provider configuration, MCP publishing, testing and migration from CrewAI/Pydantic AI/LangGraph. <br>
+Author agentic Java/Kotlin services on the JVM with the Embabel v1.5.3 Spring-based framework, which mixes LLM calls with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor) across agent authoring, tools, provider configuration, durable agent process persistence, MCP publishing over Streamable HTTP, testing and migration from CrewAI/Pydantic AI/LangGraph. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -30,6 +30,7 @@ Mitigation: Review and scan skill before deployment. <br>
 - [api-spi.md](references/api-spi.md) <br>
 - [async-mode.md](references/async-mode.md) <br>
 - [bedrock.md](references/bedrock.md) <br>
+- [cache.md](references/cache.md) <br>
 - [chatbots.md](references/chatbots.md) <br>
 - [common-pitfalls.md](references/common-pitfalls.md) <br>
 - [configuration.md](references/configuration.md) <br>
@@ -37,7 +38,8 @@ Mitigation: Review and scan skill before deployment. <br>
 - [customizing.md](references/customizing.md) <br>
 - [dashscope.md](references/dashscope.md) <br>
 - [domain.md](references/domain.md) <br>
-- [dsl.md](references/dsl.md) <br>
+- [dsl-builders.md](references/dsl-builders.md) <br>
+- [embabel-agent-examples (upstream examples)](https://github.com/embabel/embabel-agent-examples) <br>
 - [error-handling.md](references/error-handling.md) <br>
 - [examples.md](references/examples.md) <br>
 - [flow.md](references/flow.md) <br>
@@ -45,9 +47,12 @@ Mitigation: Review and scan skill before deployment. <br>
 - [integrations.md](references/integrations.md) <br>
 - [interceptors.md](references/interceptors.md) <br>
 - [invoking.md](references/invoking.md) <br>
+- [java-agent-template (upstream scaffold)](https://github.com/embabel/java-agent-template) <br>
+- [kotlin-agent-template (upstream scaffold)](https://github.com/embabel/kotlin-agent-template) <br>
 - [llm-integration.md](references/llm-integration.md) <br>
 - [migrating.md](references/migrating.md) <br>
 - [minimax.md](references/minimax.md) <br>
+- [persistence.md](references/persistence.md) <br>
 - [planners.md](references/planners.md) <br>
 - [production-deployment.md](references/production-deployment.md) <br>
 - [providers.md](references/providers.md) <br>
@@ -63,9 +68,6 @@ Mitigation: Review and scan skill before deployment. <br>
 - [troubleshooting.md](references/troubleshooting.md) <br>
 - [types.md](references/types.md) <br>
 - [zai.md](references/zai.md) <br>
-- [java-agent-template (upstream scaffold)](https://github.com/embabel/java-agent-template) <br>
-- [kotlin-agent-template (upstream scaffold)](https://github.com/embabel/kotlin-agent-template) <br>
-- [embabel-agent-examples (upstream examples)](https://github.com/embabel/embabel-agent-examples) <br>
 
 
 ## Skill Output: <br>
@@ -75,11 +77,11 @@ Mitigation: Review and scan skill before deployment. <br>
 **Other Properties Related to Output:** [None] <br>
 
 ## Evaluation Tasks: <br>
-Validated against 14 internal eval cases in `evals/evals.json` (all positive-trigger, each with an expected-output description and per-case assertions on real Embabel symbols such as @Agent/@Action classes, FakeOperationContext tests and provider configuration), plus 9 automated validator checks (schema/repository governance, semantic version, license, code risk, secrets, dead links/dependencies, Unicode, quality and script lint). <br>
+Validated against 17 internal eval cases in `evals/evals.json` (all positive-trigger, each with an expected-output description and per-case assertions on real Embabel symbols such as @Agent/@Action classes, FakeOperationContext tests, provider configuration and process-persistence setup), plus 9 automated validator checks (schema/repository governance, semantic version, license, code risk, secrets, dead links/dependencies, Unicode, quality and script lint). <br>
 
 ## Evaluation Metrics Used: <br>
 Reported benchmark dimensions: <br>
-- Correctness: Whether the Embabel API the answer asserts is real for v1.5.1 — correct starter artifacts, annotation attributes, planner and @State semantics — rather than asserted from memory. <br>
+- Correctness: Whether the Embabel API the answer asserts is real for v1.5.3 — correct starter artifacts, annotation attributes, planner and @State semantics — rather than asserted from memory. <br>
 - Discoverability: Whether the skill fires on Embabel agent-authoring requests (agents, tools, planners, MCP publishing, migration) and stays silent on the non-Embabel work its 'When NOT to Use' table routes elsewhere. <br>
 - Reliability: Whether the skill reaches the expected result consistently across repeat runs, including that it consults references/ rather than inventing symbols. <br>
 - Efficiency: Whether the skill resolves the task through the right section and reference file without unnecessary steps or context overhead. <br>
@@ -94,13 +96,13 @@ Underlying evaluation signals used in this run: <br>
 ## Evaluation Results: <br>
 | Dimension | Score | Grade | Type |
 |---|---:|---|---|
-| Overall quality | 82.2 | B | script-based |
-| Correctness | 70.0 | — | — |
-| Discoverability | 90.0 | — | — |
-| Reliability | 90.0 | — | — |
-| Efficiency | 85.0 | — | — |
+| Overall quality | 98.0 | A | script-based |
+| Correctness | 100.0 | — | — |
+| Discoverability | 95.0 | — | — |
+| Reliability | 100.0 | — | — |
+| Efficiency | 95.0 | — | — |
 
 ## Skill Version(s): <br>
-1.5.1 (source: frontmatter) <br>
+1.5.3 (source: frontmatter) <br>
 
 

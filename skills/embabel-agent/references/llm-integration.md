@@ -139,6 +139,59 @@ ai.withLlmByRole("best")
 
 The flat `llms` map above binds each role to one model of one provider. For BYOK applications or provider failover, `embabel.models.roles` gives each role a provider dimension — see `references/configuration.md` for the YAML shape and startup validation rules. Call sites are unchanged: `ai.withLlmByRole("cheapest")` resolves against whichever provider is active for the call, and an unsatisfiable role throws `NoSuitableModelException` at the point of use (never a silent fallback to `default-llm`).
 
+## The Deployment Default as a Role (v1.5.3)
+
+`default-llm` may name a role rather than a model:
+
+```yaml
+embabel:
+  models:
+    default-llm: cheapest       # <1>
+    roles:
+      cheapest:
+        openai:
+          model: gpt-4.1-nano
+        anthropic:
+          model: claude-haiku-4-5
+```
+<1> A role from `roles` or from the flat `llms` map, not a model name
+
+A model name is resolved once, against the services registered at startup. A role is resolved per call, through the same resolver chain as any other role — so the default follows whichever provider key is active, and a deployment whose first key arrives after startup gets a working default without a restart. That is the case this exists for: under BYOK nothing is registered before the first key, so a default fixed at construction can only be the placeholder until the process restarts.
+
+A model name that nothing registers falls back to the role chain as well, so `default-llm` keeps working whichever way it was meant. Nothing existing changes: a name that does resolve against a registered service is still resolved once and never sent through the resolvers.
+
+A default that nothing can satisfy does not throw the way an unsatisfied role does. It falls back to whatever `default-llm` resolved to at startup — the placeholder, in a deployment awaiting a key — so the caller sees the same actionable "no LLM configured" error. Startup is stricter: with no placeholder to fall back to, a `default-llm` that names nothing this deployment has registered — whether a typo or a role whose every model is missing — is still fatal, and the message says which of the two it is.
+
+## Embedding Roles Under Bring-Your-Own-Key (v1.5.3)
+
+`default-embedding-model` may name a **role** rather than a model. A model name is resolved once, against the services registered at startup; a role is resolved on every call, through the same resolver chain roles use for chat. That difference matters only for a deployment whose provider key arrives after boot.
+
+```yaml
+embabel:
+  models:
+    default-embedding-model: documents   # <1>
+    embedding-services:
+      documents: text-embedding-3-small  # <2>
+```
+<1> A role, because `documents` is a key in `embedding-services`. Resolved per call.
+<2> What the role means for a single-provider deployment.
+
+Where the provider is not known until a key arrives, `embedding-roles` gives a role a model per provider — the embedding counterpart of `embabel.models.roles`:
+
+```yaml
+embabel:
+  models:
+    default-embedding-model: documents
+    embedding-roles:
+      documents:
+        openai: text-embedding-3-small
+        mistral: mistral-embed
+```
+
+It is flatter than `roles`, which maps to a whole `LlmOptions`. An embedding model takes text and returns a vector: there is no temperature to set, and the one parameter that does vary — the width — is the model's to state and the index's to follow.
+
+Entries naming a model this deployment has not registered are reported at startup and tolerated, because that is what the shape is for: the model is built from a key supplied at runtime. Which column is read comes from the active key. Where there is no active key, it comes from the registered embedding services — but only where they agree on one provider. A deployment with two registered providers and no key reads `embedding-services` instead of picking a column, because the alternative would be a choice made by bean registration order.
+
 ### Resolving Roles in Code
 
 Register a `RoleResolver` bean to decide what a role means per user rather than per deployment. Resolvers are consulted in `Ordered` order, ahead of the configuration, and returning `null` delegates to the next one:
@@ -558,4 +611,4 @@ Register as a Spring bean and it will be automatically discovered by the RAG sub
 
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `references/llms` and `references/types`*
+*Source: Embabel Agent v1.5.3 documentation — `references/llms` and `references/types`*

@@ -1,20 +1,41 @@
 ---
 name: embabel-agent
+version: 1.5.3
 description: >-
-  Build agentic AI on the JVM with Embabel v1.5.1 — Spring-based framework combining LLMs with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor). Use when creating agents with @Agent, @Action, @AchievesGoal, @Condition, @LlmTool, @Tool; publishing agents as MCP servers with @Export(remote=true); managing state with @State; configuring providers (OpenAI, Anthropic, Gemini, DeepSeek, Ollama, LM Studio, Bedrock, OCI, Mistral, Z.ai, DashScope, Docker Models, MiniMax, Atlas Cloud, BYOK) and per-provider roles (embabel.models.roles, RoleResolver); RAG with ToolishRAG; embedding-based skill selection with EmbeddingSkillSelector; testing with FakeOperationContext; interceptors, guardrails, cost tracking, streaming (StringResult), thinking tags, termination; chatbots with triggers; DSL builders, UtilityInvocation, OneShotPerLoopTool, ToolCallContext, ConcurrentAgentProcess; custom LLM integration via LlmMessageSender and EmbeddingService; troubleshooting and migrating from CrewAI, Pydantic AI, or LangGraph.
+  Build agentic AI on the JVM with Embabel v1.5.3 — Spring-based framework combining LLMs with non-LLM planning
+  (GOAP, Utility AI, Hybrid, Supervisor). Use when creating agents with @Agent, @Action, @AchievesGoal, @Condition,
+  @LlmTool, @Tool; publishing agents as MCP servers with @Export(remote=true) over Streamable HTTP; agent process
+  persistence (AgentProcessSnapshotStore, JDBC, cache-backed, HITL); state with @State; providers (OpenAI, Anthropic,
+  Gemini, DeepSeek, Ollama, Bedrock, OCI, Mistral, Z.ai, DashScope, MiniMax, Atlas Cloud, BYOK) and per-provider roles
+  (embabel.models.roles, RoleResolver, role-named default-llm, embedding-roles); RAG with ToolishRAG; testing with
+  FakeOperationContext; chatbots with triggers and durable assets; interceptors, guardrails, cost tracking, streaming
+  (StringResult); custom LLMs (LlmMessageSender, EmbeddingService); migrating from CrewAI, Pydantic AI, or LangGraph.
+  Do NOT use for Chatbot/ChatSession/conversation-store patterns (see the embabel-chatbot skill).
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-  version: 1.5.1
+  version: 1.5.3
+  tags: [embabel, agents, jvm, spring, kotlin]
 ---
 
-# Embabel Agent Framework (v1.5.1)
+# Embabel Agent Framework (v1.5.3)
 
 Build agentic AI on the JVM with **Embabel** — a Spring-based framework for authoring agentic flows that mix LLM-prompted interactions with code and domain models. Created by Rod Johnson (creator of Spring), it uses non-LLM AI planning (GOAP, Utility AI, Hybrid, Supervisor) to find intelligent paths toward goals.
+
+## Purpose
+
+This skill is the authoritative, version-pinned guide for writing correct Embabel code. Use it to author agents, tools, and domain models; wire providers and roles; publish MCP servers; build chatbots and RAG pipelines; and test and deploy — always grounded in the real v1.5.3 API rather than guesswork.
+
+## Prerequisites
+
+- **JDK 17+** and **Maven** or **Gradle** (the template projects use `./mvnw` / `./gradlew`)
+- **Spring Boot 4.1.1** — pulled in by the `embabel-agent-starter-*` artifacts
+- **At least one LLM provider key** — a deployment key (`OPENAI_API_KEY`, etc.) or BYOK keys supplied at runtime (see "Bring-Your-Own-Key" in `references/providers.md`)
+- **`uvx`** (and `git`) only if you use the `project-creator.sh` scaffolding script
 
 ## Instructions
 
 1. Confirm the task belongs on Embabel at all — check "When NOT to Use Embabel" first (plain Spring AI apps, non-planner chatbots, observability config → other skills).
-2. Identify the framework version you're writing against (this guide targets v1.5.1); "New in v1.5.1" lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
+2. Identify the framework version you're writing against (this guide targets v1.5.3); "New in v1.5.3" in `references/providers.md` lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
 3. For a new agent, follow "Getting Started" → "Agent Authoring" → "Tools"; consult "Domain Objects" for state modeling, "Planning Algorithms"/"Execution Modes"/"States with @State" for multi-step flows, and "DSL Builders (Kotlin/Java)" when the annotations-only style doesn't fit.
 4. For specific APIs — chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `references/`.
 5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing code, and never assert an API from memory — if a symbol isn't named here or in `references/`, treat it as unverified.
@@ -47,8 +68,8 @@ Add the platform starter (`embabel-agent-starter`, plus `-shell` for a CLI or
 Release binaries are on **Maven Central**; no snapshot repository is needed.
 
 The full starter/provider matrix (artifact and required key or config per provider,
-plus the v1.5.1 change list) lives in `references/providers.md` — read it before
-adding a dependency or asserting that something is new in v1.5.1.
+plus the v1.5.2/v1.5.3 change list) lives in `references/providers.md` — read it before
+adding a dependency or asserting that something is new in v1.5.3.
 
 ## Agent Authoring
 
@@ -90,15 +111,12 @@ See `references/domain.md` for DICE best practices.
 
 ## Tools
 
-- **@LlmTool** — Expose JVM methods to LLMs (Embabel)
-- **@Tool** — Expose JVM methods to LLMs (Spring AI)
+- **@LlmTool** — Expose JVM methods to LLMs (Embabel); **@Tool** — same via Spring AI
 - **ToolCallContext** — Inject infrastructure metadata invisible to the LLM
 - **OneShotPerLoopTool** — Prevent repeated tool calls in a single planning loop
 - **@Cost / costMethod / valueMethod** — Compute action costs and values dynamically from blackboard state
 - **SpEL Conditions** — Dynamic preconditions in `@Condition` and `@Action(pre = "...")`
 - **Subagent** — Let the LLM invoke other agents as tools (`Subagent.ofClass(...).consuming(...)`)
-- **Agentic Tools** — SimpleAgenticTool, PlaybookTool, StateMachineTool
-- **Tool Groups & Chaining** — Configure in YAML or `@Configuration`; use `withToolGroup()` and `withToolChainingFrom(Class)`
 - **UtilityInvocation** — Lightweight utility workflows without `@Agent` (see `references/planners.md`)
 
 See `references/tools.md` for full details.
@@ -123,33 +141,25 @@ See `references/planners.md` for detailed comparison.
 Annotate classes with `@State` to trigger state transitions. Previous state objects are hidden, the new state is bound to the blackboard, and planning considers only actions from the new state.
 
 - For looping states, use `@Action(clearBlackboard = true)`
-- For staying in the same state, return `this` (requires `canRerun = true`)
 - For human-in-the-loop: `WaitFor.formSubmission("...", Feedback.class)`
 - Use Java records or Kotlin top-level classes for state types
-- `@State` annotation is inherited through class hierarchy
 
-See `references/states.md` for detailed state patterns, inheritance, WaitFor, and parent state interface.
+See `references/states.md` for full patterns: staying in-state, inheritance, WaitFor, parent state interface.
 
 ## DSL Builders (Kotlin/Java)
 
 Use DSL builders (`SimpleAgentBuilder`, `ScatterGatherBuilder`, `ConsensusBuilder`, `RepeatUntil`, `RepeatUntilAcceptable`) for atomic workflows with multiple steps. Register with Spring via `@Bean` method returning `Agent`.
 
-See `references/dsl.md` for all builder types.
+See `references/dsl-builders.md` for all builder types.
 
 ## Execution Modes
 
 - **SIMPLE** (default): Sequential, one action at a time — predictable, easy to debug
 - **CONCURRENT**: All achievable actions run in parallel via virtual threads — higher throughput, actions must be concurrent-safe
 
-Set: `embabel.agent.platform.process-type: CONCURRENT`
+Set: `embabel.agent.platform.process-type: CONCURRENT`. Autonomy: Closed (LLM picks one agent) vs Open (LLM picks goal, assembles from all actions).
 
-**ConcurrentAgentProcess behavior:**
-- `ReplanRequestedException`: Only the first request is honored; subsequent ones are dropped
-- Blacklisted actions are prevented from immediate re-execution
-
-**Autonomy:** Closed (LLM picks one agent) vs Open (LLM picks goal, assembles from all actions).
-
-See `references/invoking.md` for confidence thresholds, ProcessOptions, and programmatic invocation.
+See `references/invoking.md` for ConcurrentAgentProcess behavior, confidence thresholds, ProcessOptions, and programmatic invocation.
 
 ## Chatbots
 
@@ -181,9 +191,6 @@ public class ChatbotActions {
 
     @Action(cost = 0.3)
     public RagResponse ragAnswer(UserMessage msg, Ai ai, Blackboard bb) { ... }
-
-    @Action(cost = 0.05)
-    public ClarificationRequest needsClarification(UserMessage msg) { ... }
 }
 ```
 
@@ -191,9 +198,7 @@ For dynamic costs (`@Cost`/`costMethod`), context IDs (pre-populate the session 
 
 ### Goals in Chatbots
 
-Typically, chatbot agents **do not need a goal** — the process waits indefinitely. Define a goal only for transactional conversations (e.g., completing a booking).
-
-See `references/chatbots.md` for full chatbot patterns.
+Chatbot agents typically **need no goal** — the process waits indefinitely; define one only for transactional conversations (e.g., completing a booking). See `references/chatbots.md` for full patterns.
 
 ## RAG (Retrieval-Augmented Generation)
 
@@ -204,20 +209,13 @@ Embabel's RAG is **entirely agentic and tool-based** — the LLM controls retrie
 - **Cross-Reference Discovery**: Expand chunks, follow references, zoom out
 - **HyDE Support**: Generate hypothetical documents for better semantic search
 
-`ToolishRag` facade auto-discovers store capabilities (vector, text, regex, result expansion) and exposes them as LLM tools via `LlmReference`:
+The `ToolishRag` facade auto-discovers store capabilities (vector, text, regex, result expansion) and exposes them as LLM tools via `LlmReference`.
 
-```java
-LlmReference ragRef = LlmReference.builder()
-    .description("Search the knowledge base")
-    .rag(toolishRag)
-    .build();
-```
-
-See `references/rag.md` for full RAG architecture.
+See `references/rag.md` for the full RAG architecture and wiring.
 
 ## MCP Server Publishing
 
-Publish agents as MCP servers with SYNC or ASYNC mode (SSE transport):
+Publish agents as MCP servers with SYNC or ASYNC mode, over **Streamable HTTP transport** (default since v1.5.3, at `http://localhost:8080/mcp`):
 
 ```yaml
 spring:
@@ -225,6 +223,7 @@ spring:
     mcp:
       server:
         type: SYNC  # or ASYNC
+        protocol: STREAMABLE  # default; STATELESS also supported
 ```
 
 Goals are automatically published as MCP tools when annotated with `@Export(remote = true)`.
@@ -233,10 +232,7 @@ Two-layer security:
 - **Layer 1:** HTTP filter chain (JWT auth via `SecurityWebFilterChain`)
 - **Layer 2:** `@SecureAgentTool(expression = "hasAuthority('news:read')")` on agents/methods
 
-For clients requiring Streamable HTTP, use the `mcpo` proxy to bridge SSE:
-```bash
-uvx mcpo --port 8000 --server-type sse -- http://localhost:8080/sse
-```
+SSE transport (`protocol: SSE`, endpoint `/sse`) is still accepted but deprecated for removal in Spring AI 2.0 — migrate to `protocol: STREAMABLE`.
 
 See `references/integrations.md` for MCP server/client, security, observability, and A2A.
 
@@ -262,10 +258,13 @@ For topics not covered in detail above, consult the reference files:
 | Thinking, guardrails, cost tracking, streaming | `references/thinking.md`, `references/guardrails.md`, `references/cost-tracking.md`, `references/streaming.md` |
 | Termination, error handling | `references/termination.md`, `references/error-handling.md` |
 | Agent skills, API vs SPI | `references/agent-skills.md`, `references/api-spi.md` |
+| Agent process persistence (HITL checkpoint/restore, JDBC) | `references/persistence.md` |
+| Cache providers (AgentCacheProvider, regions, capabilities) | `references/cache.md` |
 | DashScope provider (Alibaba Qwen) | `references/dashscope.md` |
 | Z.ai provider (Zhipu GLM, native client) | `references/zai.md` |
 | Tooling (IntelliJ IDEA plugin) | `references/tooling.md` |
-| Starter artifacts, provider keys, v1.5.1 change list | `references/providers.md` |
+| Production deployment (Docker, K8s, health, security) | `references/production-deployment.md` |
+| Starter artifacts, provider keys, v1.5.2/v1.5.3 change list | `references/providers.md` |
 
 > **Rule:** Application code uses only `com.embabel.agent.api.*`. SPI (`com.embabel.agent.spi.*`) is for framework extension only and is subject to change.
 
@@ -275,14 +274,9 @@ Properties live under `embabel:` (models, planner, execution mode, logging, tool
 
 ## Threading & Async Mode
 
-Enable virtual threads: `spring.threads.virtual.enabled=true`.
+Enable virtual threads: `spring.threads.virtual.enabled=true`. Flip the threading model with `threading.override` or share the app's executor with `threading.shared`.
 
-| Property | Default | Description |
-|----------|---------|-------------|
-| `threading.override` | `false` | Flip threading model (virtual↔platform) |
-| `threading.shared` | `false` | Share app's executor when models match |
-
-See `references/async-mode.md` for full behavior matrix.
+See `references/async-mode.md` for the full behavior matrix.
 
 ## Error Handling
 
@@ -290,8 +284,6 @@ See `references/async-mode.md` for full behavior matrix.
 - **Non-critical:** Use `createObjectIfPossible()` — returns null instead of throwing
 - **Guardrails:** Catch `GuardRailViolationException` for `CRITICAL` blocks
 - **Cost caps:** Use `EarlyTerminationPolicy` for process-level termination
-- **Validation:** Catch `InvalidLlmReturnTypeException` when JSR-380 validation fails after retry
-- **Empty responses:** Configure `toolloop.empty-response.max-retries` for weak models (see `references/llm-integration.md`)
 
 See `references/error-handling.md` and `references/flow.md` for full patterns.
 
@@ -301,8 +293,6 @@ See `references/error-handling.md` and `references/flow.md` for full patterns.
 |-------|-----------|
 | Agent not discovered | Check `@Agent`/`@EmbabelComponent` annotation and component scan path |
 | Planner can't find plan | Verify `@AchievesGoal`, input type matching, enable DEBUG logging |
-| Blackboard type not found | Check previous action added the type, not hidden by state transition |
-| State transitions broken | Use `@State` annotation, Java records or Kotlin top-level classes |
 | LLM calls failing | Check API keys, model names, timeouts, network connectivity |
 | High costs | Limit `max-iterations`, use cheaper models, enable `BudgetGuardRail` |
 
@@ -316,36 +306,35 @@ Migrating from Python AI frameworks? See `references/migrating.md` for guidance 
 
 **"Two-step agent: fetch an order, then write the refund note."** "Agent Authoring" -> two `@Action`s with `@State` handoff, GOAP planner unless the domain grows; "Testing" -> the `FakeOperationContext` skeleton before wiring real LLM calls.
 
-**"Expose our invoicing agent to Claude Code."** "MCP Server Publishing" (`@Export(remote = true)`) - not a bespoke socket server.
+**"Expose our invoicing agent to Claude Code."** "MCP Server Publishing" (`@Export(remote = true)`) — not a bespoke socket server.
 
-**"Migrate this LangGraph app."** "Migration"; and for a fixed, deterministic flow, check "When NOT to Use Embabel" first - a planner earns nothing where the path is already known.
+**"Migrate this LangGraph app."** "Migration"; for a fixed, deterministic flow check "When NOT to Use Embabel" first — a planner earns nothing where the path is already known.
 
 ## Common Pitfalls
 
-A quick checklist of the most frequent issues. See `references/common-pitfalls.md` for detailed Problem/Impact/Fix treatment.
+Top issues — see `references/common-pitfalls.md` for detailed Problem/Impact/Fix treatment.
 
-1. **Missing `@Agent`/`@EmbabelComponent`** — Component won't be discovered by Spring
-2. **Missing `@AchievesGoal`** — Planner can't determine completion (uses `@AchievesGoal`, not `@Goal`)
-3. **Missing `clearBlackboard = true` for loops** — Planner skips existing types
-4. **Non-static inner classes for `@State`** — Serialization/persistence failures
-5. **Missing `OperationContext` parameter** — Actions can't access AI or blackboard
-6. **Not setting model per-action** — Wastes money or sacrifices quality
-7. **Forgetting `.withId()`** — Makes testing and debugging opaque
-8. **Using SPI in production** — `com.embabel.agent.spi.*` is subject to change
-9. **Streaming with native structured output** — Not supported by Spring AI currently
+1. **Missing `@AchievesGoal`** — Planner can't determine completion (it's `@AchievesGoal`, not `@Goal`)
+2. **Missing `clearBlackboard = true` for loops** — Planner skips existing types
+3. **Non-static inner classes for `@State`** — Serialization/persistence failures
+4. **Missing `OperationContext` parameter** — Actions can't access AI or blackboard
+5. **Forgetting `.withId()`** — Makes testing and debugging opaque
 
-## Scaffolding
+## Available Scripts
 
-Use the Embabel template repositories or the `project-creator` tool to scaffold new projects:
+| Script | Purpose | Arguments |
+|--------|---------|-----------|
+| `scripts/project-creator.sh` | Scaffold a new Embabel agent project from the official Java/Kotlin template repositories (via the `embabel/project-creator` tool) | `--lang java\|kotlin --name <project-name> [--package <package>]` |
 
+Run it with `run_script("scripts/project-creator.sh", "--lang kotlin --name my-agent --package com.acme.research")`, or directly in a shell:
+
+```bash
+bash scripts/project-creator.sh --lang java --name my-agent
+```
+
+Requires `uvx` and `git`. The template repositories:
 - [Java Agent Template](https://github.com/embabel/java-agent-template)
 - [Kotlin Agent Template](https://github.com/embabel/kotlin-agent-template)
-
-## Real-World Examples
-
-Explore the [embabel-agent-examples](https://github.com/embabel/embabel-agent-examples) repository for production-quality examples:
-- **FactChecker**: Multi-LLM fact-checking with ScatterGather, ConsensusBuilder, parallel execution, and MCP publishing
-- **Horoscope**: Human-in-the-loop with WaitFor, cost-based planning, domain tools
 
 ## When NOT to Use Embabel
 
@@ -359,8 +348,9 @@ Explore the [embabel-agent-examples](https://github.com/embabel/embabel-agent-ex
 | High-throughput microservices | Standard Spring Boot | Planning loop adds latency |
 | Batch ETL jobs | Spring Batch, Airflow | No agent planning needed |
 
-## Production Deployment
+## Limitations
 
-Use multi-stage Dockerfiles and Kubernetes manifests for production. Always use secrets management for API keys and enable guardrails for safety/compliance.
-
-See `references/production-deployment.md` for Docker, K8s, health checks, security, and production checklist.
+- **Version-pinned** — this guide targets v1.5.3; APIs in other releases may differ, so verify against the pinned upstream docs before porting code
+- **Process persistence** — the snapshot factory supports `InMemoryBlackboard` and assumes at most one pending awaitable per `WAITING` process; writes are not transactional; renaming an agent class requires a snapshot migration (`references/persistence.md`)
+- **MCP SSE transport** — deprecated for removal in a future Spring AI release; new deployments should use `protocol: STREAMABLE`
+- **Cache-backed persistence** — the Spring `CacheManager` adapter has no atomic compare-and-set, so it is single-node only unless a backend-native `AgentCacheProvider` is used (`references/cache.md`)

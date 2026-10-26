@@ -1,4 +1,4 @@
-# Starters, providers, and what changed in v1.5.1
+# Starters, providers, and what changed in v1.5.3
 
 Moved out of `SKILL.md` so the main guide stays under the per-file token budget.
 Verify against the pinned upstream docs before trusting any symbol here.
@@ -9,7 +9,9 @@ Verify against the pinned upstream docs before trusting any symbol here.
 |---------|----------|
 | `embabel-agent-starter` | Basic agent platform (web/console/microservice) |
 | `embabel-agent-starter-shell` | Interactive CLI shell |
-| `embabel-agent-starter-mcpserver` | MCP server (SSE, Streamable-HTTP) |
+| `embabel-agent-starter-mcpserver` | MCP server (Streamable HTTP default, SSE deprecated — v1.5.3) |
+| `embabel-agent-starter-jdbc` | Relational-database agent process persistence (v1.5.3) |
+| `embabel-agent-starter-cache` | Cache-backed (Redis/Hazelcast) agent process persistence (v1.5.3) |
 
 Embabel release binaries are published to **Maven Central** — no snapshot
 repository needed for stable releases.
@@ -46,6 +48,65 @@ Provider-specific notes:
   `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `customizing.md`.
 
 Full provider configuration details: `configuration.md`.
+
+## New in v1.5.3
+
+- **MCP transport: Streamable HTTP** — the MCP server now uses Streamable HTTP
+  transport by default (`http://localhost:8080/mcp`); SSE
+  (`http://localhost:8080/sse`) is `@Deprecated(forRemoval=true)`.
+  `protocol: STREAMABLE` (default) or `STATELESS`. See `integrations.md`.
+- **Agent process persistence** — checkpoint/restore for processes parked for
+  external input (HITL). `AgentProcessSnapshotStore` SPI,
+  `embabel-agent-starter-jdbc` (relational) and `embabel-agent-starter-cache`
+  (Redis/Hazelcast via `AgentCacheProvider`), `WAITING`/`LIFECYCLE` checkpoint
+  policies, `BlackboardEntrySerializer` for blackboard values. See
+  `persistence.md`, `cache.md`.
+- **Action delays** — `@Agent(delay = ...)` sets a default delay tier
+  (`Delay.NONE`/`MEDIUM`/`LONG`); `@Action(delayMs = ...)` overrides per action
+  for rate-limited APIs. See `annotations.md`.
+- **Deployment default as a role** — `embabel.models.default-llm` may name a
+  role, resolved per call, so a BYOK deployment whose key arrives at runtime
+  has a working default without a restart. New deployment default model:
+  `gpt-5.6-luna`. See `llm-integration.md`, `configuration.md`.
+- **Embedding roles under BYOK** — `default-embedding-model` may name a role;
+  new `embabel.models.embedding-roles` map gives a role a model per provider.
+  See `llm-integration.md`.
+- **Durable asset content** — `MaterializableAsset`, `AssetStore`
+  (built-in `FileSystemAssetStore`), `DurableAsset`;
+  `conversation.getAssetTracker().addDurablyReturnedAssets(...)`. Explicitly
+  opt-in. See `chatbots.md`.
+- **Entity-only RAG results** — `entitiesOnly` on `ToolishRag` selects only
+  matching entities from mixed results. See `rag.md`.
+- **Provider timeouts** — `connect-timeout` / `read-timeout` under each
+  OpenAI-compatible provider prefix (`openai`, `openai.custom`, `lmstudio`,
+  `gemini`, `minimax`, `dashscope`, `zai`, `docker`); the generic
+  `http-client.read-timeout` does not apply to them. See `configuration.md`.
+- **Template renderer config** — `embabel.agent.platform.template.*`
+  (prefix, suffix, `fail-on-unknown-tokens`,
+  `nested-interpretation-enabled`). Substituted values are literal data by
+  default. See `configuration.md`.
+- **Retry policy** — `NonTransientAiException` reporting HTTP 429 (rate limit)
+  is now retried; `NullPointerException` added to the non-retryable list. See
+  `annotations.md`.
+- **LM Studio** — no longer ships a stale OpenAI model catalog.
+- **Structured output** — native structured output refinements: strict mode,
+  schema fixes; OpenAI reasoning effort forwarded from `LlmOptions`.
+
+## New in v1.5.2
+
+- **Boot 4.1.1** baseline.
+- **Validation manager exit policy** —
+  `embabel.agent.api.validation.manager.skip-agent-deployment-on-error`
+  rejects invalid `@Agent`s at startup when `true`. See `configuration.md`.
+- **LLM retry events** — events raised when an LLM call is retried or fails;
+  improved LLM retry policy and rate-limit detection.
+- **Agent and Action delay policy** — foundation for the v1.5.3 `delay`
+  attributes.
+- **Nested Jinja interpretation** — configurable nested template
+  interpretation (see `template.nested-interpretation-enabled`).
+- **Agent process snapshot/restore foundation** — `AgentProcessRepository`
+  assembly entry point, `AgentProcessSnapshotStore` SPI, JCache-backed
+  reference implementation (shipped as the v1.5.3 persistence features).
 
 ## New in v1.5.1
 

@@ -98,7 +98,7 @@ var processOptions = ProcessOptions.builder()
     .build();
 ```
 
-Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a safety net. See [Cost Tracking](cost-tracking.md) for the `Budget Guardrail` complement.
+Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a safety net. See `cost-tracking.md` for the `Budget Guardrail` complement.
 
 ## Decision Matrix
 
@@ -111,4 +111,4 @@ Use `EarlyTerminationPolicy` standalone or alongside the Budget Guardrail as a s
 | **Process** | Policy | `EarlyTerminationPolicy` | Hard cap on actions or budget — last-resort safeguard |
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*

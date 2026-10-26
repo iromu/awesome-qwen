@@ -215,6 +215,24 @@ Filters are applied transparently — the LLM cannot see or bypass them. Neo4j t
 
 Non-entity results such as chunks pass through entity filters unchanged, so an entity filter can be used with searches that return both chunks and entities.
 
+### Entity-only results (v1.5.3)
+
+An entity filter leaves non-entity results such as chunks unchanged. To select only matching entities from a mixed result set, set `entitiesOnly` on `ToolishRag`:
+
+```kotlin
+import com.embabel.agent.rag.filter.EntityFilter
+
+val rag = ToolishRag(
+    name = "people-search",
+    description = "Search for people",
+    searchOperations = repository,
+    entityFilter = EntityFilter.hasAnyLabel("Person"),
+    entitiesOnly = true,
+)
+```
+
+Result selection is applied before the final `topK`. When native selection is unavailable, the search requests an inflated candidate set and applies the selector in memory.
+
 ## Ingestion
 
 ### Document Parsing with Tika
@@ -297,4 +315,4 @@ DrivineStore drivineStore(PersistenceManager pm, EmbeddingService es, ChunkTrans
 Implement only the `SearchOperations` subinterfaces that fit your store. A vector database implements only `VectorSearch`; a full-text engine implements `TextSearch` + `RegexSearchOperations`; a full-featured store like Lucene implements all. `ToolishRag` automatically exposes only the tools your store supports — no stub implementations needed. For ingestion support, extend `ChunkingContentElementRepository`.
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `references/rag`*
+*Source: Embabel Agent v1.5.3 documentation — `references/rag`*

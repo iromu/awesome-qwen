@@ -19,11 +19,14 @@ Decouples code from specific models:
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `embabel.models.default-llm` | String | `gpt-4.1-mini` | Default LLM name |
-| `embabel.models.default-embedding-model` | String | `null` | Default embedding model |
+| `embabel.models.default-llm` | String | `gpt-5.6-luna` | Deployment default: an LLM name, or a role from `embabel.models.llms`/`embabel.models.roles`. A role is resolved per call, so a deployment whose key arrives at runtime has a working default without a restart |
+| `embabel.models.default-embedding-model` | String | `null` | Default embedding model, or a role from `embedding-services`/`embedding-roles` (resolved per call) |
 | `embabel.models.llms` | Map\<String, String\> | `{}` | Role to LLM name map |
 | `embabel.models.roles` | Map\<String, Map\<String, LlmRoleConfig\>\> | `{}` | Roles with a provider dimension (nested) |
 | `embabel.models.embedding-services` | Map\<String, String\> | `{}` | Role to embedding service map |
+| `embabel.models.embedding-roles` | Map\<String, Map\<String, String\>\> | `{}` | Embedding roles with a provider dimension (v1.5.3) — the embedding counterpart of `roles` |
+
+> **Default as a role (v1.5.3):** A model name is resolved once, against the services registered at startup. A role is resolved per call through the same resolver chain as any other role — so the default follows whichever provider key is active, and a deployment whose first key arrives after startup gets a working default without a restart. A model name that nothing registers falls back to the role chain. A default that nothing can satisfy does not throw like an unsatisfied role — it falls back to whatever `default-llm` resolved to at startup (the placeholder, in a deployment awaiting a key), so the caller sees the same actionable "no LLM configured" error. Startup is stricter: with no placeholder to fall back to, a `default-llm` that names nothing this deployment has registered is fatal, and the message says which of the two it is.
 
 ```yaml
 embabel:
@@ -111,6 +114,12 @@ embabel:
 | `embabel.agent.platform.scanning.annotation` | Boolean | `true` | Auto-register `@Agent` / `@Agentic` beans |
 | `embabel.agent.platform.scanning.bean` | Boolean | `false` | Auto-register Spring beans of type `Agent` |
 
+## Validation Manager
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.agent.api.validation.manager.skip-agent-deployment-on-error` | Boolean | `false` | When `false` (default), the validation manager only logs errors for `@Agent`s. When `true`, any invalid `@Agent` reported by the validation manager is rejected at startup (v1.5.2) |
+
 ## Planner Configuration
 
 | Property | Type | Default | Description |
@@ -182,6 +191,21 @@ embabel:
 ```
 
 Env vars: `OPENAI_API_KEY` (required), `OPENAI_BASE_URL` (optional, for Azure), `OPENAI_COMPLETIONS_PATH`, `OPENAI_EMBEDDINGS_PATH`.
+
+### Provider Timeouts (v1.5.3)
+
+OpenAI-compatible and Docker model clients take configurable timeouts (v1.5.3):
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.agent.platform.models.openai.connect-timeout` | Duration | `1m` | How long to wait to connect |
+| `embabel.agent.platform.models.openai.read-timeout` | Duration | _unset_ | Per-attempt response timeout. Unset keeps 60 seconds for chat completion and embedding calls and 10 minutes for Responses API models. The client retries a timed-out call twice, so a caller waits up to three times this value |
+
+The same `connect-timeout` and `read-timeout` properties apply to every OpenAI-compatible provider, under its own prefix: `openai.custom`, `lmstudio`, `gemini`, `minimax`, `dashscope`, `zai` and `docker`, each under `embabel.agent.platform.models`.
+
+A per-user (BYOK) key uses the same properties as the deployment's key for that provider (e.g., `embabel.agent.platform.models.openai.read-timeout`). A provider added by a `CredentialEndpointResolver` is configured under its name in lower case with spaces and punctuation removed: `Our Gateway` reads `embabel.agent.platform.models.ourgateway.read-timeout`. BYOK Gemini reads the `gemini` prefix.
+
+> **Important:** These providers use their own `read-timeout`. The generic `embabel.agent.platform.http-client.read-timeout` does **not** apply to them.
 
 ### OpenAI Custom (Groq, Z.AI, etc.)
 
@@ -408,6 +432,19 @@ embabel:
         read-timeout: 10m
 ```
 
+## Template Renderer (v1.5.3)
+
+Jinja template renderer configuration, nested in `AgentPlatformProperties`:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.agent.platform.template.prefix` | String | `classpath:/prompts/` | Spring resource prefix used to load templates |
+| `embabel.agent.platform.template.suffix` | String | `.jinja` | Suffix added to template names that do not already include it |
+| `embabel.agent.platform.template.fail-on-unknown-tokens` | Boolean | `false` | Whether rendering fails when a template contains unknown tokens |
+| `embabel.agent.platform.template.nested-interpretation-enabled` | Boolean | `false` | Whether template syntax inside substituted values is evaluated recursively. Do not enable this for untrusted or user-provided values |
+
+Template syntax inside substituted values is treated as literal data by default — this prevents values such as user-provided text containing `{{ expression }}` from being evaluated recursively. Enabling `nested-interpretation-enabled` re-evaluates template syntax found inside substituted values; do not enable it for templates that interpolate untrusted or user-provided text.
+
 ## REST Endpoints
 
 | Property | Type | Default | Description |
@@ -478,4 +515,4 @@ Experimental modules: `embabel-agent-discord`, `embabel-agent-remote`, `embabel-
 
 ---
 
-*Source: Embabel Agent v1.5.1 documentation — `references/configuration`, `references/llms`, `references/asynch-mode`*
+*Source: Embabel Agent v1.5.3 documentation — `references/configuration`, `references/llms`, `references/asynch-mode`*

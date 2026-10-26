@@ -359,6 +359,38 @@ conversation.addMessage(message);
 
 `Conversation.assets` provides a **merged view** — tracker assets first, then message assets in chronological order, with duplicates removed by ID (tracker version wins).
 
+### Durable Asset Content (v1.5.3)
+
+Tracking an asset does not by itself make its content durable. An asset whose content is held in a temporary file or sandbox must be materialized before that location is removed.
+
+`MaterializableAsset` identifies an asset whose content can be copied to durable storage. An `AssetStore` performs that copy, calculates the content size and SHA-256 hash, and returns a `DurableAsset` containing portable metadata and an opaque storage URI. The built-in `FileSystemAssetStore` provides durable local storage; applications can implement `AssetStore` for object storage, databases, or other backends:
+
+```java
+Tool durableTool = conversation.getAssetTracker()
+    .addDurablyReturnedAssets(
+        generatingTool,
+        new FileSystemAssetStore(Path.of("/var/lib/my-application/assets"))
+    );
+```
+
+```kotlin
+val durableTool = conversation.assetTracker
+    .addDurablyReturnedAssets(
+        generatingTool,
+        FileSystemAssetStore(Path.of("/var/lib/my-application/assets"))
+    )
+```
+
+Durable tracking is explicitly opt-in — the application must construct or inject an `AssetStore` and pass it when wrapping the tool; no no-op store is installed automatically.
+
+The three responsibilities are separate:
+
+- `AssetTracker` keeps assets available to a live conversation
+- `AssetStore` owns the content after the process or temporary source that created it is gone
+- Conversation persistence stores `DurableAsset` metadata with messages so those references survive a reload
+
+When the wrapped tool returns a `MaterializableAsset`, the store completes the copy before the durable result is added to the tracker. `storageUri` is interpreted only by the `AssetStore` that created it, allowing implementations to use a filesystem, object storage, or another blob store. Applications remain responsible for selecting the storage root (or providing another `AssetStore`) and for deciding when durable content can be deleted.
+
 ### Assets as Tools
 
 Assets can be exposed to the LLM as tools via their `LlmReference`:
@@ -420,7 +452,7 @@ See the [rag-demo project](https://github.com/embabel/rag-demo) for a complete c
 - Conversation storage: `IN_MEMORY` (default) or `STORED` (Neo4j)
 - Goals are optional — omit for open-ended conversations, add for transactional flows
 - Use `@Cost` methods for dynamic action selection based on blackboard state
-- Assets track structured outputs at conversation and message levels
+- Assets track structured outputs at conversation and message levels; `AssetStore`/`DurableAsset` make asset content durable (v1.5.3)
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*

@@ -180,4 +180,4 @@ var result = ai.withDefaultLlm()
 - Built-ins cover common patterns: logging, truncation, sliding window
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*

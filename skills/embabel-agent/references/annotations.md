@@ -13,6 +13,10 @@ public class WriteAndReviewAgent { ... }
 
 **Must provide `description`** — used by the LLM in agent selection.
 
+### Agent-level delay (v1.5.3)
+
+The optional `delay` parameter sets a default delay tier for all actions in the agent, using the `Delay` enum (`NONE`, `MEDIUM`, `LONG`). When omitted the default is `Delay.UNSET`, meaning actions inherit the process-level delay. `Delay.NONE` explicitly sets zero delay for all actions, overriding any process-level delay. Individual actions can override the agent-level delay with their own `delayMs` value.
+
 ## @EmbabelComponent — Action Container
 
 Exposes actions, goals, and conditions for use by agents without being an agent itself. Most useful with the **Utility AI planner**.
@@ -54,6 +58,7 @@ public FlightInfo searchFlights(Destination dest, Ai ai) { ... }
 | `costMethod` | String | — | Name of a `@Cost` method for dynamic cost |
 | `valueMethod` | String | — | Name of a `@Cost` method for dynamic value |
 | `trigger` | Class<?> | — | Reactive trigger — fires only when this type is most recently added |
+| `delayMs` | long | `-1` | Pause in ms inserted after the planner selects this action but before the action body executes (v1.5.3). `-1` (`Delay.UNSET_MS`) inherits from the agent/process level; `0` (`Delay.NONE_MS`) explicitly suppresses delay; use `Delay.MEDIUM_MS` / `Delay.LONG_MS` for named tiers or an arbitrary value (e.g., `1500L`). Useful for rate-limited APIs needing breathing room between calls. |
 
 ### clearBlackboard
 
@@ -118,6 +123,28 @@ For MCP publishing:
                          startingInputTypes = {UserInput.class}))
 public NewsDigest produceDigest(NewsTopic topic, OperationContext context) { ... }
 ```
+
+## Action Exception Handling (Retry Policy)
+
+Exception handling within actions is governed by the retry policy. Exceptions are categorized as non-retryable in this order:
+
+- `ReplanRequestedException`
+- `TerminateActionException`
+- `TerminateAgentException`
+- `ToolControlFlowSignal`
+- `NonTransientAiException` — **unless it reports a rate limit (HTTP 429), which is retried** (v1.5.3)
+- `IllegalArgumentException`
+- `IllegalStateException`
+- `UnsupportedOperationException`
+- `NullPointerException` (v1.5.3)
+- `ClassCastException`
+
+Any exception not in this list is mapped to a retryable exception. `TransientAiException` is always retryable.
+
+Custom retryable/non-retryable exceptions can be defined by:
+
+1. **Extending `ActionException`** — `ActionException.Transient` for retryable failures, `ActionException.Permanent` for non-retryable
+2. **Implementing marker interfaces** — maximum flexibility for existing exception hierarchies
 
 ## @Condition Annotation
 
@@ -289,4 +316,4 @@ Since `@State` classes must be static nested or top-level classes, `@Provided` i
 10. **`readOnly` actions** — `readOnly = true` actions only analyze data without modifying external systems (APIs, databases, files). Useful for learning/catchup modes.
 ---
 
-*Source: Embabel Agent v1.5.1 documentation*
+*Source: Embabel Agent v1.5.3 documentation*
