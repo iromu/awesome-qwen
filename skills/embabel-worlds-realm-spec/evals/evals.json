@@ -1,0 +1,23 @@
+{
+  "skill_name": "embabel-worlds-realm-spec",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to create a new Embabel realm that integrates with Linear — issues come in via webhooks and we poll for updates on a 10 minute cadence. Scaffold the repo structure and the key files.",
+      "expected_output": "A realm- named directory with realm.yml, types/ declaring a LinearIssue signal type (parents: [Signal]), apis/ entry for the Linear API, events/ with both webhook and poll blocks mapping required Signal parent properties, keys.yml or credentials.yml for the API key, and a CI validation workflow. References to the correct spec sections.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "My realm has a virtual join from CustomerAccount to SupportCase via a Chatwoot producer, but the view returns zero rows and there's no error. What should I check first?",
+      "expected_output": "Diagnosis path: the join is declared under the target type not the anchor; the query must traverse from a bound anchor (naked MATCH is rejected); recordKeyField/keyField match; pushdown rules silently ignored by the source (verify counts differ with/without filter); warnings in the response (PRODUCER_ERROR, UNPUSHED_FILTER); assert a non-zero cross-realm count in tests/verify.sh.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Add a TypeScript handler to my existing declarative realm that wraps the raw Google Docs API into a getOutline method, and give the Customer type an addNote method. Include the tests.",
+      "expected_output": "src/api/ file per namespace with (ctx, args) signature and JSDoc; a Customer class extending Entity<Gateway> with addNote as a single-parameter method; entityForTest + mockGateway tests asserting exact verb arguments; npm build producing dist/manifest.json; reminder to commit dist/ including vendored runtime-types.",
+      "files": []
+    }
+  ]
+}

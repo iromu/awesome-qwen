@@ -27,7 +27,7 @@ No build step, no dependencies — just markdown files Qwen Code auto-discovers.
 |----------|-------------|-------|
 | [Agents](#agents) | Specialized AI personas with specific tool access and expertise | 4 |
 | [Instructions](#instructions) | Coding standards applied automatically by file pattern | 3 |
-| [Skills](#skills) | Self-contained capabilities for specific tasks | 26 |
+| [Skills](#skills) | Self-contained capabilities for specific tasks | 27 |
 | [Hooks](#hooks) | Automated actions triggered during Qwen Code sessions | 3 |
 | [Workflows](#workflows) | Reusable automation sequences (coming soon) | 0 |
 | [Cookbook](#cookbook) | Language-specific recipes and examples (coming soon) | 0 |
@@ -73,6 +73,7 @@ Self-contained capabilities bundling instructions, references, templates, and sc
 | [embabel-dice](skills/embabel-dice) | Build proposition-based knowledge graphs for AI agents — structured, confidence-weighted memory with entity resolution | `knowledge-graph` `memory` `jvm` |
 | [embabel-drivine4j](skills/embabel-drivine4j) | Type-safe graph database clients for Neo4j, FalkorDB, Amazon Neptune, and Memgraph | `graph` `neo4j` `jvm` |
 | [embabel-otel](skills/embabel-otel) | Configure OpenTelemetry exporters for Embabel Agent observability — zero-code setup for Langfuse and LangSmith trace export with automatic span enrichment | `opentelemetry` `langfuse` `langsmith` `tracing` |
+| [embabel-worlds-realm-spec](skills/embabel-worlds-realm-spec) | Author, extend, or debug Embabel realms — git repos of declarative agent capabilities (actions, types, virtual-join producers, APIs, views, events, agents, apps) installed into a world; spine vs parent-label joins, pushdown, captured realms, and the live-view test loop | `embabel` `realm` `virtual-cypher` `knowledge-graph` `declarative` |
 | [git-commit](skills/git-commit) | Automated git commit message generation with conventional commit style | `git` `commits` |
 | [git-workflows](skills/git-workflows) | Git branching strategies, commit conventions, and collaboration workflows | `git` `branching` `collaboration` |
 | [json-formatting](skills/json-formatting) | Format, pretty-print, minify, validate, transform, and convert JSON data | `json` `formatting` `validation` |
