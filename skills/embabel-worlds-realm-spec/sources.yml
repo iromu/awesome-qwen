@@ -1,0 +1,8 @@
+# Starter template — declare how a COLLECTION behaves.
+# producers/ say how to fetch records; sources.yml says what the collection IS:
+# how big, what it can be filtered by, what order it arrives in, how often it
+# changes, and whether it should be mirrored at all. Getting this wrong is a
+# correctness problem, not a performance one. See the raw spec (§sources.yml)
+# for the full field reference.
+- name: example-collection
+  # size, filter surface, ordering, volatility, mirroring policy

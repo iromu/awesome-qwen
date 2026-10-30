@@ -58,12 +58,12 @@ want to pin a specific subset of operations without depending on a moving public
 ## Auth
 
 ```yaml
-# 1. No auth
-- url: https://api.example.com/openapi.yaml
+# 1. No auth (vendored spec beside apis.yml)
+- url: openapi.yaml
   auth: none
 
 # 2. Bearer token (most REST APIs)
-- url: https://api.github.com/openapi.json
+- url: openapi.json
   name: gh
   auth: bearer
   token-env: GITHUB_PERSONAL_ACCESS_TOKEN
@@ -98,13 +98,13 @@ provider name — **never in the pack repo and never in any user's workspace**.
   type: openapi
   auth: oauth2
   oauth2:
-    auth-url: https://app.hubspot.com/oauth/authorize
-    token-url: https://api.hubapi.com/oauth/v1/token
+    auth-url: https://app.example.com/oauth/authorize
+    token-url: https://api.example.com/oauth/v1/token
     scopes: >-
       crm.objects.contacts.read crm.objects.contacts.write
       crm.objects.companies.read crm.objects.deals.read
     identity:
-      url: https://api.hubapi.com/oauth/v1/access-tokens/{token}
+      url: https://api.example.com/oauth/v1/access-tokens/{token}
       method: GET
       auth: path-token
       account-id-field: hub_id
@@ -113,11 +113,11 @@ provider name — **never in the pack repo and never in any user's workspace**.
 
 **`identity:` block** — tells the host how to call the provider's `/userinfo` or
 `/whoami` endpoint and pull an `accountId` + display label, so the UI shows
-"Connected as alice@acme.com" rather than just "Connected":
+"Connected as user@example.com" rather than just "Connected":
 
 | Field | Required | Notes |
 |---|---|---|
-| `url` | yes | May contain `{token}`, substituted with the URL-encoded access token. |
+| `url` | yes | May contain `{token}`, substituted with the URL-encoded token. |
 | `method` | no | `GET` (default) or `POST`. |
 | `auth` | no | `bearer` (default), `path-token`, `header:<NAME>`, `query:<NAME>`. |
 | `account-id-field` | yes | Top-level JSON field for the stable account identifier. |
@@ -210,13 +210,15 @@ A realm without `keys.yml` still works: the host derives one entry per credentia
 variable its APIs refer to (`token-env`, `${VAR}`), uncheckable. A declared entry takes
 precedence over a derived one for the same variable.
 
-## Declared credentials (`credentials.yml`) — captured realms
+## Declared credentials — captured realms
 
-A captured realm declares credentials the owner binds. The realm names a **purpose**
-(kind, provider, description, docs link) — never a variable or where the secret lives.
+A captured realm declares credentials the owner binds, in the `credentials`*.yml*
+file at the realm root — a list with one entry per credential. The realm names a
+**purpose** (kind, provider, description, docs link) — never a variable or where
+the secret lives.
 
 ```yaml
-# credentials.yml
+# the realm-root credentials list
 - description: A bot token for the server you want the assistant in.
   docs: https://discord.com/developers/applications
   id: bot
@@ -264,7 +266,7 @@ the entry stops every captured operation approved with the old value until re-ap
 
 ## Choosing between the two
 
-| | Key entry (`keys.yml`) | Declared credential (`credentials.yml`) |
+| | Key entry (`keys.yml`) | Declared credential |
 | --- | --- | --- |
 | Applies to | Conventional realms | Captured realms — the recommended path for new realms |
 | The realm names | The variable | A purpose: kind, provider, description, docs |

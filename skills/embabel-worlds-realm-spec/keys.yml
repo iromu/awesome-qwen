@@ -1,0 +1,16 @@
+# Starter template — API keys a conventional realm needs.
+# One declaration, any number of APIs: a field's `variable` is the credential slot
+# every apis/ entry naming that variable resolves. A person is asked once.
+- name: example
+  displayName: Example API
+  description: What the key unlocks, in one line.
+  getKeyUrl: https://example.com/keys
+  fields:
+    - variable: EXAMPLE_API_KEY
+      displayName: API key
+  validate:
+    api: example             # an API this realm declares in apis/
+    operation: cheapestRead  # the cheapest operation any valid key may call
+    args: { q: test }
+    refusedOn: [401, 403]    # add vendor-specific refusal statuses (e.g. 422)
+    # interpret: myCheckFn   # optional Realm Function for non-status refusals

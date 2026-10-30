@@ -41,10 +41,11 @@ separated by spaces or newlines. The workflow needs no secret and only
 ### The same check anywhere else
 
 ```bash
-docker run --rm --entrypoint realm-validate \
+# replace vX.Y.Z with the pinned release your users run; `latest` follows releases
+docker run --entrypoint realm-validate \
   -v "$PWD:/realms/my-realm:ro" \
   -v "$PWD/../realm-code-model:/with/realm-code-model:ro" \
-  ghcr.io/embabel/assistant:latest /realms/my-realm --with /with/realm-code-model
+  ghcr.io/embabel/assistant:vX.Y.Z /realms/my-realm --with /with/realm-code-model
 ```
 
 With the appliance CLI installed, `embabel realm validate . --with

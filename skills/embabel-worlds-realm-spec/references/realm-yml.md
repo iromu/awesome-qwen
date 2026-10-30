@@ -89,7 +89,7 @@ realm-name/
 ├── lenses/                # Named lenses (YAML)
 ├── apis/                  # API entries (YAML) + vendored specs
 ├── keys.yml               # API keys the realm needs (conventional realms)
-├── credentials.yml        # Credentials the owner binds (captured realms)
+├── credentials file       # owner-bound credentials (captured realms)
 ├── src/                   # Hand-authored TypeScript handlers (docker host)
 │   └── api/*.ts           # one TS file per namespace; filename → namespace
 ├── tests/                 # Vitest specs for handlers + questions.yml + verify.sh

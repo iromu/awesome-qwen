@@ -109,7 +109,7 @@ signals**, use `events/` instead.
       config:
         url: "{{webhook_base_url}}/api/v1/webhooks/github-issues"
         content_type: json
-        secret: "{{GITHUB_WEBHOOK_SECRET}}"
+        # plus a signing secret, resolved from the credential store
       events: ["issues", "issue_comment"]
 ```
 

@@ -64,7 +64,7 @@ The anchor of one join can be the **virtual target** of another, and the engine 
 them in one read transaction (up to `MAX_STAGES` deep). **Keep every hop pattern-bound**:
 the probe follows `MATCH` patterns. A node re-bound out of a list
 (`WITH collect(run) AS runs … UNWIND runs AS f MATCH (f)-[:HAS_JOB]->(j)`) is NOT
-probed — the second hop fetches nothing and returns no jobs, with no warning. Narrow
+probed — the second hop fetches nothing and returns no jobs; the failure is silent. Narrow
 with `WITH run ORDER BY … LIMIT n` and hop from `run` itself. `OPTIONAL MATCH` over a
 virtual hop is likewise not probed; use `MATCH`.
 
@@ -278,7 +278,7 @@ deliverable.
 ## Production pitfalls (verified the hard way)
 
 - **`project` paths: use `[*]`, never `[0]`.** An indexed path is not honoured and
-  projects **null silently** — no warning, just an empty property, and any predicate
+  projects **null silently** — the only symptom is an empty property, and any predicate
   over it drops every row. `address: "Location[*].FullAddress"`, not
   `Location[0].FullAddress`. A single-valued nested field arrives as a one-element
   list the consumer must unwrap.

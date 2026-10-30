@@ -1,0 +1,26 @@
+# Starter template — the natural-language battery. REQUIRED the moment any
+# surface takes words from a person (a free-text ask box, a chat surface,
+# views meant to be reached by asking). Copy into the realm's tests/ directory.
+#
+# Run each question through the ask surface and assert the expectation.
+# Reconcile figures with matchesView — the ask's number must EQUAL the named
+# view's, so the realm checks itself and the test survives data changes.
+# nonEmpty is a floor, not an assertion.
+#
+# Carry an ADVERSARIAL half too: questions whose answer the sources do not
+# carry. Ask each one SEVERAL times (generation is stochastic) and check every
+# response mechanically against the live schema — a property no label declares
+# is a fabrication and fails the run.
+
+# What the realm CAN answer:
+- question: "How many examples do we have"
+  expect:
+    matchesView: { name: ExampleCount, column: examples }
+- question: "which examples are at risk"
+  expect:
+    nonEmpty: true
+
+# What the realm CANNOT answer (adversarial — ask each several times):
+- question: "what was our revenue last quarter"
+  expect:
+    mustRefuse: true   # the sources do not carry this measure

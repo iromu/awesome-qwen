@@ -1,0 +1,13 @@
+# Starter template — copy into a new realm repo (rename per the integration).
+# A realm is a git repo named realm-*; this file is required at the realm root.
+name: example
+description: "Example integration — one line, written for an LLM planner"
+version: 0.1.0
+author: Your Name
+url: https://github.com/<org>/realm-example
+# icon: icon.svg            # optional; a file shipped in the realm, relative to its root
+category: developer         # one id from the published list (embabel/default-installation)
+tags:
+  - integrations
+# maturity: experimental   # optional claim: experimental | beta | stable | deprecated
+# host: docker             # execution host for Functions: docker | wasm (inferred if absent)
