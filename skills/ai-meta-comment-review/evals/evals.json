@@ -1,0 +1,53 @@
+{
+  "skill_name": "ai-meta-comment-review",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "clear-meta-comments-technical-doc",
+      "query": "I'm putting this in our public docs and it needs to read as a standalone piece, not a chat reply. Review it for AI meta-comments and tell me exactly what to change.\n\n---\n## Cache invalidation\n\nI've researched the invalidation strategies and found that TTL-based expiry works best for our read-heavy workload.\n\nHere's the wiring:\n\nYou'll have a cache that expires entries after 300 seconds.\n\nLet me know if you'd like me to add a write-through option.\n---",
+      "prompt": "I'm putting this in our public docs and it needs to read as a standalone piece, not a chat reply. Review it for AI meta-comments and tell me exactly what to change.\n\n---\n## Cache invalidation\n\nI've researched the invalidation strategies and found that TTL-based expiry works best for our read-heavy workload.\n\nHere's the wiring:\n\nYou'll have a cache that expires entries after 300 seconds.\n\nLet me know if you'd like me to add a write-through option.\n---",
+      "expected_output": "Flags the first-person AI voice ('I've researched ... found'), the presentational hand-off ('Here's the wiring:'), the forward-looking second person ('You'll have a cache'), and the offer of further help ('Let me know if you'd like me to...') as clear meta-comments, and gives concrete replacements rather than just 'delete'.",
+      "files": [],
+      "assertions": [
+        "Flags the first-person AI-voice phrase 'I've researched ... found' as a meta-comment that must be fixed",
+        "Flags the presentational hand-off 'Here's the wiring:' as a meta-comment",
+        "Flags the forward-looking second-person 'You'll have a cache' as a meta-comment",
+        "Flags 'Let me know if you'd like me to...' as an offer of further help that should be removed",
+        "Provides a concrete replacement rephrase for at least the first-person and presentational items, not merely 'delete'",
+        "Does not invent meta-comments that do not actually appear in the document"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "false-positive-resistance",
+      "query": "Check this doc for conversational AI artifacts before we publish it.\n\n---\n## Data access\n\nThe module handles I/O types and buffer management. The `my-agent` package exposes the `my-model` interface.\n\nEvery claim below was verified against the source repository.\n\nNote: this endpoint is rate-limited to 100 requests per minute.\n\nThe user's mental model here is that a single call returns a complete result.\n---",
+      "prompt": "Check this doc for conversational AI artifacts before we publish it.\n\n---\n## Data access\n\nThe module handles I/O types and buffer management. The `my-agent` package exposes the `my-model` interface.\n\nEvery claim below was verified against the source repository.\n\nNote: this endpoint is rate-limited to 100 requests per minute.\n\nThe user's mental model here is that a single call returns a complete result.\n---",
+      "expected_output": "Correctly treats every item as a false positive / fine: the I/O acronym, the my-agent/my-model identifiers, the standard 'Note:' label, the methodology statement, and the generic 'the user' reference. Reports the document as having no clear meta-comments to fix.",
+      "files": [],
+      "assertions": [
+        "Does NOT flag 'I/O types' as an AI meta-comment (it is a technical acronym)",
+        "Does NOT flag the code identifiers `my-agent` or `my-model` as meta-comments",
+        "Does NOT flag the standard 'Note:' documentation label as a meta-comment",
+        "Does NOT flag the methodology statement 'Every claim below was verified' as a meta-comment",
+        "Does NOT flag 'The user's mental model' (a generic reference to a user, not addressing the reader)",
+        "Concludes the document has no clear meta-comments to fix (reports it as clean)"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "mixed-categorization-and-report",
+      "query": "Give me a categorized meta-comment review of this deployment doc — I need to know which lines to fix and how. It's for internal engineering docs.\n\n---\n## Deployment guide\n\nI checked the deployment pipeline and confirmed that the canary stage runs first.\n\nHere's how it works: the canary receives 5% of traffic.\n\nYour instinct to gate on error rate is the right call.\n\nIn summary, the rollout takes about twenty minutes.\n\nWarning: do not deploy during the maintenance window.\n---",
+      "prompt": "Give me a categorized meta-comment review of this deployment doc — I need to know which lines to fix and how. It's for internal engineering docs.\n\n---\n## Deployment guide\n\nI checked the deployment pipeline and confirmed that the canary stage runs first.\n\nHere's how it works: the canary receives 5% of traffic.\n\nYour instinct to gate on error rate is the right call.\n\nIn summary, the rollout takes about twenty minutes.\n\nWarning: do not deploy during the maintenance window.\n---",
+      "expected_output": "A categorized report: first-person AI voice ('I checked ... confirmed') as clear, presentational transition ('Here's how it works') as clear/borderline, user-preference acknowledgment ('Your instinct') as borderline, meta-label ('In summary') flagged, while the standard 'Warning:' label is treated as a false positive. Each finding carries its phrase and a suggested fix.",
+      "files": [],
+      "assertions": [
+        "Categorizes the findings into distinct buckets (clear / borderline / false-positive) rather than one flat list",
+        "Flags 'I checked ... confirmed' as first-person AI voice to fix",
+        "Flags 'Your instinct to gate on error rate' as a user-preference acknowledgment (borderline)",
+        "Does NOT flag the standard 'Warning:' label as a meta-comment (treats it as a false positive / acceptable)",
+        "Provides a suggested replacement for the first-person 'I checked ... confirmed' sentence",
+        "Reports each finding with its matching phrase and, where possible, its location or category"
+      ]
+    }
+  ]
+}
