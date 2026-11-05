@@ -1,29 +1,29 @@
 ---
 name: embabel-agent
-version: 1.5.3
+version: 1.5.4
 description: >-
-  Build agentic AI on the JVM with Embabel v1.5.3 — Spring-based framework combining LLMs with non-LLM planning
+  Build agentic AI on the JVM with Embabel v1.5.4 — Spring-based framework combining LLMs with non-LLM planning
   (GOAP, Utility AI, Hybrid, Supervisor). Use when creating agents with @Agent, @Action, @AchievesGoal, @Condition,
-  @LlmTool, @Tool; publishing agents as MCP servers with @Export(remote=true) over Streamable HTTP; agent process
-  persistence (AgentProcessSnapshotStore, JDBC, cache-backed, HITL); state with @State; providers (OpenAI, Anthropic,
-  Gemini, DeepSeek, Ollama, Bedrock, OCI, Mistral, Z.ai, DashScope, MiniMax, Atlas Cloud, BYOK) and per-provider roles
-  (embabel.models.roles, RoleResolver, role-named default-llm, embedding-roles); RAG with ToolishRAG; testing with
-  FakeOperationContext; chatbots with triggers and durable assets; interceptors, guardrails, cost tracking, streaming
-  (StringResult); custom LLMs (LlmMessageSender, EmbeddingService); migrating from CrewAI, Pydantic AI, or LangGraph.
+  @LlmTool, @Tool; publishing MCP servers with @Export(remote=true) over Streamable HTTP; agent process persistence
+  (AgentProcessSnapshotStore, JDBC, cache, HITL); state with @State; decision/classification services (DecisionService,
+  Ai.decisions(), Jev, CLEF, System One, prompted LLM); providers (OpenAI, Anthropic, Gemini, DeepSeek, Ollama,
+  Bedrock, Mistral, Z.ai, DashScope, MiniMax, BYOK) and per-provider roles (RoleResolver, role-named default-llm,
+  embedding-roles); RAG with ToolishRAG; testing with FakeOperationContext; chatbots with triggers and durable assets;
+  interceptors, guardrails, cost tracking, streaming; custom LLMs; migrating from CrewAI, Pydantic AI, or LangGraph.
   Do NOT use for Chatbot/ChatSession/conversation-store patterns (see the embabel-chatbot skill).
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-  version: 1.5.3
+  version: 1.5.4
   tags: [embabel, agents, jvm, spring, kotlin]
 ---
 
-# Embabel Agent Framework (v1.5.3)
+# Embabel Agent Framework (v1.5.4)
 
 Build agentic AI on the JVM with **Embabel** — a Spring-based framework for authoring agentic flows that mix LLM-prompted interactions with code and domain models. Created by Rod Johnson (creator of Spring), it uses non-LLM AI planning (GOAP, Utility AI, Hybrid, Supervisor) to find intelligent paths toward goals.
 
 ## Purpose
 
-This skill is the authoritative, version-pinned guide for writing correct Embabel code. Use it to author agents, tools, and domain models; wire providers and roles; publish MCP servers; build chatbots and RAG pipelines; and test and deploy — always grounded in the real v1.5.3 API rather than guesswork.
+This skill is the authoritative, version-pinned guide for writing correct Embabel code. Use it to author agents, tools, and domain models; wire providers and roles; publish MCP servers; build decision/classification services, chatbots, and RAG pipelines; and test and deploy — always grounded in the real v1.5.4 API rather than guesswork.
 
 ## Prerequisites
 
@@ -35,9 +35,9 @@ This skill is the authoritative, version-pinned guide for writing correct Embabe
 ## Instructions
 
 1. Confirm the task belongs on Embabel at all — check "When NOT to Use Embabel" first (plain Spring AI apps, non-planner chatbots, observability config → other skills).
-2. Identify the framework version you're writing against (this guide targets v1.5.3); "New in v1.5.3" in `references/providers.md` lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
+2. Identify the framework version you're writing against (this guide targets v1.5.4); "New in v1.5.4" in `references/providers.md` lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
 3. For a new agent, follow "Getting Started" → "Agent Authoring" → "Tools"; consult "Domain Objects" for state modeling, "Planning Algorithms"/"Execution Modes"/"States with @State" for multi-step flows, and "DSL Builders (Kotlin/Java)" when the annotations-only style doesn't fit.
-4. For specific APIs — chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `references/`.
+4. For specific APIs — decision/classification services, chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `references/`.
 5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing code, and never assert an API from memory — if a symbol isn't named here or in `references/`, treat it as unverified.
 
 ## Output Quality
@@ -68,8 +68,8 @@ Add the platform starter (`embabel-agent-starter`, plus `-shell` for a CLI or
 Release binaries are on **Maven Central**; no snapshot repository is needed.
 
 The full starter/provider matrix (artifact and required key or config per provider,
-plus the v1.5.2/v1.5.3 change list) lives in `references/providers.md` — read it before
-adding a dependency or asserting that something is new in v1.5.3.
+plus the v1.5.2/v1.5.3/v1.5.4 change list) lives in `references/providers.md` — read it before
+adding a dependency or asserting that something is new in v1.5.4.
 
 ## Agent Authoring
 
@@ -213,6 +213,34 @@ The `ToolishRag` facade auto-discovers store capabilities (vector, text, regex, 
 
 See `references/rag.md` for the full RAG architecture and wiring.
 
+## Decision & Classification Services (v1.5.4, experimental)
+
+A **decision service** asks a model typed questions about one piece of state; a **classification
+service** picks one category ID from a closed set. Use them for closed-category routing, proposition
+assessment ("is this urgent?"), or ratings — the model's answer is *evidence*; the application owns
+routing, authorization and policy. `DecisionService` extends `ClassificationService`, so every
+decision service also classifies.
+
+Select a service in a workflow with `Ai.decisions()` / `Ai.classifications()` — a `ServiceSelector`
+with `defaultService()`, `named(name)`, `byRole(role)` and `using(service)` — and run a spec with
+`decision.ask(input, spec)`. Build specs with `DecisionSpec` / `ClassificationSpec` (Java builder +
+Kotlin `decisionSpec { }` DSL); read the `DecisionResponse` by typed lookup or name; project with
+`DecisionProjection`.
+
+Three question kinds: `PROPOSITION` (`PropositionResult`), `CHOICE` (`ClassificationResult`),
+`RATING` (`RatingResult`). Outcomes: `Selected`/`NoMatch`/`Inconclusive`/`Failure` (choice) and
+`Answered`/`Inconclusive`/`Failure` (proposition, rating).
+
+Providers: TypeSafe's **Jev** and Cloudflare's **CLEF** models over the System One protocol
+(`embabel-agent-starter-typesafe` / `-cloudflare`); CLEF also runs locally via Ollama with no key; or
+a prompted chat model via `LlmDecisionServiceFactory`. Selected by name/role through
+`embabel.models.decision.*` / `embabel.models.classification.*`.
+
+See `references/decisions.md` (selection, registry, configuration, capabilities),
+`references/decision-specs.md` (building/reading specs, JSON, projection) and
+`references/decision-providers.md` (TypeSafe, Cloudflare, System One, Ollama, prompted LLM, BYOK,
+diagnostics).
+
 ## MCP Server Publishing
 
 Publish agents as MCP servers with SYNC or ASYNC mode, over **Streamable HTTP transport** (default since v1.5.3, at `http://localhost:8080/mcp`):
@@ -260,11 +288,14 @@ For topics not covered in detail above, consult the reference files:
 | Agent skills, API vs SPI | `references/agent-skills.md`, `references/api-spi.md` |
 | Agent process persistence (HITL checkpoint/restore, JDBC) | `references/persistence.md` |
 | Cache providers (AgentCacheProvider, regions, capabilities) | `references/cache.md` |
+| Decision & classification services (selection, registry, config, capabilities) | `references/decisions.md` |
+| Decision specs (build/read specs, JSON, projection) | `references/decision-specs.md` |
+| Decision providers (TypeSafe Jev, Cloudflare CLEF, System One, Ollama, prompted LLM, BYOK) | `references/decision-providers.md` |
 | DashScope provider (Alibaba Qwen) | `references/dashscope.md` |
 | Z.ai provider (Zhipu GLM, native client) | `references/zai.md` |
 | Tooling (IntelliJ IDEA plugin) | `references/tooling.md` |
 | Production deployment (Docker, K8s, health, security) | `references/production-deployment.md` |
-| Starter artifacts, provider keys, v1.5.2/v1.5.3 change list | `references/providers.md` |
+| Starter artifacts, provider keys, v1.5.2/v1.5.3/v1.5.4 change list | `references/providers.md` |
 
 > **Rule:** Application code uses only `com.embabel.agent.api.*`. SPI (`com.embabel.agent.spi.*`) is for framework extension only and is subject to change.
 
@@ -350,7 +381,8 @@ Requires `uvx` and `git`. The template repositories:
 
 ## Limitations
 
-- **Version-pinned** — this guide targets v1.5.3; APIs in other releases may differ, so verify against the pinned upstream docs before porting code
+- **Version-pinned** — this guide targets v1.5.4; APIs in other releases may differ, so verify against the pinned upstream docs before porting code
 - **Process persistence** — the snapshot factory supports `InMemoryBlackboard` and assumes at most one pending awaitable per `WAITING` process; writes are not transactional; renaming an agent class requires a snapshot migration (`references/persistence.md`)
 - **MCP SSE transport** — deprecated for removal in a future Spring AI release; new deployments should use `protocol: STREAMABLE`
 - **Cache-backed persistence** — the Spring `CacheManager` adapter has no atomic compare-and-set, so it is single-node only unless a backend-native `AgentCacheProvider` is used (`references/cache.md`)
+- **Decision & classification services** — all decision/classification types are `@ApiStatus.Experimental`; the API is maintained as production code but may change before promotion, so pin and re-verify against the upstream docs (`references/decisions.md`)

@@ -69,4 +69,4 @@ Implement `AgentCacheProvider` and `AgentCacheRegion`, and `AgentCacheIndex` if 
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/cache`*
+*Source: Embabel Agent v1.5.4 documentation — `references/cache`*

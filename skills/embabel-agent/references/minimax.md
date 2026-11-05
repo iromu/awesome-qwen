@@ -116,4 +116,4 @@ embabel:
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/minimax`*
+*Source: Embabel Agent v1.5.4 documentation — `references/minimax`*

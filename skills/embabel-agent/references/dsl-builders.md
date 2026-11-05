@@ -145,8 +145,8 @@ public class FactCheckerAgentConfiguration {
     public Agent factChecker(FactCheckerProperties props) {
         return factCheckerAgent(
             List.of(
-                LlmOptions.create(AnthropicModels.CLAUDE_35_HAIKU).withTemperature(0.3),
-                LlmOptions.create(AnthropicModels.CLAUDE_35_HAIKU).withTemperature(0.0)
+                LlmOptions.create(AnthropicModels.CLAUDE_HAIKU_4_5).withTemperature(0.3),
+                LlmOptions.create(AnthropicModels.CLAUDE_HAIKU_4_5).withTemperature(0.0)
             ),
             props
         );
@@ -163,8 +163,8 @@ class FactCheckerAgentConfiguration {
     fun factChecker(factCheckerProperties: FactCheckerProperties): Agent {
         return factCheckerAgent(
             llms = listOf(
-                LlmOptions(AnthropicModels.CLAUDE_35_HAIKU).withTemperature(0.3),
-                LlmOptions(AnthropicModels.CLAUDE_35_HAIKU).withTemperature(0.0),
+                LlmOptions(AnthropicModels.CLAUDE_HAIKU_4_5).withTemperature(0.3),
+                LlmOptions(AnthropicModels.CLAUDE_HAIKU_4_5).withTemperature(0.0),
             ),
             properties = factCheckerProperties,
         )
@@ -189,4 +189,4 @@ Any `@Bean` method returning `Agent` triggers auto-registration, equivalent to a
 All builders are type-safe and share the `.returning()`, `.buildAgent(name, description)` API. Use `.asSubProcess(context)` to run inline within another agent's execution.
 ---
 
-*Source: Embabel Agent v1.5.3 documentation*
+*Source: Embabel Agent v1.5.4 documentation*

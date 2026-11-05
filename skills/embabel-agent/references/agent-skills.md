@@ -199,4 +199,4 @@ var loader = new DefaultDirectorySkillDefinitionLoader(false);
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/agent_skills`*
+*Source: Embabel Agent v1.5.4 documentation — `references/agent_skills`*

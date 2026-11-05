@@ -350,14 +350,24 @@ conversation.getAssetTracker().addAsset(myAsset);
 List<Asset> trackedAssets = conversation.getAssetTracker().getAssets();
 ```
 
-**Message-level** (tied to specific responses):
+**Message-level** (tied to a specific turn or response). Both `AssistantMessage` (outbound) and
+`UserMessage` (inbound, e.g. user uploads) implement `AssetView` (v1.5.4) and can carry assets:
 ```java
-var message = new AssistantMessage("Here's the report", null, null,
+// Outbound assets on an assistant message
+AssistantMessage assistantMessage = new AssistantMessage(
+    "Here's the report", null, null,
     List.of(reportAsset, summaryAsset));
-conversation.addMessage(message);
+conversation.addMessage(assistantMessage);
+
+// Inbound assets on a user message (e.g., user uploads)
+UserMessage userMessage = new UserMessage(
+    "Please analyze this dataset",
+    null,  // name
+    List.of(uploadedAsset));
+conversation.addMessage(userMessage);
 ```
 
-`Conversation.assets` provides a **merged view** — tracker assets first, then message assets in chronological order, with duplicates removed by ID (tracker version wins).
+`Conversation.assets` provides a **merged view** — tracker assets first, then message assets in chronological order, with duplicates removed by ID (tracker version wins). Assets are directly tied to a specific turn or response; inbound files (e.g. user uploads) should be associated with the prompt and made available to conversation tools.
 
 ### Durable Asset Content (v1.5.3)
 
@@ -455,4 +465,4 @@ See the [rag-demo project](https://github.com/embabel/rag-demo) for a complete c
 - Assets track structured outputs at conversation and message levels; `AssetStore`/`DurableAsset` make asset content durable (v1.5.3)
 ---
 
-*Source: Embabel Agent v1.5.3 documentation*
+*Source: Embabel Agent v1.5.4 documentation*

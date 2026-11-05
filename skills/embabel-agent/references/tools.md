@@ -25,6 +25,23 @@ public class MathTools {
 - Not supported: `Optional`, async types, reactive types, functional types
 - Tool methods can bind to `AgentProcess` to publish objects to the blackboard
 
+### Generic Tool Parameters (v1.5.4)
+
+Java `@LlmTool` methods can declare generic collection parameters such as `List<Item>`,
+`Map<String, Item>`, or `List<Long>`. Embabel uses the declared generic types both to generate the
+input schema and to convert JSON arguments before invoking the method — a `List<Item>` parameter
+receives `Item` instances rather than raw maps, and a `List<Long>` receives `Long` values even when
+the JSON numbers are small integers. Declare concrete element and value types rather than raw
+`List`/`Map` parameters so Embabel can perform this conversion.
+
+### Spring-Proxied Tool Instances (v1.5.4)
+
+Tools on class-based Spring AOP (CGLIB) proxies support the same generic argument conversion. Tool
+discovery inspects the target class, while invocation goes through the proxy so AOP advice still
+runs. The tool class and its methods must be **non-final** for class-based proxying. JDK dynamic
+(interface-based) proxies are **not** supported for `@LlmTool` discovery — `Tool.safelyFromInstance()`
+returns an empty list for them. Use class-based proxying (e.g. `spring.aop.proxy-target-class=true`).
+
 ---
 
 ## @Tool (Spring AI)
@@ -386,4 +403,4 @@ var tool = UnfoldingTool.fromInstance(new DatabaseTools());
 - **Lazy MCP init requires three properties** — both Spring AI flags and `embabel.agent.platform.tools.lazy-init=true`
 ---
 
-*Source: Embabel Agent v1.5.3 documentation*
+*Source: Embabel Agent v1.5.4 documentation*

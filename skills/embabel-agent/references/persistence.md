@@ -147,4 +147,4 @@ POST /continue
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/persistence`*
+*Source: Embabel Agent v1.5.4 documentation — `references/persistence`*

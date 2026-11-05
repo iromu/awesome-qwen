@@ -1,5 +1,5 @@
 ## Description: <br>
-Author agentic Java/Kotlin services on the JVM with the Embabel v1.5.3 Spring-based framework, which mixes LLM calls with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor) across agent authoring, tools, provider configuration, durable agent process persistence, MCP publishing over Streamable HTTP, testing and migration from CrewAI/Pydantic AI/LangGraph. <br>
+Author agentic Java/Kotlin services on the JVM with the Embabel v1.5.4 Spring-based framework, which mixes LLM calls with non-LLM planning (GOAP, Utility AI, Hybrid, Supervisor) across agent authoring, tools, decision and classification services, provider configuration, durable agent process persistence, MCP publishing over Streamable HTTP, testing and migration from CrewAI/Pydantic AI/LangGraph. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -36,6 +36,9 @@ Mitigation: Review and scan skill before deployment. <br>
 - [configuration.md](references/configuration.md) <br>
 - [cost-tracking.md](references/cost-tracking.md) <br>
 - [customizing.md](references/customizing.md) <br>
+- [decision-providers.md](references/decision-providers.md) <br>
+- [decision-specs.md](references/decision-specs.md) <br>
+- [decisions.md](references/decisions.md) <br>
 - [dashscope.md](references/dashscope.md) <br>
 - [domain.md](references/domain.md) <br>
 - [dsl-builders.md](references/dsl-builders.md) <br>
@@ -77,11 +80,11 @@ Mitigation: Review and scan skill before deployment. <br>
 **Other Properties Related to Output:** [None] <br>
 
 ## Evaluation Tasks: <br>
-Validated against 17 internal eval cases in `evals/evals.json` (all positive-trigger, each with an expected-output description and per-case assertions on real Embabel symbols such as @Agent/@Action classes, FakeOperationContext tests, provider configuration and process-persistence setup), plus 9 automated validator checks (schema/repository governance, semantic version, license, code risk, secrets, dead links/dependencies, Unicode, quality and script lint). <br>
+Validated against 20 internal eval cases in `evals/evals.json` (all positive-trigger, each with an expected-output description and per-case assertions on real Embabel symbols such as @Agent/@Action classes, FakeOperationContext tests, provider configuration, process-persistence setup and the v1.5.4 decision/classification services), plus 9 automated validator checks (schema/repository governance, semantic version, license, code risk, secrets, dead links/dependencies, Unicode, quality and script lint). <br>
 
 ## Evaluation Metrics Used: <br>
 Reported benchmark dimensions: <br>
-- Correctness: Whether the Embabel API the answer asserts is real for v1.5.3 — correct starter artifacts, annotation attributes, planner and @State semantics — rather than asserted from memory. <br>
+- Correctness: Whether the Embabel API the answer asserts is real for v1.5.4 — correct starter artifacts, annotation attributes, planner and @State semantics, and the decision/classification service API — rather than asserted from memory. <br>
 - Discoverability: Whether the skill fires on Embabel agent-authoring requests (agents, tools, planners, MCP publishing, migration) and stays silent on the non-Embabel work its 'When NOT to Use' table routes elsewhere. <br>
 - Reliability: Whether the skill reaches the expected result consistently across repeat runs, including that it consults references/ rather than inventing symbols. <br>
 - Efficiency: Whether the skill resolves the task through the right section and reference file without unnecessary steps or context overhead. <br>
@@ -103,6 +106,6 @@ Underlying evaluation signals used in this run: <br>
 | Efficiency | 95.0 | — | — |
 
 ## Skill Version(s): <br>
-1.5.3 (source: frontmatter) <br>
+1.5.4 (source: frontmatter) <br>
 
 

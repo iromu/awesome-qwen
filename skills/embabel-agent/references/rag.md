@@ -238,8 +238,8 @@ Result selection is applied before the final `topK`. When native selection is un
 ### Document Parsing with Tika
 
 ```java
-@ShellMethod("Ingest URL or file path")
-String ingest(@ShellOption(defaultValue = "./data/document.md") String location) {
+@Command("Ingest URL or file path")
+String ingest(@Option(defaultValue = "./data/document.md") String location) {
     var uri = location.startsWith("http://") || location.startsWith("https://")
         ? location : Path.of(location).toAbsolutePath().toUri().toString();
     var ingested = NeverRefreshExistingDocumentContentPolicy.INSTANCE
@@ -315,4 +315,4 @@ DrivineStore drivineStore(PersistenceManager pm, EmbeddingService es, ChunkTrans
 Implement only the `SearchOperations` subinterfaces that fit your store. A vector database implements only `VectorSearch`; a full-text engine implements `TextSearch` + `RegexSearchOperations`; a full-featured store like Lucene implements all. `ToolishRag` automatically exposes only the tools your store supports — no stub implementations needed. For ingestion support, extend `ChunkingContentElementRepository`.
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/rag`*
+*Source: Embabel Agent v1.5.4 documentation — `references/rag`*

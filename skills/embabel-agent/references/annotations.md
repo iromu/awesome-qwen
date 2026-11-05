@@ -316,4 +316,4 @@ Since `@State` classes must be static nested or top-level classes, `@Provided` i
 10. **`readOnly` actions** — `readOnly = true` actions only analyze data without modifying external systems (APIs, databases, files). Useful for learning/catchup modes.
 ---
 
-*Source: Embabel Agent v1.5.3 documentation*
+*Source: Embabel Agent v1.5.4 documentation*

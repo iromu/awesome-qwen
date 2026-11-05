@@ -107,4 +107,4 @@ embabel:
 ```
 
 ---
-*Source: Embabel Agent v1.5.3 documentation*
+*Source: Embabel Agent v1.5.4 documentation*

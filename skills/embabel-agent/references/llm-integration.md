@@ -364,13 +364,13 @@ val answer = context.ai()
 | Class | Example Constants |
 |---|---|
 | `OpenAiModels` | `GPT_4O`, `GPT_4O_MINI`, `GPT_41`, `GPT_41_MINI`, `GPT_41_NANO`, `PROVIDER` |
-| `AnthropicModels` | `CLAUDE_SONNET_4_5`, `CLAUDE_35_HAIKU`, `CLAUDE_35_SONNET`, `PROVIDER` |
+| `AnthropicModels` | `CLAUDE_SONNET_4_5`, `CLAUDE_HAIKU_4_5`, `PROVIDER` |
 
 ```java
 ai.withLlm(OpenAiModels.GPT_4O)
     .createObject("Analyze this", Report.class);
 
-ai.withLlm(AnthropicModels.CLAUDE_35_HAIKU)
+ai.withLlm(AnthropicModels.CLAUDE_HAIKU_4_5)
     .withImage(image)
     .generateText("Describe this image");
 ```
@@ -515,7 +515,45 @@ val options = LlmOptions.fromModel(OpenAiModels.GPT_4O)
 - **Required fields**: OpenAI native structured output requires `required` to include every property. Optional Java reference fields are not treated as required unless annotated (e.g., `@NotNull` or `@JsonProperty(required = true)`)
 - **Arrays of objects**: May not be supported in all providers
 - **Streaming**: Native structured output is not supported for streaming by Spring AI currently
-- **Provider coverage**: OpenAI-compatible `response_format` is the primary supported path. Anthropic native structured output is currently disabled by default until its semantics are verified
+- **Provider coverage**: OpenAI-compatible `response_format` is the primary supported path. Models built on the OpenAI Responses API send the same schema as `text.format` (see `customizing.md` for their `nativeSupport` settings). Anthropic native structured output is currently disabled by default until its semantics are verified
+
+### Per-Constant Enum Descriptions with `@EnumAsOneOf` (v1.5.4)
+
+By default, an enum is emitted in the JSON Schema as a bare list of values. When the model needs to
+choose between constants, a bare list gives it no information about what each value means. Annotate
+the enum class with `@EnumAsOneOf` and each constant with `@JsonPropertyDescription` to emit
+per-constant descriptions instead:
+
+```java
+@EnumAsOneOf
+public enum Priority {
+    @JsonPropertyDescription("Needs same-day response") URGENT,
+    @JsonPropertyDescription("Standard turnaround") NORMAL,
+    OTHER
+}
+```
+
+Embabel then emits the schema as a `oneOf` of `const`/`description` entries:
+
+```json
+{ "type": "string", "oneOf": [
+    { "const": "URGENT", "description": "Needs same-day response" },
+    { "const": "NORMAL", "description": "Standard turnaround" },
+    { "const": "OTHER" }
+] }
+```
+
+The enum can appear anywhere in the output type — a direct field, a collection element
+(`List<Priority>`), or nested inside another record. Constants without `@JsonPropertyDescription`
+appear with only a `const` entry; if no constant carries a description, the annotation has no effect
+and the bare `enum` array is used. `@JsonValue`/`@JsonProperty`/custom Jackson serialisers are
+honoured — the `const` is whatever Jackson would write.
+
+> **Note:** `@EnumAsOneOf` trades the native structured-output path for per-constant descriptions.
+> The `oneOf` keyword is rejected by OpenAI strict mode, so Embabel falls back to the prompt-based
+> schema path for any call whose output type contains a `@EnumAsOneOf` field. The
+> `@JsonPropertyDescription` text is still sent to the model through the prompt schema on all
+> providers.
 
 ---
 
@@ -611,4 +649,4 @@ Register as a Spring bean and it will be automatically discovered by the RAG sub
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/llms` and `references/types`*
+*Source: Embabel Agent v1.5.4 documentation — `references/llms` and `references/types`*

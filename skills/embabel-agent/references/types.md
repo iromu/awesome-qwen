@@ -172,7 +172,7 @@ If auto-detection fails for a supported image format, use `AgentImage.create()` 
 var image = AgentImage.fromFile(imageFile);
 
 var answer = context.ai()
-    .withLlm(AnthropicModels.CLAUDE_35_HAIKU)  // Vision-capable model required
+    .withLlm(AnthropicModels.CLAUDE_HAIKU_4_5)  // Vision-capable model required
     .withImage(image)
     .generateText("What is in this image?");
 ```
@@ -210,4 +210,4 @@ var answer = context.ai()
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/types`*
+*Source: Embabel Agent v1.5.4 documentation — `references/types`*

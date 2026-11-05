@@ -250,6 +250,50 @@
       ],
       "prompt": "My Embabel deployment is BYOK - users bring their own provider keys at runtime, so nothing is registered at startup. How do I set the deployment default LLM so it works once the first key arrives, without a restart?",
       "query": "My Embabel deployment is BYOK - users bring their own provider keys at runtime, so nothing is registered at startup. How do I set the deployment default LLM so it works once the first key arrives, without a restart?"
+    },
+    {
+      "id": 18,
+      "expected_output": "A decision/classification service in use: a DecisionSpec (or ClassificationSpec) built with the Java builder or the Kotlin decisionSpec{} DSL, a service selected via ai.decisions()/ai.classifications() (a ServiceSelector terminal such as byRole/defaultService/using), the spec run with decision.ask(input, spec), and a switch over the outcome classes (Selected/NoMatch/Inconclusive/Failure or Answered/Inconclusive/Failure). Should note the experimental status and that the model's answer is evidence.",
+      "files": [],
+      "should_trigger": true,
+      "assertions": [
+        "The output uses DecisionSpec or ClassificationSpec (Java builder or decisionSpec{} Kotlin DSL)",
+        "The output selects a service via ai.decisions() or ai.classifications() (a ServiceSelector terminal)",
+        "The output runs the spec with ask(input, spec) or ask(request)",
+        "The output handles the outcome classes (e.g., Selected/NoMatch/Inconclusive/Failure or Answered/Inconclusive/Failure)",
+        "The output notes the feature is experimental (@ApiStatus.Experimental) or that the model answer is evidence"
+      ],
+      "prompt": "I want to route support tickets in my Embabel agent: classify each into billing/technical/sales, assess whether it's urgent, and rate the customer's frustration. Show how to build the decision spec, select the decision service, and handle the outcomes.",
+      "query": "I want to route support tickets in my Embabel agent: classify each into billing/technical/sales, assess whether it's urgent, and rate the customer's frustration. Show how to build the decision spec, select the decision service, and handle the outcomes."
+    },
+    {
+      "id": 19,
+      "expected_output": "Decision model provider setup: the embabel-agent-starter-typesafe (Jev) or embabel-agent-starter-cloudflare (CLEF) dependency, the credential configuration (TYPESAFE_API_KEY, or CLOUDFLARE_API_TOKEN plus CLOUDFLARE_ACCOUNT_ID) under embabel.agent.platform.models.*, selection by name or role via embabel.models.decision.default / embabel.models.decision.roles, and a note that the models speak the System One protocol and are experimental.",
+      "files": [],
+      "should_trigger": true,
+      "assertions": [
+        "The output shows embabel-agent-starter-typesafe or embabel-agent-starter-cloudflare dependency",
+        "The output configures the credential (TYPESAFE_API_KEY, or CLOUDFLARE_API_TOKEN plus CLOUDFLARE_ACCOUNT_ID)",
+        "The output selects the model by name or role (embabel.models.decision.default or embabel.models.decision.roles)",
+        "The output mentions the System One protocol or the Jev/CLEF models",
+        "The output mentions the experimental status"
+      ],
+      "prompt": "Add a decision model to my Embabel app that does closed-category classification and proposition assessment without a chat model. I heard TypeSafe's Jev and Cloudflare's CLEF do this - which starter do I use, how do I configure the key, and how do I make it the default decision model?",
+      "query": "Add a decision model to my Embabel app that does closed-category classification and proposition assessment without a chat model. I heard TypeSafe's Jev and Cloudflare's CLEF do this - which starter do I use, how do I configure the key, and how do I make it the default decision model?"
+    },
+    {
+      "id": 20,
+      "expected_output": "A prompted decision service: LlmDecisionServiceFactory (in com.embabel.agent.spi.decision) used to build decisionService/classificationService for a named chat model, or a chat model named directly in embabel.models.decision.roles, with the retry settings under embabel.agent.platform.decisions.llm, and a note that the prompted service answers the whole spec in one chat-model call and carries no confidence/distribution evidence.",
+      "files": [],
+      "should_trigger": true,
+      "assertions": [
+        "The output mentions LlmDecisionServiceFactory, or naming a chat model in a decision role/default",
+        "The output shows decisionService(...) or classificationService(...), or a chat model bound to embabel.models.decision.roles",
+        "The output mentions the retry settings under embabel.agent.platform.decisions.llm",
+        "The output notes the prompted service carries no confidence/distribution evidence (verdict-based)"
+      ],
+      "prompt": "I don't want to pay for a dedicated decision model - can I just use an existing chat model in my Embabel app to do classification and proposition assessment? How do I wire that up and what are the caveats?",
+      "query": "I don't want to pay for a dedicated decision model - can I just use an existing chat model in my Embabel app to do classification and proposition assessment? How do I wire that up and what are the caveats?"
     }
   ]
 }

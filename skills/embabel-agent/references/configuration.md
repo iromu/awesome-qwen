@@ -83,6 +83,25 @@ To read what a role is *declared* to mean (for a settings screen or diagnostics)
 
 See `references/llm-integration.md` for `RoleResolver` beans and `CredentialEndpointResolver` for custom providers.
 
+## Decision & Classification Models (v1.5.4, experimental)
+
+These registry properties select registered services or provider models for the decision and
+classification families. Spring defaults, roles and default candidates can also name service
+aliases. See `decisions.md` and `decision-providers.md`.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.models.decision.default` | String | not set | Default service or provider model for decisions |
+| `embabel.models.decision.roles.<role>` | String | not set | Service or provider model assigned to a decision role |
+| `embabel.models.classification.default` | String | not set | Default service or provider model for classification |
+| `embabel.models.classification.roles.<role>` | String | not set | Service or provider model assigned to a classification role |
+
+A chat model can be named in a default or role to get a prompted decision service (built on first
+selection by `LlmDecisionServiceFactory`). Prompted-decision retry settings live under
+`embabel.agent.platform.decisions.llm`: `max-attempts` (`5`), `backoff-millis` (`100`),
+`backoff-multiplier` (`5.0`), `backoff-max-interval` (`180000`). Content capture is
+`embabel.agent.platform.decisions.capture-content` (`false`).
+
 ## Platform Configuration
 
 | Property | Type | Default | Description |
@@ -192,18 +211,19 @@ embabel:
 
 Env vars: `OPENAI_API_KEY` (required), `OPENAI_BASE_URL` (optional, for Azure), `OPENAI_COMPLETIONS_PATH`, `OPENAI_EMBEDDINGS_PATH`.
 
-### Provider Timeouts (v1.5.3)
+### Provider Timeouts
 
-OpenAI-compatible and Docker model clients take configurable timeouts (v1.5.3):
+OpenAI-compatible and Docker model clients take configurable timeouts (v1.5.3; DeepSeek and
+Mistral AI added in v1.5.4):
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `embabel.agent.platform.models.openai.connect-timeout` | Duration | `1m` | How long to wait to connect |
 | `embabel.agent.platform.models.openai.read-timeout` | Duration | _unset_ | Per-attempt response timeout. Unset keeps 60 seconds for chat completion and embedding calls and 10 minutes for Responses API models. The client retries a timed-out call twice, so a caller waits up to three times this value |
 
-The same `connect-timeout` and `read-timeout` properties apply to every OpenAI-compatible provider, under its own prefix: `openai.custom`, `lmstudio`, `gemini`, `minimax`, `dashscope`, `zai` and `docker`, each under `embabel.agent.platform.models`.
+The same `connect-timeout` and `read-timeout` properties apply to every OpenAI-compatible provider, under its own prefix: `openai.custom`, `lmstudio`, `gemini`, `minimax`, `dashscope`, `zai` and `docker`, each under `embabel.agent.platform.models`. **DeepSeek and Mistral AI** also accept them under `embabel.agent.platform.models.deepseek` and `embabel.agent.platform.models.mistralai` (v1.5.4); set there, they replace the `http-client` values for that provider, and setting only one takes the other from `http-client`.
 
-A per-user (BYOK) key uses the same properties as the deployment's key for that provider (e.g., `embabel.agent.platform.models.openai.read-timeout`). A provider added by a `CredentialEndpointResolver` is configured under its name in lower case with spaces and punctuation removed: `Our Gateway` reads `embabel.agent.platform.models.ourgateway.read-timeout`. BYOK Gemini reads the `gemini` prefix.
+A per-user (BYOK) key uses the same properties as the deployment's key for that provider (e.g., `embabel.agent.platform.models.openai.read-timeout`). A provider added by a `CredentialEndpointResolver` is configured under its name in lower case with spaces and punctuation removed: `Our Gateway` reads `embabel.agent.platform.models.ourgateway.read-timeout`. BYOK Gemini reads the `gemini` prefix. For a BYOK DeepSeek/Mistral key, an unset `connect-timeout` is `1m` and an unset `read-timeout` bounds each whole attempt at 60 seconds (retried twice).
 
 > **Important:** These providers use their own `read-timeout`. The generic `embabel.agent.platform.http-client.read-timeout` does **not** apply to them.
 
@@ -265,9 +285,14 @@ embabel:
           backoff-millis: 5000
 ```
 
-Available models: `gemini-3.5-flash`, `gemini-3.1-flash-lite`, `gemini-3.1-pro-preview`, `gemini-2.5-pro`, `gemini-2.5-flash`, `gemini-2.5-flash-lite`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`.
+Available models (v1.5.4 refresh): `gemini-4-argon` (latest Gemini 4), `gemini-3.8-flash`
+(recommended Flash for new projects), `gemini-3.6-flash` (fast Flash), `gemini-3.5-flash-lite`
+(recommended lightweight), `gemini-3.1-pro-preview`, `gemini-2.5-pro`, `gemini-2.5-flash`,
+`gemini-2.5-flash-lite`, `gemini-2.0-flash`, `gemini-2.0-flash-lite`. Deprecated by Google:
+`gemini-3.5-flash` (use `gemini-3.6-flash`) and `gemini-3.1-flash-lite-preview` (use
+`gemini-3.1-flash-lite`).
 
-Embedding: `gemini_embedding_001` (3072 dims, $0.15/1M tokens).
+Embedding: `gemini-embedding-2` (latest, 3072 dims) and `gemini-embedding-001` (3072 dims, $0.15/1M tokens).
 
 ### Ollama
 
@@ -346,12 +371,50 @@ embabel:
 
 ### Docker Local Models
 
+Docker local models (OpenAI-compatible) use `DockerConnectionProperties` and `DockerRetryProperties`
+(the property names changed in v1.5.4):
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.agent.models.docker.base-url` | String | — | Docker engine base URL |
+| `embabel.agent.models.docker.api-version` | String | `v1` | API version segment added to `base-url` when it doesn't already end in one |
+| `embabel.agent.platform.models.docker.max-attempts` | Int | `10` | Retry attempts |
+| `embabel.agent.platform.models.docker.backoff-millis` | Long | `5000` | Initial backoff (ms) |
+| `embabel.agent.platform.models.docker.backoff-multiplier` | Double | `5.0` | Backoff multiplier |
+| `embabel.agent.platform.models.docker.backoff-max-interval` | Long | `180000` | Max backoff interval (ms) |
+
 ```yaml
 embabel:
-  docker:
+  agent:
     models:
-      base-url: http://localhost:12434/engines
+      docker:
+        base-url: http://localhost:12434/engines
 ```
+
+### TypeSafe (v1.5.4, experimental)
+
+TypeSafe connection properties use the `embabel.agent.platform.models.typesafe` prefix.
+`TYPESAFE_API_KEY` takes precedence over `api-key`, and a key is required when the TypeSafe starter
+configuration starts. See `decision-providers.md`.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.agent.platform.models.typesafe.api-key` | String | not set | Credential used when `TYPESAFE_API_KEY` is absent or blank |
+| `embabel.agent.platform.models.typesafe.base-url` | String | `https://api.typesafe.ai` | TypeSafe API base URL |
+| `embabel.agent.platform.models.typesafe.max-response-bytes` | int | `1048576` | Maximum response body size in bytes |
+
+### Cloudflare (v1.5.4, experimental)
+
+Cloudflare connection properties use the `embabel.agent.platform.models.cloudflare` prefix.
+`CLOUDFLARE_API_TOKEN` takes precedence over `api-key` and `CLOUDFLARE_ACCOUNT_ID` takes precedence
+over `account-id`. Both are required when the Cloudflare starter configuration starts (the account
+id must be 32 hex characters). See `decision-providers.md`.
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `embabel.agent.platform.models.cloudflare.api-key` | String | not set | Credential used when `CLOUDFLARE_API_TOKEN` is absent or blank |
+| `embabel.agent.platform.models.cloudflare.account-id` | String | not set | Account id used when `CLOUDFLARE_ACCOUNT_ID` is absent or blank |
+| `embabel.agent.platform.models.cloudflare.max-response-bytes` | int | `1048576` | Maximum response body size in bytes |
 
 ### ONNX Embeddings
 
@@ -421,7 +484,7 @@ Add `embabel-agent-netty-client-autoconfigure` for Reactor Netty:
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `embabel.agent.platform.http-client.connect-timeout` | Duration | `25s` | Connection timeout |
-| `embabel.agent.platform.http-client.read-timeout` | Duration | `1m` | Read timeout (increase for long responses / thinking mode) |
+| `embabel.agent.platform.http-client.read-timeout` | Duration | `5m` | Read timeout (increase for long responses / thinking mode). Bounds the wait for the response and then each wait between reads, so a stream that stalls mid-response fails after `read-timeout` rather than hanging |
 
 ```yaml
 embabel:
@@ -515,4 +578,4 @@ Experimental modules: `embabel-agent-discord`, `embabel-agent-remote`, `embabel-
 
 ---
 
-*Source: Embabel Agent v1.5.3 documentation — `references/configuration`, `references/llms`, `references/asynch-mode`*
+*Source: Embabel Agent v1.5.4 documentation — `references/configuration`, `references/llms`, `references/asynch-mode`, `references/decision-providers`*

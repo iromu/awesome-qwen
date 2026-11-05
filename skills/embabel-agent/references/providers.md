@@ -1,4 +1,4 @@
-# Starters, providers, and what changed in v1.5.3
+# Starters, providers, and what changed in v1.5.4
 
 Moved out of `SKILL.md` so the main guide stays under the per-file token budget.
 Verify against the pinned upstream docs before trusting any symbol here.
@@ -12,6 +12,8 @@ Verify against the pinned upstream docs before trusting any symbol here.
 | `embabel-agent-starter-mcpserver` | MCP server (Streamable HTTP default, SSE deprecated — v1.5.3) |
 | `embabel-agent-starter-jdbc` | Relational-database agent process persistence (v1.5.3) |
 | `embabel-agent-starter-cache` | Cache-backed (Redis/Hazelcast) agent process persistence (v1.5.3) |
+| `embabel-agent-starter-typesafe` | TypeSafe decision model (Jev) over the System One protocol (v1.5.4, experimental) |
+| `embabel-agent-starter-cloudflare` | Cloudflare Workers AI decision models (CLEF, Jev) over System One (v1.5.4, experimental) |
 
 Embabel release binaries are published to **Maven Central** — no snapshot
 repository needed for stable releases.
@@ -37,6 +39,13 @@ repository needed for stable releases.
 | MiniMax | `embabel-agent-starter-minimax` | `MINIMAX_API_KEY` |
 | BYOK (user-supplied keys) | `embabel-agent-starter-byok` (Incubating) | _(runtime)_ |
 
+Decision model providers (v1.5.4, experimental — serve `DecisionService`/`ClassificationService`, not `LlmService`; see `decision-providers.md`):
+
+| Provider | Starter | Key Env Var |
+|----------|---------|-------------|
+| TypeSafe (Jev) | `embabel-agent-starter-typesafe` | `TYPESAFE_API_KEY` |
+| Cloudflare Workers AI (CLEF, Jev) | `embabel-agent-starter-cloudflare` | `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` |
+
 Provider-specific notes:
 
 - **Z.ai** — native `spring-ai-zhipuai` client (not OpenAI-compatible). Supports
@@ -48,6 +57,49 @@ Provider-specific notes:
   `OpenAiCompatibleModelFactory.atlasCloud(userKey)`. See `customizing.md`.
 
 Full provider configuration details: `configuration.md`.
+
+## New in v1.5.4
+
+- **Decision & classification services (experimental)** — a new family of services that ask a
+  model typed questions about one piece of state. `DecisionService` (extends
+  `ClassificationService`) answers proposition, choice and rating questions; selected in a
+  workflow via `Ai.decisions()` / `Ai.classifications()` (`ServiceSelector` terminals
+  `defaultService()`/`named()`/`byRole()`/`using()`), registered in a `DecisionServiceRegistry`,
+  and selected by name/role through `embabel.models.decision.*` /
+  `embabel.models.classification.*`. Build specs with `DecisionSpec` / `ClassificationSpec`
+  (Java builder + Kotlin DSL), read `DecisionResponse` by typed lookup or name, and project with
+  `DecisionProjection`. See `decisions.md`, `decision-specs.md`, `decision-providers.md`.
+- **System One protocol + decision model providers (experimental)** — a JSON protocol for
+  decision models (`POST /v1/systemone`, `GET /v1/models`). TypeSafe's **Jev**
+  (`embabel-agent-starter-typesafe`) and Cloudflare Workers AI's **CLEF** models
+  (`embabel-agent-starter-cloudflare`) speak it; CLEF also runs locally via Ollama with no key.
+  Prompted chat models decide through `LlmDecisionServiceFactory` (retry settings under
+  `embabel.agent.platform.decisions.llm`). BYOK via `ByokFactory<DecisionService>.buildValidated()`.
+  See `decision-providers.md`.
+- **`@EnumAsOneOf`** — annotate an enum to emit `oneOf/const/description` instead of a bare
+  `enum` array; each constant's `@JsonPropertyDescription` is sent to the model. Because OpenAI
+  strict mode rejects `oneOf`, Embabel falls back to the prompt-based schema path for any call
+  whose output type contains such a field. See `llm-integration.md`.
+- **Responses API transport** — `openAiResponsesLlm` for GPT-5.6/GPT-6 models (which reject
+  function tools over Chat Completions when reasoning is enabled, and are served only over
+  Responses for `*-pro`); set reasoning effort per call with
+  `LlmOptions.withOpenAiReasoningEffort(...)`. No streaming, rejects media. See `customizing.md`.
+- **Native thinking (Anthropic adaptive models)** — `ThinkingOrigin` enum
+  (`PROMPT_EXTRACTED`/`NATIVE`); Claude 5.x and Claude ≥4.7 use the adaptive thinking API via
+  `Thinking.withTokenBudget(n)`, mapped to an effort level. See `thinking.md`.
+- **Generic `@LlmTool` parameters** — declare `List<Item>`, `Map<String, Item>`, `List<Long>`;
+  Embabel uses the generic types for schema generation and JSON→object conversion. Spring
+  CGLIB-proxied tool instances are supported (JDK dynamic proxies are not). See `tools.md`.
+- **Gemini model refresh** — new `gemini-4-argon`, `gemini-3.8-flash`, `gemini-3.6-flash`,
+  `gemini-3.5-flash-lite`, `gemini-embedding-2`; `gemini-3.5-flash` and
+  `gemini-3.1-flash-lite-preview` deprecated. See `configuration.md`.
+- **DeepSeek/Mistral per-provider timeouts** — `connect-timeout`/`read-timeout` now accepted under
+  `embabel.agent.platform.models.deepseek` / `.mistralai`. See `configuration.md`.
+- **UserMessage assets** — `UserMessage` now implements `AssetView`, so inbound files (user
+  uploads) can be associated with a prompt. See `chatbots.md`.
+- **Docker local models** — properties moved to `embabel.agent.models.docker.base-url` and
+  `embabel.agent.platform.models.docker.*`; new `api-version` (default `v1`); `backoff-millis`
+  default `2000` → `5000`. See `configuration.md`.
 
 ## New in v1.5.3
 
