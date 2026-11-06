@@ -3,17 +3,17 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 30, 2026 at 11:15 AM UTC
+**Generated:** November 06, 2026 at 03:33 PM UTC
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Validator Results | 11 |
-| ✅ Passed | 11 |
+| Validator Results | 9 |
+| ✅ Passed | 9 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 14 (5 medium) |
+| Total Issues | 8 |
 
 ## Quality Score
 
@@ -38,49 +38,43 @@
 - [OK] **name_consistency**: Directory name matches frontmatter: 'embabel-worlds-realm-spec'
 - [OK] **author_format**: Valid author format: Iván Rodríguez Murillo <wantez@gmail.com>
 
-**Non-blocking findings: 6**
+**Non-blocking findings: 5**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Unexpected 'realm.yml' in skill root | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/realm.yml</code> |
-| [LOW] LOW | Unexpected 'realm.ts' in skill root | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/realm.ts</code> |
-| [LOW] LOW | Unexpected '-' in skill root | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/-</code> |
-| [LOW] LOW | Unexpected 'wasm' in skill root | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/wasm</code> |
-| [LOW] LOW | Unexpected 'keys.yml' in skill root | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/keys.yml</code> |
-| [LOW] LOW | Unexpected 'sources.yml' in skill root | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/sources.yml</code> |
+| [LOW] LOW | Unexpected 'realm.yml' in skill root | <code>embabel-worlds-realm-spec/realm.yml</code> |
+| [LOW] LOW | Unexpected 'realm.ts' in skill root | <code>embabel-worlds-realm-spec/realm.ts</code> |
+| [LOW] LOW | Unexpected 'wasm' in skill root | <code>embabel-worlds-realm-spec/wasm</code> |
+| [LOW] LOW | Unexpected 'keys.yml' in skill root | <code>embabel-worlds-realm-spec/keys.yml</code> |
+| [LOW] LOW | Unexpected 'sources.yml' in skill root | <code>embabel-worlds-realm-spec/sources.yml</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Unexpected 'realm.yml' in skill root**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/realm.yml`
+- File: `embabel-worlds-realm-spec/realm.yml`
 - Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+- Fix: Consider moving to one of: agentic-patterns-core-card.md/, agentic-patterns-extra-card.md/, agentic-patterns-research-card.md/, agents/, api-design-card.md/, assets/, config/, database-migration-card.md/, docker-containerize-card.md/, embabel-agent-card.md/, embabel-chatbot-card.md/, embabel-dice-card.md/, embabel-drivine4j-card.md/, embabel-otel-card.md/, evals/, git-commit-card.md/, git-workflows-card.md/, htmx-card.md/, json-formatting-card.md/, maven-version-audit-card.md/, rabbitmq-typescript-card.md/, references/, scripts/, security-audit-card.md/, self-learning-card.md/, skill-creator-card.md/, spring-ai-mcp-card.md/, tests/, tools/, unsloth-finetuning-card.md/, unsloth-inference-card.md/, unsloth-quantization-card.md/, unsloth-rl-card.md/, yaml-validator-card.md/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
 **2. Unexpected 'realm.ts' in skill root**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/realm.ts`
+- File: `embabel-worlds-realm-spec/realm.ts`
 - Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+- Fix: Consider moving to one of: agentic-patterns-core-card.md/, agentic-patterns-extra-card.md/, agentic-patterns-research-card.md/, agents/, api-design-card.md/, assets/, config/, database-migration-card.md/, docker-containerize-card.md/, embabel-agent-card.md/, embabel-chatbot-card.md/, embabel-dice-card.md/, embabel-drivine4j-card.md/, embabel-otel-card.md/, evals/, git-commit-card.md/, git-workflows-card.md/, htmx-card.md/, json-formatting-card.md/, maven-version-audit-card.md/, rabbitmq-typescript-card.md/, references/, scripts/, security-audit-card.md/, self-learning-card.md/, skill-creator-card.md/, spring-ai-mcp-card.md/, tests/, tools/, unsloth-finetuning-card.md/, unsloth-inference-card.md/, unsloth-quantization-card.md/, unsloth-rl-card.md/, yaml-validator-card.md/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
-**3. Unexpected '-' in skill root**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/-`
+**3. Unexpected 'wasm' in skill root**
+- File: `embabel-worlds-realm-spec/wasm`
 - Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+- Fix: Consider moving to one of: agentic-patterns-core-card.md/, agentic-patterns-extra-card.md/, agentic-patterns-research-card.md/, agents/, api-design-card.md/, assets/, config/, database-migration-card.md/, docker-containerize-card.md/, embabel-agent-card.md/, embabel-chatbot-card.md/, embabel-dice-card.md/, embabel-drivine4j-card.md/, embabel-otel-card.md/, evals/, git-commit-card.md/, git-workflows-card.md/, htmx-card.md/, json-formatting-card.md/, maven-version-audit-card.md/, rabbitmq-typescript-card.md/, references/, scripts/, security-audit-card.md/, self-learning-card.md/, skill-creator-card.md/, spring-ai-mcp-card.md/, tests/, tools/, unsloth-finetuning-card.md/, unsloth-inference-card.md/, unsloth-quantization-card.md/, unsloth-rl-card.md/, yaml-validator-card.md/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
-**4. Unexpected 'wasm' in skill root**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/wasm`
+**4. Unexpected 'keys.yml' in skill root**
+- File: `embabel-worlds-realm-spec/keys.yml`
 - Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+- Fix: Consider moving to one of: agentic-patterns-core-card.md/, agentic-patterns-extra-card.md/, agentic-patterns-research-card.md/, agents/, api-design-card.md/, assets/, config/, database-migration-card.md/, docker-containerize-card.md/, embabel-agent-card.md/, embabel-chatbot-card.md/, embabel-dice-card.md/, embabel-drivine4j-card.md/, embabel-otel-card.md/, evals/, git-commit-card.md/, git-workflows-card.md/, htmx-card.md/, json-formatting-card.md/, maven-version-audit-card.md/, rabbitmq-typescript-card.md/, references/, scripts/, security-audit-card.md/, self-learning-card.md/, skill-creator-card.md/, spring-ai-mcp-card.md/, tests/, tools/, unsloth-finetuning-card.md/, unsloth-inference-card.md/, unsloth-quantization-card.md/, unsloth-rl-card.md/, yaml-validator-card.md/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
-**5. Unexpected 'keys.yml' in skill root**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/keys.yml`
+**5. Unexpected 'sources.yml' in skill root**
+- File: `embabel-worlds-realm-spec/sources.yml`
 - Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
-
-**6. Unexpected 'sources.yml' in skill root**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/sources.yml`
-- Check: `unexpected_file`
-- Fix: Consider moving to one of: agents/, assets/, config/, evals/, references/, scripts/, tests/, tools/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
+- Fix: Consider moving to one of: agentic-patterns-core-card.md/, agentic-patterns-extra-card.md/, agentic-patterns-research-card.md/, agents/, api-design-card.md/, assets/, config/, database-migration-card.md/, docker-containerize-card.md/, embabel-agent-card.md/, embabel-chatbot-card.md/, embabel-dice-card.md/, embabel-drivine4j-card.md/, embabel-otel-card.md/, evals/, git-commit-card.md/, git-workflows-card.md/, htmx-card.md/, json-formatting-card.md/, maven-version-audit-card.md/, rabbitmq-typescript-card.md/, references/, scripts/, security-audit-card.md/, self-learning-card.md/, skill-creator-card.md/, spring-ai-mcp-card.md/, tests/, tools/, unsloth-finetuning-card.md/, unsloth-inference-card.md/, unsloth-quantization-card.md/, unsloth-rl-card.md/, yaml-validator-card.md/. To allow additional directories, set $SKILLEVALUATOR_SCHEMA_ALLOWED_DIRS.
 
 </details>
 
@@ -89,70 +83,6 @@
 *Validate optional metadata.version labels and require strict bumps*
 
 - [OK] **version_semver**: Valid semantic version: 1.0.0
-
-### ✅ Security Scan
-*Detect security vulnerabilities and PII/secrets*
-
-- [OK] **skillspector**: Security scan completed - 5 advisory finding(s) (no critical/high issues)
-
-**Non-blocking findings: 5**
-
-| Severity | Issue | Location |
-|----------|-------|----------|
-| [MED] MEDIUM | MCP Least Privilege: Skill declares no tool scope ('permissions' or 'allowed-tools') but code capabilities were detected: shell. | <code>SKILL.md:1</code> |
-| [MED] MEDIUM | Data Exfiltration: https://api.example.com/ | <code>references/apis-keys-credentials.md:102</code> |
-| [MED] MEDIUM | Data Exfiltration: https://api.example.com/ | <code>references/apis-keys-credentials.md:107</code> |
-| [MED] MEDIUM | MCP Rug Pull: docker run --entrypoint | <code>references/validation-ci.md:45</code> |
-| [MED] MEDIUM | Data Exfiltration: curl -sf -X POST "$BASE/admin/kg/views/$view/run" \<br>#            -H 'content-type: application/json' -d '{"args": {}}')<br>#   ... assert non-zero rows and no error-class warnings ...<br># done<br><br># 2) Prove  | <code>tests/verify.sh:30</code> |
-
-<details>
-<summary>View Details</summary>
-
-**1. MCP Least Privilege: Skill declares no tool scope ('permissions' or 'allowed-tools') but code capabilities were detected: shell.**
-- File: `SKILL.md:1`
-- Check: `Skill declares no tool scope ('permissions' or 'allowed-tools') but code capabilities were detected: shell. (LP3)`
-- Fix: Without declared permissions the skill's intent is opaque and cannot be validated. Declare the skill's tool scope: for Claude Code / Agent Skills SKILL.md, list the tools the skill may invoke in the 'allowed-tools' frontmatter field; for MCP server manifests, add a 'permissions' list naming the required capabilities.
-
-**2. Data Exfiltration: https://api.example.com/**
-- File: `references/apis-keys-credentials.md:102`
-- Check: `External Transmission (E1)`
-- Content: `auth: oauth2
-  oauth2:
-    auth-url: https://app.example....`
-- Fix: Data is being sent to an external URL. This could be legitimate telemetry or data exfiltration. Manual review is recommended. Verify the destination URL is trusted and necessary. Remove or replace with documented APIs. Ensure no secrets, tokens, or PII are transmitted.
-
-**3. Data Exfiltration: https://api.example.com/**
-- File: `references/apis-keys-credentials.md:107`
-- Check: `External Transmission (E1)`
-- Content: `auth: oauth2
-  oauth2:
-    auth-url: https://app.example....`
-- Fix: Data is being sent to an external URL. This could be legitimate telemetry or data exfiltration. Manual review is recommended. Verify the destination URL is trusted and necessary. Remove or replace with documented APIs. Ensure no secrets, tokens, or PII are transmitted.
-
-**4. MCP Rug Pull: docker run --entrypoint**
-- File: `references/validation-ci.md:45`
-- Check: `Docker image referenced without tag or digest: 'docker run --entrypoint'. (RP1)`
-- Fix: Docker image references without a specific tag (:latest is implicit) or digest (@sha256:...) can be silently replaced by a malicious image. Pin the image: image:tag or image@sha256:abc123
-
-**5. Data Exfiltration: curl -sf -X POST "$BASE/admin/kg/views/$view/run" \
-#            -H 'content-type: application/json' -d '{"args": {}}')
-#   ... assert non-zero rows and no error-class warnings ...
-# done
-
-# 2) Prove **
-- File: `tests/verify.sh:30`
-- Check: `External Transmission (E1)`
-- Content: `#    PRODUCER_ERROR / FIELDS_WITHHELD / UNPUSHED_FILTER n...`
-- Fix: Data is being sent to an external URL. This could be legitimate telemetry or data exfiltration. Manual review is recommended. Verify the destination URL is trusted and necessary. Remove or replace with documented APIs. Ensure no secrets, tokens, or PII are transmitted.
-
-</details>
-
-
-### ✅ PII Scan
-*Detect PII and local identifiers*
-
-- [OK] **pii_scan_start**: Scanning 19 files for PII
-- [OK] **pii_detection**: No PII detected in 19 files (emails, SSNs, phone numbers, paths)
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*
@@ -201,13 +131,13 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Description very long (720 chars, recommend 50-150) | <code>/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/SKILL.md</code> |
+| [LOW] LOW | Description very long (720 chars, recommend 50-150) | <code>embabel-worlds-realm-spec/SKILL.md</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Description very long (720 chars, recommend 50-150)**
-- File: `/home/wantez/source/github/iromu/awesome-qwen/skills/embabel-worlds-realm-spec/SKILL.md`
+- File: `embabel-worlds-realm-spec/SKILL.md`
 - Check: `quality_discoverability`
 - Fix: Keep descriptions concise for progressive disclosure
 

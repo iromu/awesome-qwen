@@ -50,7 +50,7 @@ Provider-specific notes:
 
 - **Z.ai** — native `spring-ai-zhipuai` client (not OpenAI-compatible). Supports
   GLM 5.2, native reasoning/thinking, temperature clamping `(0.0, 1.0]`.
-  See `zai.md`.
+  See `zai-provider.md`.
 - **DashScope** — Alibaba Cloud Qwen 3.7 family (Max/Plus/Flash). OpenAI-compatible
   with parameter clamping. See `dashscope.md`.
 - **Atlas Cloud** — OpenAI-compatible endpoint for BYOK deployments, built via
@@ -177,4 +177,4 @@ Full provider configuration details: `configuration.md`.
 - **Thinking tag control** — `Thinking.withIncludedTags(...)` /
   `withExcludedTags(...)`. See `thinking.md`.
 - **Z.ai native provider** — first-class `embabel-agent-starter-zai` (GLM family,
-  native thinking). See `zai.md`.
+  native thinking). See `zai-provider.md`.

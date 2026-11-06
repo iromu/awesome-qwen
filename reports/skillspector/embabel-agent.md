@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** embabel-agent  
-**Scanned:** 2026-10-26 20:07:00 UTC  
+**Scanned:** 2026-11-06 15:35:04 UTC  
 
 ## Risk Assessment
 
@@ -11,24 +11,27 @@
 | Severity | CRITICAL |
 | Recommendation | DO NOT INSTALL |
 
-## Components (44)
+## Components (47)
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 356 | No |
-| `evals/evals.json` | json | 255 | No |
+| `SKILL.md` | markdown | 312 | No |
+| `evals/evals.json` | json | 299 | No |
 | `references/agent-skills.md` | markdown | 202 | No |
 | `references/annotations.md` | markdown | 319 | No |
 | `references/api-spi.md` | markdown | 12 | No |
 | `references/async-mode.md` | markdown | 130 | No |
 | `references/bedrock.md` | markdown | 114 | No |
 | `references/cache.md` | markdown | 72 | No |
-| `references/chatbots.md` | markdown | 458 | No |
+| `references/chatbots.md` | markdown | 468 | No |
 | `references/common-pitfalls.md` | markdown | 142 | No |
-| `references/configuration.md` | markdown | 518 | No |
+| `references/configuration.md` | markdown | 581 | No |
 | `references/cost-tracking.md` | markdown | 113 | No |
-| `references/customizing.md` | markdown | 135 | No |
+| `references/customizing.md` | markdown | 191 | No |
 | `references/dashscope.md` | markdown | 110 | No |
+| `references/decision-providers.md` | markdown | 233 | No |
+| `references/decision-specs.md` | markdown | 199 | No |
+| `references/decisions.md` | markdown | 198 | No |
 | `references/domain.md` | markdown | 133 | No |
 | `references/dsl-builders.md` | markdown | 192 | No |
 | `references/error-handling.md` | markdown | 122 | No |
@@ -38,33 +41,33 @@
 | `references/integrations.md` | markdown | 407 | No |
 | `references/interceptors.md` | markdown | 183 | No |
 | `references/invoking.md` | markdown | 359 | No |
-| `references/llm-integration.md` | markdown | 614 | No |
+| `references/llm-integration.md` | markdown | 652 | No |
 | `references/migrating.md` | markdown | 202 | No |
 | `references/minimax.md` | markdown | 119 | No |
 | `references/persistence.md` | markdown | 150 | No |
 | `references/planners.md` | markdown | 349 | No |
 | `references/production-deployment.md` | markdown | 277 | No |
-| `references/providers.md` | markdown | 128 | No |
+| `references/providers.md` | markdown | 180 | No |
 | `references/rag.md` | markdown | 318 | No |
 | `references/states.md` | markdown | 249 | No |
 | `references/streaming.md` | markdown | 114 | No |
 | `references/structured-prompts.md` | markdown | 194 | No |
 | `references/termination.md` | markdown | 114 | No |
 | `references/testing.md` | markdown | 471 | No |
-| `references/thinking.md` | markdown | 114 | No |
+| `references/thinking.md` | markdown | 174 | No |
 | `references/tooling.md` | markdown | 45 | No |
-| `references/tools.md` | markdown | 389 | No |
+| `references/tools.md` | markdown | 406 | No |
 | `references/troubleshooting.md` | markdown | 202 | No |
 | `references/types.md` | markdown | 213 | No |
-| `references/zai.md` | markdown | 115 | No |
+| `references/zai-provider.md` | markdown | 115 | No |
 | `scripts/project-creator.sh` | shell | 98 | Yes |
-| `skill-card.md` | markdown | 108 | No |
+| `skill-card.md` | markdown | 111 | No |
 
-## Issues (16)
+## Issues (18)
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:214`  
+**Location:** `SKILL.md:158`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -75,6 +78,22 @@
 - **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
 - **target_disposition:** `partial`
 - **target_path:** `references/rag.md`
+
+---
+
+### 🔴 HIGH: AE1
+
+**Location:** `SKILL.md:240`  
+**Confidence:** 100%  
+
+**Message:** Referenced artifact was not completely inspected
+
+**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
+
+**Evidence:**
+- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
+- **target_disposition:** `partial`
+- **target_path:** `references/configuration.md`
 
 ---
 
@@ -91,7 +110,7 @@
 
 ### 🔴 HIGH: TM1
 
-**Location:** `references/configuration.md:453`  
+**Location:** `references/configuration.md:516`  
 **Confidence:** 80%  
 
 **Message:** Tool Parameter Abuse
@@ -157,7 +176,7 @@
 
 ### 🟡 MEDIUM: E1
 
-**Location:** `references/configuration.md:220`  
+**Location:** `references/configuration.md:240`  
 **Confidence:** 50%  
 
 **Message:** External Transmission
@@ -168,7 +187,7 @@
 
 ### 🟡 MEDIUM: E1
 
-**Location:** `references/configuration.md:227`  
+**Location:** `references/configuration.md:247`  
 **Confidence:** 50%  
 
 **Message:** External Transmission
@@ -179,8 +198,19 @@
 
 ### 🟡 MEDIUM: E1
 
-**Location:** `references/zai.md:108`  
+**Location:** `references/zai-provider.md:108`  
 **Confidence:** 50%  
+
+**Message:** External Transmission
+
+**Remediation:** Verify the destination URL is trusted and necessary. Remove or replace with documented APIs. Ensure no secrets, tokens, or PII are transmitted.
+
+---
+
+### 🟡 MEDIUM: E1
+
+**Location:** `references/decision-providers.md:71`  
+**Confidence:** 60%  
 
 **Message:** External Transmission
 
@@ -249,9 +279,9 @@
 |--------|-------|
 | Execution | successful |
 | Status | partial |
-| Coverage | 97.7% |
-| Fully inspected | 43 |
-| Partially inspected | 1 |
+| Coverage | 95.7% |
+| Fully inspected | 45 |
+| Partially inspected | 2 |
 | Entirely uninspected | 0 |
 
 ### Ledger Exceptions
@@ -259,10 +289,10 @@
 | Reason / Status | Location | Details |
 |-----------------|----------|---------|
 | reference_missing | `SKILL.md:30-30` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:47-47` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:71-71` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:267-267` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:277-277` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:45-45` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:234-234` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:244-244` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| static_parse_limit | `references/configuration.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 | static_parse_limit | `references/rag.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 
 ### Analyzer Statuses

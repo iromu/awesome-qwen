@@ -23,31 +23,28 @@ Build agentic AI on the JVM with **Embabel** — a Spring-based framework for au
 
 ## Purpose
 
-This skill is the authoritative, version-pinned guide for writing correct Embabel code. Use it to author agents, tools, and domain models; wire providers and roles; publish MCP servers; build decision/classification services, chatbots, and RAG pipelines; and test and deploy — always grounded in the real v1.5.4 API rather than guesswork.
+The authoritative, version-pinned guide for correct Embabel code: author agents, tools, and domain models; wire providers and roles; publish MCP servers; build decision/classification services, chatbots, and RAG pipelines; and test and deploy — always grounded in the real v1.5.4 API.
 
 ## Prerequisites
 
 - **JDK 17+** and **Maven** or **Gradle** (the template projects use `./mvnw` / `./gradlew`)
 - **Spring Boot 4.1.1** — pulled in by the `embabel-agent-starter-*` artifacts
-- **At least one LLM provider key** — a deployment key (`OPENAI_API_KEY`, etc.) or BYOK keys supplied at runtime (see "Bring-Your-Own-Key" in `references/providers.md`)
-- **`uvx`** (and `git`) only if you use the `project-creator.sh` scaffolding script
+- **At least one LLM provider key** — a deployment key (`OPENAI_API_KEY`, etc.) or BYOK keys at runtime (see "Bring-Your-Own-Key" in `references/providers.md`); `uvx` + `git` only for the `project-creator.sh` scaffolding script
 
 ## Instructions
 
-1. Confirm the task belongs on Embabel at all — check "When NOT to Use Embabel" first (plain Spring AI apps, non-planner chatbots, observability config → other skills).
-2. Identify the framework version you're writing against (this guide targets v1.5.4); "New in v1.5.4" in `references/providers.md` lists what changed recently and "Migration" covers moves from CrewAI/Pydantic AI/LangGraph.
-3. For a new agent, follow "Getting Started" → "Agent Authoring" → "Tools"; consult "Domain Objects" for state modeling, "Planning Algorithms"/"Execution Modes"/"States with @State" for multi-step flows, and "DSL Builders (Kotlin/Java)" when the annotations-only style doesn't fit.
-4. For specific APIs — decision/classification services, chatbots, RAG, MCP publishing, testing, threading/async, error handling — use the correspondingly named section; deeper material lives in "Deep Dives" and `references/`.
-5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing code, and never assert an API from memory — if a symbol isn't named here or in `references/`, treat it as unverified.
+1. Confirm the task belongs on Embabel — check "When NOT to Use Embabel" first (plain Spring AI apps, non-planner chatbots, observability → other skills).
+2. This guide targets v1.5.4; "New in v1.5.4" in `references/providers.md` lists recent changes, "Migration" covers CrewAI/Pydantic AI/LangGraph.
+3. New agent: "Getting Started" → "Agent Authoring" → "Tools"; "Domain Objects" for state, "Planning Algorithms"/"Execution Modes"/"States with @State" for multi-step flows, "DSL Builders (Kotlin/Java)" when annotations don't fit.
+4. For a specific API (decisions, chatbots, RAG, MCP, testing, async, errors), use the named section; deeper material is in "Deep Dives" and `references/`.
+5. Cross-check "Common Pitfalls" and "Troubleshooting" before finalizing; never assert an API from memory — if a symbol isn't named here or in `references/`, treat it as unverified.
 
 ## Output Quality
 
-- **Be comprehensive** — Full classes with imports, domain models, all annotations
-- **Explain design decisions** — Justify planner choice, model selection, temperature, execution mode, and concurrency strategy
-- **Include configuration** — Always show full `application.yml` with relevant `embabel:` and `spring.ai:` settings
-- **Provide testing** — Unit tests with `FakePromptRunner`/`FakeOperationContext` AND integration tests with `EmbelMockitoIntegrationTest`
-- **Use latest API patterns** — `LlmOptions.fromCriteria(ModelSelectionCriteria.getAuto())`, `context.ai().withLlm().creating().fromPrompt()`, `.withId()`, `withExample()`
-- **Use few-shot examples** — `.withExample()` on LLM calls improves output quality for structured tasks
+- **Be comprehensive** — full classes with imports, domain models, all annotations; justify planner, model, temperature, and concurrency choices
+- **Include configuration** — full `application.yml` with the relevant `embabel:` and `spring.ai:` settings
+- **Provide testing** — unit tests with `FakePromptRunner`/`FakeOperationContext` AND integration tests with `EmbelMockitoIntegrationTest`
+- **Use latest API patterns** — `LlmOptions.fromCriteria(...)`, `context.ai().withLlm().creating().fromPrompt()`, `.withId()`, `.withExample()` (few-shot)
 
 ## Core Concepts
 
@@ -56,8 +53,7 @@ This skill is the authoritative, version-pinned guide for writing correct Embabe
 - **Conditions** (`@Condition`) — Predicates evaluated before actions or to determine goal achievement.
 - **Domain Model** — Strongly-typed objects carrying both data and behavior (DICE).
 - **Blackboard** — Shared memory where actions add results and read inputs by type.
-- **Plan** — Dynamically generated sequence of actions. The planner recomputes after each action.
-- **Planner** — GOAP (A* search), Utility AI (value-based), Hybrid, or Supervisor (LLM-orchestrated).
+- **Plan / Planner** — A dynamically generated, recomputed action sequence found by a planner: GOAP (A*), Utility AI (value-based), Hybrid, or Supervisor (LLM-orchestrated).
 
 > **Key insight:** Most pre/post conditions are inferred from data flow in method signatures — you rarely deal with the blackboard directly.
 
@@ -67,9 +63,7 @@ Add the platform starter (`embabel-agent-starter`, plus `-shell` for a CLI or
 `-mcpserver` for an MCP server) and the starter for each model provider you call.
 Release binaries are on **Maven Central**; no snapshot repository is needed.
 
-The full starter/provider matrix (artifact and required key or config per provider,
-plus the v1.5.2/v1.5.3/v1.5.4 change list) lives in `references/providers.md` — read it before
-adding a dependency or asserting that something is new in v1.5.4.
+The full starter/provider matrix (artifact + required key per provider, and the v1.5.2→v1.5.4 change list) lives in `references/providers.md` — read it before adding a dependency or asserting something is new in v1.5.4.
 
 ## Agent Authoring
 
@@ -95,33 +89,25 @@ public class StarNewsFinder {
 
 ### @EmbabelComponent — Action Container
 
-Use when you want actions but not a full agent. Useful with Utility AI planner.
-
-### @Export — MCP Publishing
-
-Annotate with `@Export(remote = true)` on goals to auto-publish them as MCP tools.
+Use when you want actions but not a full agent (pairs well with Utility AI). `@Export(remote = true)` on goals auto-publishes them as MCP tools.
 
 > **@Action key attributes:** `pre`/`post` conditions, `canRerun`, `readOnly`, `clearBlackboard`, `cost`/`value`, `outputBinding`, `trigger`. See `references/annotations.md` for full details.
 
 ## Domain Objects
 
-Domain objects carry both data and behavior — they are not anemic DTOs. Expose methods to LLMs with `@Tool` (Spring AI) or `@LlmTool` (Embabel). Unannotated methods are **never** exposed.
-
-See `references/domain.md` for DICE best practices.
+Domain objects carry data and behavior — not anemic DTOs. Expose methods to LLMs with `@Tool` (Spring AI) or `@LlmTool` (Embabel); unannotated methods are **never** exposed. See `references/domain.md` for DICE best practices.
 
 ## Tools
 
-- **@LlmTool** — Expose JVM methods to LLMs (Embabel); **@Tool** — same via Spring AI
-- **ToolCallContext** — Inject infrastructure metadata invisible to the LLM
-- **OneShotPerLoopTool** — Prevent repeated tool calls in a single planning loop
-- **@Cost / costMethod / valueMethod** — Compute action costs and values dynamically from blackboard state
-- **SpEL Conditions** — Dynamic preconditions in `@Condition` and `@Action(pre = "...")`
-- **Subagent** — Let the LLM invoke other agents as tools (`Subagent.ofClass(...).consuming(...)`)
-- **UtilityInvocation** — Lightweight utility workflows without `@Agent` (see `references/planners.md`)
+- **@LlmTool** (Embabel) / **@Tool** (Spring AI) — expose JVM methods to LLMs
+- **ToolCallContext** — inject infrastructure metadata invisible to the LLM
+- **OneShotPerLoopTool** — prevent repeated tool calls in one planning loop
+- **@Cost / costMethod / valueMethod** — compute action costs/values from blackboard state
+- **SpEL Conditions** — dynamic preconditions in `@Condition` / `@Action(pre = "...")`
+- **Subagent** — let the LLM invoke other agents as tools (`Subagent.ofClass(...).consuming(...)`)
+- **UtilityInvocation** — lightweight utility workflows without `@Agent`
 
-See `references/tools.md` for full details.
-
-> **IDE:** The Embabel Agent IntelliJ plugin (ID `31142`) suppresses false "never used" warnings on `@Action`/`@Condition`/`@Cost` methods. See `references/tooling.md`.
+See `references/tools.md` for full details. The Embabel IntelliJ plugin (ID `31142`) suppresses false "never used" warnings on `@Action`/`@Condition`/`@Cost` methods (`references/tooling.md`).
 
 ## Planning Algorithms
 
@@ -132,19 +118,11 @@ See `references/tools.md` for full details.
 | **Hybrid** | Reducer pipelines | Medium-High |
 | **Supervisor** | Flexible multi-step workflows | Low |
 
-Set via `@Agent(planner = PlannerType.XXX)`. Choosing: Well-defined goals → GOAP. Deterministic → GOAP or Hybrid. Event-driven → Utility. LLM orchestration → Supervisor.
-
-See `references/planners.md` for detailed comparison.
+Set via `@Agent(planner = PlannerType.XXX)`: well-defined goals → GOAP; deterministic → GOAP/Hybrid; event-driven → Utility; LLM orchestration → Supervisor. See `references/planners.md` for the full comparison.
 
 ## States with @State
 
-Annotate classes with `@State` to trigger state transitions. Previous state objects are hidden, the new state is bound to the blackboard, and planning considers only actions from the new state.
-
-- For looping states, use `@Action(clearBlackboard = true)`
-- For human-in-the-loop: `WaitFor.formSubmission("...", Feedback.class)`
-- Use Java records or Kotlin top-level classes for state types
-
-See `references/states.md` for full patterns: staying in-state, inheritance, WaitFor, parent state interface.
+Annotate classes with `@State` to trigger state transitions — previous state objects are hidden, the new state binds to the blackboard, and planning considers only actions from it. For looping states use `@Action(clearBlackboard = true)`; for HITL use `WaitFor.formSubmission("...", Feedback.class)`; use Java records or Kotlin top-level classes for state types. See `references/states.md` for staying in-state, inheritance, WaitFor, and parent-state patterns.
 
 ## DSL Builders (Kotlin/Java)
 
@@ -154,64 +132,30 @@ See `references/dsl-builders.md` for all builder types.
 
 ## Execution Modes
 
-- **SIMPLE** (default): Sequential, one action at a time — predictable, easy to debug
-- **CONCURRENT**: All achievable actions run in parallel via virtual threads — higher throughput, actions must be concurrent-safe
+- **SIMPLE** (default): sequential, one action at a time — predictable, easy to debug
+- **CONCURRENT**: all achievable actions run in parallel via virtual threads — higher throughput, actions must be concurrent-safe
 
-Set: `embabel.agent.platform.process-type: CONCURRENT`. Autonomy: Closed (LLM picks one agent) vs Open (LLM picks goal, assembles from all actions).
-
-See `references/invoking.md` for ConcurrentAgentProcess behavior, confidence thresholds, ProcessOptions, and programmatic invocation.
+Set `embabel.agent.platform.process-type: CONCURRENT`. Autonomy: Closed (LLM picks one agent) vs Open (LLM picks goal, assembles from all actions). See `references/invoking.md` for ConcurrentAgentProcess, confidence thresholds, ProcessOptions, and programmatic invocation.
 
 ## Chatbots
 
-Chatbots use a **long-lived `AgentProcess`** that pauses between user messages. The blackboard maintains state across the session.
+Chatbots use a **long-lived `AgentProcess`** that pauses between user messages; the blackboard maintains state across the session.
 
 ```java
 @EmbabelComponent
 public class MyChatbot {
     @Action(trigger = UserMessage.class)
     public AssistantResponse handleMessage(UserMessage msg, Ai ai) {
-        return ai.withDefaultLlm()
-            .creating(AssistantResponse.class)
-            .fromPrompt(msg.getContent());
+        return ai.withDefaultLlm().creating(AssistantResponse.class).fromPrompt(msg.getContent());
     }
 }
 ```
 
-The `trigger = UserMessage.class` fires only when a user message is the most recently added blackboard value.
-
-### Utility AI for Chatbots
-
-Utility AI is often the best approach for chatbots — define multiple actions with costs, and the planner picks the highest-value:
-
-```java
-@EmbabelComponent
-public class ChatbotActions {
-    @Action(cost = 0.1)
-    public DirectResponse directAnswer(UserMessage msg, Ai ai) { ... }
-
-    @Action(cost = 0.3)
-    public RagResponse ragAnswer(UserMessage msg, Ai ai, Blackboard bb) { ... }
-}
-```
-
-For dynamic costs (`@Cost`/`costMethod`), context IDs (pre-populate the session blackboard from a named context for stateful conversations across restarts), and conversation storage (`embabel.agent.platform.conversation-store: STORED`), see `references/chatbots.md`.
-
-### Goals in Chatbots
-
-Chatbot agents typically **need no goal** — the process waits indefinitely; define one only for transactional conversations (e.g., completing a booking). See `references/chatbots.md` for full patterns.
+`trigger = UserMessage.class` fires only when a user message is the most recently added blackboard value. Utility AI is often the best chatbot approach — define costed actions and let the planner pick the highest-value. Chatbots typically **need no goal** (the process waits indefinitely); define one only for transactional conversations. See `references/chatbots.md` for dynamic costs (`@Cost`/`costMethod`), context IDs, and conversation storage (`embabel.agent.platform.conversation-store: STORED`).
 
 ## RAG (Retrieval-Augmented Generation)
 
-Embabel's RAG is **entirely agentic and tool-based** — the LLM controls retrieval:
-
-- **Autonomous Search**: LLM decides when to search, what queries to use
-- **Iterative Refinement**: Multiple searches with different queries
-- **Cross-Reference Discovery**: Expand chunks, follow references, zoom out
-- **HyDE Support**: Generate hypothetical documents for better semantic search
-
-The `ToolishRag` facade auto-discovers store capabilities (vector, text, regex, result expansion) and exposes them as LLM tools via `LlmReference`.
-
-See `references/rag.md` for the full RAG architecture and wiring.
+Embabel's RAG is **entirely agentic and tool-based** — the LLM controls retrieval (autonomous search, iterative refinement, cross-reference discovery, HyDE). The `ToolishRag` facade auto-discovers store capabilities (vector, text, regex, result expansion) and exposes them as LLM tools via `LlmReference`. See `references/rag.md` for the full RAG architecture and wiring.
 
 ## Decision & Classification Services (v1.5.4, experimental)
 
@@ -243,7 +187,7 @@ diagnostics).
 
 ## MCP Server Publishing
 
-Publish agents as MCP servers with SYNC or ASYNC mode, over **Streamable HTTP transport** (default since v1.5.3, at `http://localhost:8080/mcp`):
+Publish agents as MCP servers with SYNC or ASYNC mode over **Streamable HTTP** (default since v1.5.3, at `http://localhost:8080/mcp`):
 
 ```yaml
 spring:
@@ -254,21 +198,13 @@ spring:
         protocol: STREAMABLE  # default; STATELESS also supported
 ```
 
-Goals are automatically published as MCP tools when annotated with `@Export(remote = true)`.
-
-Two-layer security:
-- **Layer 1:** HTTP filter chain (JWT auth via `SecurityWebFilterChain`)
-- **Layer 2:** `@SecureAgentTool(expression = "hasAuthority('news:read')")` on agents/methods
-
-SSE transport (`protocol: SSE`, endpoint `/sse`) is still accepted but deprecated for removal in Spring AI 2.0 — migrate to `protocol: STREAMABLE`.
-
-See `references/integrations.md` for MCP server/client, security, observability, and A2A.
+Goals annotated with `@Export(remote = true)` are auto-published as MCP tools. Security is two-layer: an HTTP filter chain (JWT via `SecurityWebFilterChain`) plus `@SecureAgentTool(expression = "hasAuthority('news:read')")` on agents/methods. SSE (`protocol: SSE`, `/sse`) is accepted but deprecated for removal in Spring AI 2.0 — migrate to `protocol: STREAMABLE`. See `references/integrations.md` for MCP client, observability, and A2A.
 
 ## Testing
 
-- **Unit tests:** Use `FakeOperationContext.create()` and `context.expectResponse()`
-- **Integration tests:** Extend `EmbabelMockitoIntegrationTest`, use `whenCreateObject()` and `verifyCreateObjectMatching()`
-- **Always use `.withId("...")`** on LLM calls for traceability
+- **Unit:** `FakeOperationContext.create()` + `context.expectResponse()`
+- **Integration:** extend `EmbabelMockitoIntegrationTest`; `whenCreateObject()` / `verifyCreateObjectMatching()`
+- **Always `.withId("...")`** on LLM calls for traceability
 
 See `references/testing.md` for more patterns.
 
@@ -286,13 +222,13 @@ For topics not covered in detail above, consult the reference files:
 | Thinking, guardrails, cost tracking, streaming | `references/thinking.md`, `references/guardrails.md`, `references/cost-tracking.md`, `references/streaming.md` |
 | Termination, error handling | `references/termination.md`, `references/error-handling.md` |
 | Agent skills, API vs SPI | `references/agent-skills.md`, `references/api-spi.md` |
-| Agent process persistence (HITL checkpoint/restore, JDBC) | `references/persistence.md` |
-| Cache providers (AgentCacheProvider, regions, capabilities) | `references/cache.md` |
-| Decision & classification services (selection, registry, config, capabilities) | `references/decisions.md` |
-| Decision specs (build/read specs, JSON, projection) | `references/decision-specs.md` |
-| Decision providers (TypeSafe Jev, Cloudflare CLEF, System One, Ollama, prompted LLM, BYOK) | `references/decision-providers.md` |
+| Agent process persistence (HITL, JDBC) | `references/persistence.md` |
+| Cache providers (AgentCacheProvider, regions) | `references/cache.md` |
+| Decision & classification services (selection, registry, config) | `references/decisions.md` |
+| Decision specs (build/read, JSON, projection) | `references/decision-specs.md` |
+| Decision providers (TypeSafe, Cloudflare, System One, Ollama, prompted LLM, BYOK) | `references/decision-providers.md` |
 | DashScope provider (Alibaba Qwen) | `references/dashscope.md` |
-| Z.ai provider (Zhipu GLM, native client) | `references/zai.md` |
+| Z.ai provider (Zhipu GLM, native client) | `references/zai-provider.md` |
 | Tooling (IntelliJ IDEA plugin) | `references/tooling.md` |
 | Production deployment (Docker, K8s, health, security) | `references/production-deployment.md` |
 | Starter artifacts, provider keys, v1.5.2/v1.5.3/v1.5.4 change list | `references/providers.md` |
@@ -335,11 +271,9 @@ Migrating from Python AI frameworks? See `references/migrating.md` for guidance 
 
 ## Examples
 
-**"Two-step agent: fetch an order, then write the refund note."** "Agent Authoring" -> two `@Action`s with `@State` handoff, GOAP planner unless the domain grows; "Testing" -> the `FakeOperationContext` skeleton before wiring real LLM calls.
-
-**"Expose our invoicing agent to Claude Code."** "MCP Server Publishing" (`@Export(remote = true)`) — not a bespoke socket server.
-
-**"Migrate this LangGraph app."** "Migration"; for a fixed, deterministic flow check "When NOT to Use Embabel" first — a planner earns nothing where the path is already known.
+- **"Two-step agent: fetch an order, then write the refund note."** → "Agent Authoring": two `@Action`s with `@State` handoff (GOAP unless the domain grows); "Testing": `FakeOperationContext` skeleton first.
+- **"Expose our invoicing agent to Claude Code."** → "MCP Server Publishing" (`@Export(remote = true)`), not a bespoke socket server.
+- **"Migrate this LangGraph app."** → "Migration"; check "When NOT to Use Embabel" first — a planner earns nothing where the path is already known.
 
 ## Common Pitfalls
 
@@ -355,29 +289,19 @@ Top issues — see `references/common-pitfalls.md` for detailed Problem/Impact/F
 
 | Script | Purpose | Arguments |
 |--------|---------|-----------|
-| `scripts/project-creator.sh` | Scaffold a new Embabel agent project from the official Java/Kotlin template repositories (via the `embabel/project-creator` tool) | `--lang java\|kotlin --name <project-name> [--package <package>]` |
+| `scripts/project-creator.sh` | Scaffold a new Embabel agent project from the official Java/Kotlin template repos (via `embabel/project-creator`) | `--lang java\|kotlin --name <project-name> [--package <package>]` |
 
-Run it with `run_script("scripts/project-creator.sh", "--lang kotlin --name my-agent --package com.acme.research")`, or directly in a shell:
-
-```bash
-bash scripts/project-creator.sh --lang java --name my-agent
-```
-
-Requires `uvx` and `git`. The template repositories:
-- [Java Agent Template](https://github.com/embabel/java-agent-template)
-- [Kotlin Agent Template](https://github.com/embabel/kotlin-agent-template)
+Requires `uvx` and `git`; templates: [Java](https://github.com/embabel/java-agent-template), [Kotlin](https://github.com/embabel/kotlin-agent-template).
 
 ## When NOT to Use Embabel
 
 | Scenario | Better Alternative | Why |
 |----------|-------------------|-----|
-| Simple API endpoints | Spring Boot alone | Embabel adds overhead |
-| Pure data processing | Spring Batch, Apache Spark | No LLM interaction needed |
+| Simple API endpoints / high-throughput microservices | Spring Boot alone | Embabel's planning loop adds overhead |
+| Pure data processing / batch ETL | Spring Batch, Airflow, Spark | No LLM interaction or planning needed |
 | Real-time streaming | WebFlux, gRPC | Embabel is agent-focused |
 | Frontend web apps | React, Angular, Vue | Embabel is backend-only |
-| Simple chatbot with fixed flow | State machine library | No need for LLM-driven planning |
-| High-throughput microservices | Standard Spring Boot | Planning loop adds latency |
-| Batch ETL jobs | Spring Batch, Airflow | No agent planning needed |
+| Simple chatbot with a fixed flow | State machine library | No LLM-driven planning needed |
 
 ## Limitations
 

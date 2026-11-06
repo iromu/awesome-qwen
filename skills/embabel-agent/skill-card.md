@@ -70,7 +70,7 @@ Mitigation: Review and scan skill before deployment. <br>
 - [tools.md](references/tools.md) <br>
 - [troubleshooting.md](references/troubleshooting.md) <br>
 - [types.md](references/types.md) <br>
-- [zai.md](references/zai.md) <br>
+- [zai-provider.md](references/zai-provider.md) <br>
 
 
 ## Skill Output: <br>
@@ -99,8 +99,8 @@ Underlying evaluation signals used in this run: <br>
 ## Evaluation Results: <br>
 | Dimension | Score | Grade | Type |
 |---|---:|---|---|
-| Overall quality | 98.0 | A | script-based |
-| Correctness | 100.0 | — | — |
+| Overall quality | 94.5 | A | script-based |
+| Correctness | 90.0 | — | — |
 | Discoverability | 95.0 | — | — |
 | Reliability | 100.0 | — | — |
 | Efficiency | 95.0 | — | — |

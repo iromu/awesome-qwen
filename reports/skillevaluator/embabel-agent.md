@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 26, 2026 at 07:26 PM UTC
+**Generated:** November 06, 2026 at 03:33 PM UTC
 
 ## Summary
 
@@ -13,13 +13,13 @@
 | ✅ Passed | 9 |
 | ❌ Failed | 0 |
 | ⚠️ Incomplete | 0 |
-| Total Issues | 4 |
+| Total Issues | 5 (1 medium) |
 
 ## Quality Score
 
 | Skill | Score | Grade | Type | Correctness | Discoverability | Reliability | Efficiency |
 |-------|-------|-------|------|-------------|-----------------|-------------|------------|
-| embabel-agent | 98.0 | A | script-based | 100.0 | 95.0 | 100.0 | 95.0 |
+| embabel-agent | 94.5 | A | script-based | 90.0 | 95.0 | 100.0 | 95.0 |
 
 ## Results
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'embabel-agent'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/embabel-agent/
 - [OK] **naming_convention**: Folder name 'embabel-agent' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (356/500)
+- [OK] **line_count**: SKILL.md within line limit (312/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -41,7 +41,7 @@
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_semver**: Valid semantic version: 1.5.3
+- [OK] **version_semver**: Valid semantic version: 1.5.4
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*
@@ -62,46 +62,52 @@
 ### ✅ Code Integrity & Hygiene
 *Validate dead links, dependencies, and static Python test-file discovery*
 
-- [OK] **dead_links_scan**: Checking 41 markdown files for dead links
-- [OK] **dead_links**: All relative links valid in 41 markdown file(s)
+- [OK] **dead_links_scan**: Checking 44 markdown files for dead links
+- [OK] **dead_links**: All relative links valid in 44 markdown file(s)
 - [OK] **dependencies**: No dependency files found (requirements.txt, pyproject.toml)
 - [OK] **test_discovery**: No standard Python test-file candidates found; target tests were not executed and coverage was not measured. Consider adding tests.
 
 ### ✅ Unicode Smuggling Detection
 *Detect invisible Unicode characters and ASCII smuggling*
 
-- [OK] **unicode_scan**: No invisible Unicode characters detected in 42 file(s)
+- [OK] **unicode_scan**: No invisible Unicode characters detected in 45 file(s)
 
 ### ✅ A QUALITY
 *Skill quality scoring across Correctness (35%), Discoverability (25%), Reliability (25%), and Efficiency (15%)*
 
-**Overall: 98.0/100 (Grade: A)** | Skill Type: script-based
+**Overall: 94.5/100 (Grade: A)** | Skill Type: script-based
 
 | Dimension | Score | Weight |
 |-----------|-------|--------|
-| Correctness | 100.0 | 35% |
+| Correctness | 90.0 | 35% |
 | Discoverability | 95.0 | 25% |
 | Reliability | 100.0 | 25% |
 | Efficiency | 95.0 | 15% |
 
-- [OK] **quality_score**: Score: 98.0/100 (Grade: A)
+- [OK] **quality_score**: Score: 94.5/100 (Grade: A)
 
-**Non-blocking findings: 2**
+**Non-blocking findings: 3**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Description very long (1009 chars, recommend 50-150) | <code>embabel-agent/SKILL.md</code> |
-| [LOW] LOW | Non-descriptive filename: zai.md | <code>embabel-agent/SKILL.md</code> |
+| [MED] MEDIUM | Instructions don't mention 'run_script' | <code>embabel-agent/SKILL.md</code> |
+| [LOW] LOW | Description very long (1005 chars, recommend 50-150) | <code>embabel-agent/SKILL.md</code> |
+| [LOW] LOW | Non-descriptive filename: rag.md | <code>embabel-agent/SKILL.md</code> |
 
 <details>
 <summary>View Details</summary>
 
-**1. Description very long (1009 chars, recommend 50-150)**
+**1. Instructions don't mention 'run_script'**
+- File: `embabel-agent/SKILL.md`
+- Check: `quality_correctness`
+- Fix: Add explicit run_script() call examples
+
+**2. Description very long (1005 chars, recommend 50-150)**
 - File: `embabel-agent/SKILL.md`
 - Check: `quality_discoverability`
 - Fix: Keep descriptions concise for progressive disclosure
 
-**2. Non-descriptive filename: zai.md**
+**3. Non-descriptive filename: rag.md**
 - File: `embabel-agent/SKILL.md`
 - Check: `quality_efficiency`
 - Fix: Use descriptive names: 'form_validation_rules.md' not 'doc2.md'
