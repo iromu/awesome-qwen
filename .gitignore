@@ -15,3 +15,4 @@ website/.astro
 website/public/data
 .qwen/tmp
 skills/**/evals/results
+/skills/code-review-eval*
