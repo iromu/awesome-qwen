@@ -3,8 +3,8 @@
 The shipped extension inventory, the `htmx.registerExtension()` authoring shape, the
 whitelist-name gotcha, and the SSE/WS attribute migrations.
 
-Documents: **htmx 4.0.0**. Notes marked "2.x" describe the older line (npm `latest` is
-`2.0.10`; `4.0.0` is on `next`).
+Documents: **htmx 4.0.1**. Notes marked "2.x" describe the older line (npm `latest` is
+`2.0.11`; `4.0.1` is on `next`).
 
 ## Table of contents
 

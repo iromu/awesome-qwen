@@ -2,8 +2,8 @@
 
 Attribute surface for writing htmx-powered HTML, plus the 2.x -> 4.x attribute changes.
 
-Documents: **htmx 4.0.0**. Where a note says "2.x" it describes the older line (npm
-`latest` is still `2.0.10`; `4.0.0` is on `next`; the htmx.org website still documents 2.x).
+Documents: **htmx 4.0.1**. Where a note says "2.x" it describes the older line (npm
+`latest` is still `2.0.11`; `4.0.1` is on `next`; the htmx.org website still documents 2.x).
 
 ## Table of contents
 
@@ -77,8 +77,11 @@ Trigger modifiers: `once`, `changed`, `delay:<time>`, `throttle:<time>`, `from:<
 `target:<selector>`, `prevent`, `stop` (synonym `consume`), `halt` (= `prevent stop`),
 `capture`, `passive`. A selector with whitespace needs parentheses: `from:(form input)`.
 
-Special events: `load`, `revealed`, `intersect` (options `root:<sel>`, `threshold:<float>`).
-Polling: `hx-trigger="every 2s"`. Multiple triggers are comma-separated.
+Special events: `load`, `revealed`, `intersect` (options `root:<sel>`, `threshold:<float>`,
+and — since 4.0.1 — `from:<sel>`). Polling: `hx-trigger="every 2s"`; the polling filter form
+`every 2s [cond]` is honoured as of 4.0.1 (it was silently ignored in 4.0.0). Multiple
+triggers are comma-separated. Any trigger cancels a pending `delay`/`throttle` on the same
+element (4.0.1, matching 2.x), and `hx-trigger` works on boosted elements as of 4.0.1.
 
 ```html
 <input hx-get="/search" hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
@@ -191,6 +194,12 @@ These ship as extensions (see extensions.md). They are declared valid by the rel
 `hx-nonce` is a distinct attribute from the `hx-csp` extension (`src/ext/hx-csp.js`); there is
 no `hx-nonce` -> `hx-csp` rename in the v4 sources.
 
+Since 4.0.1 a `hx-live` binding target may be prefixed with `?` to bind a **boolean
+attribute**: `hx-live:?disabled="count() === 0"` calls `toggleAttribute('disabled', …)`, so
+the attribute is added or removed rather than written as the string `"false"`. Other special
+binding targets are `text`, `html` and `style`. The prefix is `hx-live:` by default
+(`htmx.config.live.bindPrefix`; a bare `:` is also accepted, and Alpine detection changes it).
+
 ## Attribute inheritance and `:inherited`
 
 **htmx 4 makes inheritance explicit.** An attribute on a parent is NOT inherited by children
@@ -235,6 +244,8 @@ Worked example from the migration guide (a parent supplying target + auth header
 ```
 
 To revert to 2.x-style automatic inheritance globally: `htmx.config.implicitInheritance = true`.
+Since 4.0.1 that flag no longer inherits verbs, `hx-action` or `hx-trigger`, so it is not a
+complete 2.x emulation — a parent `hx-post`/`hx-get` still will not reach children.
 
 Attributes that were **implicitly inherited in 2.x** (flagged by `upgrade-check` when a
 request-making descendant relies on them). Add `:inherited` where children actually depend on them:

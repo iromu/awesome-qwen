@@ -2,8 +2,8 @@
 
 The `htmx.config` surface, how config is supplied, and the 2.x -> 4.x config changes.
 
-Documents: **htmx 4.0.0**. Notes marked "2.x" describe the older line (npm `latest` is
-`2.0.10`; `4.0.0` is on `next`; the htmx.org website still documents 2.x).
+Documents: **htmx 4.0.1**. Notes marked "2.x" describe the older line (npm `latest` is
+`2.0.11`; `4.0.1` is on `next`; the htmx.org website still documents 2.x).
 
 ## Table of contents
 
@@ -45,7 +45,7 @@ All keys below appear in the v4 guidance config table; defaults are as stated th
 | `defaultFocusScroll` | `false` | Scroll focused elements into view after a swap |
 | `noSwap` | `[204, 304]` | Status codes that skip swapping |
 | `allowEmptySwapAfterOOB` | `false` | Run the main swap when the response holds only OOB or partial content |
-| `implicitInheritance` | `false` | Auto-inherit attributes from parents (2.x behaviour) |
+| `implicitInheritance` | `false` | Auto-inherit attributes from parents (2.x behaviour). Since 4.0.1 it does **not** inherit verbs, `hx-action` or `hx-trigger` |
 | `transitions` | `false` | Enable View Transitions globally |
 | `logAll` | `false` | Log every event to the console (debugging) |
 | `mode` | `same-origin` | Fetch mode (`cors`, `no-cors`, `same-origin`) |
@@ -105,7 +105,8 @@ Two config flags restore 2.x defaults for an incremental migration (see upgrade-
 ```
 
 - `implicitInheritance: true` -- restores automatic attribute inheritance (skips the
-  `:inherited` migration step).
+  `:inherited` migration step). Not complete since 4.0.1: verbs, `hx-action` and `hx-trigger`
+  are no longer inherited, so a parent `hx-post` still will not reach children -- audit those.
 - `noSwap: [204, 304, "4xx", "5xx"]` -- restores 2.x's "4xx/5xx do not swap" behavior.
   In 4.x the default `noSwap` is `[204, 304]`, so all other status codes swap.
 

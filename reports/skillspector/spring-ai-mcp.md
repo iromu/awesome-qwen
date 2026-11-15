@@ -1,7 +1,7 @@
 # SkillSpector Security Report
 
 **Skill:** spring-ai-mcp  
-**Scanned:** 2026-10-26 18:14:26 UTC  
+**Scanned:** 2026-11-15 00:48:26 UTC  
 
 ## Risk Assessment
 
@@ -15,13 +15,13 @@
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 392 | No |
+| `SKILL.md` | markdown | 393 | No |
 | `references/configuration.md` | markdown | 139 | No |
 | `references/mcp-annotations.md` | markdown | 290 | No |
 | `references/mcp-aot-native.md` | markdown | 121 | No |
-| `references/mcp-architecture.md` | markdown | 302 | No |
+| `references/mcp-architecture.md` | markdown | 303 | No |
 | `references/mcp-boot-starters.md` | markdown | 219 | No |
-| `references/mcp-customization.md` | markdown | 198 | No |
+| `references/mcp-customization.md` | markdown | 233 | No |
 | `references/migration.md` | markdown | 92 | No |
 | `references/security-and-testing.md` | markdown | 394 | No |
 | `skill-card.md` | markdown | 70 | No |
@@ -47,14 +47,16 @@ No security issues detected.
 |-----------------|----------|---------|
 | reference_missing | `SKILL.md:28-28` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | reference_missing | `SKILL.md:29-29` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:60-60` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:70-70` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:92-92` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:125-125` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:30-30` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:31-31` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:61-61` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:71-71` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:93-93` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | reference_missing | `SKILL.md:126-126` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:129-129` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:258-258` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:355-355` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:127-127` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:130-130` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:259-259` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:356-356` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 
 ### Analyzer Statuses
 

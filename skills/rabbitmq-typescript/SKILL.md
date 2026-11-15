@@ -10,12 +10,16 @@ description: >
   microservice communication, background job processing, or event sourcing with RabbitMQ.
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-  version: 1.0.0
+  version: 1.1.0
   category: backend
   tags: [rabbitmq, messaging, typescript, amqp, event-driven]
 ---
 
 # RabbitMQ Message Broker Expert (TypeScript/Node.js)
+
+> **Verified against amqplib v2.3.1** (2026-11-08). Option names and error strings were read
+> from `lib/`, `index.d.ts` and `lib/properties.d.ts` at that tag. Below 2.3.0 the client has
+> an unfixed frame-handling DoS (GHSA-37f9-7m79-6866) — see "3b. Pitfalls".
 
 ## Instructions
 
@@ -110,7 +114,8 @@ You are an elite RabbitMQ engineer specializing in TypeScript/Node.js with **amq
 | **Single connection for publish + consume** | Flow control from consumers blocks producers | Use separate connections for publishing and consuming |
 | **Missing `deliveryMode: 2` on publish** | Messages not persisted to disk | Set `{ deliveryMode: 2 }` (persistent) on all critical messages |
 | **Not handling `null` consume messages** | Unhandled exceptions, consumer crashes | Always guard: `if (!msg) return;` inside consume callback |
-| **No connection recovery configured** | Broker restart kills all consumers | Use `channel.on('close', ...)` to reconnect, or use `amqplib`'s built-in recovery |
+| **No connection recovery configured** | Broker restart kills all consumers | Pass `recovery: { initialDelay, maxDelay, factor, jitter, maxRetries, setup }` to `connect()` — `setup()` must re-declare topology and re-consume, since recovery rebuilds channels. Add `initialMaxRetries` (2.2.0+) to fail fast at boot while still retrying forever at runtime, and `waitForConnect: false` (2.1.0+) so listeners attach before the first attempt |
+| **No bound on incoming frame size** | A hostile or broken broker can make the client buffer gigabytes (GHSA-37f9-7m79-6866) | Use amqplib ≥ 2.3.0, which adds `maxFrameSize` (default 64 MiB) and rejects a `connection.tune` with `frameMax` below 4096. Do not set it to `0` unless a broker really sends larger unsplit frames |
 | **Using classic queues in production** | Data loss on node failure, deprecated mirrored queues | Use quorum queues (`x-queue-type: 'quorum'`) for production workloads |
 
 ---

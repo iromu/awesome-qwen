@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 11, 2026 at 08:31 PM UTC
+**Generated:** November 15, 2026 at 12:32 AM UTC
 
 ## Summary
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'htmx'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/htmx/
 - [OK] **naming_convention**: Folder name 'htmx' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (376/500)
+- [OK] **line_count**: SKILL.md within line limit (380/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -58,7 +58,7 @@
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_semver**: Valid semantic version: 1.1.0
+- [OK] **version_semver**: Valid semantic version: 1.2.0
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*

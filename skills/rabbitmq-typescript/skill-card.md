@@ -1,5 +1,5 @@
 ## Description: <br>
-Guides RabbitMQ messaging work in TypeScript/Node.js with amqplib - exchange and queue topology design, producer/consumer code, publisher confirms, dead-letter routing, prefetch tuning and TLS/mTLS hardening. <br>
+Guides RabbitMQ messaging work in TypeScript/Node.js with amqplib 2.3.x - exchange and queue topology design, producer/consumer code, publisher confirms, dead-letter routing, prefetch tuning and TLS/mTLS hardening. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -27,6 +27,7 @@ Mitigation: Review and scan skill before deployment. <br>
 ## Reference(s): <br>
 - [amqplib.md](references/amqplib.md) <br>
 - [rabbitmq-concepts.md](references/rabbitmq-concepts.md) <br>
+- [amqp-node/amqplib v2.3.1 (upstream client the skill was verified against)](https://github.com/amqp-node/amqplib) <br>
 
 
 ## Skill Output: <br>
@@ -40,7 +41,7 @@ No evals/evals.json ships with this skill (0 eval cases), so the 92.0/100 A-grad
 
 ## Evaluation Metrics Used: <br>
 Reported benchmark dimensions: <br>
-- Correctness: Whether the topology advice and amqplib code it produces are real and correct - valid exchange/queue patterns, quorum-queue and DLX arguments, confirm/ack calls and prefetch values rather than invented client-library APIs. <br>
+- Correctness: Whether the topology advice and amqplib code it produces are real and correct - valid exchange/queue patterns, quorum-queue and DLX arguments, confirm/ack calls and prefetch values rather than invented client-library APIs, and connection/recovery options (maxFrameSize, initialMaxRetries, waitForConnect, calculateDelay) that exist at amqplib 2.3.1. <br>
 - Discoverability: Whether the skill activates on RabbitMQ/AMQP messaging requests (including event-driven and background-job work) and stays silent for Kafka, NATS, gRPC, Redis or plain synchronous REST work. <br>
 - Reliability: Whether it reaches the same correct topology and reliability guidance consistently across repeat runs; the report notes no prerequisites, limitations or troubleshooting section is documented, which is what this dimension penalises. <br>
 - Efficiency: Whether it answers with the least necessary steps and context, given the two reference files are meant to be consulted only when API detail is needed. <br>
@@ -57,6 +58,6 @@ Reported benchmark dimensions: <br>
 | Efficiency | 100.0 | — | — |
 
 ## Skill Version(s): <br>
-1.0.0 (source: frontmatter) <br>
+1.1.0 (source: frontmatter) <br>
 
 

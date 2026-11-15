@@ -3,8 +3,8 @@
 Colon-case event names, the 2.x -> 4.x rename maps, the changed event-detail shape, and the
 v4 JavaScript API.
 
-Documents: **htmx 4.0.0**. Notes marked "2.x" describe the older line (npm `latest` is
-`2.0.10`; `4.0.0` is on `next`; the htmx.org website still documents 2.x).
+Documents: **htmx 4.0.1**. Notes marked "2.x" describe the older line (npm `latest` is
+`2.0.11`; `4.0.1` is on `next`; the htmx.org website still documents 2.x).
 
 ## Table of contents
 

@@ -9,7 +9,7 @@ This skill is ready for commercial/non-commercial use. <br>
 ### License/Terms of Use: <br>
 Apache 2.0 <br>
 ## Use Case: <br>
-Developers and engineers building server-rendered, hypermedia-driven web UIs with htmx 4.x, or migrating an existing htmx 2.x / React-Vue front-end to htmx 4 markup and APIs. <br>
+Developers and engineers building server-rendered, hypermedia-driven web UIs with htmx 4.0.1, or migrating an existing htmx 2.x / React-Vue front-end to htmx 4 markup and APIs. <br>
 
 ### Deployment Geography for Use: <br>
 Global <br>
@@ -30,6 +30,7 @@ Mitigation: Review and scan skill before deployment. <br>
 - [events-api.md](references/events-api.md) <br>
 - [extensions.md](references/extensions.md) <br>
 - [upgrade-from-2.md](references/upgrade-from-2.md) <br>
+- [bigskysoftware/htmx v4.0.1 (upstream release the skill documents)](https://github.com/bigskysoftware/htmx) <br>
 
 
 ## Skill Output: <br>
@@ -64,6 +65,6 @@ Underlying evaluation signals used in this run: <br>
 | Efficiency | 100.0 | — | — |
 
 ## Skill Version(s): <br>
-1.1.0 (source: frontmatter) <br>
+1.2.0 (source: frontmatter) <br>
 
 

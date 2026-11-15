@@ -3,7 +3,7 @@
 Condensed 13-step migration path from the upstream upgrade guide, with the ordering warnings
 that change correctness if skipped.
 
-Documents: **htmx 4.0.0** (target). Source line is `2.0.10` (npm `latest`; `4.0.0` is on
+Documents: **htmx 4.0.1** (target). Source line is `2.0.11` (npm `latest`; `4.0.1` is on
 `next`; the htmx.org website still documents 2.x).
 
 ## Table of contents
@@ -28,10 +28,10 @@ Run the shipped checker first to build the worklist. It prints clickable `file:l
 a suggested fix and rewrites nothing.
 
 ```bash
-npx htmx.org@4.0.0 upgrade-check -- ./path/to/project
+npx htmx.org@4.0.1 upgrade-check -- ./path/to/project
 
 # add file extensions the scanner does not know
-npx htmx.org@4.0.0 upgrade-check --ext .vue ./path/to/project
+npx htmx.org@4.0.1 upgrade-check --ext .vue ./path/to/project
 ```
 
 Pin the version to the release you are moving to. Default extensions scanned: `.html`, `.php`,

@@ -1,5 +1,5 @@
 ## Description: <br>
-Builds production-ready Spring AI 2.0 MCP (Model Context Protocol) servers and clients — Boot Starters and transport selection, the @Mcp* annotation surface, OAuth 2.0 and API-key security, testing, customisation and GraalVM native-image support — and handles Spring AI 2.0 / MCP Java SDK 2.0.1 migration. <br>
+Builds production-ready Spring AI 2.0 MCP (Model Context Protocol) servers and clients — Boot Starters and transport selection, the @Mcp* annotation surface, OAuth 2.0 and API-key security, testing, customisation and GraalVM native-image support — and handles Spring AI 2.0 / MCP Java SDK migration. <br>
 
 This skill is ready for commercial/non-commercial use. <br>
 
@@ -33,8 +33,8 @@ Mitigation: Review and scan skill before deployment. <br>
 - [references/mcp-architecture.md](references/mcp-architecture.md) <br>
 - [references/mcp-aot-native.md](references/mcp-aot-native.md) <br>
 - [references/migration.md](references/migration.md) <br>
-- [spring-projects/spring-ai v2.0.1 (upstream framework the skill was verified against)](https://github.com/spring-projects/spring-ai) <br>
-- [modelcontextprotocol/java-sdk v2.0.1 (MCP Java SDK pinned by spring-ai via <mcp.sdk.version>)](https://github.com/modelcontextprotocol/java-sdk) <br>
+- [spring-projects/spring-ai v2.0.2 (upstream framework the skill was verified against)](https://github.com/spring-projects/spring-ai) <br>
+- [modelcontextprotocol/java-sdk v2.1.0 (MCP Java SDK pinned by spring-ai 2.0.2 via <mcp.sdk.version>)](https://github.com/modelcontextprotocol/java-sdk) <br>
 
 
 ## Skill Output: <br>
@@ -48,7 +48,7 @@ No `evals/evals.json` case set exists for this skill, so no task-level eval case
 
 ## Evaluation Metrics Used: <br>
 Reported benchmark dimensions: <br>
-- Correctness: Whether the starter artefact names, property keys, annotation attributes and package imports it emits are real Spring AI 2.0.1 / MCP Java SDK 2.0.1 identifiers rather than invented or 1.x-era ones — e.g. keeping io.modelcontextprotocol.* protocol types in their original package instead of relocating them. <br>
+- Correctness: Whether the starter artefact names, property keys, annotation attributes and package imports it emits are real Spring AI 2.0.2 / MCP Java SDK 2.1.0 identifiers rather than invented or 1.x-era ones — e.g. keeping io.modelcontextprotocol.* protocol types in their original package instead of relocating them. <br>
 - Discoverability: Whether the skill triggers on any MCP-in-a-Spring request (server or client building, annotations, transport choice, migration, security, testing, customisation, native image) and stays silent on non-MCP work such as plain REST, gRPC or non-Spring MCP clients. <br>
 - Reliability: Whether the skill reaches the expected starter, annotation and configuration answer consistently across repeat runs, including the documented pitfalls such as OAuth 2.0 being unavailable over SSE transport. <br>
 - Efficiency: Whether it answers without unnecessary steps or context overhead while consulting the deeper reference files only when the quick-reference sections are insufficient. <br>
@@ -65,6 +65,6 @@ Reported benchmark dimensions: <br>
 | Efficiency | 100.0 | — | — |
 
 ## Skill Version(s): <br>
-2.0.1 (source: frontmatter) <br>
+2.0.2 (source: frontmatter) <br>
 
 

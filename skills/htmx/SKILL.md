@@ -14,7 +14,7 @@ description: >
   htmx, add progressive enhancement to existing pages, or upgrade htmx 2 to htmx 4.
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-  version: 1.1.0
+  version: 1.2.0
   category: frontend
   tags: [htmx, hypermedia, ajax, server-side, no-javascript, declarative]
 ---
@@ -23,17 +23,18 @@ metadata:
 
 Server-rendered HTML fragments plus htmx attributes. No build step, no client framework.
 
-> **Documents htmx 4.0.0.** Two version traps matter before you write anything:
+> **Documents htmx 4.0.1** (released 2026-11-01; patch-only over 4.0.0, so every
+> breaking-change note below still holds). Two version traps matter before you write anything:
 >
 > 1. The npm package is `htmx.org` (there is an old, broken package called `htmx`).
->    Its dist-tags are `latest = 2.0.10` and `next = 4.0.0`, so `@latest` and a bare
+>    Its dist-tags are `latest = 2.0.11` and `next = 4.0.1`, so `@latest` and a bare
 >    `npm install htmx.org` both hand back the **2.x** line. Pin an explicit version.
 > 2. htmx 4 is a ground-up rewrite and is **not** source-compatible with 2.x markup.
 >    Attributes, event names, config keys, headers and the JS API all moved.
 >
-> The published htmx.org website docs still describe 2.0.10, so anything quoted from
+> The published htmx.org website docs still describe the 2.x line, so anything quoted from
 > them is 2.x content. The `master` branch is also still 2.x; v4 lives on the
-> `v4.0.0` tag.
+> `v4.0.1` tag.
 
 ## Instructions
 
@@ -58,8 +59,8 @@ that silently corrupt behaviour.
 ## Quick Start
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/htmx.min.js"
-        integrity="sha384-BvJpBiO8Kh31EqtJe5DRIeWrHWnCGkwytKs9NKFi86Hhw96dEqdEMzZDeK9iEGTc"
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.1/dist/htmx.min.js"
+        integrity="sha384-Qp9rdC8H7EqOoX+nR0P3RPG2Noji+qdwJlGpfzwQJsfOpp3sGwIdSP9xO3+UlEhn"
         crossorigin="anonymous"></script>
 
 <button hx-post="/clicked" hx-swap="outerHTML">Click Me</button>
@@ -128,7 +129,8 @@ Modifiers follow the style, space-separated:
 `hx-swap="innerHTML swap:100ms settle:200ms transition:true scroll:top showTarget:#hdr strip:true"`.
 Others: `ignoreTitle:true`, `scrollTarget:<sel>`, `focusScroll:true`, `swapEmpty:true`,
 `target:<sel>`. Note the v4 form of the old combined `show:#sel:top` syntax is
-`show:top showTarget:#sel`.
+`show:top showTarget:#sel`. As of 4.0.1 `scrollTarget` and `showTarget` also accept
+`window` and `document`, and relative selectors.
 
 ### 4. Choose the trigger
 
@@ -321,8 +323,8 @@ Include the script; extensions apply page-wide, and no `hx-ext` attribute is nee
 | `hx-alpine-compat.js` | `alpine-compat` | Coexist with Alpine.js |
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/htmx.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-sse.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.1/dist/htmx.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.1/dist/ext/hx-sse.js"></script>
 <div hx-sse:connect="/events" hx-sse:close="closeEvents">…</div>
 ```
 
@@ -341,7 +343,7 @@ belong to the 1.x legacy directory. `htmax.js` bundles htmx with the popular ext
 
 | Pitfall | Avoidance |
 |---|---|
-| Installed 2.x while writing v4 syntax | `npm install htmx.org` gives `latest` = 2.0.10; pin `@4.0.0` |
+| Installed 2.x while writing v4 syntax | `npm install htmx.org` gives `latest` = 2.0.11; pin `@4.0.1` |
 | Renaming `hx-disable` in the wrong order | Do `hx-disable`→`hx-ignore` **first**, then `hx-disabled-elt`→`hx-disable`; reversing it silently corrupts both |
 | Attributes set on a parent do nothing | v4 needs `:inherited`; or set `implicitInheritance: true` |
 | `hx-delete` lost its form data | v4 `hx-delete`, like `hx-get`, no longer includes enclosing form inputs; add `hx-include="closest form"` |
@@ -358,14 +360,16 @@ Run the shipped checker first to scope the work — it prints clickable `file:li
 suggested fixes and rewrites nothing:
 
 ```bash
-npx htmx.org@4.0.0 upgrade-check -- ./path/to/project
-npx htmx.org@4.0.0 upgrade-check --ext .vue ./path/to/project
+npx htmx.org@4.0.1 upgrade-check -- ./path/to/project
+npx htmx.org@4.0.1 upgrade-check --ext .vue ./path/to/project
 ```
 
 It scans `.html`, `.php`, `.js`, `.ts`, `.jinja`, `.jinja2`, `.j2`, `.erb`, `.hbs` by
 default. For a large codebase, `"implicitInheritance": true` and
 `"noSwap": [204,304,"4xx","5xx"]` skip the two largest steps, and `htmx-2-compat.js`
-fires old event names alongside new ones. These are bridges, not destinations.
+fires old event names alongside new ones. These are bridges, not destinations. Since
+4.0.1 `implicitInheritance` no longer inherits verbs, `hx-action` or `hx-trigger`, so it
+does not reproduce 2.x verb inheritance — check those explicitly.
 
 ## References
 

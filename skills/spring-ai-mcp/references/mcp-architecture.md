@@ -91,7 +91,8 @@ contracts (`McpStreamableServerTransport`, `McpStreamableServerTransportProvider
 
 ## Transport Hierarchy
 
-Every name below is a real class at `v2.0.1`. Note that the interfaces live in
+Every name below is a real class at `v2.0.2` (re-checked against the `v2.0.2` tree; the
+`v2.0.1` names are unchanged). Note that the interfaces live in
 `io.modelcontextprotocol.spec` while the implementations live in the
 `…client.transport` / `…server.transport` packages.
 

@@ -132,6 +132,41 @@ public class CustomAsyncServerCustomizer implements McpAsyncServerCustomizer {
 }
 ```
 
+### McpStatelessSyncServerCustomizer / McpStatelessAsyncServerCustomizer
+
+Added in **2.0.2** (`org.springframework.ai.mcp.customizer`). The stateless server builders
+have their own specification types, so they are **not** reachable from the ordinary server
+customizers. `McpServerAutoConfiguration` is gated on `NonStatelessServerCondition`
+(`protocol` = `SSE` — the default when unset — or `STREAMABLE`), while
+`McpServerStatelessAutoConfiguration` is gated on `EnabledStatelessServerCondition`
+(`protocol=STATELESS`, `matchIfMissing = false`). The two never both apply, so for a
+`protocol=STATELESS` server implement the stateless variant and expect the ordinary
+`McpSyncServerCustomizer` bean to sit unused:
+
+```java
+@Component
+public class CustomStatelessServerCustomizer implements McpStatelessSyncServerCustomizer {
+    @Override
+    public void customize(McpServer.StatelessSyncSpecification serverBuilder) {
+        serverBuilder.requestTimeout(Duration.ofSeconds(30));
+    }
+}
+```
+
+The async counterpart is `McpStatelessAsyncServerCustomizer`, taking
+`McpServer.StatelessAsyncSpecification`. Both specification types are nested classes of
+`io.modelcontextprotocol.server.McpServer` (MCP Java SDK `2.1.0`, the version Spring AI
+2.0.2 pins) and expose `requestTimeout`, `serverInfo`, `instructions`,
+`strictToolNameValidation`, `validateToolInputs`, `addToolFilter`, `capabilities`,
+`tools`/`resources`/`resourceTemplates`/`prompts`/`completions`, `jsonMapper` and
+`jsonSchemaValidator`.
+
+Unlike the stateful side — which injects a single `Optional<McpSyncServerCustomizer>` —
+the stateless autoconfiguration collects **all** beans through
+`ObjectProvider<McpStatelessSyncServerCustomizer>` and applies them via
+`orderedStream()`, so several customizers can contribute to one server and `@Order`
+controls the sequence.
+
 ## Client Customizers
 
 Customize client behavior with `McpClientCustomizer<B>` (`org.springframework.ai.mcp.customizer`)

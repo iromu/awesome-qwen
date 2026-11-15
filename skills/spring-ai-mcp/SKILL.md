@@ -9,15 +9,15 @@ description: >-
   @McpToolListChanged, @McpResourceListChanged, @McpPromptListChanged),
   MCP configuration, Spring AI 2.0 MCP migration, MCP security (OAuth 2.0,
   API keys), MCP testing, MCP customization (McpToolFilter, McpClientCustomizer,
-  name prefix generators), MCP architecture, or MCP native image support.
+  McpStateless{Sync,Async}ServerCustomizer, name prefix generators), MCP
+  architecture, or MCP native image support.
   Trigger on any mention of MCP in a Spring context, even if the user says
-  "model context protocol", "MCP server", "MCP client", "McpTool annotation",
+  "model context protocol", "MCP server", "MCP client",
   "MCP transport", "MCP Streamable-HTTP", "MCP STDIO", "MCP SSE", "tool
-  filtering", "MCP customizer", "MCP native image", or wants to connect an AI
-  model to external tools via MCP.
+  filtering", "MCP native image", or connecting an AI model to external tools.
 metadata:
   author: "Iván Rodríguez Murillo <wantez@gmail.com>"
-  version: 2.0.1
+  version: 2.0.2
 ---
 
 # Spring AI MCP
@@ -25,11 +25,12 @@ metadata:
 Build production-ready Spring AI MCP applications — servers that expose tools,
 resources, and prompts to AI models, and clients that consume MCP servers.
 
-> **Verified against** `spring-projects/spring-ai` `v2.0.1` and the MCP Java SDK
-> `modelcontextprotocol/java-sdk` `v2.0.1` (spring-ai pins it via
-> `<mcp.sdk.version>`). Identifier names and packages in this skill were checked
-> against those tags; re-verify against the tag you actually build against, since
-> the annotation and transport surface has moved between milestones.
+> **Verified against** `spring-projects/spring-ai` `v2.0.2` (released 2026-10-23), which
+> pins the MCP Java SDK `modelcontextprotocol/java-sdk` at **`2.1.0`** via
+> `<mcp.sdk.version>` in the root POM (`pom.xml`, top-level `<properties>`; `v2.0.1` pinned
+> SDK `2.0.0`, so this is an SDK minor bump, not a patch). Identifier names and packages in
+> this skill were checked against those tags; re-verify against the tag you actually build
+> against, since the annotation and transport surface has moved between milestones.
 
 ## Instructions
 
@@ -126,7 +127,7 @@ initialization.
 > customizers in `org.springframework.ai.mcp.customizer`, plus the autoconfigure
 > and starter artifacts), while the protocol types stay in the MCP Java SDK
 > (`groupId io.modelcontextprotocol.sdk`, packages `io.modelcontextprotocol.*`).
-> Spring AI `2.0.1` pins the SDK via `<mcp.sdk.version>` — check the root POM
+> Spring AI `2.0.2` pins SDK `2.1.0`; `2.0.1` pinned `2.0.0`. Check the root POM
 > rather than hard-coding a version in your build. Nothing was relocated out of
 > `io.modelcontextprotocol.*`, so keep those imports. See **Migration** below.
 

@@ -1,45 +1,30 @@
 # SkillSpector Security Report
 
 **Skill:** rabbitmq-typescript  
-**Scanned:** 2026-10-08 22:48:47 UTC  
+**Scanned:** 2026-11-15 00:48:15 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 56/100 |
+| Score | 63/100 |
 | Severity | HIGH |
 | Recommendation | DO NOT INSTALL |
 
-## Components (3)
+## Components (4)
 
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
-| `SKILL.md` | markdown | 411 | No |
-| `references/amqplib.md` | markdown | 567 | No |
+| `SKILL.md` | markdown | 416 | No |
+| `references/amqplib.md` | markdown | 637 | No |
 | `references/rabbitmq-concepts.md` | markdown | 395 | No |
+| `skill-card.md` | markdown | 63 | No |
 
-## Issues (8)
-
-### 🔴 HIGH: AE1
-
-**Location:** `SKILL.md:248`  
-**Confidence:** 100%  
-
-**Message:** Referenced artifact was not completely inspected
-
-**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
-
-**Evidence:**
-- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
-- **target_disposition:** `partial`
-- **target_path:** `references/amqplib.md`
-
----
+## Issues (9)
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:256`  
+**Location:** `SKILL.md:253`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -71,7 +56,7 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:330`  
+**Location:** `SKILL.md:266`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -87,7 +72,23 @@
 
 ### 🔴 HIGH: AE1
 
-**Location:** `SKILL.md:408`  
+**Location:** `SKILL.md:335`  
+**Confidence:** 100%  
+
+**Message:** Referenced artifact was not completely inspected
+
+**Remediation:** Review the reported expression and analyzer's parsing limitation; correct the scanner if it misinterprets valid source, then rerun the scan. Keep required references; incomplete analysis is not proof of malicious evasion.
+
+**Evidence:**
+- **reasons:** `[{'reason_code': 'static_parse_limit', 'message': "A security-relevant expression exceeded a bounded static parser's span limit.", 'phase': 'static', 'analyzers': ['static_patterns_tool_misuse']}]`
+- **target_disposition:** `partial`
+- **target_path:** `references/amqplib.md`
+
+---
+
+### 🔴 HIGH: AE1
+
+**Location:** `SKILL.md:413`  
 **Confidence:** 100%  
 
 **Message:** Referenced artifact was not completely inspected
@@ -103,7 +104,7 @@
 
 ### 🟡 MEDIUM: RP1
 
-**Location:** `SKILL.md:203`  
+**Location:** `SKILL.md:208`  
 **Confidence:** 70%  
 
 **Message:** MCP server referenced without pinned version: 'npx vitest'.
@@ -114,7 +115,7 @@
 
 ### 🟡 MEDIUM: RP1
 
-**Location:** `SKILL.md:206`  
+**Location:** `SKILL.md:211`  
 **Confidence:** 70%  
 
 **Message:** MCP server referenced without pinned version: 'npx vitest'.
@@ -125,12 +126,23 @@
 
 ### 🟡 MEDIUM: RP1
 
-**Location:** `SKILL.md:209`  
+**Location:** `SKILL.md:214`  
 **Confidence:** 70%  
 
 **Message:** MCP server referenced without pinned version: 'npx vitest'.
 
 **Remediation:** Pin the version: npx @scope/server@1.2.3
+
+---
+
+### 🟡 MEDIUM: EA4
+
+**Location:** `references/amqplib.md:177`  
+**Confidence:** 75%  
+
+**Message:** Unbounded Resource Access
+
+**Remediation:** Set explicit rate limits, timeouts, and resource quotas for API calls, file operations, and compute. Implement circuit breakers for runaway loops.
 
 ---
 
@@ -140,8 +152,8 @@
 |--------|-------|
 | Execution | successful |
 | Status | partial |
-| Coverage | 66.7% |
-| Fully inspected | 2 |
+| Coverage | 75.0% |
+| Fully inspected | 3 |
 | Partially inspected | 1 |
 | Entirely uninspected | 0 |
 
@@ -151,14 +163,16 @@
 |-----------------|----------|---------|
 | reference_missing | `SKILL.md:4-4` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | reference_missing | `SKILL.md:18-18` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:30-30` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:123-123` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:167-167` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:203-203` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:229-229` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:230-230` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:238-238` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
-| reference_missing | `SKILL.md:241-241` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:21-21` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:34-34` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:118-118` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:128-128` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:172-172` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:208-208` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:234-234` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:235-235` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:243-243` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
+| reference_missing | `SKILL.md:246-246` | A local path-like reference does not match any bundled artifact, such as a file the skill writes at runtime. |
 | static_parse_limit | `references/amqplib.md` | A security-relevant expression exceeded a bounded static parser's span limit. |
 
 ### Analyzer Statuses

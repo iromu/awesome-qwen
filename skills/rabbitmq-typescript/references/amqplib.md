@@ -2,8 +2,10 @@
 
 ## Overview
 
+- **Verified against:** amqplib **v2.3.1** (2026-11-08). Option names below were read from
+  `lib/`, `index.d.ts` and `lib/properties.d.ts` at that tag.
 - **Installation:** `npm install amqplib`
-- **Node.js:** v18+ required
+- **Node.js:** v18+ required (`package.json` `engines.node: ">=18"`)
 - **RabbitMQ:** 4.1.0+ required (for amqplib 0.10.7+)
 - **Language:** JavaScript / TypeScript (built-in TypeScript types)
 - **License:** MIT
@@ -12,6 +14,12 @@
 - **Changelog:** https://github.com/amqp-node/amqplib/blob/main/CHANGELOG.md
 
 Does not implement AMQP 1.0 or AMQP 0-10. Production-ready, stable APIs.
+
+> **Upgrade past 2.2.x for the frame-handling security fix.** v2.3.0 addresses
+> GHSA-37f9-7m79-6866, a denial of service reachable by a malicious or non-compliant broker:
+> a `connection.tune` with `frameMax` below the protocol minimum of 4096 made the first
+> publish of 2048 bytes or more spin in `sendContent` until memory ran out. Such a tune is
+> now rejected with `Server frameMax N is below the protocol minimum 4096`.
 
 ---
 
@@ -82,7 +90,8 @@ import amqplib, { ConnectionOptions } from 'amqplib';
 const connection: Connection = await amqplib.connect(url: string, options?: ConnectionOptions);
 ```
 
-**ConnectionOptions interface:**
+**ConnectionOptions interface** (the `Options.Connect` fields live in
+`lib/properties.d.ts`, not `index.d.ts`):
 
 ```typescript
 interface ConnectionOptions {
@@ -92,11 +101,30 @@ interface ConnectionOptions {
   username?: string;       // Override username
   password?: string;       // Override password
   locale?: string;         // Override locale for error messages
+  frameMax?: number;       // Outgoing frame size to negotiate (default 131072)
+  maxFrameSize?: number;   // Cap on INCOMING frames (since 2.3.0; see below)
+  heartbeat?: number;      // 0 disables heartbeats outright (2.0.0 breaking change)
   socketOptions?: SocketOptions;
   recovery?: RecoveryOptions;
   clientProperties?: Record<string, string>;
 }
 ```
+
+**`maxFrameSize` (v2.3.0+, GHSA-37f9-7m79-6866).** Before 2.3.0 the client trusted the
+size in an incoming frame header and would buffer — and repeatedly re-copy — up to the
+4 GiB that header can declare. `maxFrameSize` bounds accepted frame payload from the header
+alone, defaulting to 64 MiB (or the negotiated `frameMax` when that is larger); `0` disables
+the limit. An oversized frame is refused with `Frame size N exceeds maxFrameSize M` and the
+connection closes. It is validated at `connection.open`: the value must be `0` or an integer
+of at least 4096, otherwise you get
+`maxFrameSize must be 0 (no limit) or an integer of at least 4096; got X`.
+
+It is also settable as a URL query parameter (`amqp://host?maxFrameSize=1048576`); a
+non-numeric value there parses to `NaN` and fails validation.
+
+**Upgrade note:** a broker that legitimately sends an unsplit frame larger than the limit
+(see amqplib #784) now has that connection closed. Raise the value or pass
+`maxFrameSize: 0` to restore the old behaviour — prefer raising it over disabling it.
 
 ### Connection Events
 
@@ -116,12 +144,49 @@ import amqplib, { Connection } from 'amqplib';
 
 interface RecoveryOptions {
   initialDelay: number;       // ms before first retry
-  maxDelay: number;           // ms between retries (max)
+  maxDelay: number;           // ms cap on the retry delay
   factor: number;             // backoff multiplier
   jitter: number;             // randomization factor
   maxRetries: number;         // max retries (Infinity = unlimited)
+  initialMaxRetries?: number; // since 2.2.0: separate bound for retries BEFORE the first
+                              // successful connect, so startup can fail fast while
+                              // steady-state recovery retries indefinitely
+  waitForConnect?: boolean;   // since 2.1.0: when false, connect() resolves with the
+                              // recovering model immediately instead of waiting for the
+                              // first successful connection
+  calculateDelay?: (attempt: number) => number; // since 2.2.0: custom backoff (full
+                              // jitter, decorrelated jitter, fixed schedule). When set,
+                              // maxDelay is NOT applied to its result; throwing or
+                              // returning an invalid value gives up as if maxRetries ran out
   async setup(model: Connection): Promise<void>;  // recreate topology after reconnect
 }
+```
+
+With `waitForConnect: false`, `connect()` returns before the broker is reachable, so
+`connect`, `connect-failed` and `reconnect-scheduled` listeners can be attached before the
+first attempt, and `close()` can cancel it. Await the first connection explicitly with the
+`waitForConnect(): Promise<this>` **method** on the returned recovering model (note the
+option and the method share the name — they are different things).
+
+The built-in delay now genuinely respects `maxDelay`: the cap used to be applied *before*
+jitter, so delays could overshoot it by up to the jitter fraction. With defaults the
+steady-state delay now spreads over 20–30 s rather than 24–36 s. Operations attempted after
+recovery gives up (`reconnect-failed`) reject with that failure instead of hanging forever.
+
+```typescript
+// Fail fast on a bad broker at boot, then retry forever at runtime.
+const model = await amqplib.connect(url, {
+  recovery: {
+    initialDelay: 200, maxDelay: 5000, factor: 2, jitter: 0.2,
+    initialMaxRetries: 3,   // give up quickly if we never connected at all
+    maxRetries: Infinity,   // but keep trying once we have been up
+    async setup(m) { /* re-declare topology */ },
+  },
+});
+```
+
+```typescript
+import amqplib, { Connection } from 'amqplib';
 
 const connection: Connection = await amqplib.connect(url, {
   recovery: {
@@ -556,6 +621,11 @@ class RabbitMQService {
 | Missing confirmations | Ensure `channel.confirm()` was called before publishing |
 | TypeScript type errors | amqplib ships with built-in types; don't install `@types/amqplib` |
 | Consumer not receiving messages | Check binding keys, routing keys, and queue durability |
+| `Frame size N exceeds maxFrameSize M`, connection closed | Broker sent an unsplit frame above the 64 MiB default; raise `maxFrameSize` or set it to `0` (2.3.0+) |
+| `Server frameMax N is below the protocol minimum 4096` | Non-compliant broker `connection.tune`; this is the GHSA-37f9-7m79-6866 guard — fix the broker config rather than the client |
+| `publish()` returns but the broker closes the connection with 541 `INTERNAL_ERROR` | An encoded headers/`arguments` table crossed the 64 KiB encoding buffer. From 2.3.1 `publish` throws `RangeError: Encoded field table (headers or arguments) exceeds the N byte encoding buffer` instead of truncating silently |
+| `waitForConfirms` never calls back | Pre-2.2.1 bug when invoked after the confirm channel closed with unconfirmed messages; it now yields a `channel closed` error. The callback is also required in the TS declarations |
+| `channel.cancel()` gives you `{}` | Pre-2.2.1 typed the reply as `Replies.Empty`; it is now `Replies.Cancel` (`{ consumerTag }`) in both APIs |
 
 ---
 

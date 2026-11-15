@@ -3,7 +3,7 @@
 **Status:** ✅ PASSED
 **Profile:** external
 **Policy digest:** `sha256:1caeb0bf9c2e044705f32fcdbd773fea4d835d895b4e0ab20d1aaa5e28acd660`
-**Generated:** October 11, 2026 at 08:31 PM UTC
+**Generated:** November 15, 2026 at 12:32 AM UTC
 
 ## Summary
 
@@ -30,7 +30,7 @@
 - [OK] **frontmatter_valid**: Valid frontmatter for skill 'spring-ai-mcp'
 - [OK] **folder_hierarchy**: Valid general skill structure: skills/spring-ai-mcp/
 - [OK] **naming_convention**: Folder name 'spring-ai-mcp' follows kebab-case convention
-- [OK] **line_count**: SKILL.md within line limit (392/500)
+- [OK] **line_count**: SKILL.md within line limit (393/500)
 - [OK] **body_heading**: Body contains a top-level heading
 - [OK] **body_recommended_section**: Found recommended section: '## Instructions' (or '## Usage')
 - [OK] **body_recommended_section**: Found recommended section: '## Examples'
@@ -41,7 +41,7 @@
 ### ✅ Semantic Version Validation
 *Validate optional metadata.version labels and require strict bumps*
 
-- [OK] **version_semver**: Valid semantic version: 2.0.1
+- [OK] **version_semver**: Valid semantic version: 2.0.2
 
 ### ✅ License Compliance
 *Validate license compliance for Skills, Rules, and Workflows*
@@ -75,14 +75,14 @@
 
 | Severity | Issue | Location |
 |----------|-------|----------|
-| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:295</code> |
+| [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>SKILL.md:296</code> |
 | [LOW] LOW | Isolated invisible character(s) (1): VARIATION SELECTOR-16 | <code>references/security-and-testing.md:5</code> |
 
 <details>
 <summary>View Details</summary>
 
 **1. Isolated invisible character(s) (1): VARIATION SELECTOR-16**
-- File: `SKILL.md:295`
+- File: `SKILL.md:296`
 - Check: `isolated_invisible_char`
 - Content: `> **⚠️ Security is Work In Progress.** The Spring AI MCP ...`
 - Fix: Likely a copy-paste artifact. Remove if not intentional.
@@ -116,7 +116,7 @@
 |----------|-------|----------|
 | [MED] MEDIUM | SKILL_SPEC recommended field missing: 'version' | <code>spring-ai-mcp/SKILL.md</code> |
 | [MED] MEDIUM | SKILL_SPEC recommended field missing: 'metadata.tags' | <code>spring-ai-mcp/SKILL.md</code> |
-| [LOW] LOW | Description very long (995 chars, recommend 50-150) | <code>spring-ai-mcp/SKILL.md</code> |
+| [LOW] LOW | Description very long (983 chars, recommend 50-150) | <code>spring-ai-mcp/SKILL.md</code> |
 | [LOW] LOW | No '## Purpose' section | <code>spring-ai-mcp/SKILL.md</code> |
 | [LOW] LOW | No prerequisites/requirements documented | <code>spring-ai-mcp/SKILL.md</code> |
 | [LOW] LOW | No limitations documented | <code>spring-ai-mcp/SKILL.md</code> |
@@ -135,7 +135,7 @@
 - Check: `quality_correctness`
 - Fix: Add 'tags' under metadata: — Categorization tags (under metadata:, list of 1-5 items)
 
-**3. Description very long (995 chars, recommend 50-150)**
+**3. Description very long (983 chars, recommend 50-150)**
 - File: `spring-ai-mcp/SKILL.md`
 - Check: `quality_discoverability`
 - Fix: Keep descriptions concise for progressive disclosure
