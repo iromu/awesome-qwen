@@ -174,16 +174,24 @@ steady-state delay now spreads over 20–30 s rather than 24–36 s. Operations 
 recovery gives up (`reconnect-failed`) reject with that failure instead of hanging forever.
 
 ```typescript
-// Fail fast on a bad broker at boot, then retry forever at runtime.
+// Fail fast on a bad broker at boot, then keep retrying at runtime.
 const model = await amqplib.connect(url, {
   recovery: {
     initialDelay: 200, maxDelay: 5000, factor: 2, jitter: 0.2,
     initialMaxRetries: 3,   // give up quickly if we never connected at all
-    maxRetries: Infinity,   // but keep trying once we have been up
+    maxRetries: 1000,       // ~1.4 days at the 20-30s steady-state delay; use Infinity
+                            // only if you also alert on 'reconnect-scheduled'
     async setup(m) { /* re-declare topology */ },
   },
 });
 ```
+
+Bound `maxRetries` deliberately. An unbounded value (`Infinity`) keeps a process limping
+while its consumers are silently dead, so pair it with a `reconnect-scheduled` counter and a
+`reconnect-failed` alert; otherwise choose a budget that is long enough to ride out a planned
+broker restart and short enough that a genuinely lost broker still surfaces. Note
+`calculateDelay`, when set, bypasses `maxDelay` and is not bounded by it either — bound it
+inside your own function.
 
 ```typescript
 import amqplib, { Connection } from 'amqplib';

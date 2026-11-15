@@ -1,13 +1,13 @@
 # SkillSpector Security Report
 
 **Skill:** rabbitmq-typescript  
-**Scanned:** 2026-11-15 00:48:15 UTC  
+**Scanned:** 2026-11-15 01:04:08 UTC  
 
 ## Risk Assessment
 
 | Metric | Value |
 |--------|-------|
-| Score | 63/100 |
+| Score | 56/100 |
 | Severity | HIGH |
 | Recommendation | DO NOT INSTALL |
 
@@ -16,11 +16,11 @@
 | File | Type | Lines | Executable |
 |------|------|-------|------------|
 | `SKILL.md` | markdown | 416 | No |
-| `references/amqplib.md` | markdown | 637 | No |
+| `references/amqplib.md` | markdown | 645 | No |
 | `references/rabbitmq-concepts.md` | markdown | 395 | No |
 | `skill-card.md` | markdown | 63 | No |
 
-## Issues (9)
+## Issues (8)
 
 ### 🔴 HIGH: AE1
 
@@ -132,17 +132,6 @@
 **Message:** MCP server referenced without pinned version: 'npx vitest'.
 
 **Remediation:** Pin the version: npx @scope/server@1.2.3
-
----
-
-### 🟡 MEDIUM: EA4
-
-**Location:** `references/amqplib.md:177`  
-**Confidence:** 75%  
-
-**Message:** Unbounded Resource Access
-
-**Remediation:** Set explicit rate limits, timeouts, and resource quotas for API calls, file operations, and compute. Implement circuit breakers for runaway loops.
 
 ---
 
