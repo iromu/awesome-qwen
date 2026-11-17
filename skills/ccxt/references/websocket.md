@@ -254,7 +254,9 @@ fixed-size sliding deque of the most recent entries.
   `symbol` and issues one listenKey per symbol, `{'portfolioMargin': True}`). Each resolves into the
   shared orders cache.
 - `watchTransactions` is marked work-in-progress and may be unavailable.
-- `watchPong` is **not documented** in the CCXT Pro manual read for this reference; do not assume it.
+- There is **no** `watchPong` and no `watchPing` in ccxt — they appear in some third-party
+  tutorials but are absent from the Pro manual and resolve on no exchange binding (checked against
+  the installed library, 20 bindings, v4.5.92). Heartbeats are handled internally; don't call them.
 
 ## Source
 

@@ -118,6 +118,7 @@ Reusable presets extend `org.ta4j.core.strategy.named.NamedStrategy` (it extends
 
 ```java
 import org.ta4j.core.indicators.SMAIndicator;
+import org.ta4j.core.indicators.ATRIndicator;
 import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
 import org.ta4j.core.indicators.helpers.ConstantIndicator;
 import org.ta4j.core.indicators.numeric.BinaryOperationIndicator;
@@ -127,6 +128,8 @@ ClosePriceIndicator close = new ClosePriceIndicator(series);
 SMAIndicator fast = new SMAIndicator(close, 9);
 SMAIndicator slow = new SMAIndicator(close, 21);
 ATRIndicator atr = new ATRIndicator(series, 14);
+Indicator<Num> stopInd   = new ConstantIndicator<>(series, series.numFactory().numOf(98));
+Indicator<Num> targetInd = new ConstantIndicator<>(series, series.numFactory().numOf(112));
 
 Rule trendFilter = new OverIndicatorRule(slow, fast);              // long-term above
 Rule bullishCross = new CrossedUpIndicatorRule(fast, slow);        // one-bar event
@@ -136,11 +139,12 @@ Rule qualityGate  = new RiskRewardRatioRule(close, stopInd, targetInd, true, 2.0
 Rule cooldown     = new LossTriggeredCooldownRule(series, 5);
 Rule entryRule    = trendFilter.and(bullishCross).and(qualityGate).and(cooldown);
 
-Rule signalExit = new CrossedDownIndicatorRule(fast, slow);
+Rule signalExit = new CrossedDownIndicatorRule(fast, slow)
+        .and(new OpenedPositionMinimumBarCountRule(3));            // no whipsaw exit
 Rule riskExit   = new AverageTrueRangeTrailingStopLossRule(close, atr, 2.0)
         .or(new AverageTrueRangeTrailingStopGainRule(close, atr, 3.0))
         .or(new StopLossRule(close, series.numFactory().numOf(1.5)));   // hard fail-safe
-Rule exitRule   = signalExit.or(riskExit).or(new OpenedPositionMinimumBarCountRule(3).negation());
+Rule exitRule   = signalExit.or(riskExit);
 ```
 
 Use `BinaryOperationIndicator` / `UnaryOperationIndicator` (`org.ta4j.core.indicators.numeric`) for on-the-fly ratios, differences, and powers between indicators instead of writing a custom indicator class — they still participate in the caching pipeline. `ConstantIndicator` wraps a scalar so a rule that demands an `Indicator` can take a constant.
