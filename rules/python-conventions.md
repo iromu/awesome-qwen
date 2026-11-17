@@ -1,8 +1,7 @@
 ---
 description: Enforce Python PEP 8 conventions, type hints, and modern Python patterns
-applyTo: "**/*.py"
-tags: ["python", "pep8", "type-hints", "best-practices"]
-priority: 10
+paths:
+  - "**/*.py"
 ---
 
 # Python Code Conventions

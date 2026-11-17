@@ -26,7 +26,7 @@ No build step, no dependencies — just markdown files Qwen Code auto-discovers.
 | Category | Description | Count |
 |----------|-------------|-------|
 | [Agents](#agents) | Specialized AI personas with specific tool access and expertise | 4 |
-| [Instructions](#instructions) | Coding standards applied automatically by file pattern | 3 |
+| [Rules](#rules) | Coding standards applied automatically by file pattern | 5 |
 | [Skills](#skills) | Self-contained capabilities for specific tasks | 27 |
 | [Hooks](#hooks) | Automated actions triggered during Qwen Code sessions | 3 |
 | [Workflows](#workflows) | Reusable automation sequences (coming soon) | 0 |
@@ -45,15 +45,17 @@ Specialized AI personas with specific expertise, tool access, and behavior profi
 | [Debugging Expert](agents/debugging-expert.agent.md) | Root-cause analysis, stack trace diagnosis, regression bisection, and error reproduction | `qwen-max` |
 | [Code Reviewer](agents/code-reviewer.agent.md) | Expert code review — security, performance, code quality, and best practices | `qwen-max` |
 
-## Instructions
+## Rules
 
 Automated coding standards and guidelines applied by file pattern.
 
-| Instruction | Applies To | Description |
-|-------------|------------|-------------|
-| [TypeScript Best Practices](instructions/typescript-best-practices.instructions.md) | `**/*.ts` | Strict mode, no-explicit-any avoidance, proper type inference |
-| [React Best Practices](instructions/react-best-practices.instructions.md) | `**/*.{jsx,tsx}` | Functional components, hooks usage, performance optimization |
-| [Python Conventions](instructions/python-conventions.instructions.md) | `**/*.py` | PEP 8, type hints, modern Python patterns |
+| Rule | Applies To | Description |
+|------|------------|-------------|
+| [TypeScript Best Practices](rules/typescript-best-practices.md) | `**/*.ts` | Strict mode, no-explicit-any avoidance, proper type inference |
+| [React Best Practices](rules/react-best-practices.md) | `**/*.{jsx,tsx}` | Functional components, hooks usage, performance optimization |
+| [Python Conventions](rules/python-conventions.md) | `**/*.py` | PEP 8, type hints, modern Python patterns |
+| [Jinja Best Practices](rules/jinja-best-practices.md) | `**/*.{jinja,jinja2,j2}` | Autoescaping/XSS safety, header + block comments, whitespace control, reuse via extends/include/macro, minimal logic |
+| [Jinja for LLM Prompts](rules/jinja-llm-prompts.md) | `**/prompts/**`, `**/*prompt*.{j2,jinja,jinja2}` | Autoescape OFF, StrictUndefined, deterministic bytes for prompt caching, fencing untrusted content, snapshot tests |
 
 ## Skills
 

@@ -1,8 +1,7 @@
 ---
 description: Enforce TypeScript best practices including strict mode, no-explicit-any avoidance, and proper type inference
-applyTo: "**/*.ts"
-tags: ["typescript", "best-practices", "type-safety"]
-priority: 10
+paths:
+  - "**/*.ts"
 ---
 
 # TypeScript Best Practices
@@ -39,7 +38,7 @@ function process(data: { value?: string }) {
 type Result = { success: boolean; data?: any; error?: string };
 
 // ✅ Good
-type Result = 
+type Result =
   | { success: true; data: unknown }
   | { success: false; error: string };
 ```

@@ -1,8 +1,7 @@
 ---
 description: Enforce React functional component patterns, hooks usage, and performance optimization
-applyTo: "**/*.{jsx,tsx}"
-tags: ["react", "hooks", "performance", "best-practices"]
-priority: 10
+paths:
+  - "**/*.{jsx,tsx}"
 ---
 
 # React Best Practices

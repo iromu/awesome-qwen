@@ -20,7 +20,7 @@ Thank you for your interest in contributing! This guide explains how to add your
 | Type | Description | Directory |
 |------|-------------|-----------|
 | **Agent** | Specialized AI personas with specific expertise and tool access | `agents/` |
-| **Instruction** | Coding standards applied automatically by file pattern | `instructions/` |
+| **Rule** | Coding standards applied automatically by file pattern | `rules/` |
 | **Skill** | Self-contained task capability with instructions and assets | `skills/<name>/` |
 | **Hook** | Automated actions triggered during Qwen Code sessions | `hooks/<name>/` |
 | **Workflow** | Reusable automation sequences for repetitive tasks | `workflows/` |

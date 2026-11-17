@@ -95,7 +95,7 @@ After creating a skill, update `README.md` to include it in the skills table. Us
 ```
 awesome-qwen/
 ├── agents/               # AI agent definitions (.agent.md)
-├── instructions/         # Coding standards by file pattern
+├── rules/                # Coding standards by file pattern
 ├── skills/               # Created skills (final output)
 │   └── <skill-name>/
 │       ├── SKILL.md
