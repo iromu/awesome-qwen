@@ -49,6 +49,10 @@ Specialized AI personas with specific expertise, tool access, and behavior profi
 
 Automated coding standards and guidelines applied by file pattern.
 
+Install a rule by copying it into `.qwen/rules/` (project) or `~/.qwen/rules/` (global) — see
+[rules/README.md](rules/README.md) for one-line `curl` commands and how to load a single file from
+any git repo.
+
 | Rule | Applies To | Description |
 |------|------------|-------------|
 | [TypeScript Best Practices](rules/typescript-best-practices.md) | `**/*.ts` | Strict mode, no-explicit-any avoidance, proper type inference |
