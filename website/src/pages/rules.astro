@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { RulesCatalog } from "../components/brand/RulesCatalog";
+import { rules, searchIndex } from "../lib/site-data";
+---
+
+<BaseLayout
+  title="Rules | Awesome Qwen"
+  description="Coding standards Qwen Code applies automatically by file pattern — copy a rule into .qwen/rules/ and it loads."
+>
+  <RulesCatalog
+    client:load
+    rules={rules as any}
+    searchIndex={searchIndex}
+  />
+</BaseLayout>

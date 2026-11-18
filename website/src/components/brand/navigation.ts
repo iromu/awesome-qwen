@@ -1,8 +1,11 @@
 import type { PrototypePageProps } from "./pageHref";
 
-export type SitePage = "skills";
+export type SitePage = "skills" | "rules";
 
-const destinations = [{ label: "Skills", page: "skills" }] as const;
+const destinations = [
+  { label: "Skills", page: "skills" },
+  { label: "Rules", page: "rules" },
+] as const;
 
 export function getNavLinks(
   pageHref: PrototypePageProps["pageHref"],

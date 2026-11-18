@@ -22,15 +22,17 @@ interface SearchRecord {
 
 const TYPE_LABELS: Record<string, string> = {
   skill: "Skill",
+  rule: "Rule",
 };
 
 const TYPE_PAGES: Record<string, string> = {
   skill: "/skills/",
+  rule: "/rules/",
 };
 
 // Resource types that have a dedicated detail page at /<type>/<id>/. Search
 // results for these should deep-link to the canonical detail page.
-const DETAIL_ROUTE_TYPES = new Set(["skill"]);
+const DETAIL_ROUTE_TYPES = new Set(["skill", "rule"]);
 
 export default function pagefindResources(): AstroIntegration {
   let siteBase = "/";

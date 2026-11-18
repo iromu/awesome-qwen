@@ -76,6 +76,8 @@ export function loadPagefind(): Promise<PagefindModule | null> {
 const CATEGORY_BY_SEGMENT: Record<string, SearchCategory> = {
   skill: "Skills",
   skills: "Skills",
+  rule: "Rules",
+  rules: "Rules",
 };
 
 /** Derive a result category from the result URL, relative to the base path. */
@@ -94,7 +96,7 @@ function categoryOf(pathname: string): SearchCategory {
 
 /** Pagefind custom records carry a `Title — Skill` style suffix; strip it. */
 function cleanTitle(title: string): string {
-  return title.replace(/\s+—\s+(Skill|Skills)$/u, "");
+  return title.replace(/\s+—\s+(Skill|Skills|Rule|Rules)$/u, "");
 }
 
 /** Normalised key used to dedupe against the static index. */

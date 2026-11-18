@@ -1,10 +1,12 @@
 /**
  * Generate the website's build-time data feeds.
  *
- * Scans the repo's `skills/` directory and the per-skill validation reports in
- * `reports/skillevaluator/` and writes two JSON files into `public/data/`:
+ * Scans the repo's `skills/` directory, the per-skill validation reports in
+ * `reports/skillevaluator/`, and the `rules/` catalogue, then writes three JSON
+ * files into `public/data/`:
  *
  *   - skills.json       catalog + detail pages (`{ items: [...] }`)
+ *   - rules.json        rules catalog + detail pages (`{ items: [...] }`)
  *   - search-index.json site-wide search records consumed by `src/lib/site-data.ts`
  *                       and the `pagefind-resources` Astro integration
  *
@@ -25,6 +27,7 @@ const websiteRoot = path.resolve(here, "..");
 const repoRoot = path.resolve(websiteRoot, "..");
 
 const skillsDir = path.join(repoRoot, "skills");
+const rulesDir = path.join(repoRoot, "rules");
 const reportsDir = path.join(repoRoot, "reports", "skillevaluator");
 const outputDir = path.join(websiteRoot, "public", "data");
 
@@ -62,22 +65,26 @@ function listSkillFiles(skillDir, skillName) {
   return files;
 }
 
-/** ISO date (UTC) of the last commit touching the skill folder, falling back
- *  to the SKILL.md mtime when git has no history for it (fresh clone, shallow
+/** ISO date (UTC) of the last commit touching `relPath`, falling back to the
+ *  given file's mtime when git has no history for it (fresh clone, shallow
  *  checkout, or untracked file). `fetch-depth: 0` in the deploy workflows is
  *  what makes the git-based date reliable in CI. */
-function lastUpdated(skillName, skillMdPath) {
+function lastUpdatedFor(relPath, fallbackFile) {
   try {
     const iso = execFileSync(
       "git",
-      ["log", "-1", "--format=%cI", "--", `skills/${skillName}`],
+      ["log", "-1", "--format=%cI", "--", relPath],
       { cwd: repoRoot, encoding: "utf8" },
     ).trim();
     if (iso) return iso.slice(0, 10);
   } catch {
     /* git unavailable — fall through to mtime */
   }
-  return new Date(fs.statSync(skillMdPath).mtimeMs).toISOString().slice(0, 10);
+  return new Date(fs.statSync(fallbackFile).mtimeMs).toISOString().slice(0, 10);
+}
+
+function lastUpdated(skillName, skillMdPath) {
+  return lastUpdatedFor(`skills/${skillName}`, skillMdPath);
 }
 
 /**
@@ -159,6 +166,55 @@ function readSkill(skillName) {
   };
 }
 
+/** `rules/README.md` is the install guide, not a rule — never a catalog item. */
+const RULES_EXCLUDED = new Set(["README.md"]);
+
+/** "typescript-best-practices" → "Typescript Best Practices" (fallback only). */
+function titleFromId(id) {
+  return id
+    .split("-")
+    .map((word) => (word ? word[0].toUpperCase() + word.slice(1) : word))
+    .join(" ");
+}
+
+/**
+ * Read one rule file. A rule is a single markdown file with `description` and
+ * `paths:` frontmatter; a rule with no `paths` is a *baseline* rule that Qwen
+ * Code injects into every session, which the catalog surfaces as its own facet.
+ *
+ * The display title is the file's leading `#` heading (the same string the repo
+ * README's Rules table uses), falling back to the prettified filename.
+ */
+function readRule(fileName) {
+  const rulePath = path.join(rulesDir, fileName);
+  const raw = fs.readFileSync(rulePath, "utf8");
+  const parsed = matter(raw);
+
+  const description = String(parsed.data?.description ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
+  // Qwen Code requires a YAML list, but tolerate the scalar form so a stray
+  // `paths: "**/*.ts"` still surfaces on the site instead of vanishing.
+  const rawPaths = parsed.data?.paths;
+  const paths = (Array.isArray(rawPaths) ? rawPaths : rawPaths ? [rawPaths] : [])
+    .map((glob) => String(glob).trim())
+    .filter(Boolean);
+
+  const id = path.basename(fileName, ".md");
+  const body = parsed.content ?? "";
+
+  return {
+    id,
+    title: /^#\s+(.+?)\s*$/m.exec(body)?.[1] ?? titleFromId(id),
+    description,
+    paths,
+    scope: paths.length > 0 ? "paths" : "baseline",
+    path: `rules/${fileName}`,
+    size: fs.statSync(rulePath).size,
+    lastUpdated: lastUpdatedFor(`rules/${fileName}`, rulePath),
+  };
+}
+
 if (!fs.existsSync(skillsDir)) {
   console.error(`error: skills directory not found at ${skillsDir}`);
   process.exit(1);
@@ -193,10 +249,35 @@ const searchIndex = items.map((item) => ({
   ].join(" "),
 }));
 
+// Rules are optional: an empty catalogue is a valid state, not a build failure,
+// because rules.json is imported statically and must always exist.
+const ruleItems = fs.existsSync(rulesDir)
+  ? fs
+      .readdirSync(rulesDir)
+      .filter((name) => name.endsWith(".md") && !RULES_EXCLUDED.has(name))
+      .sort()
+      .map((name) => readRule(name))
+  : [];
+
+searchIndex.push(
+  ...ruleItems.map((item) => ({
+    type: "rule",
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    path: item.path,
+    searchText: [item.title, item.description, item.paths.join(" ")].join(" "),
+  })),
+);
+
 fs.mkdirSync(outputDir, { recursive: true });
 fs.writeFileSync(
   path.join(outputDir, "skills.json"),
   `${JSON.stringify({ items }, null, 2)}\n`,
+);
+fs.writeFileSync(
+  path.join(outputDir, "rules.json"),
+  `${JSON.stringify({ items: ruleItems }, null, 2)}\n`,
 );
 fs.writeFileSync(
   path.join(outputDir, "search-index.json"),
@@ -205,7 +286,7 @@ fs.writeFileSync(
 
 const withScore = items.filter((item) => item.qualityScore).length;
 console.log(
-  `Wrote ${items.length} skill(s) (${withScore} with a quality score) to ${path
+  `Wrote ${items.length} skill(s) (${withScore} with a quality score) and ${ruleItems.length} rule(s) to ${path
     .relative(repoRoot, outputDir)
     .replace(/\\/g, "/")}/`,
 );

@@ -30,11 +30,14 @@ const siteBase = (process.env.A11Y_SITE_BASE || '/awesome-qwen').replace(/^\/+|\
 const routes = [
   '/',
   '/skills/',
+  '/rules/',
   // Representative detail pages (a resource-based and a guide-only skill) so
   // the audit covers the shared detail layout, sidebar, install buttons, and
   // file browser.
   '/skill/htmx/',
   '/skill/docker-containerize/',
+  // A rule detail page exercises the same chassis with the single-file layout.
+  '/rule/jinja-llm-prompts/',
 ];
 
 const themes = ['dark', 'light'];

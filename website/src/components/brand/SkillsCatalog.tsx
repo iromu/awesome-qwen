@@ -32,7 +32,7 @@ import {
 import { pageHref } from "./pageHref";
 import { downloadFile } from "./resourceActions";
 import type { SearchItem } from "./searchIndex";
-import styles from "./styles/skills.module.css";
+import styles from "./styles/catalog.module.css";
 
 const CONTRIBUTE_URL =
   "https://github.com/iromu/awesome-qwen/blob/main/CONTRIBUTING.md";

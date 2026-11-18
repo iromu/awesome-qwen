@@ -4,7 +4,7 @@ import { SkillDetail } from "../../components/brand/SkillDetail";
 import { buildDetailToc } from "../../components/brand/DetailChassis";
 import skillsData from "../../../public/data/skills.json";
 import { searchIndex } from "../../lib/site-data";
-import { readSkillMarkdown, formatLastUpdated } from "../../lib/detail-page";
+import { readResourceMarkdown, formatLastUpdated } from "../../lib/detail-page";
 
 const GITHUB_TREE_BASE = "https://github.com/iromu/awesome-qwen/tree/main";
 const GITHUB_BLOB_BASE = "https://github.com/iromu/awesome-qwen/blob/main";
@@ -65,7 +65,7 @@ const { item, previous, next } = Astro.props as {
 
 // Skills are folders, so the content region is a file switcher: SKILL.md is
 // read directly and the remaining bundled files are fetched on demand.
-const { markdownHtml, rawMarkdown } = readSkillMarkdown(item.skillFile);
+const { markdownHtml, rawMarkdown } = readResourceMarkdown(item.skillFile);
 const lastUpdated = formatLastUpdated(item.lastUpdated);
 
 const { html } = buildDetailToc(markdownHtml);

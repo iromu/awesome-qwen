@@ -18,6 +18,7 @@ import {
 import styles from "./styles/styles.module.css";
 import { PageShell } from "./PageShell";
 import { SkillsIcon } from "./SkillsIcon";
+import { RuleGlob } from "./RuleGlob";
 import { pageHref } from "./pageHref";
 import type { SearchItem } from "./searchIndex";
 
@@ -37,12 +38,25 @@ export type SkillSummary = {
   } | null;
 };
 
+/** A rule record as emitted into public/data/rules.json (subset used here). */
+export type RuleSummary = {
+  id: string;
+  title: string;
+  description: string;
+  /** Empty for a baseline rule, which fires on every session. */
+  paths: string[];
+};
+
 export type HomePageProps = {
   skills: SkillSummary[];
+  rules?: RuleSummary[];
   searchIndex?: SearchItem[];
 };
 
 const FEATURED_COUNT = 6;
+
+/** The rules list is short; cap it so the section stays a teaser. */
+const RULES_COUNT = 6;
 
 /** Highest-scoring skills first (unscored last, then alphabetical). */
 function featuredSkills(skills: SkillSummary[]): SkillSummary[] {
@@ -61,17 +75,22 @@ function summarize(description: string): string {
   return text.length <= 140 ? text : `${text.slice(0, 137).trimEnd()}…`;
 }
 
+
 /**
  * The site home: a hero that names the library, a grid of the highest-scoring
- * skills, and a closing banner that points back at Qwen Code itself. The
- * featured list is recomputed from `public/data/skills.json` at build time, so
- * it follows the latest SkillEvaluator reports without any manual upkeep.
+ * skills, a grid of the coding rules, and a closing banner that points back at
+ * Qwen Code itself. Both grids are recomputed from `public/data/*.json` at
+ * build time, so they follow the repo without any manual upkeep.
  */
 export function HomePage({
   skills,
+  rules = [],
   searchIndex = [],
 }: HomePageProps) {
   const featured = featuredSkills(skills);
+  const listedRules = [...rules]
+    .sort((a, b) => a.title.localeCompare(b.title))
+    .slice(0, RULES_COUNT);
 
   return (
     <PageShell
@@ -162,6 +181,76 @@ export function HomePage({
                         </Card.Heading>
                         <Card.Description>
                           {summarize(skill.description)}
+                        </Card.Description>
+                      </Card>
+                    </Box>
+                  </Grid.Column>
+                ))}
+              </Grid>
+            </Stack>
+          </Box>
+        </Box>
+      ) : null}
+
+      {listedRules.length > 0 ? (
+        <Box
+          id="rules"
+          className={styles.cardGridFrame}
+          marginBlockEnd={{ narrow: 24, wide: 80 }}
+        >
+          <Box className={styles.cardGridContent}>
+            <Stack
+              direction="vertical"
+              gap="condensed"
+              padding="none"
+              className={styles.sectionHead}
+            >
+              <Heading as="h2" size="3">
+                Rules
+              </Heading>
+              <Text size="200" variant="muted">
+                Coding standards Qwen Code loads on its own and applies by file
+                pattern — one markdown file each, copied into{" "}
+                <code>.qwen/rules/</code>.{" "}
+                <a href={pageHref("rules")}>Browse all rules</a>.
+              </Text>
+              <Grid columnGap="none" rowGap="none" enableGutters={false}>
+                {listedRules.map((rule) => (
+                  <Grid.Column
+                    key={rule.id}
+                    span={{ xsmall: 12, small: 6, xlarge: 4 }}
+                    className={clsx(
+                      styles.cardGridColumn,
+                      styles.cardGridColumnArrowHover,
+                    )}
+                  >
+                    <Box className={styles.cardGridItem} id={rule.id}>
+                      <Card
+                        href={pageHref(`rule/${rule.id}`)}
+                        fullWidth
+                        ctaVariant="arrow"
+                        ctaText="Open rule"
+                        backgroundColor="none"
+                        className={styles.resourceCard}
+                      >
+                        <Card.Heading as="h3" size="5">
+                          <span className={styles.cardHeadingRow}>
+                            <span>{rule.title}</span>
+                          </span>
+                        </Card.Heading>
+                        <Card.Description>
+                          {summarize(rule.description)}
+                          {/* Under the summary, not beside the title: skill
+                              cards fit a short grade token on the heading row,
+                              but a long path pattern starves the title into one
+                              word per line. */}
+                          <span className={styles.cardGlob}>
+                            {rule.paths[0] ? (
+                              <RuleGlob glob={rule.paths[0]} />
+                            ) : (
+                              "Every session"
+                            )}
+                          </span>
                         </Card.Description>
                       </Card>
                     </Box>

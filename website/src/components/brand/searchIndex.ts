@@ -6,7 +6,7 @@
  * destinations, so `TopNavSearch` searches the real catalog.
  */
 
-export type SearchCategory = "Pages" | "Skills";
+export type SearchCategory = "Pages" | "Skills" | "Rules";
 
 export type SearchItem = {
   title: string;
@@ -27,10 +27,12 @@ export type GeneratedSearchRecord = {
 
 const CATEGORY_BY_TYPE: Record<string, SearchCategory> = {
   skill: "Skills",
+  rule: "Rules",
 };
 
 const DETAIL_ROUTE_BY_TYPE: Record<string, string> = {
   skill: "skill",
+  rule: "rule",
 };
 
 /** Top-level destinations so search always surfaces the main sections. */
@@ -50,6 +52,13 @@ export const staticPages = (base: string): SearchItem[] => {
         "Self-contained Qwen Code skills that bundle instructions and resources together.",
       category: "Pages",
       href: at("/skills/"),
+    },
+    {
+      title: "Rules",
+      description:
+        "Coding standards Qwen Code applies automatically, by file pattern.",
+      category: "Pages",
+      href: at("/rules/"),
     },
   ];
 };

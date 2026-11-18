@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { RuleDetail } from "../../components/brand/RuleDetail";
+import { buildDetailToc } from "../../components/brand/DetailChassis";
+import {
+  ruleInstallCommand,
+  ruleRawUrl,
+  ruleSourceUrl,
+} from "../../components/brand/ruleUrls";
+import rulesData from "../../../public/data/rules.json";
+import { searchIndex } from "../../lib/site-data";
+import { readResourceMarkdown, formatLastUpdated } from "../../lib/detail-page";
+
+interface RuleItem {
+  id: string;
+  title: string;
+  description: string;
+  paths: string[];
+  scope: "paths" | "baseline";
+  path: string;
+  size: number;
+  lastUpdated: string;
+}
+
+export function getStaticPaths() {
+  const items = rulesData.items as RuleItem[];
+  return items.map((item, index) => ({
+    params: { id: item.id },
+    props: {
+      item,
+      previous: index > 0 ? items[index - 1] : undefined,
+      next: index < items.length - 1 ? items[index + 1] : undefined,
+    },
+  }));
+}
+
+const { item, previous, next } = Astro.props as {
+  item: RuleItem;
+  previous?: RuleItem;
+  next?: RuleItem;
+};
+
+// A rule is a single file, so the whole document is server-rendered here —
+// there is no bundled-file browser to hydrate on the client.
+const { markdownHtml, rawMarkdown } = readResourceMarkdown(item.path);
+const lastUpdated = formatLastUpdated(item.lastUpdated);
+
+const { html, toc } = buildDetailToc(markdownHtml);
+
+const base = import.meta.env.BASE_URL ?? "/";
+const detailHref = (id: string) =>
+  `${base.endsWith("/") ? base : `${base}/`}rule/${id}/`.replace(/\/{2,}/g, "/");
+
+const siblingOf = (sibling?: RuleItem) =>
+  sibling ? { label: sibling.title, href: detailHref(sibling.id) } : undefined;
+---
+
+<BaseLayout title={`${item.title} | Awesome Qwen`} description={item.description}>
+  <RuleDetail
+    client:load
+    item={item}
+    markdownHtml={html}
+    toc={toc}
+    githubUrl={ruleSourceUrl(item)}
+    rawUrl={ruleRawUrl(item)}
+    installCommand={ruleInstallCommand(item)}
+    rawMarkdown={rawMarkdown}
+    lastUpdated={lastUpdated}
+    previous={siblingOf(previous)}
+    next={siblingOf(next)}
+    searchIndex={searchIndex}
+  />
+</BaseLayout>

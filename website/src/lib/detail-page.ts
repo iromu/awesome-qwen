@@ -6,7 +6,8 @@ import { enhanceMarkdownA11y } from "./markdown-a11y";
 import { sanitizeHtml } from "./sanitize-html";
 
 /**
- * Build-time helpers shared by the skill detail page (src/pages/skill/[id].astro).
+ * Build-time helpers shared by the resource detail routes
+ * (src/pages/skill/[id].astro and src/pages/rule/[id].astro).
  *
  * This module is intentionally free of any DOM/browser dependencies so it can
  * run in Astro frontmatter at build time (unlike src/scripts/utils.ts, which is
@@ -44,10 +45,10 @@ function stripLeadingH1(html: string): string {
 }
 
 /**
- * Read a skill's SKILL.md at build time and return its rendered HTML, the
- * trimmed frontmatter block, and the raw file contents.
+ * Read a resource's markdown file at build time and return its rendered HTML,
+ * the trimmed frontmatter block, and the raw file contents.
  */
-export function readSkillMarkdown(filePath: string): {
+export function readResourceMarkdown(filePath: string): {
   markdownHtml: string;
   frontmatterText: string;
   rawMarkdown: string;

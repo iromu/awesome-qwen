@@ -7,6 +7,7 @@
  * `astro dev`/`astro build`; `npm run build` chains both).
  */
 import searchIndexData from "../../public/data/search-index.json";
+import rulesData from "../../public/data/rules.json";
 import skillsData from "../../public/data/skills.json";
 
 import {
@@ -19,9 +20,12 @@ const BASE = import.meta.env.BASE_URL ?? "/";
 
 export const skills = skillsData.items;
 
+export const rules = rulesData.items;
+
 /** Live catalog count, injected into the home page and nav. */
 export const counts = {
   skills: skills.length,
+  rules: rules.length,
 };
 
 /** Site-wide search index for `TopNavSearch`, shared by every page. */

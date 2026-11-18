@@ -877,6 +877,13 @@
 
 .codeBlockWrap {
   margin: 0;
+  /* .heroContent is a flex column with align-items: flex-start, so a wrap sized
+     by its own content lets a long one-liner (a rule's curl command) push out
+     past the hero frame instead of scrolling. Pin it to the column and allow
+     shrinking below min-content so .codeBlock's overflow-x takes over. */
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
 }
 
 .stepsList .codeBlockWrap {

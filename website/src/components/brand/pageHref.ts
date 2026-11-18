@@ -12,6 +12,7 @@ const BASE = import.meta.env.BASE_URL ?? "/";
 const ROUTES: Record<string, string> = {
   "": "",
   skills: "skills/",
+  rules: "rules/",
 };
 
 export type PageHref = (page?: string) => string;

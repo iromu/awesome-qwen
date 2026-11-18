@@ -13,7 +13,7 @@ import { hrefKey, searchPagefind } from "./pagefindSearch";
 import { type SearchCategory, type SearchItem } from "./searchIndex";
 import s from "./styles/TopNavSearch.module.css";
 
-const CATEGORY_ORDER: SearchCategory[] = ["Pages", "Skills"];
+const CATEGORY_ORDER: SearchCategory[] = ["Pages", "Skills", "Rules"];
 
 const MAX_RESULTS = 8;
 const MAX_PER_GROUP = 4;

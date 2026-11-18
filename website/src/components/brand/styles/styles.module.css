@@ -556,6 +556,22 @@
   flex-shrink: 0;
 }
 
+/* A rule's `paths:` glob, under the card summary. Deliberately not a Token
+   beside the heading: globs run long and starve the title into one word per
+   line. Block-level inside Card.Description's <p>, which unwraps it onto its
+   own line. Wrapping happens in markup (RuleGlob inserts <wbr> between path
+   segments), so nothing here may create a break of its own. */
+.cardGlob {
+  display: block;
+  margin-block-start: var(--base-size-12);
+  font-family: var(--brand-fontStack-monospace);
+  font-size: var(--brand-text-size-100);
+  color: var(--brand-color-text-muted);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
 /*
  * Gridline frame around the closing CTA banner: full-bleed horizontal rules
  * top and bottom, with vertical rules inset to the banner (Section content)

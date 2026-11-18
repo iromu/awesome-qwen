@@ -452,6 +452,26 @@
   margin-block-start: var(--base-size-16);
 }
 
+/* A rule's `paths:` glob. Wrapping is handled in markup (see RuleGlob.tsx),
+   which inserts <wbr> between path segments; nothing here may create a break of
+   its own, or brace sets like {j2,jinja} get split across lines. */
+.cardGlob {
+  display: block;
+  font-family: var(--brand-fontStack-monospace);
+  font-size: var(--brand-text-size-100);
+  color: var(--brand-color-text-muted);
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+/* The "+N more" tail beside a glob — same line, so it must not inherit the
+   monospace glob treatment. */
+.cardMore {
+  margin-inline-start: var(--base-size-8);
+  font-family: var(--brand-fontStack-sans-serif);
+}
+
 .cardActions {
   display: flex;
   flex-wrap: wrap;
